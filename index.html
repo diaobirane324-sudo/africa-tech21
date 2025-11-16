@@ -743,6 +743,9 @@
 
         .footer-links li {
             margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .footer-links a {
@@ -1036,7 +1039,7 @@
                 </div>
                 
                 <div class="form-body">
-                    <form id="registrationForm">
+                    <form id="registrationForm" action="https://formspree.io/f/xnnlbgvj" method="POST">
                         <div class="form-row">
                             <div class="form-column">
                                 <div class="form-group">
@@ -1106,20 +1109,20 @@
                             <label>Domaines d'intérêt <span class="required">*</span></label>
                             <div class="checkbox-group">
                                 <div class="checkbox-item">
-                                    <input type="checkbox" id="robotique" name="domaines" value="Robotique">
-                                    <label for="robotique">Robotique</label>
+                                    <input type="checkbox" id="interet_robotique" name="interet_robotique" value="Robotique">
+                                    <label for="interet_robotique">Robotique</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" id="informatique" name="domaines" value="Informatique">
-                                    <label for="informatique">Informatique</label>
+                                    <input type="checkbox" id="interet_informatique" name="interet_informatique" value="Informatique">
+                                    <label for="interet_informatique">Informatique</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" id="electronique" name="domaines" value="Electronique">
-                                    <label for="electronique">Électronique</label>
+                                    <input type="checkbox" id="interet_electronique" name="interet_electronique" value="Electronique">
+                                    <label for="interet_electronique">Électronique</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" id="mecanique" name="domaines" value="Mecanique">
-                                    <label for="mecanique">Mécanique</label>
+                                    <input type="checkbox" id="interet_mecanique" name="interet_mecanique" value="Mecanique">
+                                    <label for="interet_mecanique">Mécanique</label>
                                 </div>
                             </div>
                         </div>
@@ -1148,4 +1151,220 @@
 
                         <button type="submit" class="submit-btn">Postuler Maintenant</button>
 
-                       
+                        <div class="privacy">
+                            <p>Vos données sont sécurisées et ne seront jamais partagées sans votre consentement.</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Help Section -->
+    <section class="help" id="aide">
+        <div class="container">
+            <div class="section-title">
+                <h2>Besoin d'Aide ?</h2>
+                <p>Nous sommes là pour vous accompagner dans tous vos projets technologiques</p>
+            </div>
+            
+            <div class="help-container">
+                <div class="help-card">
+                    <div class="help-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>Conseil Technique</h3>
+                    <p>Bénéficiez de notre expertise pour vos projets de robotique et d'automatisation.</p>
+                </div>
+                
+                <div class="help-card">
+                    <div class="help-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3>Support Personnalisé</h3>
+                    <p>Notre équipe vous accompagne de la conception à la réalisation de votre projet.</p>
+                </div>
+                
+                <div class="help-card">
+                    <div class="help-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Formation</h3>
+                    <p>Formez-vous aux technologies émergentes avec nos experts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>AFRICA.TECH21</h3>
+                    <p>L'innovation technologique au service du développement africain</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Liens Rapides</h3>
+                    <ul class="footer-links">
+                        <li><a href="#accueil">Accueil</a></li>
+                        <li><a href="#apropos">À Propos</a></li>
+                        <li><a href="#projets">Projets</a></li>
+                        <li><a href="#inscription">Rejoindre</a></li>
+                        <li><a href="#aide">Aide</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Nos Contacts</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-phone"></i> +221 70 20 70 702</li>
+                        <li><i class="fas fa-envelope"></i> africa.tech21.net@gmail.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Dakar, Sénégal</li>
+                        <li><i class="fas fa-clock"></i> Lun - Ven: 8h - 18h</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Nos Domaines</h3>
+                    <ul class="footer-links">
+                        <li><a href="#robotique">Robotique</a></li>
+                        <li><a href="#informatique">Informatique</a></li>
+                        <li><a href="#electronique">Électronique</a></li>
+                        <li><a href="#mecanique">Mécanique</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 AFRICA.TECH21. Tous droits réservés. | Développement technologique pour l'Afrique</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chat System -->
+    <div class="chat-container">
+        <div class="chat-button" id="chatButton">
+            <i class="fas fa-comments"></i>
+        </div>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h3>Chat AFRICA.TECH21</h3>
+                <button class="close-chat" id="closeChat">×</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    Bonjour ! Bienvenue chez AFRICA.TECH21. Comment pouvons-nous vous aider ?
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Tapez votre message...">
+                <button class="send-button" id="sendButton">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chat System Functionality
+        const chatButton = document.getElementById('chatButton');
+        const chatWindow = document.getElementById('chatWindow');
+        const closeChat = document.getElementById('closeChat');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendButton = document.getElementById('sendButton');
+
+        chatButton.addEventListener('click', () => {
+            chatWindow.style.display = 'flex';
+        });
+
+        closeChat.addEventListener('click', () => {
+            chatWindow.style.display = 'none';
+        });
+
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        sendButton.addEventListener('click', () => {
+            const message = chatInput.value.trim();
+            if (message) {
+                addMessage(message, true);
+                chatInput.value = '';
+                
+                // Auto-reply after 1 second
+                setTimeout(() => {
+                    addMessage("Merci pour votre message ! Notre équipe vous répondra rapidement.");
+                }, 1000);
+            }
+        });
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendButton.click();
+            }
+        });
+
+        // File Upload Functionality
+        document.getElementById('fileUpload').addEventListener('click', function() {
+            document.getElementById('cv').click();
+        });
+
+        document.getElementById('cv').addEventListener('change', function(e) {
+            const fileName = e.target.files[0] ? e.target.files[0].name : 'Aucun fichier sélectionné';
+            document.querySelector('.file-upload-label').textContent = '📎 ' + fileName;
+        });
+
+        // Form Submission
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            const domaines = document.querySelectorAll('input[name^="interet_"]:checked');
+            if (domaines.length === 0) {
+                e.preventDefault();
+                alert('Veuillez sélectionner au moins un domaine d\'intérêt.');
+                return;
+            }
+            
+            // Form will be submitted to Formspree
+            alert('Formulaire envoyé ! Nous vous contacterons rapidement.');
+        });
+
+        // Mobile Menu Toggle
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+
+        // Project Filtering
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const filter = this.getAttribute('data-filter');
+                
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                document.querySelectorAll('.project-card').forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+              
