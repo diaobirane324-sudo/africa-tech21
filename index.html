@@ -1431,9 +1431,199 @@
             });
         });
     </script>
+    <!-- ==================== -->
+<!-- FORMULAIRE MULTI-ÉTAPES -->
+<!-- ==================== -->
+
+<!-- Formulaire Multi-Étapes -->
+<div id="applicationModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Postuler chez AFRICA.TECH21</h2>
+            <span class="close" onclick="closeApplicationModal()">&times;</span>
+        </div>
+        
+        <!-- Barre de progression -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-step active" data-step="1">1</div>
+                <div class="progress-step" data-step="2">2</div>
+                <div class="progress-step" data-step="3">3</div>
+                <div class="progress-step" data-step="4">4</div>
+            </div>
+            <div class="progress-labels">
+                <span>Informations</span>
+                <span>Profil</span>
+                <span>Motivation</span>
+                <span>Validation</span>
+            </div>
+        </div>
+
+        <!-- Formulaire Multi-Étapes -->
+        <form id="multiStepForm" action="https://formspree.io/f/xnnlbgvj" method="POST">
+            <!-- Étape 1 -->
+            <div class="form-step active" data-step="1">
+                <h3>Informations Personnelles</h3>
+                <div class="form-row">
+                    <div class="form-column">
+                        <label>Civilité *</label>
+                        <select name="civilite" required>
+                            <option value="">Sélectionnez</option>
+                            <option value="M.">M.</option>
+                            <option value="Mme">Mme</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-column">
+                        <label>Nom *</label>
+                        <input type="text" name="nom" required>
+                    </div>
+                    <div class="form-column">
+                        <label>Prénom *</label>
+                        <input type="text" name="prenom" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-column">
+                        <label>Adresse complète *</label>
+                        <input type="text" name="adresse" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-column">
+                        <label>Téléphone *</label>
+                        <input type="tel" name="telephone" required>
+                    </div>
+                    <div class="form-column">
+                        <label>Email *</label>
+                        <input type="email" name="email" required>
+                    </div>
+                </div>
+                <button type="button" class="btn-next" onclick="nextStep(1)">Suivant</button>
+            </div>
+
+            <!-- Étape 2 -->
+            <div class="form-step" data-step="2">
+                <h3>Profil Académique & Professionnel</h3>
+                <div class="form-row">
+                    <div class="form-column">
+                        <label>Niveau d'étude *</label>
+                        <select name="niveau_etude" required>
+                            <option value="">Sélectionnez</option>
+                            <option value="Bac">Bac</option>
+                            <option value="Bac+2">Bac+2</option>
+                            <option value="Bac+3">Bac+3</option>
+                            <option value="Bac+5">Bac+5</option>
+                            <option value="Doctorat">Doctorat</option>
+                        </select>
+                    </div>
+                    <div class="form-column">
+                        <label>Profession actuelle *</label>
+                        <select name="profession" required>
+                            <option value="">Sélectionnez</option>
+                            <option value="Etudiant">Étudiant</option>
+                            <option value="Eleve">Élève</option>
+                            <option value="Ingenieur">Ingénieur</option>
+                            <option value="Technicien">Technicien</option>
+                            <option value="Chercheur">Chercheur</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Domaines d'expertise *</label>
+                    <div class="checkbox-grid">
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="domaines[]" value="Robotique" id="robotique">
+                            <label for="robotique">🤖 Robotique</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="domaines[]" value="Informatique" id="informatique">
+                            <label for="informatique">💻 Informatique</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="domaines[]" value="Electronique" id="electronique">
+                            <label for="electronique">🔌 Électronique</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="domaines[]" value="Mecanique" id="mecanique">
+                            <label for="mecanique">⚙️ Mécanique</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="btn-prev" onclick="prevStep(2)">Précédent</button>
+                    <button type="button" class="btn-next" onclick="nextStep(2)">Suivant</button>
+                </div>
+            </div>
+
+            <!-- Étape 3 -->
+            <div class="form-step" data-step="3">
+                <h3>Expérience & Motivation</h3>
+                <div class="form-group">
+                    <label>Années d'expérience *</label>
+                        <select name="experience" required>
+                        <option value="">Sélectionnez</option>
+                        <option value="0-1">0-1 an</option>
+                        <option value="1-3">1-3 ans</option>
+                        <option value="3-5">3-5 ans</option>
+                        <option value="5+">5+ ans</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Lettre de motivation *</label>
+                    <textarea name="motivation" placeholder="Pourquoi souhaitez-vous rejoindre AFRICA.TECH21 ? Quelles sont vos aspirations et compétences ?..." required rows="6"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Projets réalisés (optionnel)</label>
+                    <textarea name="projets" placeholder="Décrivez brièvement les projets sur lesquels vous avez travaillé..." rows="4"></textarea>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="btn-prev" onclick="prevStep(3)">Précédent</button>
+                    <button type="button" class="btn-next" onclick="nextStep(3)">Suivant</button>
+                </div>
+            </div>
+
+            <!-- Étape 4 -->
+            <div class="form-step" data-step="4">
+                <h3>Finalisation de la Candidature</h3>
+                <div class="form-group">
+                    <label>CV (PDF, DOC - Optionnel)</label>
+                    <div class="file-upload">
+                        <input type="file" name="cv" accept=".pdf,.doc,.docx">
+                        <div class="file-label">
+                            <i class="fas fa-upload"></i>
+                            Télécharger votre CV
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="confidentialite" required id="confidentialite">
+                        <label for="confidentialite">J'accepte la politique de confidentialité *</label>
+                    </div>
+                </div>
+                <div class="summary">
+                    <h4>Récapitulatif de votre candidature</h4>
+                    <div id="candidatureSummary"></div>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="btn-prev" onclick="prevStep(4)">Précédent</button>
+                    <button type="submit" class="btn-submit">Soumettre ma Candidature</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ==================== -->
+<!-- FIN DU FORMULAIRE -->
+<!-- ==================== -->
 </body>
 </html>
               
+
 
 
 
