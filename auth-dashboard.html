@@ -348,6 +348,11 @@
             window.location.href = 'login.html';
             exit;
         }
+        // Vérifier si l'utilisateur est membre approuvé
+if (currentUser.statut !== "membre_approuve") {
+    alert("Accès réservé aux membres officiels d'AFRICA.TECH21. Veuillez postuler pour devenir membre.");
+    window.location.href = 'profile.html';
+}
 
         // Afficher les informations utilisateur
         document.getElementById('userName').textContent = currentUser.prenom;
