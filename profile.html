@@ -279,6 +279,24 @@
             }
         }
     </style>
+    .postuler-btn {
+    background: linear-gradient(135deg, #d4af37, #f1c40f);
+    color: #1a2f3b;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    margin-left: 10px;
+}
+
+.postuler-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+}
 </head>
 <body>
     <header class="member-header">
@@ -305,6 +323,9 @@
             <button class="edit-btn" onclick="openEditModal()">
                 <i class="fas fa-edit"></i> Modifier le profil
             </button>
+            <button class="postuler-btn" onclick="openApplicationModal()" style="margin-top: 1rem;">
+    <i class="fas fa-rocket"></i> Postuler pour devenir membre officiel
+</button>
         </section>
 
         <div class="profile-content">
@@ -513,5 +534,9 @@
         // Charger le profil au démarrage
         loadProfile();
     </script>
+    function openApplicationModal() {
+    alert("Pour postuler, utilisez le bouton 'POSTULER' sur la page d'accueil principale.");
+    window.location.href = 'index.html';
+}
 </body>
 </html>
