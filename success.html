@@ -4,31 +4,201 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Candidature Envoyée - AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            text-align: center; 
-            padding: 50px; 
-            background: #1a2f3b;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #2c5530;
+            --secondary: #d4af37;
+            --dark: #1a2f3b;
+            --light: #f8f9fa;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark), var(--primary));
             color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
-        .success-message {
+
+        .success-container {
             background: white;
-            color: #1a2f3b;
-            padding: 40px;
-            border-radius: 15px;
-            max-width: 500px;
-            margin: 0 auto;
+            color: var(--dark);
+            padding: 50px 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            animation: fadeIn 0.8s ease;
         }
-        .checkmark { color: #2c5530; font-size: 4rem; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            animation: bounce 1s ease;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        .success-container h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .success-container h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        .success-container p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .next-steps {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: left;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .next-steps h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .next-steps ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .next-steps li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .next-steps li i {
+            color: var(--primary);
+        }
+
+        .home-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            box-shadow: 0 5px 15px rgba(44, 85, 48, 0.3);
+        }
+
+        .home-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(44, 85, 48, 0.4);
+        }
+
+        .contact-info {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e9ecef;
+            color: #666;
+        }
+
+        .contact-info a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .success-container {
+                padding: 30px 20px;
+            }
+            
+            .success-container h1 {
+                font-size: 2rem;
+            }
+            
+            .success-container h2 {
+                font-size: 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="success-message">
-        <div class="checkmark">✅</div>
-        <h2>CANDIDATURE ENVOYÉE !</h2>
-        <p>Nous avons bien reçu votre candidature et vous recontacterons très rapidement.</p>
-        <a href="index.html" style="color: #2c5530;">← Retour à l'accueil</a>
+    <div class="success-container">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        
+        <h1>🎉 FÉLICITATIONS !</h1>
+        <h2>Votre candidature a été envoyée avec succès</h2>
+        
+        <p>
+            Nous avons bien reçu votre candidature pour rejoindre <strong>AFRICA.TECH21</strong>. 
+            Notre équipe va l'étudier attentivement et vous recontactera dans les plus brefs délais.
+        </p>
+
+        <div class="next-steps">
+            <h3>📋 Prochaines étapes :</h3>
+            <ul>
+                <li><i class="fas fa-envelope"></i> <strong>Email de confirmation</strong> - Vous recevrez un accusé de réception</li>
+                <li><i class="fas fa-search"></i> <strong>Étude de votre profil</strong> - Notre équipe analysera votre candidature</li>
+                <li><i class="fas fa-phone"></i> <strong>Entretien</strong> - Nous vous contacterons pour un échange</li>
+                <li><i class="fas fa-rocket"></i> <strong>Intégration</strong> - Bienvenue dans l'aventure AFRICA.TECH21 !</li>
+            </ul>
+        </div>
+
+        <p style="font-style: italic; color: #888;">
+            Merci pour votre intérêt et votre confiance en notre startup innovante.
+        </p>
+
+        <a href="index.html" class="home-btn">
+            <i class="fas fa-arrow-left"></i> Retour à l'accueil
+        </a>
+
+        <div class="contact-info">
+            <p>Une question ? Contactez-nous : <a href="mailto:africa.tech21.net@gmail.com">africa.tech21.net@gmail.com</a></p>
+        </div>
     </div>
+
+    <script>
+        // Redirection automatique après 10 secondes
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 10000);
+    </script>
 </body>
 </html>
