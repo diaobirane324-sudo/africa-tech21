@@ -1455,8 +1455,11 @@ document.getElementById('registrationForm').addEventListener('submit', function(
         return;
     }
     
-    // Netlify Forms gère l'envoi automatiquement
-    alert('Formulaire envoyé ! Redirection vers la page de confirmation...');
+   // Netlify Forms gère l'envoi automatiquement
+setTimeout(() => {
+    window.location.href = '/success.html';
+}, 2000);
+alert('Formulaire envoyé ! Redirection vers la page de confirmation...');
 });
 
         // Mobile Menu Toggle
@@ -2180,3 +2183,4 @@ localStorage.setItem('employesAFRICA', JSON.stringify(employesAFRICA));
 </script>
 </body>
 </html>
+
