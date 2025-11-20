@@ -1488,24 +1488,191 @@ alert('Formulaire envoyé ! Redirection vers la page de confirmation...');
 <!-- FIN JAVASCRIPT & STYLES -->
 <!-- ==================== -->
     <script>
-// Base de données des employés AFRICA.TECH21
-const employesAFRICA = {
-    "DIAO_BIRANE_001": {
-        nom: "Diao",
-        prenom: "Birane",
-        poste: "Co-fondateur", 
-        departement: "Robotique",
-        id: "DIAO_BIRANE_001",
-        date_embauche: "2024-01-01"
-    }
-    // Vous pourrez ajouter d'autres employés ici plus tard
-};
+   // Données des membres AFRICA.TECH21
+        const employesAFRICA = {
+            "DIAO_BIRANE_001": {
+                nom: "Diao",
+                prenom: "Birane",
+                poste: "Co-fondateur", 
+                departement: "Robotique",
+                id: "DIAO_BIRANE_001"
+            },
+            "DIAKHATE_ABDOU_002": {
+                nom: "Diakhaté",
+                prenom: "Abdou", 
+                poste: "Responsable Recrutement & Cellule Informatique",
+                departement: "Informatique",
+                id: "DIAKHATE_ABDOU_002"
+            },
+            "DIA_DJIBRIL_003": {
+                nom: "Dia",
+                prenom: "Djibril Bagdad",
+                poste: "Co-fondateur",
+                departement: "Médical", 
+                id: "DIA_DJIBRIL_003"
+            }
+        };
 
-// Sauvegarder dans le localStorage
-localStorage.setItem('employesAFRICA', JSON.stringify(employesAFRICA));
-</script>
+        // Sauvegarder dans localStorage
+        localStorage.setItem('employesAFRICA', JSON.stringify(employesAFRICA));
+
+        // Vérifier si on arrive depuis un QR Code (URL avec paramètre user)
+        const urlParams = new URLSearchParams(window.location.search);
+        const qrUserId = urlParams.get('user');
+
+        // Si accès par QR Code, connecter automatiquement le membre
+        if (qrUserId && employesAFRICA[qrUserId]) {
+            const membre = employesAFRICA[qrUserId];
+            const currentUser = {
+                id: membre.id,
+                nom: membre.nom,
+                prenom: membre.prenom,
+                poste: membre.poste,
+                departement: membre.departement,
+                statut: "membre_approuve",
+                email: `${membre.prenom.toLowerCase()}.${membre.nom.toLowerCase()}@africatech21.com`
+            };
+            
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            localStorage.setItem('userLoggedIn', 'true');
+            
+            // Nettoyer l'URL pour éviter les reconnexions automatiques
+            window.history.replaceState({}, document.title, window.location.pathname);
+            
+            console.log(`✅ Connexion automatique : ${membre.prenom} ${membre.nom}`);
+        }
+
+        // ========== VOTRE CODE EXISTANT ==========
+        
+        // Vérifier la connexion
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        }
+
+        // Vérifier si l'utilisateur est membre approuvé
+        if (currentUser.statut !== "membre_approuve" && !employesAFRICA[currentUser.id]) {
+            alert("Accès réservé aux membres officiels d'AFRICA.TECH21. Veuillez postuler pour devenir membre.");
+            window.location.href = 'profile.html';
+        }
+
+        // Afficher les informations utilisateur
+        document.getElementById('userName').textContent = currentUser.prenom;
+        document.getElementById('welcomeName').textContent = currentUser.prenom;
+        document.getElementById('userAvatar').textContent = currentUser.prenom.charAt(0).toUpperCase();
+
+        // Afficher les informations spécifiques si c'est un membre reconnu
+        if (employesAFRICA[currentUser.id]) {
+            const membre = employesAFRICA[currentUser.id];
+            document.getElementById('welcomeName').textContent = `${membre.prenom} ${membre.nom}`;
+            document.getElementById('userName').textContent = `${membre.prenom} ${membre.nom}`;
+            document.getElementById('memberBadge').style.display = 'inline-block';
+            
+            console.log(`✅ Membre reconnu : ${membre.prenom} ${membre.nom} - ${membre.poste}`);
+        }
+
+        // Mettre à jour les statistiques
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        document.getElementById('memberCount').textContent = users.length;
+
+        // Gestion du forum
+        function sendMessage() {
+            const messageInput = document.getElementById('newMessage');
+            const message = messageInput.value.trim();
+            
+            if (message) {
+                const forumMessages = document.getElementById('forumMessages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message';
+                
+                const now = new Date();
+                const dateStr = now.toLocaleDateString('fr-FR');
+                
+                messageDiv.innerHTML = `
+                    <div class="message-header">
+                        <strong>${currentUser.prenom} ${currentUser.nom}</strong>
+                        <span>${dateStr}</span>
+                    </div>
+                    <p>${message}</p>
+                `;
+                
+                forumMessages.appendChild(messageDiv);
+                messageInput.value = '';
+                forumMessages.scrollTop = forumMessages.scrollHeight;
+                
+                // Mettre à jour le compteur de messages
+                const messageCount = parseInt(document.getElementById('messageCount').textContent) + 1;
+                document.getElementById('messageCount').textContent = messageCount;
+                
+                // Sauvegarder dans le localStorage
+                saveMessageToStorage(message, dateStr);
+            }
+        }
+
+        function saveMessageToStorage(message, date) {
+            const messages = JSON.parse(localStorage.getItem('forumMessages') || '[]');
+            messages.push({
+                userId: currentUser.id,
+                userName: `${currentUser.prenom} ${currentUser.nom}`,
+                message: message,
+                date: date
+            });
+            localStorage.setItem('forumMessages', JSON.stringify(messages));
+        }
+
+        function loadMessages() {
+            const messages = JSON.parse(localStorage.getItem('forumMessages') || '[]');
+            const forumMessages = document.getElementById('forumMessages');
+            
+            // Garder le message de bienvenue
+            forumMessages.innerHTML = `
+                <div class="message">
+                    <div class="message-header">
+                        <strong>Admin</strong>
+                        <span>05 Jan 2024</span>
+                    </div>
+                    <p>Bienvenue à tous dans notre nouvel espace membres ! Utilisez ce forum pour échanger sur les projets.</p>
+                </div>
+            `;
+            
+            // Ajouter les autres messages
+            messages.forEach(msg => {
+                if (msg.userName !== 'Admin') {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'message';
+                    messageDiv.innerHTML = `
+                        <div class="message-header">
+                            <strong>${msg.userName}</strong>
+                            <span>${msg.date}</span>
+                        </div>
+                        <p>${msg.message}</p>
+                    `;
+                    forumMessages.appendChild(messageDiv);
+                }
+            });
+            
+            // Mettre à jour le compteur de messages
+            document.getElementById('messageCount').textContent = messages.length + 1;
+            
+            forumMessages.scrollTop = forumMessages.scrollHeight;
+        }
+
+        function logout() {
+            localStorage.removeItem('userLoggedIn');
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+
+        // Charger les messages au démarrage
+        loadMessages();
+
+        // Envoyer avec Enter
+        document.getElementById('newMessage').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
 </body>
 </html>
-
-
-
