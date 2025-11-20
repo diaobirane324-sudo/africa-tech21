@@ -96,6 +96,16 @@
             font-weight: 600;
             cursor: pointer;
             margin: 10px;
+            transition: background 0.3s;
+        }
+
+        .scan-btn:hover {
+            background: #1e3a24;
+        }
+
+        .scan-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
         }
 
         .result {
@@ -134,6 +144,21 @@
             margin-top: 20px;
             text-decoration: none;
             display: inline-block;
+            transition: background 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #b8941f;
+        }
+
+        .debug-info {
+            background: #f8f9fa;
+            color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 12px;
+            text-align: left;
         }
     </style>
 </head>
@@ -149,8 +174,12 @@
             <div class="scan-line"></div>
         </div>
 
-        <button class="scan-btn" onclick="startScanner()">
+        <button class="scan-btn" onclick="startScanner()" id="scanButton">
             <i class="fas fa-camera"></i> Démarrer le Scan
+        </button>
+
+        <button class="scan-btn" onclick="testQRCode()" style="background: var(--secondary); color: var(--dark);">
+            <i class="fas fa-test"></i> Test QR Code
         </button>
 
         <div id="result" class="result"></div>
@@ -158,6 +187,12 @@
         <a href="index.html" class="back-btn">
             <i class="fas fa-arrow-left"></i> Retour
         </a>
+
+        <!-- Section debug -->
+        <div class="debug-info" id="debugInfo" style="display: none;">
+            <strong>Debug Info:</strong>
+            <div id="debugContent"></div>
+        </div>
     </div>
 
     <script>
@@ -166,61 +201,115 @@
         let ctx = canvas.getContext('2d');
         let scanning = false;
 
-        function startScanner() {
-    // Arrêter le scan précédent si actif
-    if (video.srcObject) {
-        video.srcObject.getTracks().forEach(track => track.stop());
-    }
-
-    // Options caméra améliorées
-    const constraints = {
-        video: { 
-            facingMode: "environment",
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
+        // Debug: Afficher les données existantes
+        function showDebugInfo() {
+            const employes = JSON.parse(localStorage.getItem('employesAFRICA') || '{}');
+            const debugInfo = document.getElementById('debugInfo');
+            const debugContent = document.getElementById('debugContent');
+            
+            debugContent.innerHTML = `
+                Employés dans localStorage: ${Object.keys(employes).length}<br>
+                Clés: ${Object.keys(employes).join(', ') || 'Aucune'}
+            `;
+            debugInfo.style.display = 'block';
         }
-    };
 
-    navigator.mediaDevices.getUserMedia(constraints)
-        .then(function(stream) {
-            video.srcObject = stream;
-            video.setAttribute("playsinline", true);
-            scanning = true;
-            scanQRCode();
-        })
-        .catch(function(err) {
-            console.error("Erreur caméra:", err);
-            // Message d'erreur amélioré
+        // Afficher les infos debug au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            showDebugInfo();
+            console.log("Données employés dans localStorage:", 
+                JSON.parse(localStorage.getItem('employesAFRICA') || '{}'));
+        });
+
+        function startScanner() {
+            const scanButton = document.getElementById('scanButton');
+            scanButton.disabled = true;
+            scanButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Initialisation...';
+
+            // Arrêter le scan précédent si actif
+            if (video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop());
+            }
+
+            // Constraints améliorées avec fallback
+            const constraints = {
+                video: { 
+                    facingMode: "environment",
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 },
+                    frameRate: { ideal: 30 }
+                }
+            };
+
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(function(stream) {
+                    video.srcObject = stream;
+                    video.setAttribute("playsinline", true);
+                    
+                    // Attendre que la vidéo soit prête
+                    video.onloadedmetadata = function() {
+                        video.play();
+                        scanning = true;
+                        scanButton.innerHTML = '<i class="fas fa-camera"></i> Scan en cours...';
+                        scanQRCode();
+                    };
+                })
+                .catch(function(err) {
+                    console.error("Erreur caméra:", err);
+                    handleCameraError(err);
+                    scanButton.disabled = false;
+                    scanButton.innerHTML = '<i class="fas fa-camera"></i> Démarrer le Scan';
+                });
+        }
+
+        function handleCameraError(err) {
             const resultDiv = document.getElementById('result');
+            let errorMessage = '';
+            
+            if (err.name === 'NotAllowedError') {
+                errorMessage = 'Permission caméra refusée. Autorisez l\'accès dans les paramètres de votre navigateur.';
+            } else if (err.name === 'NotFoundError') {
+                errorMessage = 'Aucune caméra disponible sur cet appareil.';
+            } else if (err.name === 'NotSupportedError') {
+                errorMessage = 'Fonction caméra non supportée par ce navigateur. Utilisez Chrome ou Firefox.';
+            } else if (err.name === 'NotReadableError') {
+                errorMessage = 'Caméra déjà utilisée par une autre application.';
+            } else {
+                errorMessage = 'Erreur caméra: ' + err.message;
+            }
+            
             resultDiv.className = 'result error';
             resultDiv.innerHTML = `
-                <h3>❌ Accès caméra refusé</h3>
-                <p>Veuillez :</p>
-                <ul style="text-align: left; margin: 10px 0;">
-                    <li>Autoriser l'accès à la caméra</li>
-                    <li>Utiliser HTTPS</li>
-                    <li>Vérifier les permissions</li>
-                </ul>
+                <h3>❌ Erreur Caméra</h3>
+                <p>${errorMessage}</p>
                 <button class="scan-btn" onclick="startScanner()">Réessayer</button>
             `;
             resultDiv.style.display = 'block';
-        });
-}
+        }
 
         function scanQRCode() {
-            if (!scanning) return;
+            if (!scanning) {
+                document.getElementById('scanButton').disabled = false;
+                document.getElementById('scanButton').innerHTML = '<i class="fas fa-camera"></i> Démarrer le Scan';
+                return;
+            }
 
             if (video.readyState === video.HAVE_ENOUGH_DATA) {
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                
-                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                const code = jsQR(imageData.data, imageData.width, imageData.height);
-                
-                if (code) {
-                    processQRCode(code.data);
-                    return;
+                try {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const code = jsQR(imageData.data, imageData.width, imageData.height);
+                    
+                    if (code) {
+                        console.log("QR Code détecté:", code.data);
+                        processQRCode(code.data);
+                        return;
+                    }
+                } catch (error) {
+                    console.error("Erreur lors du scan:", error);
                 }
             }
             
@@ -229,16 +318,48 @@
 
         function processQRCode(qrData) {
             scanning = false;
-            video.srcObject.getTracks().forEach(track => track.stop());
-            
-            // Extraire l'ID de l'URL
-            const urlParams = new URLSearchParams(qrData.split('?')[1]);
-            const employeeId = urlParams.get('user');
-            
-            const employes = JSON.parse(localStorage.getItem('employesAFRICA') || '{}');
-            const employe = employes[employeeId];
+            if (video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop());
+            }
             
             const resultDiv = document.getElementById('result');
+            const scanButton = document.getElementById('scanButton');
+            
+            scanButton.disabled = false;
+            scanButton.innerHTML = '<i class="fas fa-camera"></i> Redémarrer le Scan';
+            
+            try {
+                console.log("Donnée QR brute:", qrData);
+                
+                let employeeId = qrData;
+                
+                // Vérifier si c'est une URL avec paramètres
+                if (qrData.includes('?')) {
+                    const urlParams = new URLSearchParams(qrData.split('?')[1]);
+                    employeeId = urlParams.get('user') || urlParams.get('id') || qrData;
+                }
+                
+                // Nettoyer l'ID
+                employeeId = employeeId.trim();
+                console.log("ID employé extrait:", employeeId);
+                
+                if (employeeId) {
+                    checkEmployee(employeeId, resultDiv);
+                } else {
+                    showError(resultDiv, "Aucun ID trouvé dans le QR code");
+                }
+                
+            } catch (error) {
+                console.error("Erreur traitement QR:", error);
+                showError(resultDiv, "Format QR code invalide: " + error.message);
+            }
+        }
+
+        function checkEmployee(employeeId, resultDiv) {
+            const employes = JSON.parse(localStorage.getItem('employesAFRICA') || '{}');
+            console.log("Base de données employés:", employes);
+            
+            const employe = employes[employeeId];
             
             if (employe) {
                 resultDiv.className = 'result success';
@@ -259,12 +380,43 @@
                 }, 3000);
                 
             } else {
-                resultDiv.className = 'result error';
-                resultDiv.innerHTML = `
-                    <h3>❌ Employé non reconnu</h3>
-                    <p>Veuillez contacter l'administration.</p>
-                `;
-                resultDiv.style.display = 'block';
+                showError(resultDiv, `
+                    Employé non trouvé (ID: ${employeeId})<br>
+                    Vérifiez que l'employé existe dans la base de données.
+                `);
+            }
+        }
+
+        function showError(resultDiv, message) {
+            resultDiv.className = 'result error';
+            resultDiv.innerHTML = `
+                <h3>❌ Erreur</h3>
+                <p>${message}</p>
+                <button class="scan-btn" onclick="restartScanner()">Réessayer</button>
+            `;
+            resultDiv.style.display = 'block';
+        }
+
+        function restartScanner() {
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('scanButton').disabled = false;
+            document.getElementById('scanButton').innerHTML = '<i class="fas fa-camera"></i> Démarrer le Scan';
+            startScanner();
+        }
+
+        // Fonction de test pour simuler un scan
+        function testQRCode() {
+            const employes = JSON.parse(localStorage.getItem('employesAFRICA') || '{}');
+            const firstEmployeeId = Object.keys(employes)[0];
+            
+            if (firstEmployeeId) {
+                console.log("Test avec ID:", firstEmployeeId);
+                processQRCode(firstEmployeeId);
+            } else {
+                // Test avec un ID fictif
+                const testData = "EMP001";
+                console.log("Test avec ID fictif:", testData);
+                processQRCode(testData);
             }
         }
 
@@ -272,6 +424,13 @@
         function openQRScanner() {
             window.location.href = 'scan.html';
         }
+
+        // Nettoyer à la fermeture
+        window.addEventListener('beforeunload', function() {
+            if (video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop());
+            }
+        });
     </script>
 </body>
 </html>
