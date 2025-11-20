@@ -160,6 +160,20 @@
             font-size: 12px;
             text-align: left;
         }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -179,19 +193,19 @@
         </button>
 
         <button class="scan-btn" onclick="testQRCode()" style="background: var(--secondary); color: var(--dark);">
-            <i class="fas fa-test"></i> Test QR Code
+            <i class="fas fa-bolt"></i> Test QR Code
         </button>
 
         <div id="result" class="result"></div>
 
         <a href="index.html" class="back-btn">
-            <i class="fas fa-arrow-left"></i> Retour
+            <i class="fas fa-arrow-left"></i> Retour à l'accueil
         </a>
 
         <!-- Section debug -->
-        <div class="debug-info" id="debugInfo" style="display: none;">
+        <div class="debug-info" id="debugInfo">
             <strong>Debug Info:</strong>
-            <div id="debugContent"></div>
+            <div id="debugContent">Chargement...</div>
         </div>
     </div>
 
@@ -201,43 +215,66 @@
         let ctx = canvas.getContext('2d');
         let scanning = false;
 
-        // Debug: Afficher les données existantes
+        // Données des membres AFRICA.TECH21 (sauvegardées aussi dans localStorage)
+        const employesAFRICA = {
+            "DIAO_BIRANE_001": {
+                nom: "Diao",
+                prenom: "Birane",
+                poste: "Co-fondateur", 
+                departement: "Robotique",
+                id: "DIAO_BIRANE_001"
+            },
+            "DIAKHATE_ABDOU_002": {
+                nom: "Diakhaté",
+                prenom: "Abdou", 
+                poste: "Responsable Recrutement & Cellule Informatique",
+                departement: "Informatique",
+                id: "DIAKHATE_ABDOU_002"
+            },
+            "DIA_DJIBRIL_003": {
+                nom: "Dia",
+                prenom: "Djibril Bagdad",
+                poste: "Co-fondateur",
+                departement: "Médical", 
+                id: "DIA_DJIBRIL_003"
+            }
+        };
+
+        // Initialisation au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sauvegarder les données dans localStorage
+            localStorage.setItem('employesAFRICA', JSON.stringify(employesAFRICA));
+            showDebugInfo();
+        });
+
         function showDebugInfo() {
             const employes = JSON.parse(localStorage.getItem('employesAFRICA') || '{}');
-            const debugInfo = document.getElementById('debugInfo');
             const debugContent = document.getElementById('debugContent');
             
             debugContent.innerHTML = `
-                Employés dans localStorage: ${Object.keys(employes).length}<br>
-                Clés: ${Object.keys(employes).join(', ') || 'Aucune'}
+                <strong>${Object.keys(employes).length} employés trouvés :</strong><br>
+                ${Object.values(employes).map(emp => 
+                    `${emp.prenom} ${emp.nom} (${emp.id})`
+                ).join('<br>')}
             `;
-            debugInfo.style.display = 'block';
         }
-
-        // Afficher les infos debug au chargement
-        document.addEventListener('DOMContentLoaded', function() {
-            showDebugInfo();
-            console.log("Données employés dans localStorage:", 
-                JSON.parse(localStorage.getItem('employesAFRICA') || '{}'));
-        });
 
         function startScanner() {
             const scanButton = document.getElementById('scanButton');
             scanButton.disabled = true;
-            scanButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Initialisation...';
+            scanButton.innerHTML = '<div class="loading"></div> Initialisation...';
 
             // Arrêter le scan précédent si actif
             if (video.srcObject) {
                 video.srcObject.getTracks().forEach(track => track.stop());
             }
 
-            // Constraints améliorées avec fallback
+            // Constraints caméra
             const constraints = {
                 video: { 
                     facingMode: "environment",
                     width: { ideal: 1280 },
-                    height: { ideal: 720 },
-                    frameRate: { ideal: 30 }
+                    height: { ideal: 720 }
                 }
             };
 
@@ -246,7 +283,6 @@
                     video.srcObject = stream;
                     video.setAttribute("playsinline", true);
                     
-                    // Attendre que la vidéo soit prête
                     video.onloadedmetadata = function() {
                         video.play();
                         scanning = true;
@@ -271,9 +307,7 @@
             } else if (err.name === 'NotFoundError') {
                 errorMessage = 'Aucune caméra disponible sur cet appareil.';
             } else if (err.name === 'NotSupportedError') {
-                errorMessage = 'Fonction caméra non supportée par ce navigateur. Utilisez Chrome ou Firefox.';
-            } else if (err.name === 'NotReadableError') {
-                errorMessage = 'Caméra déjà utilisée par une autre application.';
+                errorMessage = 'Navigateur non supporté. Utilisez Chrome ou Firefox.';
             } else {
                 errorMessage = 'Erreur caméra: ' + err.message;
             }
@@ -289,8 +323,7 @@
 
         function scanQRCode() {
             if (!scanning) {
-                document.getElementById('scanButton').disabled = false;
-                document.getElementById('scanButton').innerHTML = '<i class="fas fa-camera"></i> Démarrer le Scan';
+                resetScanButton();
                 return;
             }
 
@@ -309,7 +342,7 @@
                         return;
                     }
                 } catch (error) {
-                    console.error("Erreur lors du scan:", error);
+                    console.error("Erreur scan:", error);
                 }
             }
             
@@ -318,48 +351,68 @@
 
         function processQRCode(qrData) {
             scanning = false;
-            if (video.srcObject) {
-                video.srcObject.getTracks().forEach(track => track.stop());
-            }
+            stopCamera();
             
             const resultDiv = document.getElementById('result');
-            const scanButton = document.getElementById('scanButton');
-            
-            scanButton.disabled = false;
-            scanButton.innerHTML = '<i class="fas fa-camera"></i> Redémarrer le Scan';
+            resetScanButton();
             
             try {
                 console.log("Donnée QR brute:", qrData);
                 
-                let employeeId = qrData;
-                
-                // Vérifier si c'est une URL avec paramètres
-                if (qrData.includes('?')) {
-                    const urlParams = new URLSearchParams(qrData.split('?')[1]);
-                    employeeId = urlParams.get('user') || urlParams.get('id') || qrData;
-                }
-                
-                // Nettoyer l'ID
-                employeeId = employeeId.trim();
-                console.log("ID employé extrait:", employeeId);
+                let employeeId = extractEmployeeId(qrData);
                 
                 if (employeeId) {
                     checkEmployee(employeeId, resultDiv);
                 } else {
-                    showError(resultDiv, "Aucun ID trouvé dans le QR code");
+                    showError(resultDiv, "QR Code non reconnu. Format invalide.");
                 }
                 
             } catch (error) {
                 console.error("Erreur traitement QR:", error);
-                showError(resultDiv, "Format QR code invalide: " + error.message);
+                showError(resultDiv, "Erreur de traitement du QR code");
             }
+        }
+
+        function extractEmployeeId(qrData) {
+            // Si c'est une URL complète avec paramètres
+            if (qrData.includes('auth-dashboard.html?user=')) {
+                const urlParams = new URLSearchParams(qrData.split('?')[1]);
+                return urlParams.get('user');
+            }
+            // Si c'est juste l'ID employé
+            else if (isValidEmployeeId(qrData)) {
+                return qrData;
+            }
+            // Si c'est une URL de redirection (qrco.de)
+            else if (qrData.includes('qrco.de/')) {
+                return extractFromShortUrl(qrData);
+            }
+            
+            return null;
+        }
+
+        function isValidEmployeeId(id) {
+            const cleanId = id.trim().toUpperCase();
+            return employesAFRICA.hasOwnProperty(cleanId);
+        }
+
+        function extractFromShortUrl(shortUrl) {
+            // Mapping des URLs courtes vers les IDs (à adapter selon vos QR codes)
+            const urlMappings = {
+                'bgTNni': 'DIAO_BIRANE_001',
+                // Ajoutez d'autres mappings ici si nécessaire
+            };
+            
+            const code = shortUrl.split('/').pop();
+            return urlMappings[code] || null;
         }
 
         function checkEmployee(employeeId, resultDiv) {
             const employes = JSON.parse(localStorage.getItem('employesAFRICA') || '{}');
-            console.log("Base de données employés:", employes);
+            const cleanId = employeeId.trim().toUpperCase();
+            const employe = employes[cleanId];
             
-            const employe = employes[employeeId];
+            console.log("Recherche employé:", cleanId, "Trouvé:", employe);
             
             if (employe) {
                 resultDiv.className = 'result success';
@@ -367,22 +420,24 @@
                     <h3>✅ Employé identifié !</h3>
                     <div class="employee-info">
                         <strong>${employe.prenom} ${employe.nom}</strong><br>
-                        ${employe.poste} - ${employe.departement}<br>
+                        ${employe.poste}<br>
+                        <small>Département: ${employe.departement}</small><br>
                         <small>ID: ${employe.id}</small>
                     </div>
-                    <p>Redirection vers l'espace membres...</p>
+                    <p><div class="loading"></div> Redirection vers l'espace membre...</p>
                 `;
                 resultDiv.style.display = 'block';
                 
-                // Redirection après 3 secondes
+                // Redirection vers l'espace membre avec l'ID
                 setTimeout(() => {
-                    window.location.href = 'auth-dashboard.html';
-                }, 3000);
+                    window.location.href = `auth-dashboard.html?user=${cleanId}`;
+                }, 2000);
                 
             } else {
                 showError(resultDiv, `
-                    Employé non trouvé (ID: ${employeeId})<br>
-                    Vérifiez que l'employé existe dans la base de données.
+                    Employé non trouvé<br>
+                    <strong>ID scanné:</strong> ${cleanId}<br>
+                    Vérifiez que le QR Code est valide.
                 `);
             }
         }
@@ -392,45 +447,40 @@
             resultDiv.innerHTML = `
                 <h3>❌ Erreur</h3>
                 <p>${message}</p>
-                <button class="scan-btn" onclick="restartScanner()">Réessayer</button>
+                <button class="scan-btn" onclick="restartScanner()">Réessayer le scan</button>
             `;
             resultDiv.style.display = 'block';
         }
 
-        function restartScanner() {
-            document.getElementById('result').style.display = 'none';
-            document.getElementById('scanButton').disabled = false;
-            document.getElementById('scanButton').innerHTML = '<i class="fas fa-camera"></i> Démarrer le Scan';
-            startScanner();
+        function resetScanButton() {
+            const scanButton = document.getElementById('scanButton');
+            scanButton.disabled = false;
+            scanButton.innerHTML = '<i class="fas fa-camera"></i> Redémarrer le Scan';
         }
 
-        // Fonction de test pour simuler un scan
-        function testQRCode() {
-            const employes = JSON.parse(localStorage.getItem('employesAFRICA') || '{}');
-            const firstEmployeeId = Object.keys(employes)[0];
-            
-            if (firstEmployeeId) {
-                console.log("Test avec ID:", firstEmployeeId);
-                processQRCode(firstEmployeeId);
-            } else {
-                // Test avec un ID fictif
-                const testData = "EMP001";
-                console.log("Test avec ID fictif:", testData);
-                processQRCode(testData);
-            }
-        }
-
-        // Fonction pour l'ouverture depuis l'accueil
-        function openQRScanner() {
-            window.location.href = 'scan.html';
-        }
-
-        // Nettoyer à la fermeture
-        window.addEventListener('beforeunload', function() {
+        function stopCamera() {
             if (video.srcObject) {
                 video.srcObject.getTracks().forEach(track => track.stop());
             }
-        });
+        }
+
+        function restartScanner() {
+            document.getElementById('result').style.display = 'none';
+            startScanner();
+        }
+
+        // Fonction de test
+        function testQRCode() {
+            // Test avec le premier employé
+            const firstEmployeeId = Object.keys(employesAFRICA)[0];
+            if (firstEmployeeId) {
+                console.log("Test avec ID:", firstEmployeeId);
+                processQRCode(firstEmployeeId);
+            }
+        }
+
+        // Nettoyage à la fermeture
+        window.addEventListener('beforeunload', stopCamera);
     </script>
 </body>
 </html>
