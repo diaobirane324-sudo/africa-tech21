@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche - AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #2c5530;
+            --secondary: #d4af37;
+            --dark: #1a2f3b;
+            --light: #f8f9fa;
+        }
+
+        body {
+            background: var(--light);
+            color: #333;
+        }
+
+        .search-header {
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .search-box {
+            position: relative;
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            outline: none;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--secondary);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        .results-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+
+        .results-count {
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        .result-item {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--primary);
+        }
+
+        .result-title {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .result-link {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .result-link:hover {
+            text-decoration: underline;
+        }
+
+        .result-description {
+            color: #666;
+            margin: 0.5rem 0;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .search-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+
+        .suggestion-tag {
+            background: var(--light);
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            transition: all 0.3s;
+        }
+
+        .suggestion-tag:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .search-categories {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .category-btn {
+            background: white;
+            border: 2px solid var(--primary);
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header class="search-header">
+        <div class="search-container">
+            <h1>🔍 Recherche AFRICA.TECH21</h1>
+            <p>Trouvez rapidement ce que vous cherchez sur notre plateforme</p>
+            
+            <div class="search-box">
+                <input type="text" id="searchInput" class="search-input" placeholder="Rechercher une fonctionnalité, un projet, un membre...">
+                <button class="search-btn" onclick="performSearch()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <div class="search-categories">
+                <button class="category-btn active" onclick="setCategory('all')">Tout</button>
+                <button class="category-btn" onclick="setCategory('projects')">Projets</button>
+                <button class="category-btn" onclick="setCategory('members')">Membres</button>
+                <button class="category-btn" onclick="setCategory('features')">Fonctionnalités</button>
+            </div>
+
+            <div class="search-suggestions">
+                <div class="suggestion-tag" onclick="searchThis('BINV V360')">BINV V360</div>
+                <div class="suggestion-tag" onclick="searchThis('espace membre')">Espace membre</div>
+                <div class="suggestion-tag" onclick="searchThis('scan QR code')">Scan QR Code</div>
+                <div class="suggestion-tag" onclick="searchThis('robotique')">Robotique</div>
+                <div class="suggestion-tag" onclick="searchThis('recrutement')">Recrutement</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="results-container">
+        <div class="results-count" id="resultsCount">Tapez votre recherche ci-dessus</div>
+        <div id="searchResults">
+            <!-- Les résultats apparaîtront ici -->
+        </div>
+    </main>
+
+    <script>
+        // Base de données de recherche
+        const searchDatabase = [
+            {
+                title: "Projet BINV_V360",
+                description: "Bâton Intelligent pour Non-Voyants - Solution innovante d'assistance à la mobilité",
+                keywords: ["binv", "v360", "bâton intelligent", "non-voyants", "robotique", "assistance", "mobilité", "projet"],
+                category: "projects",
+                link: "projet-binv.html"
+            },
+            {
+                title: "Espace Membres",
+                description: "Plateforme de collaboration privée pour les membres d'AFRICA.TECH21 avec forum et gestion de projets",
+                keywords: ["espace membre", "membres", "collaboration", "forum", "projets", "privé", "équipe"],
+                category: "features",
+                link: "auth-dashboard.html"
+            },
+            {
+                title: "Scan QR Code",
+                description: "Système de reconnaissance par QR Code pour l'accès à l'espace membre et identification des membres",
+                keywords: ["scan", "qr code", "carte membre", "identification", "accès", "reconnaissance"],
+                category: "features",
+                link: "scan.html"
+            },
+            {
+                title: "Recrutement des Membres",
+                description: "Devenez membre d'AFRICA.TECH21 et rejoignez notre équipe d'innovation technologique",
+                keywords: ["recrutement", "devenir membre", "adhésion", "rejoindre", "cellule informatique", "postuler"],
+                category: "features",
+                link: "signup.html"
+            },
+            {
+                title: "Birane Diao - Co-fondateur",
+                description: "Co-fondateur d'AFRICA.TECH21, département Robotique, spécialiste en innovation technologique",
+                keywords: ["birane", "diao", "co-fondateur", "robotique", "fondateur", "membre"],
+                category: "members",
+                link: "auth-dashboard.html?user=DIAO_BIRANE_001"
+            },
+            {
+                title: "Abdou Diakhaté - Responsable Recrutement",
+                description: "Responsable du recrutement des membres et de la cellule informatique d'AFRICA.TECH21",
+                keywords: ["abdou", "diakhaté", "recrutement", "informatique", "responsable", "membre"],
+                category: "members",
+                link: "auth-dashboard.html?user=DIAKHATE_ABDOU_002"
+            },
+            {
+                title: "Djibril Bagdad Dia - Co-fondateur",
+                description: "Co-fondateur d'AFRICA.TECH21, département Médical, expert en technologies médicales",
+                keywords: ["djibril", "bagdad", "dia", "co-fondateur", "médical", "fondateur", "membre"],
+                category: "members",
+                link: "auth-dashboard.html?user=DIA_DJIBRIL_003"
+            },
+            {
+                title: "Connexion Espace Membre",
+                description: "Page de connexion sécurisée pour accéder à l'espace membre d'AFRICA.TECH21",
+                keywords: ["connexion", "login", "accès", "espace membre", "authentification", "se connecter"],
+                category: "features",
+                link: "login.html"
+            },
+            {
+                title: "Page d'Accueil",
+                description: "Page principale présentant AFRICA.TECH21, ses valeurs et ses domaines d'innovation",
+                keywords: ["accueil", "home", "présentation", "valeurs", "innovation", "accueil"],
+                category: "features",
+                link: "index.html"
+            },
+            {
+                title: "Profil Membre",
+                description: "Gérez votre profil membre, vos informations personnelles et vos préférences",
+                keywords: ["profil", "profil membre", "informations", "paramètres", "compte"],
+                category: "features",
+                link: "profile.html"
+            }
+        ];
+
+        let currentCategory = 'all';
+
+        function performSearch() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            const resultsContainer = document.getElementById('searchResults');
+            const resultsCount = document.getElementById('resultsCount');
+
+            if (!searchTerm) {
+                resultsCount.textContent = "Veuillez entrer un terme de recherche";
+                resultsContainer.innerHTML = '';
+                return;
+            }
+
+            const filteredResults = searchDatabase.filter(item => {
+                // Vérifier la catégorie
+                if (currentCategory !== 'all' && item.category !== currentCategory) {
+                    return false;
+                }
+
+                // Recherche dans le titre, description et mots-clés
+                const searchText = (item.title + ' ' + item.description + ' ' + item.keywords.join(' ')).toLowerCase();
+                return searchText.includes(searchTerm) || 
+                       item.keywords.some(keyword => keyword.includes(searchTerm));
+            });
+
+            displayResults(filteredResults, searchTerm);
+        }
+
+        function displayResults(results, searchTerm) {
+            const resultsContainer = document.getElementById('searchResults');
+            const resultsCount = document.getElementById('resultsCount');
+
+            if (results.length === 0) {
+                resultsCount.textContent = `Aucun résultat trouvé pour "${searchTerm}"`;
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem; color: #ccc;"></i>
+                        <h3>Aucun résultat trouvé</h3>
+                        <p>Essayez avec d'autres mots-clés ou consultez les suggestions ci-dessus.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            resultsCount.textContent = `${results.length} résultat(s) trouvé(s) pour "${searchTerm}"`;
+
+            let html = '';
+            results.forEach(result => {
+                html += `
+                    <div class="result-item">
+                        <h3 class="result-title">${result.title}</h3>
+                        <p class="result-description">${result.description}</p>
+                        <div style="margin-top: 0.5rem;">
+                            <strong>Catégorie:</strong> 
+                            <span style="background: #e9ecef; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem;">
+                                ${getCategoryLabel(result.category)}
+                            </span>
+                        </div>
+                        <a href="${result.link}" class="result-link">
+                            <i class="fas fa-external-link-alt"></i> Accéder à cette page
+                        </a>
+                    </div>
+                `;
+            });
+
+            resultsContainer.innerHTML = html;
+        }
+
+        function setCategory(category) {
+            currentCategory = category;
+            
+            // Mettre à jour les boutons de catégorie
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Relancer la recherche si un terme est déjà saisi
+            const searchTerm = document.getElementById('searchInput').value;
+            if (searchTerm) {
+                performSearch();
+            }
+        }
+
+        function searchThis(term) {
+            document.getElementById('searchInput').value = term;
+            performSearch();
+        }
+
+        function getCategoryLabel(category) {
+            const labels = {
+                'all': 'Tout',
+                'projects': 'Projets',
+                'members': 'Membres',
+                'features': 'Fonctionnalités'
+            };
+            return labels[category];
+        }
+
+        // Recherche avec la touche Enter
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Recherche en temps réel (optionnel)
+        document.getElementById('searchInput').addEventListener('input', function() {
+            if (this.value.length >= 3) {
+                performSearch();
+            }
+        });
+
+        // Afficher quelques résultats populaires au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            const popularResults = searchDatabase.slice(0, 3);
+            let html = '<h3 style="margin-bottom: 1rem; color: var(--dark);">Suggestions populaires :</h3>';
+            
+            popularResults.forEach(result => {
+                html += `
+                    <div class="result-item">
+                        <h3 class="result-title">${result.title}</h3>
+                        <p class="result-description">${result.description}</p>
+                        <a href="${result.link}" class="result-link">
+                            <i class="fas fa-external-link-alt"></i> Accéder
+                        </a>
+                    </div>
+                `;
+            });
+
+            document.getElementById('searchResults').innerHTML = html;
+        });
+    </script>
+</body>
+</html>
