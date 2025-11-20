@@ -109,7 +109,7 @@
         .logo span {
             color: var(--secondary);
         }
-
+       
         .nav-menu {
             display: flex;
             list-style: none;
@@ -1544,10 +1544,85 @@ alert('Formulaire envoyé ! Redirection vers la page de confirmation...');
                 });
             });
         });
+      
+// Base de données de recherche pour le header
+const headerSearchDB = [
+    { title: "Projet BINV_V360", link: "projet-binv.html", category: "Projet" },
+    { title: "Espace Membres", link: "auth-dashboard.html", category: "Fonctionnalité" },
+    { title: "Scan QR Code", link: "scan.html", category: "Fonctionnalité" },
+    { title: "Devenir Membre", link: "signup.html", category: "Inscription" },
+    { title: "Connexion", link: "login.html", category: "Connexion" },
+    { title: "Page d'Accueil", link: "index.html", category: "Navigation" },
+    { title: "Recrutement", link: "signup.html", category: "Membres" },
+    { title: "Forum des Membres", link: "auth-dashboard.html", category: "Communauté" }
+];
+
+// Fonction de recherche dans le header
+function performHeaderSearch() {
+    const term = document.getElementById('headerSearchInput').value.toLowerCase().trim();
+    const resultsContainer = document.getElementById('headerSearchResults');
+    
+    if (!term) {
+        resultsContainer.style.display = 'none';
+        return;
+    }
+    
+    const results = headerSearchDB.filter(item => 
+        item.title.toLowerCase().includes(term) ||
+        item.category.toLowerCase().includes(term)
+    );
+    
+    if (results.length > 0) {
+        let html = '';
+        results.forEach(result => {
+            html += `<div class="search-result-item" onclick="window.location.href='${result.link}'">
+                        <div style="font-weight: 600;">${result.title}</div>
+                        <div style="font-size: 0.8rem; color: #666;">${result.category}</div>
+                     </div>`;
+        });
+        resultsContainer.innerHTML = html;
+        resultsContainer.style.display = 'block';
+    } else {
+        resultsContainer.innerHTML = '<div class="search-result-item">Aucun résultat trouvé</div>';
+        resultsContainer.style.display = 'block';
+    }
+}
+
+// Événements
+document.getElementById('headerSearchInput').addEventListener('input', function() {
+    if (this.value.length >= 2) {
+        performHeaderSearch();
+    } else {
+        document.getElementById('headerSearchResults').style.display = 'none';
+    }
+});
+
+document.getElementById('headerSearchInput').addEventListener('focus', function() {
+    if (this.value.length >= 2) {
+        performHeaderSearch();
+    }
+});
+
+// Cacher les résultats quand on clique ailleurs
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.search-bar-header')) {
+        document.getElementById('headerSearchResults').style.display = 'none';
+    }
+});
+
+// Recherche avec Enter
+document.getElementById('headerSearchInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter' && this.value.trim()) {
+        // Rediriger vers la page de recherche complète
+        window.location.href = `recherche.html?q=${encodeURIComponent(this.value)}`;
+    }
+});
+
     </script>
  
 </body>
 </html>
+
 
 
 
