@@ -127,6 +127,119 @@
             text-decoration: none;
             font-weight: 600;
         }
+        /* === STYLES ADMIN CANDIDATS - À AJOUTER À LA FIN === */
+.admin-candidates-section {
+    display: none; /* Caché par défaut */
+    margin-top: 3rem;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.admin-security {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.security-form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+}
+
+.verify-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.candidates-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.candidate-item {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    border-left: 4px solid var(--primary);
+}
+
+.candidate-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 1rem;
+}
+
+.candidate-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.status-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.btn-reject { background: #e74c3c; color: white; }
+.btn-accept { background: #27ae60; color: white; }
+.btn-pending { background: #f39c12; color: white; }
+
+.current-status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-left: 1rem;
+}
+
+.status-pending { background: #fff3cd; color: #856404; }
+.status-accepted { background: #d1edff; color: #004085; }
+.status-rejected { background: #f8d7da; color: #721c24; }
+
+.error-message {
+    color: #e74c3c;
+    margin-top: 1rem;
+    display: none;
+}
     </style>
 </head>
 <body>
