@@ -1552,83 +1552,42 @@ alert('Formulaire envoyé ! Redirection vers la page de confirmation...');
             });
         });
       
-// Base de données de recherche pour le header
-const headerSearchDB = [
-    { title: "Projet BINV_V360", link: "projet-binv.html", category: "Projet" },
-    { title: "Espace Membres", link: "auth-dashboard.html", category: "Fonctionnalité" },
-    { title: "Scan QR Code", link: "scan.html", category: "Fonctionnalité" },
-    { title: "Devenir Membre", link: "signup.html", category: "Inscription" },
-    { title: "Connexion", link: "login.html", category: "Connexion" },
-    { title: "Page d'Accueil", link: "index.html", category: "Navigation" },
-    { title: "Recrutement", link: "signup.html", category: "Membres" },
-    { title: "Forum des Membres", link: "auth-dashboard.html", category: "Communauté" }
-];
+<script>
+function saveToLocalStorage() {
+    // Récupérer les données du formulaire
+    const formData = {
+        civilite: document.getElementById('civilite').value,
+        nom: document.getElementById('nom').value,
+        prenom: document.getElementById('prenom').value,
+        adresse: document.getElementById('adresse').value,
+        telephone: document.getElementById('telephone').value,
+        email: document.getElementById('email').value,
+        profession: document.getElementById('profession').value,
+        interet_robotique: document.getElementById('interet_robotique').checked,
+        interet_informatique: document.getElementById('interet_informatique').checked,
+        interet_electronique: document.getElementById('interet_electronique').checked,
+        interet_mecanique: document.getElementById('interet_mecanique').checked,
+        motivation: document.getElementById('motivation').value,
+        timestamp: new Date().toISOString()
+    };
 
-// Fonction de recherche dans le header
-function performHeaderSearch() {
-    const term = document.getElementById('headerSearchInput').value.toLowerCase().trim();
-    const resultsContainer = document.getElementById('headerSearchResults');
+    // Récupérer les candidatures existantes
+    const existingCandidates = JSON.parse(localStorage.getItem('africaTechCandidates') || '[]');
     
-    if (!term) {
-        resultsContainer.style.display = 'none';
-        return;
-    }
+    // Ajouter la nouvelle candidature
+    existingCandidates.push(formData);
     
-    const results = headerSearchDB.filter(item => 
-        item.title.toLowerCase().includes(term) ||
-        item.category.toLowerCase().includes(term)
-    );
+    // Sauvegarder dans localStorage
+    localStorage.setItem('africaTechCandidates', JSON.stringify(existingCandidates));
     
-    if (results.length > 0) {
-        let html = '';
-        results.forEach(result => {
-            html += `<div class="search-result-item" onclick="window.location.href='${result.link}'">
-                        <div style="font-weight: 600;">${result.title}</div>
-                        <div style="font-size: 0.8rem; color: #666;">${result.category}</div>
-                     </div>`;
-        });
-        resultsContainer.innerHTML = html;
-        resultsContainer.style.display = 'block';
-    } else {
-        resultsContainer.innerHTML = '<div class="search-result-item">Aucun résultat trouvé</div>';
-        resultsContainer.style.display = 'block';
-    }
+    console.log('Candidature sauvegardée dans localStorage');
 }
-
-// Événements
-document.getElementById('headerSearchInput').addEventListener('input', function() {
-    if (this.value.length >= 2) {
-        performHeaderSearch();
-    } else {
-        document.getElementById('headerSearchResults').style.display = 'none';
-    }
-});
-
-document.getElementById('headerSearchInput').addEventListener('focus', function() {
-    if (this.value.length >= 2) {
-        performHeaderSearch();
-    }
-});
-
-// Cacher les résultats quand on clique ailleurs
-document.addEventListener('click', function(e) {
-    if (!e.target.closest('.search-bar-header')) {
-        document.getElementById('headerSearchResults').style.display = 'none';
-    }
-});
-
-// Recherche avec Enter
-document.getElementById('headerSearchInput').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter' && this.value.trim()) {
-        // Rediriger vers la page de recherche complète
-        window.location.href = `recherche.html?q=${encodeURIComponent(this.value)}`;
-    }
-});
-
+</script>
     </script>
  
 </body>
 </html>
+
 
 
 
