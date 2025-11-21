@@ -10,162 +10,313 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         :root {
-            --primary: #2c5530;
-            --secondary: #d4af37;
-            --dark: #1a2f3b;
-            --light: #f8f9fa;
+            --cyber-blue: #00f0ff;
+            --cyber-purple: #7b2cbf;
+            --dark-bg: #0a0a12;
+            --panel-bg: rgba(16, 16, 32, 0.9);
+            --neon-glow: 0 0 10px var(--cyber-blue), 0 0 20px var(--cyber-blue);
         }
 
         body {
-            background: linear-gradient(135deg, var(--dark), var(--primary));
+            background: var(--dark-bg);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .login-container {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        /* Effet de grille cyberpunk */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(rgba(0, 240, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .cyber-container {
+            background: var(--panel-bg);
+            padding: 50px 40px;
+            border-radius: 15px;
+            border: 2px solid var(--cyber-blue);
+            box-shadow: var(--neon-glow);
             width: 100%;
-            max-width: 450px;
+            max-width: 480px;
             text-align: center;
+            position: relative;
+            backdrop-filter: blur(10px);
+            animation: panelGlow 3s ease-in-out infinite alternate;
         }
 
-        .logo {
-            margin-bottom: 30px;
+        @keyframes panelGlow {
+            0% { box-shadow: 0 0 10px var(--cyber-blue), 0 0 20px var(--cyber-blue); }
+            100% { box-shadow: 0 0 20px var(--cyber-blue), 0 0 40px var(--cyber-blue); }
         }
 
-        .logo h1 {
-            font-size: 2rem;
-            color: var(--dark);
+        .cyber-logo {
+            margin-bottom: 40px;
+            position: relative;
         }
 
-        .logo span {
-            color: var(--secondary);
+        .cyber-logo h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--cyber-blue), #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+            letter-spacing: 2px;
+            font-weight: 800;
+            text-transform: uppercase;
         }
 
-        .login-form h2 {
-            color: var(--dark);
-            margin-bottom: 10px;
+        .cyber-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--cyber-blue), transparent);
+        }
+
+        .cyber-form h2 {
+            color: var(--cyber-blue);
+            margin-bottom: 15px;
             font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
-        .login-form p {
-            color: #666;
-            margin-bottom: 30px;
+        .cyber-form p {
+            color: #8892b0;
+            margin-bottom: 35px;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
+        .cyber-input-group {
+            margin-bottom: 25px;
             text-align: left;
+            position: relative;
         }
 
-        label {
+        .cyber-input-group label {
             display: block;
             margin-bottom: 8px;
+            color: var(--cyber-blue);
             font-weight: 600;
-            color: var(--primary);
-        }
-
-        input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e1e5e9;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s;
-            background: #f8f9fa;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: white;
-            box-shadow: 0 0 0 3px rgba(44, 85, 48, 0.1);
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, var(--primary), var(--dark));
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
             text-transform: uppercase;
+            font-size: 0.8rem;
             letter-spacing: 1px;
         }
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(44, 85, 48, 0.3);
+        .cyber-input {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(10, 10, 18, 0.8);
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            color: var(--cyber-blue);
+            font-size: 16px;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
         }
 
-        .error-message {
-            color: #e74c3c;
+        .cyber-input:focus {
+            outline: none;
+            border-color: var(--cyber-blue);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            background: rgba(16, 16, 32, 0.9);
+        }
+
+        .cyber-input::placeholder {
+            color: #4a5568;
+            letter-spacing: 0.5px;
+        }
+
+        .cyber-submit {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, var(--cyber-purple), var(--cyber-blue));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 25px rgba(123, 44, 191, 0.5);
+            letter-spacing: 3px;
+        }
+
+        .cyber-submit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .cyber-submit:hover::before {
+            left: 100%;
+        }
+
+        .cyber-error {
+            color: #ff073a;
             margin-top: 15px;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 10px rgba(255, 7, 58, 0.5);
             display: none;
         }
 
-        .back-home {
-            margin-top: 20px;
+        .cyber-back {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #2d3748;
         }
 
-        .back-home a {
-            color: var(--primary);
+        .cyber-back a {
+            color: #8892b0;
             text-decoration: none;
-            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-       
+
+        .cyber-back a:hover {
+            color: var(--cyber-blue);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+
+        /* Effets de particules */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--cyber-blue);
+            border-radius: 50%;
+            animation: float 6s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="logo">
-            <h1>AFRICA.<span>TECH21</span></h1>
-            <p>Espace Membres Privé</p>
+    <!-- Effet de particules -->
+    <div class="particles" id="particles"></div>
+
+    <div class="cyber-container">
+        <div class="cyber-logo">
+            <h1>AFRICA.TECH21</h1>
+            <p style="color: #8892b0; font-size: 0.9rem; margin-top: 10px;">SYSTEME MEMBRES</p>
         </div>
         
-        <div class="login-form">
-            <h2>Connexion Membres</h2>
-            <p>Accès réservé aux membres officiels</p>
+        <div class="cyber-form">
+            <h2>Accès Sécurisé</h2>
+            <p>Identification requise pour accéder au réseau</p>
             
             <form id="memberLoginForm">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required placeholder="votre@email.com">
+                <div class="cyber-input-group">
+                    <label for="email">Identifiant</label>
+                    <input type="email" id="email" name="email" required placeholder="user@africa.tech21" class="cyber-input">
                 </div>
                 
-                <div class="form-group">
-                    <label for="password">Mot de passe</label>
-                    <input type="password" id="password" name="password" required placeholder="Mot de passe d'accès">
+                <div class="cyber-input-group">
+                    <label for="password">Code d'Accès</label>
+                    <input type="password" id="password" name="password" required placeholder="●●●●●●●●●●●●●●" class="cyber-input">
                 </div>
                 
-                <button type="submit" class="submit-btn">Se Connecter</button>
+                <button type="submit" class="cyber-submit">
+                    <i class="fas fa-terminal"></i> CONNEXION
+                </button>
                 
-                <div class="error-message" id="errorMessage">
-                    Email ou mot de passe incorrect
+                <div class="cyber-error" id="errorMessage">
+                    <i class="fas fa-exclamation-triangle"></i> Identifiant ou code incorrect
                 </div>
             </form>
             
-            <div class="back-home">
-                <a href="index.html">← Retour au site principal</a>
+            <div class="cyber-back">
+                <a href="index.html">
+                    <i class="fas fa-arrow-left"></i> Retour au portail principal
+                </a>
             </div>
         </div>
     </div>
 
     <script>
+        // Créer des particules
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (3 + Math.random() * 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
         // Mot de passe défini
         const MEMBER_PASSWORD = "africa.tech21membres2026";
 
@@ -193,6 +344,9 @@
         if (localStorage.getItem('memberLoggedIn') === 'true') {
             window.location.href = 'membre-dashboard.html';
         }
+
+        // Initialiser les particules
+        createParticles();
     </script>
 </body>
 </html>
