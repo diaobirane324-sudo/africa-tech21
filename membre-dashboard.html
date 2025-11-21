@@ -871,13 +871,13 @@
                 <!-- Contenu Suivi Membres -->
                 <div id="adminTrackingTab" style="display: none;">
                     <h3 style="text-align: center; color: var(--cyber-blue); margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 1px;">📊 ACTIVITÉ DES MEMBRES</h3>
-                      <div style="text-align: center; margin-bottom: 2rem;">
-        <button onclick="clearAllStats()" style="background: linear-gradient(45deg, #dc2626, #ef4444); color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
-            <i class="fas fa-trash"></i> SUPPRIMER TOUTES LES STATS
-        </button>
-    </div>
-    
-    <div class="cyber-stats">
+                    
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <button onclick="clearAllStats()" style="background: linear-gradient(45deg, #dc2626, #ef4444); color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                            <i class="fas fa-trash"></i> SUPPRIMER TOUTES LES STATS
+                        </button>
+                    </div>
+                    
                     <div class="cyber-stats">
                         <div class="cyber-stat">
                             <div class="stat-number" id="totalMembers">0</div>
@@ -1101,19 +1101,11 @@
             }
         }
 
-     function loadMemberTracking() {
-    const memberActivity = JSON.parse(localStorage.getItem('memberActivity') || '{}');
-    const membersList = document.getElementById('membersActivityList');
-    
-    const members = Object.keys(memberActivity);
-    function clearAllStats() {
-    if (confirm('Êtes-vous sûr de vouloir supprimer TOUTES les statistiques des membres ? Cette action est irréversible.')) {
-        localStorage.removeItem('memberActivity');
-        localStorage.removeItem('currentSession');
-        alert('✅ Toutes les statistiques ont été supprimées !');
-        loadMemberTracking(); // Recharger l'affichage
-    }
-}
+        function loadMemberTracking() {
+            const memberActivity = JSON.parse(localStorage.getItem('memberActivity') || '{}');
+            const membersList = document.getElementById('membersActivityList');
+            
+            const members = Object.keys(memberActivity);
             
             // Mettre à jour les stats globales
             document.getElementById('totalMembers').textContent = members.length;
@@ -1172,6 +1164,16 @@
             });
             
             membersList.innerHTML = html;
+        }
+
+        // FONCTION POUR SUPPRIMER LES STATS
+        function clearAllStats() {
+            if (confirm('Êtes-vous sûr de vouloir supprimer TOUTES les statistiques des membres ? Cette action est irréversible.')) {
+                localStorage.removeItem('memberActivity');
+                localStorage.removeItem('currentSession');
+                alert('✅ Toutes les statistiques ont été supprimées !');
+                loadMemberTracking(); // Recharger l'affichage
+            }
         }
 
         // Fonction de déconnexion
