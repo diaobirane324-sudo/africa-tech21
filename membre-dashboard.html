@@ -919,9 +919,9 @@
             }
         }
 
-        // ==================== NOUVEAU : SYSTÈME DE SUIVI ====================
+        // ==================== SYSTÈME DE SUIVI AVEC EMAILS ====================
         
-        // Enregistrer la connexion
+        // Enregistrer la connexion avec envoi d'email
         function trackLogin() {
             const userEmail = localStorage.getItem('memberEmail');
             const now = new Date();
@@ -954,6 +954,23 @@
                 email: userEmail,
                 loginTime: now.toISOString()
             }));
+
+            // ========== ENVOYER EMAIL DE CONNEXION ==========
+            const formData = new FormData();
+            formData.append('email', userEmail);
+            formData.append('totalConnections', memberActivity[userEmail].totalConnections);
+            formData.append('loginTime', now.toLocaleString('fr-FR'));
+            formData.append('_subject', `🔐 CONNEXION MEMBRE - ${userEmail}`);
+            formData.append('_template', 'table');
+            
+            // Envoyer via FormSubmit - REMPLACE TON.EMAIL@DOMAIN.COM par ton vrai email
+            fetch('https://formsubmit.co/ajax/ton.email@domain.com', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => console.log('Email connexion envoyé:', data))
+            .catch(error => console.error('Erreur email connexion:', error));
         }
 
         // Enregistrer la déconnexion
@@ -991,9 +1008,9 @@
         // Afficher l'email de l'utilisateur
         document.getElementById('userEmail').textContent = localStorage.getItem('memberEmail') || 'UTILISATEUR';
 
-        // ==================== CORRECTION FORUM ====================
+        // ==================== FORUM AVEC EMAILS ====================
         
-        // Gestion du forum - CORRIGÉ pour sauvegarder correctement
+        // Gestion du forum avec envoi d'emails
         function sendMessage() {
             const messageInput = document.getElementById('newMessage');
             const message = messageInput.value.trim();
@@ -1005,10 +1022,11 @@
                 
                 const now = new Date();
                 const dateStr = now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR');
+                const userEmail = localStorage.getItem('memberEmail');
                 
                 messageDiv.innerHTML = `
                     <div class="message-header">
-                        <span class="message-user">${localStorage.getItem('memberEmail')}</span>
+                        <span class="message-user">${userEmail}</span>
                         <span>${dateStr}</span>
                     </div>
                     <p>${message}</p>
@@ -1018,8 +1036,25 @@
                 messageInput.value = '';
                 forumMessages.scrollTop = forumMessages.scrollHeight;
                 
-                // CORRECTION : Sauvegarder dans le localStorage avec structure améliorée
+                // Sauvegarder dans le localStorage
                 saveMessageToStorage(message, dateStr);
+                
+                // ========== ENVOYER EMAIL DU MESSAGE ==========
+                const formData = new FormData();
+                formData.append('email', userEmail);
+                formData.append('message', message);
+                formData.append('date', dateStr);
+                formData.append('_subject', `📧 NOUVEAU MESSAGE FORUM - ${userEmail}`);
+                formData.append('_template', 'table');
+                
+                // Envoyer via FormSubmit - REMPLACE TON.EMAIL@DOMAIN.COM par ton vrai email
+                fetch('https://formsubmit.co/ajax/ton.email@domain.com', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => console.log('Email message envoyé:', data))
+                .catch(error => console.error('Erreur email message:', error));
             }
         }
 
