@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #2c5530;
+            --secondary: #d4af37;
+            --dark: #1a2f3b;
+            --light: #f8f9fa;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .logo {
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            color: var(--dark);
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .login-form h2 {
+            color: var(--dark);
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .login-form p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(44, 85, 48, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(44, 85, 48, 0.3);
+        }
+
+        .google-btn {
+            width: 100%;
+            padding: 15px;
+            background: white;
+            color: #333;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .google-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            margin-top: 15px;
+            display: none;
+            background: #ffeaea;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .back-home {
+            margin-top: 20px;
+        }
+
+        .back-home a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <h1>AFRICA.<span>TECH21</span></h1>
+            <p>Connexion à votre compte</p>
+        </div>
+        
+        <div class="login-form">
+            <h2>Bienvenue</h2>
+            <p>Connectez-vous à votre compte</p>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Adresse email</label>
+                    <input type="email" id="email" name="email" required placeholder="votre@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" required placeholder="Votre mot de passe">
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Se Connecter
+                </button>
+
+                <div class="error-message" id="errorMessage">
+                    Email ou mot de passe incorrect
+                </div>
+            </form>
+
+            <div class="links">
+                <a href="forgot-password.html">Mot de passe oublié ?</a>
+                <a href="signup.html">Créer un compte</a>
+            </div>
+
+            <div class="back-home">
+                <a href="index.html">
+                    <i class="fas fa-arrow-left"></i>
+                    Retour à l'accueil
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Vérifier si déjà connecté
+        if (localStorage.getItem('userLoggedIn') === 'true') {
+            window.location.href = 'auth-dashboard.html';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Récupérer les utilisateurs enregistrés
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Vérifier les identifiants
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                // Connexion réussie
+                localStorage.setItem('userLoggedIn', 'true');
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                window.location.href = 'auth-dashboard.html';
+            } else {
+                errorMessage.style.display = 'block';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+            }
+        });
+
+        // Fonction pour se connecter avec Google (visuel seulement pour l'instant)
+        function loginWithGoogle() {
+            alert('Fonctionnalité Google en cours de développement. Utilisez l\'inscription normale pour le moment.');
+        }
+    </script>
+</body>
+</html>
