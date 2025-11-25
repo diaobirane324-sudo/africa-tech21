@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROFIL OPERATEUR - AFRICA.TECH21</title>
+    <title>Profil Membre - AFRICA.TECH21</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -22,6 +22,8 @@
             --dark-space: #0a0a1f;
             --deep-space: #050510;
             --matrix-green: #00ff41;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
         body {
@@ -37,7 +39,7 @@
             position: relative;
         }
 
-        /* EFFETS DE MATRICE */
+        /* EFFETS DE FOND */
         .matrix-bg {
             position: fixed;
             top: 0;
@@ -52,12 +54,6 @@
             z-index: -3;
         }
 
-        @keyframes matrixMove {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(50px); }
-        }
-
-        /* PARTICULES */
         .particles {
             position: fixed;
             width: 100%;
@@ -75,6 +71,28 @@
             box-shadow: 0 0 10px var(--neon-blue);
         }
 
+        .scan-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 255, 65, 0.03) 51%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 2;
+            animation: scanMove 2s linear infinite;
+        }
+
+        @keyframes matrixMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50px); }
+        }
+
         @keyframes float {
             0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
             10% { opacity: 1; }
@@ -82,7 +100,12 @@
             100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
         }
 
-        /* HEADER CYBERPUNK */
+        @keyframes scanMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* HEADER */
         .cyber-header {
             background: rgba(5, 5, 16, 0.9);
             border-bottom: 2px solid;
@@ -104,7 +127,7 @@
 
         .cyber-logo h1 {
             font-family: 'Orbitron', monospace;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 900;
             background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
             -webkit-background-clip: text;
@@ -159,15 +182,14 @@
 
         /* HEADER DU PROFIL */
         .cyber-profile-header {
-            background: rgba(10, 10, 31, 0.8);
-            border: 2px solid;
-            border-image: linear-gradient(45deg, var(--neon-blue), var(--neon-purple)) 1;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
             padding: 3rem;
             border-radius: 20px;
             margin-bottom: 3rem;
             text-align: center;
             position: relative;
-            backdrop-filter: blur(10px);
             box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
             animation: headerGlow 3s ease-in-out infinite alternate;
         }
@@ -258,6 +280,10 @@
             border-radius: 10px;
             transition: all 0.3s ease;
             box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .cyber-postuler-btn:hover {
@@ -272,14 +298,13 @@
             gap: 2rem;
         }
 
-        /* CARTES CYBERPUNK */
+        /* CARTES */
         .cyber-info-card, .cyber-stats-card {
-            background: rgba(10, 10, 31, 0.8);
-            border: 2px solid;
-            border-image: linear-gradient(45deg, var(--neon-blue), var(--neon-purple)) 1;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
             padding: 2.5rem;
             border-radius: 15px;
-            backdrop-filter: blur(10px);
             box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
             transition: all 0.3s ease;
         }
@@ -374,7 +399,7 @@
             letter-spacing: 1px;
         }
 
-        /* MODAL CYBERPUNK */
+        /* MODAL */
         .cyber-modal {
             display: none;
             position: fixed;
@@ -388,9 +413,9 @@
         }
 
         .cyber-modal-content {
-            background: rgba(10, 10, 31, 0.95);
-            border: 2px solid;
-            border-image: linear-gradient(45deg, var(--neon-blue), var(--neon-purple)) 1;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
             margin: 5% auto;
             padding: 0;
             border-radius: 20px;
@@ -456,20 +481,20 @@
 
         .cyber-form-input, .cyber-form-select {
             width: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid;
-            border-image: linear-gradient(45deg, var(--neon-blue), var(--neon-purple)) 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
             padding: 1rem;
             color: white;
             font-size: 1rem;
             font-family: 'Exo 2', sans-serif;
             transition: all 0.3s ease;
+            border-radius: 8px;
         }
 
         .cyber-form-input:focus, .cyber-form-select:focus {
             outline: none;
             box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
-            border-image: linear-gradient(45deg, var(--neon-green), var(--neon-pink)) 1;
+            border-color: var(--neon-blue);
         }
 
         .cyber-modal-buttons {
@@ -513,24 +538,6 @@
             box-shadow: 0 0 25px rgba(0, 255, 136, 0.4);
         }
 
-        /* SCAN LINES */
-        .scan-lines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to bottom,
-                transparent 50%,
-                rgba(0, 255, 65, 0.03) 51%
-            );
-            background-size: 100% 4px;
-            pointer-events: none;
-            z-index: 2;
-            animation: scanMove 2s linear infinite;
-        }
-
         /* RESPONSIVE */
         @media (max-width: 1024px) {
             .cyber-profile-content {
@@ -563,7 +570,7 @@
                 align-items: center;
             }
             
-            .cyber-nav-buttons {
+            .nav-buttons {
                 flex-direction: column;
                 width: 100%;
             }
@@ -572,13 +579,7 @@
                 text-align: center;
                 justify-content: center;
             }
-        }
 
-        @media (max-width: 480px) {
-            .cyber-logo h1 {
-                font-size: 1.5rem;
-            }
-            
             .cyber-profile-name {
                 font-size: 2rem;
             }
@@ -596,24 +597,20 @@
     </style>
 </head>
 <body>
-    <!-- EFFET MATRICE -->
+    <!-- EFFETS DE FOND -->
     <div class="matrix-bg"></div>
-    
-    <!-- PARTICULES ANIMÉES -->
     <div class="particles" id="particles"></div>
-    
-    <!-- SCAN LINES -->
     <div class="scan-lines"></div>
     
-    <!-- HEADER CYBERPUNK -->
+    <!-- HEADER -->
     <header class="cyber-header">
         <nav class="cyber-nav">
             <div class="cyber-logo">
-                <h1>AFRICA.<span>TECH21</span> | PROFIL OPERATEUR</h1>
+                <h1>AFRICA.<span>TECH21</span> | PROFIL MEMBRE</h1>
             </div>
             <div class="nav-buttons">
-                <a href="auth-dashboard.html" class="cyber-nav-btn">
-                    <i class="fas fa-arrow-left"></i> RETOUR COMMANDE
+                <a href="dashboard.html" class="cyber-nav-btn">
+                    <i class="fas fa-arrow-left"></i> RETOUR DASHBOARD
                 </a>
                 <button class="cyber-nav-btn" onclick="logout()">
                     <i class="fas fa-sign-out-alt"></i> DÉCONNEXION
@@ -627,16 +624,16 @@
         <!-- HEADER DU PROFIL -->
         <section class="cyber-profile-header">
             <div class="cyber-avatar" id="profileAvatar">U</div>
-            <h1 class="cyber-profile-name" id="profileName">OPERATEUR</h1>
-            <p class="cyber-profile-email" id="profileEmail">operateur@system.africa</p>
+            <h1 class="cyber-profile-name" id="profileName">MEMBRE</h1>
+            <p class="cyber-profile-email" id="profileEmail">membre@africa.tech21</p>
             
             <div class="profile-actions">
                 <button class="cyber-edit-btn" onclick="openEditModal()">
                     <i class="fas fa-edit"></i> MODIFIER PROFIL
                 </button>
-                <button class="cyber-postuler-btn" onclick="openApplicationModal()">
-                    <i class="fas fa-rocket"></i> DEVENIR OFFICIEL
-                </button>
+                <a href="formulaire-candidature.html" class="cyber-postuler-btn">
+                    <i class="fas fa-rocket"></i> DEVENIR MEMBRE OFFICIEL
+                </a>
             </div>
         </section>
 
@@ -644,9 +641,9 @@
         <div class="cyber-profile-content">
             <!-- CARTE INFORMATIONS -->
             <div class="cyber-info-card">
-                <h2 class="cyber-card-title">DONNÉES OPERATEUR</h2>
+                <h2 class="cyber-card-title">INFORMATIONS PERSONNELLES</h2>
                 <div class="cyber-info-item">
-                    <span class="cyber-info-label">IDENTITÉ:</span>
+                    <span class="cyber-info-label">NOM COMPLET:</span>
                     <span class="cyber-info-value" id="infoFullName">-</span>
                 </div>
                 <div class="cyber-info-item">
@@ -654,11 +651,11 @@
                     <span class="cyber-info-value" id="infoEmail">-</span>
                 </div>
                 <div class="cyber-info-item">
-                    <span class="cyber-info-label">FREQUENCE:</span>
+                    <span class="cyber-info-label">TÉLÉPHONE:</span>
                     <span class="cyber-info-value" id="infoPhone">-</span>
                 </div>
                 <div class="cyber-info-item">
-                    <span class="cyber-info-label">NIVEAU TECH:</span>
+                    <span class="cyber-info-label">NIVEAU D'ÉTUDE:</span>
                     <span class="cyber-info-value" id="infoEducation">-</span>
                 </div>
                 <div class="cyber-info-item">
@@ -666,41 +663,45 @@
                     <span class="cyber-info-value" id="infoDomain">-</span>
                 </div>
                 <div class="cyber-info-item">
-                    <span class="cyber-info-label">INTÉGRATION:</span>
+                    <span class="cyber-info-label">DATE D'INSCRIPTION:</span>
                     <span class="cyber-info-value" id="infoJoinDate">-</span>
+                </div>
+                <div class="cyber-info-item">
+                    <span class="cyber-info-label">STATUT:</span>
+                    <span class="cyber-info-value" id="infoStatus">Membre Basique</span>
                 </div>
             </div>
 
             <!-- CARTE STATISTIQUES -->
             <div class="cyber-stats-card">
-                <h2 class="cyber-card-title">STATISTIQUES RÉSEAU</h2>
+                <h2 class="cyber-card-title">STATISTIQUES</h2>
                 <div class="cyber-stats-grid">
                     <div class="cyber-stat-item">
-                        <div class="cyber-stat-number" id="statDays">1</div>
-                        <div class="cyber-stat-label">JOURS ACTIF</div>
+                        <div class="cyber-stat-number" id="statDays">0</div>
+                        <div class="cyber-stat-label">JOURS MEMBRE</div>
                     </div>
                     <div class="cyber-stat-item">
                         <div class="cyber-stat-number" id="statProjects">1</div>
-                        <div class="cyber-stat-label">PROJETS</div>
+                        <div class="cyber-stat-label">PROJETS ACCÈS</div>
                     </div>
                     <div class="cyber-stat-item">
                         <div class="cyber-stat-number" id="statMessages">0</div>
-                        <div class="cyber-stat-label">TRANSMISSIONS</div>
+                        <div class="cyber-stat-label">MESSAGES</div>
                     </div>
                     <div class="cyber-stat-item">
                         <div class="cyber-stat-number" id="statActivity">100%</div>
-                        <div class="cyber-stat-label">EFFICACITÉ</div>
+                        <div class="cyber-stat-label">ACTIVITÉ</div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- MODAL D'ÉDITION CYBERPUNK -->
+    <!-- MODAL D'ÉDITION -->
     <div id="editModal" class="cyber-modal">
         <div class="cyber-modal-content">
             <div class="cyber-modal-header">
-                <h2>MODIFICATION PROFIL</h2>
+                <h2>MODIFICATION DU PROFIL</h2>
                 <span class="cyber-close" onclick="closeEditModal()">&times;</span>
             </div>
             <div class="cyber-modal-body">
@@ -718,28 +719,28 @@
                         <input type="email" id="editEmail" name="email" class="cyber-form-input" required>
                     </div>
                     <div class="cyber-form-group">
-                        <label class="cyber-form-label" for="editTelephone">FRÉQUENCE</label>
+                        <label class="cyber-form-label" for="editTelephone">TÉLÉPHONE</label>
                         <input type="tel" id="editTelephone" name="telephone" class="cyber-form-input" required>
                     </div>
                     <div class="cyber-form-group">
-                        <label class="cyber-form-label" for="editNiveauEtude">NIVEAU TECH</label>
+                        <label class="cyber-form-label" for="editNiveauEtude">NIVEAU D'ÉTUDE</label>
                         <select id="editNiveauEtude" name="niveau_etude" class="cyber-form-select" required>
-                            <option value="Bac">NIVEAU 1</option>
-                            <option value="Bac+2">NIVEAU 2</option>
-                            <option value="Bac+3">NIVEAU 3</option>
-                            <option value="Bac+5">NIVEAU 4</option>
-                            <option value="Doctorat">EXPERT</option>
-                            <option value="Autre">AUTRE</option>
+                            <option value="Bac">Bac</option>
+                            <option value="Bac+2">Bac+2</option>
+                            <option value="Bac+3">Bac+3</option>
+                            <option value="Bac+5">Bac+5</option>
+                            <option value="Doctorat">Doctorat</option>
+                            <option value="Autre">Autre</option>
                         </select>
                     </div>
                     <div class="cyber-form-group">
                         <label class="cyber-form-label" for="editDomaine">DOMAINE</label>
                         <select id="editDomaine" name="domaine" class="cyber-form-select" required>
-                            <option value="Robotique">🤖 ROBOTIQUE</option>
-                            <option value="Informatique">💻 INFORMATIQUE</option>
-                            <option value="Electronique">🔌 ÉLECTRONIQUE</option>
-                            <option value="Mecanique">⚙️ MÉCANIQUE</option>
-                            <option value="Multidisciplinaire">🌐 POLYVALENT</option>
+                            <option value="Robotique">🤖 Robotique</option>
+                            <option value="Informatique">💻 Informatique</option>
+                            <option value="Electronique">🔌 Électronique</option>
+                            <option value="Mecanique">⚙️ Mécanique</option>
+                            <option value="Multidisciplinaire">🌐 Multidisciplinaire</option>
                         </select>
                     </div>
                     <div class="cyber-modal-buttons">
@@ -752,6 +753,14 @@
     </div>
 
     <script>
+        // VÉRIFICATION DE CONNEXION
+        if (localStorage.getItem('memberLoggedIn') !== 'true') {
+            window.location.href = 'espace-membres.html';
+        }
+
+        // VARIABLES
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
         // CRÉATION DES PARTICULES
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
@@ -767,15 +776,23 @@
             }
         }
 
-        // VÉRIFICATION DE CONNEXION
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        
-        if (!currentUser) {
-            window.location.href = 'login.html';
-        }
-
         // CHARGEMENT DU PROFIL
         function loadProfile() {
+            if (!currentUser) {
+                // Récupérer l'utilisateur depuis la base
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const userEmail = localStorage.getItem('memberEmail');
+                currentUser = users.find(u => u.email === userEmail);
+                
+                if (!currentUser) {
+                    logout();
+                    return;
+                }
+                
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            }
+
+            // Mettre à jour l'interface
             document.getElementById('profileAvatar').textContent = currentUser.prenom.charAt(0).toUpperCase();
             document.getElementById('profileName').textContent = currentUser.prenom + ' ' + currentUser.nom;
             document.getElementById('profileEmail').textContent = currentUser.email;
@@ -798,8 +815,11 @@
 
             // Compter les messages
             const messages = JSON.parse(localStorage.getItem('forumMessages') || '[]');
-            const userMessages = messages.filter(msg => msg.userId === currentUser.id).length;
+            const userMessages = messages.filter(msg => msg.email === currentUser.email).length;
             document.getElementById('statMessages').textContent = userMessages;
+
+            // Déterminer le statut
+            document.getElementById('infoStatus').textContent = currentUser.statut || 'Membre Basique';
         }
 
         // MODAL D'ÉDITION
@@ -838,25 +858,21 @@
                 users[userIndex] = currentUser;
                 localStorage.setItem('users', JSON.stringify(users));
                 localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                localStorage.setItem('memberEmail', currentUser.email);
             }
             
             // Recharger le profil
             loadProfile();
             closeEditModal();
             
-            alert('PROFIL MIS À JOUR AVEC SUCCÈS !');
+            alert('✅ PROFIL MIS À JOUR AVEC SUCCÈS !');
         });
 
         // DÉCONNEXION
         function logout() {
-            localStorage.removeItem('userLoggedIn');
+            localStorage.removeItem('memberLoggedIn');
+            localStorage.removeItem('memberEmail');
             localStorage.removeItem('currentUser');
-            window.location.href = 'index.html';
-        }
-
-        // POSTULER
-        function openApplicationModal() {
-            alert("POUR POSTULER, UTILISEZ LE BOUTON 'POSTULER' SUR LA PAGE DE COMMANDE PRINCIPALE.");
             window.location.href = 'index.html';
         }
 
