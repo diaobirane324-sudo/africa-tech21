@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-purple: #b300ff;
+            --neon-pink: #ff00c8;
+            --neon-green: #00ff88;
+            --cyber-yellow: #ffd300;
+            --dark-space: #0a0a1f;
+            --deep-space: #050510;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(179, 0, 255, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 243, 255, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 0, 200, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, var(--deep-space), var(--dark-space));
+            min-height: 100vh;
+            font-family: 'Exo 2', sans-serif;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, transparent 95%, rgba(0, 255, 65, 0.03) 100%),
+                linear-gradient(transparent 95%, rgba(0, 255, 65, 0.03) 100%);
+            background-size: 50px 50px;
+            animation: matrixMove 20s infinite linear;
+            z-index: -3;
+        }
+
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .scan-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 255, 65, 0.03) 51%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 2;
+            animation: scanMove 2s linear infinite;
+        }
+
+        @keyframes matrixMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50px); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes scanMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* CONTAINER PRINCIPAL */
+        .login-container {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 3rem;
+            border-radius: 25px;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cyber-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .cyber-logo h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .cyber-logo span {
+            color: var(--neon-green);
+            text-shadow: 0 0 15px var(--neon-green);
+        }
+
+        .cyber-logo p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 0.5rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .login-form h2 {
+            text-align: center;
+            color: var(--neon-green);
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .login-form > p {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        /* FORMULAIRE */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .cyber-label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--neon-blue);
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .cyber-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 1rem 1.2rem 1rem 3rem;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Exo 2', sans-serif;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .cyber-input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 0 2px rgba(0, 243, 255, 0.2), 0 0 20px rgba(0, 243, 255, 0.2);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .cyber-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .cyber-input:focus + .input-icon {
+            color: var(--neon-blue);
+        }
+
+        .code-info {
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .code-info strong {
+            color: var(--neon-green);
+            font-family: 'Orbitron', monospace;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .code-info code {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-family: monospace;
+            color: var(--neon-blue);
+            border: 1px solid var(--neon-blue);
+        }
+
+        /* BOUTONS */
+        .cyber-submit-btn {
+            width: 100%;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            color: white;
+            border: none;
+            padding: 1.2rem;
+            border-radius: 10px;
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .cyber-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 243, 255, 0.4);
+        }
+
+        .cyber-submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .cyber-submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* MESSAGES */
+        .cyber-message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+
+        .error-message {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            color: #ff4757;
+        }
+
+        .success-message {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: var(--neon-green);
+        }
+
+        /* LIENS */
+        .form-links {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .form-links a {
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-links a:hover {
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .back-home a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-home a:hover {
+            color: var(--neon-blue);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 2rem 1.5rem;
+                max-width: 90%;
+            }
+
+            .cyber-logo h1 {
+                font-size: 1.8rem;
+            }
+
+            .login-form h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 1.5rem 1rem;
+            }
+
+            .cyber-logo h1 {
+                font-size: 1.5rem;
+            }
+
+            .cyber-input {
+                padding: 0.8rem 1rem 0.8rem 2.5rem;
+            }
+
+            .input-icon {
+                left: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- EFFETS DE FOND -->
+    <div class="matrix-bg"></div>
+    <div class="particles" id="particles"></div>
+    <div class="scan-lines"></div>
+
+    <!-- CONTAINER PRINCIPAL -->
+    <div class="login-container">
+        <div class="cyber-logo">
+            <h1>AFRICA.<span>TECH21</span></h1>
+            <p>Accès sécurisé au réseau</p>
+        </div>
+        
+        <div class="login-form">
+            <h2>Connexion</h2>
+            <p>Identifiez-vous pour accéder au système</p>
+
+            <div class="code-info">
+                <strong>CODE D'ACCÈS REQUIS</strong>
+                <div>Utilisez le code : <code>africa.tech21membres2026</code></div>
+            </div>
+            
+            <form id="memberLoginForm">
+                <div class="form-group">
+                    <label class="cyber-label" for="email">Votre Email</label>
+                    <div class="input-container">
+                        <input type="email" id="email" name="email" class="cyber-input" required placeholder="votre@email.com">
+                        <i class="fas fa-envelope input-icon"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="cyber-label" for="password">Mot de passe commun</label>
+                    <div class="input-container">
+                        <input type="password" id="password" name="password" class="cyber-input" required placeholder="Saisissez le code d'accès">
+                        <i class="fas fa-lock input-icon"></i>
+                    </div>
+                </div>
+
+                <div class="error-message cyber-message" id="errorMessage">
+                    <i class="fas fa-exclamation-triangle"></i> Email non trouvé ou code incorrect
+                </div>
+
+                <div class="success-message cyber-message" id="successMessage">
+                    <i class="fas fa-check-circle"></i> Connexion réussie !
+                </div>
+                
+                <button type="submit" class="cyber-submit-btn" id="submitBtn">
+                    <i class="fas fa-terminal"></i> Connexion au système
+                </button>
+            </form>
+
+            <div class="form-links">
+                <a href="signup.html">
+                    <i class="fas fa-user-plus"></i> Pas encore de compte ? S'inscrire
+                </a>
+                <a href="forgot-password.html">
+                    <i class="fas fa-key"></i> Code oublié ?
+                </a>
+            </div>
+
+            <div class="back-home">
+                <a href="index.html">
+                    <i class="fas fa-arrow-left"></i> Retour au portail principal
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Vérifier si déjà connecté
+        if (localStorage.getItem('memberLoggedIn') === 'true') {
+            window.location.href = 'dashboard.html';
+        }
+
+        // Création des particules
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 25; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // CODE FIXE POUR TOUS LES MEMBRES
+        const MEMBER_ACCESS_CODE = "africa.tech21membres2026";
+
+        // Gestion du formulaire
+        document.getElementById('memberLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Masquer les messages
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+            
+            // Récupérer les valeurs
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            
+            // Validation basique
+            if (!email || !password) {
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            // Désactiver le bouton
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Vérification...';
+            
+            // Simuler un délai de vérification
+            setTimeout(() => {
+                // Récupérer les utilisateurs enregistrés
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                
+                // Vérifier si l'email existe dans la base
+                const user = users.find(u => u.email === email);
+                
+                // Vérifier les identifiants : email doit exister ET mot de passe = code fixe
+                if (user && password === MEMBER_ACCESS_CODE) {
+                    // Connexion réussie
+                    localStorage.setItem('memberLoggedIn', 'true');
+                    localStorage.setItem('memberEmail', email);
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    
+                    // Afficher succès
+                    successMessage.style.display = 'block';
+                    submitBtn.innerHTML = '<i class="fas fa-check"></i> Accès autorisé !';
+                    
+                    // Redirection vers le dashboard
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
+                    
+                } else {
+                    // Échec de connexion
+                    errorMessage.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-terminal"></i> Connexion au système';
+                }
+            }, 1000);
+        });
+
+        // Remplissage automatique pour les tests (à retirer en production)
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            
+            // Pré-remplir avec un email existant si disponible
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            if (users.length > 0) {
+                document.getElementById('email').value = users[0].email;
+            }
+            
+            // Pré-remplir le code
+            document.getElementById('password').value = MEMBER_ACCESS_CODE;
+        });
+
+        // Entrée pour soumettre le formulaire
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('memberLoginForm').dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+</body>
+</html>
