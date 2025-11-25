@@ -417,7 +417,7 @@
                 </div>
 
                 <div class="error-message cyber-message" id="errorMessage">
-                    <i class="fas fa-exclamation-triangle"></i> Email non trouvé ou mot de passe incorrect
+                    <i class="fas fa-exclamation-triangle"></i> Mot de passe incorrect
                 </div>
 
                 <div class="success-message cyber-message" id="successMessage">
@@ -483,6 +483,7 @@
             
             // Validation basique
             if (!email || !password) {
+                errorMessage.textContent = 'Veuillez remplir tous les champs';
                 errorMessage.style.display = 'block';
                 return;
             }
@@ -493,18 +494,11 @@
             
             // Simuler un délai de vérification
             setTimeout(() => {
-                // Récupérer les utilisateurs enregistrés
-                const users = JSON.parse(localStorage.getItem('users') || '[]');
-                
-                // Vérifier si l'email existe dans la base
-                const user = users.find(u => u.email === email);
-                
-                // Vérifier les identifiants : email doit exister ET mot de passe = code fixe
-                if (user && password === MEMBER_ACCESS_CODE) {
+                // Vérification simplifiée : seul le mot de passe compte
+                if (password === MEMBER_ACCESS_CODE) {
                     // Connexion réussie
                     localStorage.setItem('memberLoggedIn', 'true');
                     localStorage.setItem('memberEmail', email);
-                    localStorage.setItem('currentUser', JSON.stringify(user));
                     
                     // Afficher succès
                     successMessage.style.display = 'block';
@@ -517,6 +511,7 @@
                     
                 } else {
                     // Échec de connexion
+                    errorMessage.textContent = 'Mot de passe incorrect';
                     errorMessage.style.display = 'block';
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '<i class="fas fa-terminal"></i> Connexion au système';
@@ -524,7 +519,7 @@
             }, 1000);
         });
 
-        // Initialisation - PLUS DE PRÉ-REMPLISSAGE !
+        // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             createParticles();
         });
