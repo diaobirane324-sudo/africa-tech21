@@ -584,6 +584,137 @@
             box-shadow: 0 6px 25px rgba(123, 44, 191, 0.6);
         }
 
+        /* Section Candidatures */
+        .candidates-section {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-top: 3rem;
+            box-shadow: var(--panel-glow);
+            display: none;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--neon-blue);
+            margin-bottom: 0.5rem;
+            text-shadow: var(--accent-glow);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .candidates-list {
+            max-height: 600px;
+            overflow-y: auto;
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 2rem;
+            background: rgba(10, 10, 20, 0.6);
+        }
+
+        .candidate-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .candidate-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 240, 255, 0.3);
+        }
+
+        .candidate-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .candidate-name {
+            color: var(--neon-blue);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .candidate-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .candidate-info {
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .member-stats {
+            margin-top: 3rem;
+        }
+
+        .stats-chart {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .chart-container {
+            height: 300px;
+            position: relative;
+            margin-top: 2rem;
+        }
+
+        .chart-bar {
+            background: linear-gradient(180deg, var(--neon-blue), var(--neon-purple));
+            border-radius: 5px 5px 0 0;
+            margin: 0 10px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .chart-bar:hover {
+            opacity: 0.8;
+        }
+
+        .chart-label {
+            color: var(--text-secondary);
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
         /* Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
@@ -642,6 +773,10 @@
 
             .send-btn {
                 width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -779,7 +914,7 @@
                 <form class="security-form" id="securityForm">
                     <div class="form-group">
                         <label class="form-label" for="adminMatricule">IDENTIFIANT ADMINISTRATEUR</label>
-                        <input type="text" id="adminMatricule" required placeholder=" accés major" class="form-input">
+                        <input type="text" id="adminMatricule" required placeholder="Saisissez votre identifiant" class="form-input">
                     </div>
                     
                     <div class="form-group">
@@ -791,6 +926,68 @@
                         <i class="fas fa-lock"></i> ACCÉDER AUX CANDIDATURES
                     </button>
                 </form>
+            </div>
+        </section>
+
+        <!-- Section Candidatures (cachée par défaut) -->
+        <section class="candidates-section" id="candidatesSection">
+            <h2 class="section-title">GESTION DES CANDIDATURES</h2>
+            
+            <!-- Message de bienvenue -->
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h3 style="color: var(--neon-green); font-size: 2rem; margin-bottom: 1rem;">
+                    <i class="fas fa-shield-alt"></i> BIENVENU MAJOR
+                </h3>
+                <p style="color: var(--text-secondary); font-size: 1.1rem;">
+                    Interface d'administration - Suivi des candidatures et analyse des membres
+                </p>
+            </div>
+
+            <!-- Statistiques -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalCandidates">0</div>
+                    <div class="stat-label">Candidatures Total</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalMembers">0</div>
+                    <div class="stat-label">Membres Actifs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="avgConnections">0</div>
+                    <div class="stat-label">Connexions Moy.</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="avgTime">0</div>
+                    <div class="stat-label">Temps Moy. (min)</div>
+                </div>
+            </div>
+
+            <!-- Liste des candidatures -->
+            <h3 style="color: var(--neon-blue); margin-bottom: 2rem; text-align: center;">
+                <i class="fas fa-list"></i> NOUVELLES CANDIDATURES
+            </h3>
+            <div class="candidates-list" id="candidatesList">
+                <!-- Les candidatures seront chargées ici -->
+            </div>
+
+            <!-- Statistiques des membres -->
+            <div class="member-stats">
+                <h3 style="color: var(--neon-blue); margin-bottom: 2rem; text-align: center;">
+                    <i class="fas fa-chart-bar"></i> STATISTIQUES DES MEMBRES
+                </h3>
+                <div class="stats-chart">
+                    <h4 style="color: var(--neon-green); margin-bottom: 1rem;">Connexions par Membre</h4>
+                    <div class="chart-container" id="connectionsChart">
+                        <!-- Graphique des connexions -->
+                    </div>
+                </div>
+                <div class="stats-chart">
+                    <h4 style="color: var(--neon-green); margin-bottom: 1rem;">Temps de Connexion (minutes)</h4>
+                    <div class="chart-container" id="timeChart">
+                        <!-- Graphique du temps -->
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -920,12 +1117,165 @@
             const password = document.getElementById('adminPassword').value;
             
             if (password === ADMIN_PASSWORD && matricule === ADMIN_MATRICULE) {
-                // Redirection vers le formulaire de gestion des candidatures
-                window.location.href = 'formulaire-candidature.html';
+                // Afficher la section des candidatures
+                document.getElementById('candidatesSection').style.display = 'block';
+                document.getElementById('adminSection').style.marginBottom = '0';
+                
+                // Charger les données
+                loadCandidatesData();
+                loadMemberStats();
+                
+                // Scroll vers la section
+                document.getElementById('candidatesSection').scrollIntoView({ behavior: 'smooth' });
             } else {
                 alert('❌ Identifiant ou mot de passe administrateur incorrect');
             }
         });
+
+        // ==================== GESTION DES CANDIDATURES ====================
+
+        function loadCandidatesData() {
+            // Simuler des données de candidatures
+            const candidates = [
+                {
+                    name: "Jean Dupont",
+                    email: "jean.dupont@email.com",
+                    date: "15 JAN 2024",
+                    motivation: "Développeur full-stack avec 5 ans d'expérience, passionné par la robotique et l'IA."
+                },
+                {
+                    name: "Marie Lambert",
+                    email: "marie.lambert@tech.fr",
+                    date: "14 JAN 2024",
+                    motivation: "Ingénieure en électronique spécialisée dans les systèmes embarqués pour robots autonomes."
+                },
+                {
+                    name: "Ahmed Diallo",
+                    email: "ahmed.diallo@innov.com",
+                    date: "13 JAN 2024",
+                    motivation: "Expert en machine learning et computer vision pour la navigation autonome sous-marine."
+                },
+                {
+                    name: "Sophie Martin",
+                    email: "sophie.martin@ai-lab.org",
+                    date: "12 JAN 2024",
+                    motivation: "Chercheuse en intelligence artificielle avec focus sur les systèmes multi-agents."
+                }
+            ];
+
+            // Mettre à jour les statistiques
+            document.getElementById('totalCandidates').textContent = candidates.length;
+            
+            // Afficher la liste des candidatures
+            const candidatesList = document.getElementById('candidatesList');
+            candidatesList.innerHTML = '';
+            
+            candidates.forEach(candidate => {
+                const candidateDiv = document.createElement('div');
+                candidateDiv.className = 'candidate-item';
+                candidateDiv.innerHTML = `
+                    <div class="candidate-header">
+                        <span class="candidate-name">${candidate.name}</span>
+                        <span class="candidate-date">${candidate.date}</span>
+                    </div>
+                    <div class="candidate-info">
+                        <strong>Email:</strong> ${candidate.email}<br>
+                        <strong>Motivation:</strong> ${candidate.motivation}
+                    </div>
+                `;
+                candidatesList.appendChild(candidateDiv);
+            });
+        }
+
+        function loadMemberStats() {
+            // Simuler des données de membres
+            const members = [
+                { name: "ALPHA", connections: 45, time: 1280 },
+                { name: "BETA", connections: 32, time: 890 },
+                { name: "GAMMA", connections: 28, time: 760 },
+                { name: "DELTA", connections: 51, time: 1420 },
+                { name: "EPSILON", connections: 19, time: 520 }
+            ];
+
+            // Calculer les statistiques
+            const totalMembers = members.length;
+            const totalConnections = members.reduce((sum, member) => sum + member.connections, 0);
+            const totalTime = members.reduce((sum, member) => sum + member.time, 0);
+            
+            const avgConnections = Math.round(totalConnections / totalMembers);
+            const avgTime = Math.round(totalTime / totalMembers);
+
+            // Mettre à jour les statistiques
+            document.getElementById('totalMembers').textContent = totalMembers;
+            document.getElementById('avgConnections').textContent = avgConnections;
+            document.getElementById('avgTime').textContent = avgTime;
+
+            // Créer les graphiques
+            createConnectionsChart(members);
+            createTimeChart(members);
+        }
+
+        function createConnectionsChart(members) {
+            const chart = document.getElementById('connectionsChart');
+            chart.innerHTML = '';
+            
+            const maxConnections = Math.max(...members.map(m => m.connections));
+            
+            members.forEach(member => {
+                const barHeight = (member.connections / maxConnections) * 250;
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.height = barHeight + 'px';
+                bar.style.width = '40px';
+                bar.style.display = 'inline-block';
+                bar.style.verticalAlign = 'bottom';
+                bar.title = `${member.name}: ${member.connections} connexions`;
+                
+                const container = document.createElement('div');
+                container.style.display = 'inline-block';
+                container.style.margin = '0 15px';
+                container.style.textAlign = 'center';
+                
+                const label = document.createElement('div');
+                label.className = 'chart-label';
+                label.textContent = member.name;
+                
+                container.appendChild(bar);
+                container.appendChild(label);
+                chart.appendChild(container);
+            });
+        }
+
+        function createTimeChart(members) {
+            const chart = document.getElementById('timeChart');
+            chart.innerHTML = '';
+            
+            const maxTime = Math.max(...members.map(m => m.time));
+            
+            members.forEach(member => {
+                const barHeight = (member.time / maxTime) * 250;
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.height = barHeight + 'px';
+                bar.style.width = '40px';
+                bar.style.display = 'inline-block';
+                bar.style.verticalAlign = 'bottom';
+                bar.title = `${member.name}: ${member.time} minutes`;
+                
+                const container = document.createElement('div');
+                container.style.display = 'inline-block';
+                container.style.margin = '0 15px';
+                container.style.textAlign = 'center';
+                
+                const label = document.createElement('div');
+                label.className = 'chart-label';
+                label.textContent = member.name;
+                
+                container.appendChild(bar);
+                container.appendChild(label);
+                chart.appendChild(container);
+            });
+        }
 
         // ==================== ÉVÉNEMENTS ====================
 
