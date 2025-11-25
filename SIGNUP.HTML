@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-purple: #b300ff;
+            --neon-pink: #ff00c8;
+            --neon-green: #00ff88;
+            --cyber-yellow: #ffd300;
+            --dark-space: #0a0a1f;
+            --deep-space: #050510;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(179, 0, 255, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 243, 255, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 0, 200, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, var(--deep-space), var(--dark-space));
+            min-height: 100vh;
+            font-family: 'Exo 2', sans-serif;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, transparent 95%, rgba(0, 255, 65, 0.03) 100%),
+                linear-gradient(transparent 95%, rgba(0, 255, 65, 0.03) 100%);
+            background-size: 50px 50px;
+            animation: matrixMove 20s infinite linear;
+            z-index: -3;
+        }
+
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .scan-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 255, 65, 0.03) 51%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 2;
+            animation: scanMove 2s linear infinite;
+        }
+
+        @keyframes matrixMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50px); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes scanMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* CONTAINER PRINCIPAL */
+        .signup-container {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 3rem;
+            border-radius: 25px;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cyber-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .cyber-logo h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .cyber-logo span {
+            color: var(--neon-green);
+            text-shadow: 0 0 15px var(--neon-green);
+        }
+
+        .cyber-logo p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .signup-form h2 {
+            text-align: center;
+            color: var(--neon-green);
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .signup-form > p {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        /* FORMULAIRE */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-column {
+            flex: 1;
+        }
+
+        .cyber-label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--neon-blue);
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .cyber-input, .cyber-select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Exo 2', sans-serif;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .cyber-input:focus, .cyber-select:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 0 2px rgba(0, 243, 255, 0.2), 0 0 20px rgba(0, 243, 255, 0.2);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .cyber-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            display: none;
+        }
+
+        .strength-weak { color: #ff4757; }
+        .strength-medium { color: #ffa502; }
+        .strength-strong { color: var(--neon-green); }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 0.2rem;
+            accent-color: var(--neon-blue);
+        }
+
+        .checkbox-group label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .checkbox-group a {
+            color: var(--neon-blue);
+            text-decoration: none;
+        }
+
+        .checkbox-group a:hover {
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+
+        /* BOUTONS */
+        .cyber-submit-btn {
+            width: 100%;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            color: white;
+            border: none;
+            padding: 1.2rem;
+            border-radius: 10px;
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .cyber-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 243, 255, 0.4);
+        }
+
+        .cyber-submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .cyber-submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* MESSAGES */
+        .cyber-message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+
+        .error-message {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            color: #ff4757;
+        }
+
+        .success-message {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: var(--neon-green);
+        }
+
+        /* LIENS */
+        .form-links {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .form-links a {
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .form-links a:hover {
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .back-home a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-home a:hover {
+            color: var(--neon-blue);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .signup-container {
+                padding: 2rem 1.5rem;
+                max-width: 90%;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .cyber-logo h1 {
+                font-size: 1.8rem;
+            }
+
+            .signup-form h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .signup-container {
+                padding: 1.5rem 1rem;
+            }
+
+            .cyber-logo h1 {
+                font-size: 1.5rem;
+            }
+
+            .cyber-input, .cyber-select {
+                padding: 0.8rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- EFFETS DE FOND -->
+    <div class="matrix-bg"></div>
+    <div class="particles" id="particles"></div>
+    <div class="scan-lines"></div>
+
+    <!-- CONTAINER PRINCIPAL -->
+    <div class="signup-container">
+        <div class="cyber-logo">
+            <h1>AFRICA.<span>TECH21</span></h1>
+            <p>Création de compte</p>
+        </div>
+        
+        <div class="signup-form">
+            <h2>Inscription</h2>
+            <p>Rejoignez notre communauté technologique</p>
+            
+            <form id="signupForm">
+                <div class="form-row">
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label class="cyber-label" for="prenom">Prénom</label>
+                            <input type="text" id="prenom" name="prenom" class="cyber-input" required placeholder="Votre prénom">
+                        </div>
+                    </div>
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label class="cyber-label" for="nom">Nom</label>
+                            <input type="text" id="nom" name="nom" class="cyber-input" required placeholder="Votre nom">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="cyber-label" for="email">Email</label>
+                    <input type="email" id="email" name="email" class="cyber-input" required placeholder="votre@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label class="cyber-label" for="telephone">Téléphone</label>
+                    <input type="tel" id="telephone" name="telephone" class="cyber-input" required placeholder="+221 XX XXX XX XX">
+                </div>
+
+                <div class="form-group">
+                    <label class="cyber-label" for="niveau_etude">Niveau d'étude</label>
+                    <select id="niveau_etude" name="niveau_etude" class="cyber-select" required>
+                        <option value="">Sélectionnez</option>
+                        <option value="Bac">Bac</option>
+                        <option value="Bac+2">Bac+2</option>
+                        <option value="Bac+3">Bac+3</option>
+                        <option value="Bac+5">Bac+5</option>
+                        <option value="Doctorat">Doctorat</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="cyber-label" for="domaine">Domaine d'intérêt</label>
+                    <select id="domaine" name="domaine" class="cyber-select" required>
+                        <option value="">Sélectionnez</option>
+                        <option value="Robotique">🤖 Robotique</option>
+                        <option value="Informatique">💻 Informatique</option>
+                        <option value="Electronique">🔌 Électronique</option>
+                        <option value="Mecanique">⚙️ Mécanique</option>
+                        <option value="Multidisciplinaire">🌐 Multidisciplinaire</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="cyber-label" for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" class="cyber-input" required 
+                           minlength="6" placeholder="Minimum 6 caractères" oninput="checkPasswordStrength(this.value)">
+                    <div class="password-strength" id="passwordStrength">
+                        Force: <span id="strengthText"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="cyber-label" for="confirmPassword">Confirmation</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" class="cyber-input" required placeholder="Retapez votre mot de passe">
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="newsletter" name="newsletter" checked>
+                    <label for="newsletter">Recevoir les actualités d'AFRICA.TECH21</label>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="conditions" name="conditions" required>
+                    <label for="conditions">
+                        J'accepte les <a href="#">conditions d'utilisation</a> et la 
+                        <a href="#">politique de confidentialité</a>
+                    </label>
+                </div>
+
+                <div class="error-message cyber-message" id="errorMessage">
+                    <i class="fas fa-exclamation-triangle"></i> <span id="errorText"></span>
+                </div>
+
+                <div class="success-message cyber-message" id="successMessage">
+                    <i class="fas fa-check-circle"></i> Compte créé avec succès !
+                </div>
+                
+                <button type="submit" class="cyber-submit-btn" id="submitBtn">
+                    <i class="fas fa-user-plus"></i> Créer mon compte
+                </button>
+            </form>
+
+            <div class="form-links">
+                <a href="espace-membres.html">
+                    <i class="fas fa-sign-in-alt"></i> Déjà un compte ? Se connecter
+                </a>
+            </div>
+
+            <div class="back-home">
+                <a href="index.html">
+                    <i class="fas fa-arrow-left"></i> Retour à l'accueil
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Vérifier si déjà connecté
+        if (localStorage.getItem('memberLoggedIn') === 'true') {
+            window.location.href = 'dashboard.html';
+        }
+
+        // Création des particules
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 25; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Vérification force mot de passe
+        function checkPasswordStrength(password) {
+            const strengthDiv = document.getElementById('passwordStrength');
+            const strengthText = document.getElementById('strengthText');
+            
+            if (password.length === 0) {
+                strengthDiv.style.display = 'none';
+                return;
+            }
+            
+            strengthDiv.style.display = 'block';
+            
+            let strength = 0;
+            if (password.length >= 6) strength++;
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            if (strength <= 2) {
+                strengthText.textContent = 'Faible';
+                strengthText.className = 'strength-weak';
+            } else if (strength <= 4) {
+                strengthText.textContent = 'Moyen';
+                strengthText.className = 'strength-medium';
+            } else {
+                strengthText.textContent = 'Fort';
+                strengthText.className = 'strength-strong';
+            }
+        }
+
+        // Gestion du formulaire
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            const errorText = document.getElementById('errorText');
+            
+            // Masquer les messages
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+            
+            // Récupérer les valeurs
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const email = document.getElementById('email').value;
+            
+            // Validation
+            if (password !== confirmPassword) {
+                errorText.textContent = 'Les mots de passe ne correspondent pas';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            if (password.length < 6) {
+                errorText.textContent = 'Le mot de passe doit contenir au moins 6 caractères';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            // Vérifier si l'email existe déjà
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            if (users.find(u => u.email === email)) {
+                errorText.textContent = 'Cet email est déjà utilisé';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            // Désactiver le bouton
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Création en cours...';
+            
+            // Créer l'utilisateur
+            const user = {
+                id: Date.now().toString(),
+                prenom: document.getElementById('prenom').value,
+                nom: document.getElementById('nom').value,
+                email: email,
+                telephone: document.getElementById('telephone').value,
+                niveau_etude: document.getElementById('niveau_etude').value,
+                domaine: document.getElementById('domaine').value,
+                password: password,
+                date_inscription: new Date().toISOString(),
+                statut: 'membre_basique'
+            };
+            
+            // Sauvegarder
+            users.push(user);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Connecter automatiquement l'utilisateur
+            localStorage.setItem('memberLoggedIn', 'true');
+            localStorage.setItem('memberEmail', email);
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            
+            // Afficher succès
+            setTimeout(() => {
+                successMessage.style.display = 'block';
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Compte créé !';
+                
+                // Redirection vers le dashboard
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+            }, 1000);
+        });
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+        });
+    </script>
+</body>
+</html>
