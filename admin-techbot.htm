@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Messages TechBot | AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-purple: #b300ff;
+            --neon-pink: #ff00c8;
+            --neon-green: #00ff88;
+            --cyber-yellow: #ffd300;
+            --dark-space: #0a0a1f;
+            --deep-space: #050510;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--deep-space), var(--dark-space));
+            min-height: 100vh;
+            font-family: 'Exo 2', sans-serif;
+            color: white;
+            padding: 2rem;
+        }
+
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+
+        .admin-header h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.3);
+        }
+
+        .stat-card i {
+            font-size: 3rem;
+            color: var(--neon-blue);
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            color: var(--neon-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            color: white;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 1rem;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 243, 255, 0.5);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, var(--neon-pink), #ff0066);
+        }
+
+        .messages-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .message-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+        }
+
+        .message-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.2);
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .message-info {
+            flex: 1;
+        }
+
+        .message-name {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            color: var(--neon-green);
+            margin-bottom: 0.3rem;
+        }
+
+        .message-email {
+            color: var(--neon-blue);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .message-time {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+        }
+
+        .message-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+        }
+
+        .message-content {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 10px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 1rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+
+        .empty-state i {
+            font-size: 5rem;
+            color: rgba(255, 255, 255, 0.2);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .admin-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .admin-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .search-box {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Header -->
+        <div class="admin-header">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h1><i class="fas fa-shield-alt"></i> Admin - Messages TechBot</h1>
+                    <p style="color: rgba(255, 255, 255, 0.7); margin-top: 0.5rem;">
+                        Connecté en tant que : <strong id="adminUser"></strong>
+                    </p>
+                </div>
+                <button class="btn btn-danger" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="admin-stats">
+            <div class="stat-card">
+                <i class="fas fa-envelope"></i>
+                <div class="stat-number" id="totalMessages">0</div>
+                <div class="stat-label">Messages Total</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-clock"></i>
+                <div class="stat-number" id="todayMessages">0</div>
+                <div class="stat-label">Aujourd'hui</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <div class="stat-number" id="uniqueUsers">0</div>
+                <div class="stat-label">Utilisateurs Uniques</div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <input type="text" class="search-box" id="searchBox" placeholder="Rechercher par nom, email ou message...">
+            <button class="btn" onclick="refreshMessages()">
+                <i class="fas fa-sync-alt"></i> Actualiser
+            </button>
+            <button class="btn" onclick="exportMessages()">
+                <i class="fas fa-download"></i> Exporter
+            </button>
+            <button class="btn btn-danger" onclick="clearAllMessages()">
+                <i class="fas fa-trash"></i> Tout Supprimer
+            </button>
+        </div>
+
+        <!-- Messages Grid -->
+        <div class="messages-grid" id="messagesGrid">
+            <!-- Les messages seront injectés ici -->
+        </div>
+    </div>
+
+    <script>
+        // Protection - Vérifier si connecté
+        if (localStorage.getItem('adminLoggedIn') !== 'true') {
+            window.location.href = 'admin-login.html';
+        }
+
+        // Afficher le nom d'utilisateur
+        document.getElementById('adminUser').textContent = localStorage.getItem('adminUsername') || 'Admin';
+
+        // Fonction de déconnexion
+        function logout() {
+            if (confirm('Vous voulez vraiment vous déconnecter ?')) {
+                localStorage.removeItem('adminLoggedIn');
+                localStorage.removeItem('adminUsername');
+                localStorage.removeItem('adminLoginTime');
+                window.location.href = 'admin-login.html';
+            }
+        }
+
+        let allMessages = [];
+
+        // Charger les messages
+        function loadMessages() {
+            // Note: EmailJS envoie directement par email
+            // Cette page affiche un message informatif
+            displayInfoMessage();
+        }
+
+        // Afficher message informatif
+        function displayInfoMessage() {
+            const grid = document.getElementById('messagesGrid');
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-envelope-open-text"></i>
+                    <p style="font-size: 1.5rem; margin-bottom: 1rem;">
+                        📧 Messages reçus par Email
+                    </p>
+                    <p style="color: rgba(255, 255, 255, 0.7); max-width: 600px; margin: 0 auto; line-height: 1.8;">
+                        Tous les messages TechBot sont automatiquement envoyés à votre adresse email :
+                        <strong style="color: var(--neon-blue);">africa.tech21.net@gmail.com</strong>
+                    </p>
+                    <p style="color: rgba(255, 255, 255, 0.6); margin-top: 1.5rem; font-size: 0.9rem;">
+                        Consultez votre boîte mail pour voir tous les messages des utilisateurs du monde entier.
+                    </p>
+                </div>
+            `;
+
+            // Stats à zéro
+            document.getElementById('totalMessages').textContent = '∞';
+            document.getElementById('todayMessages').textContent = '∞';
+            document.getElementById('uniqueUsers').textContent = '∞';
+        }
+
+        // Afficher les messages
+        function displayMessages(messages) {
+            const grid = document.getElementById('messagesGrid');
+            
+            if (messages.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>Aucun message pour le moment</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = messages.map(msg => `
+                <div class="message-card">
+                    <div class="message-header">
+                        <div class="message-info">
+                            <div class="message-name">
+                                <i class="fas fa-user"></i> ${msg.name}
+                            </div>
+                            <div class="message-email">
+                                <i class="fas fa-envelope"></i> ${msg.email}
+                            </div>
+                            <div class="message-time">
+                                <i class="fas fa-clock"></i> ${msg.timestamp}
+                            </div>
+                        </div>
+                        <div class="message-actions">
+                            <button class="btn btn-small" onclick="copyEmail('${msg.email}')">
+                                <i class="fas fa-copy"></i> Email
+                            </button>
+                            <button class="btn btn-small btn-danger" onclick="deleteMessage(${msg.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        ${msg.message}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Mettre à jour les stats
+        function updateStats() {
+            const total = allMessages.length;
+            document.getElementById('totalMessages').textContent = total;
+
+            // Messages aujourd'hui
+            const today = new Date().toLocaleDateString('fr-FR');
+            const todayCount = allMessages.filter(msg => 
+                msg.timestamp.split(',')[0] === today
+            ).length;
+            document.getElementById('todayMessages').textContent = todayCount;
+
+            // Utilisateurs uniques
+            const uniqueEmails = new Set(allMessages.map(msg => msg.email));
+            document.getElementById('uniqueUsers').textContent = uniqueEmails.size;
+        }
+
+        // Rechercher
+        document.getElementById('searchBox').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = allMessages.filter(msg => 
+                msg.name.toLowerCase().includes(query) ||
+                msg.email.toLowerCase().includes(query) ||
+                msg.message.toLowerCase().includes(query)
+            );
+            displayMessages(filtered);
+        });
+
+        // Actualiser
+        function refreshMessages() {
+            showNotification('Les messages sont dans votre email !', 'success');
+        }
+
+        // Exporter (désactivé)
+        function exportMessages() {
+            showNotification('Consultez votre boîte mail pour exporter', 'success');
+        }
+
+        // Supprimer (désactivé)
+        function clearAllMessages() {
+            showNotification('Gérez vos emails directement dans votre boîte mail', 'success');
+        }
+
+        // Notification
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? 'linear-gradient(45deg, #00ff88, #00f3ff)' : 'linear-gradient(45deg, #ff00c8, #ff0066)'};
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 10px;
+                font-family: 'Orbitron', monospace;
+                z-index: 10000;
+                animation: slideIn 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Style pour les animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(400px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(400px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialisation
+        loadMessages();
+
+        // Désactiver auto-refresh
+        // setInterval(loadMessages, 30000);
+    </script>
+</body>
+</html>
