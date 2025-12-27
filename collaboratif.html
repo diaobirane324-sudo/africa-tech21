@@ -1238,22 +1238,24 @@ function helloWorld() {
             onlineStatusRef = userStatusRef;
         }
 
-        function loadChannels() {
-            const channels = document.querySelectorAll('.channel-item');
-            channels.forEach(channel => {
-                channel.addEventListener('click', () => {
-                    // Retirer la classe active de tous les canaux
-                    channels.forEach(c => c.classList.remove('active'));
-                    // Ajouter la classe active au canal cliqué
-                    channel.classList.add('active');
-                    
-                    // Changer de canal
-                    const newChannel = channel.getAttribute('data-channel');
-                    switchChannel(newChannel);
-                });
-            });
-        }
-
+     function loadChannels() {
+    const channels = document.querySelectorAll('.channel-item');
+    channels.forEach(channel => {
+        channel.addEventListener('click', () => {
+            // Retirer la classe active
+            channels.forEach(c => c.classList.remove('active'));
+            channel.classList.add('active');
+            
+            // Récupérer les données
+            const newChannel = channel.getAttribute('data-channel');
+            const channelType = channel.getAttribute('data-type') || 'general';
+            const projectName = channel.getAttribute('data-project');
+            
+            // Changer de canal
+            switchChannel(newChannel, channelType, projectName);
+        });
+    });
+}
        function switchChannel(channelName, channelType = 'general', projectName = null) {
     if (currentChannel === channelName) return;
     
