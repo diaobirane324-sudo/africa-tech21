@@ -1254,24 +1254,108 @@ function helloWorld() {
             });
         }
 
-        function switchChannel(channelName) {
-            if (currentChannel === channelName) return;
-            
-            currentChannel = channelName;
-            document.getElementById('currentChannel').textContent = `# ${capitalizeFirstLetter(channelName)}`;
-            document.getElementById('messageInput').placeholder = `Envoyez un message dans #${channelName}...`;
-            
-            // Se désabonner des anciens messages
-            if (unsubscribeMessages) {
-                unsubscribeMessages();
-            }
-            
-            // Charger les messages du nouveau canal
-            loadChannelMessages(channelName);
-            
-            // Mettre à jour le badge "non lu"
-            updateUnreadBadge(channelName);
+       function switchChannel(channelName, channelType = 'general', projectName = null) {
+    if (currentChannel === channelName) return;
+    
+    currentChannel = channelName;
+    document.getElementById('currentChannel').textContent = `# ${capitalizeFirstLetter(channelName)}`;
+    document.getElementById('messageInput').placeholder = `Envoyez un message dans #${channelName}...`;
+    
+    // Se désabonner des anciens messages
+    if (unsubscribeMessages) {
+        unsubscribeMessages();
+    }
+    
+    // Afficher les infos projet si c'est un canal projet
+    if (channelType === 'project' && projectName) {
+        displayProjectInfo(projectName);
+    } else {
+        hideProjectInfo();
+    }
+    
+    // Charger les messages du nouveau canal
+    loadChannelMessages(channelName);
+}
+
+function displayProjectInfo(projectName) {
+    const projectData = {
+        rsma: {
+            title: "RSMA V1.0",
+            description: "Robot Sous-marin Autonome pour l'exploration marine",
+            status: "Développement Actif",
+            progress: 65,
+            members: ["ALPHA", "GAMMA", "DELTA"],
+            nextDeadline: "15 Février 2024",
+            version: "1.0.3"
+        },
+        oxy: {
+            title: "PROJET OXY",
+            description: "Système mécanique innovant de production d'oxygène",
+            status: "Phase de R&D",
+            progress: 40,
+            members: ["BETA", "EPSILON"],
+            nextDeadline: "28 Mars 2024",
+            version: "0.8.1"
+        },
+        rga: {
+            title: "ROBOT DE GUIDE (RGA)",
+            description: "Robot intelligent autonome pour l'accueil et l'assistance",
+            status: "Prototypage",
+            progress: 30,
+            members: ["ALPHA", "BETA", "GAMMA"],
+            nextDeadline: "10 Avril 2024",
+            version: "0.5.2"
         }
+    };
+    
+    const data = projectData[projectName];
+    if (!data) return;
+    
+    const projectInfoHTML = `
+        <div class="project-info-panel">
+            <div class="project-header">
+                <h4><i class="fas fa-project-diagram"></i> ${data.title}</h4>
+                <span class="project-status">${data.status}</span>
+            </div>
+            <p style="margin-bottom: 1rem; color: var(--text-secondary);">
+                ${data.description}
+            </p>
+            <div class="project-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${data.progress}%"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+                    <span>Progression: <strong>${data.progress}%</strong></span>
+                    <span>Version: <strong>${data.version}</strong></span>
+                </div>
+            </div>
+            <div class="project-meta">
+                <div><i class="fas fa-users"></i> Équipe: ${data.members.join(', ')}</div>
+                <div><i class="fas fa-calendar-alt"></i> Deadline: ${data.nextDeadline}</div>
+            </div>
+        </div>
+    `;
+    
+    // Ajouter ou mettre à jour le panneau
+    const chatHeader = document.querySelector('.chat-header');
+    let existingPanel = document.getElementById('projectInfoPanel');
+    
+    if (existingPanel) {
+        existingPanel.innerHTML = projectInfoHTML;
+    } else {
+        const panel = document.createElement('div');
+        panel.id = 'projectInfoPanel';
+        panel.innerHTML = projectInfoHTML;
+        chatHeader.appendChild(panel);
+    }
+}
+
+function hideProjectInfo() {
+    const panel = document.getElementById('projectInfoPanel');
+    if (panel) {
+        panel.remove();
+    }
+}
 
         async function loadChannelMessages(channelName) {
             if (!db) {
