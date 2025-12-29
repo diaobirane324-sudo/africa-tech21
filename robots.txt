@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://diaobirane324-sudo.github.io/africa-tech21/sitemap.xml
