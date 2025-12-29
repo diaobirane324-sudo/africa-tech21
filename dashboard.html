@@ -1147,58 +1147,46 @@
 
         // ==================== GESTION DES CANDIDATURES ====================
 
-        function loadCandidatesData() {
-            // Simuler des données de candidatures
-            const candidates = [
-                {
-                    name: "Jean Dupont",
-                    email: "jean.dupont@email.com",
-                    date: "15 JAN 2024",
-                    motivation: "Développeur full-stack avec 5 ans d'expérience, passionné par la robotique et l'IA."
-                },
-                {
-                    name: "Marie Lambert",
-                    email: "marie.lambert@tech.fr",
-                    date: "14 JAN 2024",
-                    motivation: "Ingénieure en électronique spécialisée dans les systèmes embarqués pour robots autonomes."
-                },
-                {
-                    name: "Ahmed Diallo",
-                    email: "ahmed.diallo@innov.com",
-                    date: "13 JAN 2024",
-                    motivation: "Expert en machine learning et computer vision pour la navigation autonome sous-marine."
-                },
-                {
-                    name: "Sophie Martin",
-                    email: "sophie.martin@ai-lab.org",
-                    date: "12 JAN 2024",
-                    motivation: "Chercheuse en intelligence artificielle avec focus sur les systèmes multi-agents."
-                }
-            ];
-
-            // Mettre à jour les statistiques
-            document.getElementById('totalCandidates').textContent = candidates.length;
-            
-            // Afficher la liste des candidatures
-            const candidatesList = document.getElementById('candidatesList');
-            candidatesList.innerHTML = '';
-            
-            candidates.forEach(candidate => {
-                const candidateDiv = document.createElement('div');
-                candidateDiv.className = 'candidate-item';
-                candidateDiv.innerHTML = `
-                    <div class="candidate-header">
-                        <span class="candidate-name">${candidate.name}</span>
-                        <span class="candidate-date">${candidate.date}</span>
-                    </div>
-                    <div class="candidate-info">
-                        <strong>Email:</strong> ${candidate.email}<br>
-                        <strong>Motivation:</strong> ${candidate.motivation}
-                    </div>
-                `;
-                candidatesList.appendChild(candidateDiv);
-            });
+     async function loadCandidatesData() {
+    try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbxglvfDnYyCHY0_HLvDiwOvJ99exnUx3TvkqsVWCAv4QatkrVPCVL--MiHf0xNmRCU/exec');
+        const data = await response.json();
+        
+        // Mettre à jour les statistiques
+        document.getElementById('totalCandidates').textContent = data.length;
+        
+        // Afficher la liste des candidatures
+        const candidatesList = document.getElementById('candidatesList');
+        candidatesList.innerHTML = '';
+        
+        if (data.length === 0) {
+            candidatesList.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 2rem;">Aucune candidature pour le moment</p>';
+            return;
         }
+        
+        data.forEach(candidate => {
+            const candidateDiv = document.createElement('div');
+            candidateDiv.className = 'candidate-item';
+            candidateDiv.innerHTML = `
+                <div class="candidate-header">
+                    <span class="candidate-name">${candidate.Prénom} ${candidate.Nom}</span>
+                    <span class="candidate-date">${candidate.Date}</span>
+                </div>
+                <div class="candidate-info">
+                    <strong>Email:</strong> ${candidate.Email}<br>
+                    <strong>Téléphone:</strong> ${candidate.Téléphone}<br>
+                    <strong>Domaine:</strong> ${candidate['Domaine d\'expertise']}<br>
+                    <strong>Motivation:</strong> ${candidate.Motivation.substring(0, 150)}...
+                </div>
+            `;
+            candidatesList.appendChild(candidateDiv);
+        });
+        
+    } catch (error) {
+        console.error('Erreur chargement candidatures:', error);
+        document.getElementById('candidatesList').innerHTML = '<p style="text-align: center; color: #ff4757; padding: 2rem;">Erreur de chargement des candidatures</p>';
+    }
+}
 
         function loadMemberStats() {
             // Simuler des données de membres
