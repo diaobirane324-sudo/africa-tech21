@@ -1290,38 +1290,7 @@ body.has-announcement .cyber-header {
     
     setTimeout(() => { statusDiv.style.display = 'none'; }, 5000);
 }
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        service_id: 'service_15i8ct8',
-                        template_id: 'template_nhdoxhk',
-                        user_id: 'vB4UaTuQWFFh_37uw',
-                        template_params: {
-                            name: formData.name,
-                            from_email: formData.email,
-                            message: formData.message,
-                            time: formData.timestamp
-                        }
-                    })
-                });
-                
-                if (response.ok) {
-                    statusDiv.className = 'techbot-status success';
-                    statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> Message envoyé ! Nous vous répondrons sous 24h.';
-                    form.reset();
-                } else {
-                    throw new Error('Erreur');
-                }
-            } catch (error) {
-                statusDiv.className = 'techbot-status error';
-                statusDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Erreur. Veuillez réessayer.';
-            }
-            
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Envoyer';
-            
-            setTimeout(() => { statusDiv.style.display = 'none'; }, 5000);
-        }
+                   
 
         // INITIALISATION
         document.addEventListener('DOMContentLoaded', function() {
