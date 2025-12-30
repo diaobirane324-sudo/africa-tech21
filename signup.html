@@ -107,7 +107,6 @@
             100% { transform: translateY(4px); }
         }
 
-        /* CONTAINER PRINCIPAL */
         .signup-container {
             background: var(--glass);
             backdrop-filter: blur(20px);
@@ -181,7 +180,6 @@
             font-size: 1rem;
         }
 
-        /* FORMULAIRE */
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -268,7 +266,6 @@
             text-shadow: 0 0 10px var(--neon-green);
         }
 
-        /* BOUTONS */
         .cyber-submit-btn {
             width: 100%;
             background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
@@ -314,7 +311,6 @@
             transform: none;
         }
 
-        /* MESSAGES */
         .cyber-message {
             padding: 1rem;
             border-radius: 8px;
@@ -336,7 +332,6 @@
             color: var(--neon-green);
         }
 
-        /* LIENS */
         .form-links {
             text-align: center;
             margin-top: 1.5rem;
@@ -372,7 +367,6 @@
             color: var(--neon-blue);
         }
 
-        /* RESPONSIVE */
         @media (max-width: 768px) {
             .signup-container {
                 padding: 2rem 1.5rem;
@@ -409,12 +403,10 @@
     </style>
 </head>
 <body>
-    <!-- EFFETS DE FOND -->
     <div class="matrix-bg"></div>
     <div class="particles" id="particles"></div>
     <div class="scan-lines"></div>
 
-    <!-- CONTAINER PRINCIPAL -->
     <div class="signup-container">
         <div class="cyber-logo">
             <h1>AFRICA.<span>TECH21</span></h1>
@@ -531,14 +523,12 @@
     </div>
 
     <script>
-        // Vérifier si déjà connecté
         if (localStorage.getItem('memberLoggedIn') === 'true') {
             window.location.href = 'dashboard.html';
         }
 
-        // URL de ton API Google Sheets
-const INSCRIPTION_API_URL = 'https://script.google.com/macros/s/AKfycbys1RNFDHXysSWYgPRP8rhVApFBuRMh2RKoyYm-FqrR4Tni4aiCt4Y2YQWcniJrsYM/exec';
-        // Création des particules
+        const INSCRIPTION_API_URL = 'https://script.google.com/macros/s/AKfycbys1RNFDHXysSWYgPRP8rhVApFBuRMh2RKoyYm-FqrR4Tni4aiCt4Y2YQWcniJrsYM/exec';
+
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
             for (let i = 0; i < 25; i++) {
@@ -551,7 +541,6 @@ const INSCRIPTION_API_URL = 'https://script.google.com/macros/s/AKfycbys1RNFDHXy
             }
         }
 
-        // Vérification force mot de passe
         function checkPasswordStrength(password) {
             const strengthDiv = document.getElementById('passwordStrength');
             const strengthText = document.getElementById('strengthText');
@@ -582,7 +571,6 @@ const INSCRIPTION_API_URL = 'https://script.google.com/macros/s/AKfycbys1RNFDHXy
             }
         }
 
-        // Gestion du formulaire
         document.getElementById('signupForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -591,11 +579,9 @@ const INSCRIPTION_API_URL = 'https://script.google.com/macros/s/AKfycbys1RNFDHXy
             const successMessage = document.getElementById('successMessage');
             const errorText = document.getElementById('errorText');
             
-            // Masquer les messages
             errorMessage.style.display = 'none';
             successMessage.style.display = 'none';
             
-            // Récupérer les valeurs
             const prenom = document.getElementById('prenom').value;
             const nom = document.getElementById('nom').value;
             const email = document.getElementById('email').value;
@@ -606,7 +592,6 @@ const INSCRIPTION_API_URL = 'https://script.google.com/macros/s/AKfycbys1RNFDHXy
             const confirmPassword = document.getElementById('confirmPassword').value;
             const newsletter = document.getElementById('newsletter').checked;
             
-            // Validation
             if (password !== confirmPassword) {
                 errorText.textContent = 'Les mots de passe ne correspondent pas';
                 errorMessage.style.display = 'block';
@@ -619,7 +604,6 @@ const INSCRIPTION_API_URL = 'https://script.google.com/macros/s/AKfycbys1RNFDHXy
                 return;
             }
             
-            // Vérifier si l'email existe déjà dans localStorage
             const users = JSON.parse(localStorage.getItem('users') || '[]');
             if (users.find(u => u.email === email)) {
                 errorText.textContent = 'Cet email est déjà utilisé';
@@ -627,11 +611,9 @@ const INSCRIPTION_API_URL = 'https://script.google.com/macros/s/AKfycbys1RNFDHXy
                 return;
             }
             
-            // Désactiver le bouton
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi vers Google Sheets...';
             
-            // Préparer les données pour Google Sheets
             const formData = {
                 prenom: prenom,
                 nom: nom,
@@ -644,66 +626,55 @@ const INSCRIPTION_API_URL = 'https://script.google.com/macros/s/AKfycbys1RNFDHXy
             };
             
             try {
-                // ENVOYER À GOOGLE SHEETS
                 console.log('Envoi vers Google Sheets...', formData);
                 
-                const response = await fetch(INSCRIPTION_API_URL, {
+                await fetch(INSCRIPTION_API_URL, {
                     method: 'POST',
+                    mode: 'no-cors',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(formData)
                 });
                 
-                const result = await response.json();
-                console.log('Réponse Google Sheets:', result);
+                console.log('Envoi réussi (mode no-cors)');
                 
-                if (result.status === 'success') {
-                    // SUCCÈS - Sauvegarder aussi dans localStorage
-                    const user = {
-                        id: Date.now().toString(),
-                        prenom: prenom,
-                        nom: nom,
-                        email: email,
-                        telephone: telephone,
-                        niveau_etude: niveau_etude,
-                        domaine: domaine,
-                        password: password,
-                        date_inscription: new Date().toISOString(),
-                        statut: 'membre_basique'
-                    };
-                    
-                    users.push(user);
-                    localStorage.setItem('users', JSON.stringify(users));
-                    
-                    // Connecter automatiquement
-                    localStorage.setItem('memberLoggedIn', 'true');
-                    localStorage.setItem('memberEmail', email);
-                    localStorage.setItem('currentUser', JSON.stringify(user));
-                    
-                    // Afficher succès
-                    successMessage.style.display = 'block';
-                    submitBtn.innerHTML = '<i class="fas fa-check"></i> Compte créé avec succès !';
-                    
-                    // Redirection vers le dashboard
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 1500);
-                    
-                } else {
-                    throw new Error(result.message || 'Erreur serveur Google Sheets');
-                }
+                const user = {
+                    id: Date.now().toString(),
+                    prenom: prenom,
+                    nom: nom,
+                    email: email,
+                    telephone: telephone,
+                    niveau_etude: niveau_etude,
+                    domaine: domaine,
+                    password: password,
+                    date_inscription: new Date().toISOString(),
+                    statut: 'membre_basique'
+                };
+                
+                users.push(user);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                localStorage.setItem('memberLoggedIn', 'true');
+                localStorage.setItem('memberEmail', email);
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                successMessage.style.display = 'block';
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Compte créé avec succès !';
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
                 
             } catch (error) {
                 console.error('Erreur:', error);
-                errorText.textContent = 'Erreur lors de l\'envoi vers Google Sheets. Veuillez réessayer.';
+                errorText.textContent = 'Erreur réseau. Veuillez réessayer.';
                 errorMessage.style.display = 'block';
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Créer mon compte';
             }
         });
 
-        // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             createParticles();
         });
