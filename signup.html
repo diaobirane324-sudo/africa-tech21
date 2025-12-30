@@ -429,35 +429,35 @@
                 <i class="fas fa-info-circle"></i> Ce compte vous permet de naviguer sur le site. Pour accéder aux projets et devenir membre officiel, postulez via le formulaire de candidature.
             </div>
             
-            <form id="signupForm">
+            <form id="signupForm" autocomplete="off">
                 <div class="form-row">
                     <div class="form-column">
                         <div class="form-group">
                             <label class="cyber-label" for="prenom">Prénom</label>
-                            <input type="text" id="prenom" name="prenom" class="cyber-input" required placeholder="Votre prénom">
+                            <input type="text" id="prenom" name="prenom" class="cyber-input" required placeholder="Votre prénom" autocomplete="off">
                         </div>
                     </div>
                     <div class="form-column">
                         <div class="form-group">
                             <label class="cyber-label" for="nom">Nom</label>
-                            <input type="text" id="nom" name="nom" class="cyber-input" required placeholder="Votre nom">
+                            <input type="text" id="nom" name="nom" class="cyber-input" required placeholder="Votre nom" autocomplete="off">
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="cyber-label" for="email">Email</label>
-                    <input type="email" id="email" name="email" class="cyber-input" required placeholder="votre@email.com">
+                    <input type="email" id="email" name="email" class="cyber-input" required placeholder="votre@email.com" autocomplete="off">
                 </div>
 
                 <div class="form-group">
                     <label class="cyber-label" for="telephone">Téléphone</label>
-                    <input type="tel" id="telephone" name="telephone" class="cyber-input" required placeholder="+221 XX XXX XX XX">
+                    <input type="tel" id="telephone" name="telephone" class="cyber-input" required placeholder="+221 XX XXX XX XX" autocomplete="off">
                 </div>
 
                 <div class="form-group">
                     <label class="cyber-label" for="niveau_etude">Niveau d'étude</label>
-                    <select id="niveau_etude" name="niveau_etude" class="cyber-select" required>
+                    <select id="niveau_etude" name="niveau_etude" class="cyber-select" required autocomplete="off">
                         <option value="">Sélectionnez</option>
                         <option value="Bac">Bac</option>
                         <option value="Bac+2">Bac+2</option>
@@ -470,7 +470,7 @@
 
                 <div class="form-group">
                     <label class="cyber-label" for="domaine">Domaine d'intérêt</label>
-                    <select id="domaine" name="domaine" class="cyber-select" required>
+                    <select id="domaine" name="domaine" class="cyber-select" required autocomplete="off">
                         <option value="">Sélectionnez</option>
                         <option value="Robotique">🤖 Robotique</option>
                         <option value="Informatique">💻 Informatique</option>
@@ -483,7 +483,7 @@
                 <div class="form-group">
                     <label class="cyber-label" for="password">Mot de passe</label>
                     <input type="password" id="password" name="password" class="cyber-input" required 
-                           minlength="6" placeholder="Minimum 6 caractères" oninput="checkPasswordStrength(this.value)">
+                           minlength="6" placeholder="Minimum 6 caractères" oninput="checkPasswordStrength(this.value)" autocomplete="new-password">
                     <div class="password-strength" id="passwordStrength">
                         Force: <span id="strengthText"></span>
                     </div>
@@ -491,7 +491,7 @@
 
                 <div class="form-group">
                     <label class="cyber-label" for="confirmPassword">Confirmation</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" class="cyber-input" required placeholder="Retapez votre mot de passe">
+                    <input type="password" id="confirmPassword" name="confirmPassword" class="cyber-input" required placeholder="Retapez votre mot de passe" autocomplete="new-password">
                 </div>
 
                 <div class="checkbox-group">
