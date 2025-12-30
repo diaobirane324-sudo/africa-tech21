@@ -1326,6 +1326,23 @@ body.has-announcement .cyber-header {
                 });
             });
         });
+        // Gérer la barre d'annonce
+        document.body.classList.add('has-announcement');
+
+        function closeAnnouncement() {
+            const bar = document.getElementById('announcementBar');
+            bar.style.animation = 'slideDown 0.3s ease reverse';
+            setTimeout(() => {
+                bar.style.display = 'none';
+                document.body.classList.remove('has-announcement');
+                localStorage.setItem('announcementClosed', 'true');
+            }, 300);
+        }
+
+        if (localStorage.getItem('announcementClosed') === 'true') {
+            document.getElementById('announcementBar').style.display = 'none';
+            document.body.classList.remove('has-announcement');
+        }
     </script>
 </body>
 </html>
