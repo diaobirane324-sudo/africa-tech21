@@ -2008,8 +2008,9 @@
             return null;
         }
 
-       // Étape 2: Validation matricule AVEC LES VRAIS MATRICULES
-async function validateMatricule(matricule) {
+     async function validateMatricule(matricule) {
+    console.log("DEBUG - Matricule brut reçu:", matricule); // LIGNE À AJOUTER
+    
     // LISTE RÉELLE DES MEMBRES AFRICA.TECH21
     const membersList = {
         "MAJOR186ROBOTIC": { 
@@ -2029,12 +2030,27 @@ async function validateMatricule(matricule) {
         }
     };
     
-    // Nettoyer le matricule (enlever espaces, majuscules)
-    const cleanMatricule = matricule.toUpperCase().trim().replace(/\s+/g, '');
+    // EXTRACTION AMÉLIORÉE - capture n'importe quel code avec lettres/chiffres
+    const extractCode = (text) => {
+        // Cherche un bloc de lettres/chiffres de 10+ caractères
+        const match = text.match(/[A-Z0-9]{10,}/i);
+        if (match) {
+            console.log("DEBUG - Code extrait par regex:", match[0]); // AJOUTER
+            return match[0].toUpperCase();
+        }
+        // Sinon, garde seulement lettres/chiffres
+        const cleaned = text.toUpperCase().replace(/[^A-Z0-9]/g, '');
+        console.log("DEBUG - Code nettoyé:", cleaned); // AJOUTER
+        return cleaned;
+    };
+    
+    const cleanMatricule = extractCode(matricule); // CHANGER CETTE LIGNE
+    console.log("DEBUG - Matricule final pour validation:", cleanMatricule); // AJOUTER
     
     document.getElementById('transcription').textContent = `🔍 Vérification: ${cleanMatricule}`;
     document.getElementById('matriculeDisplay').textContent = `MATRICULE: ${cleanMatricule}`;
     
+    // RESTE DU CODE (le setTimeout avec la validation)...
     // Simuler délai de vérification (1.5 secondes)
     setTimeout(() => {
         if (membersList[cleanMatricule]) {
