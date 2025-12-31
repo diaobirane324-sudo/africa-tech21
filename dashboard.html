@@ -2008,19 +2008,69 @@
             return null;
         }
 
-        // Étape 2: Validation matricule (STUB - tu mettras les vrais matricules)
-        async function validateMatricule(matricule) {
-            // TEMPORAIRE: Liste factice - TU ME DONNERAS LES VRAIS
-            const membersList = {
-                "N@75199@DELTA@00": { name: "MAJOR ADMIN", role: "Administrateur Principal" },
-                "M@2024@ALPHA@01": { name: "ALPHA TECH", role: "Ingénieur RSMA" },
-                "M@2024@BETA@02": { name: "BETA CODE", role: "Développeur OXY" },
-                "M@2024@GAMMA@03": { name: "GAMMA ROBOT", role: "Spécialiste RGA" },
-                "M@2024@EPSILON@04": { name: "EPSILON DATA", role: "Analyste Données" }
+       // Étape 2: Validation matricule AVEC LES VRAIS MATRICULES
+async function validateMatricule(matricule) {
+    // LISTE RÉELLE DES MEMBRES AFRICA.TECH21
+    const membersList = {
+        "MAJOR186ROBOTIC": { 
+            name: "MAJOR", 
+            role: "Expert en Robotique",
+            fullTitle: "Major - Responsable Technique Principal"
+        },
+        "ABDOU627INFORMATIC": { 
+            name: "ABDOU", 
+            role: "Spécialiste Informatique",
+            fullTitle: "Abdou - Développeur & Analyste Système"
+        },
+        "SCIENTIFIC838MEDICAL": { 
+            name: "SCIENTIFIC", 
+            role: "Expert Scientifique Médical",
+            fullTitle: "Scientific - Recherche & Développement Médical"
+        }
+    };
+    
+    // Nettoyer le matricule (enlever espaces, majuscules)
+    const cleanMatricule = matricule.toUpperCase().trim().replace(/\s+/g, '');
+    
+    document.getElementById('transcription').textContent = `🔍 Vérification: ${cleanMatricule}`;
+    document.getElementById('matriculeDisplay').textContent = `MATRICULE: ${cleanMatricule}`;
+    
+    // Simuler délai de vérification (1.5 secondes)
+    setTimeout(() => {
+        if (membersList[cleanMatricule]) {
+            currentMember = { 
+                ...membersList[cleanMatricule], 
+                matricule: cleanMatricule 
             };
             
-            document.getElementById('transcription').textContent = `🔍 Vérification du matricule: ${matricule}`;
+            // Message de bienvenue personnalisé
+            document.getElementById('transcription').textContent = 
+                `✅ Matricule vérifié ! Bienvenue ${currentMember.name}`;
             
+            // Passer au chat IA
+            showChatStep();
+            
+            // Message vocal de bienvenue
+            speak(`Bienvenue ${currentMember.name}. Je suis IATECH, votre assistant technique spécialisé. Posez-moi vos questions sur la robotique, l'informatique ou les sciences médicales.`);
+            
+        } else {
+            // Matricule non reconnu
+            document.getElementById('transcription').textContent = 
+                "❌ Matricule non reconnu. Veuillez réessayer.";
+            document.getElementById('matriculeDisplay').textContent = "MATRICULE: INCONNU";
+            
+            // Message vocal d'erreur
+            speak("Matricule non reconnu dans la base de données. Veuillez présenter votre matricule valide.");
+            
+            // Réinitialiser après 3 secondes
+            setTimeout(() => {
+                document.getElementById('transcription').textContent = 
+                    "🎤 Micro activé... Présentez votre matricule";
+                document.getElementById('matriculeDisplay').textContent = "MATRICULE: ________";
+            }, 3000);
+        }
+    }, 1500);
+}
             // Simuler un délai de vérification
             setTimeout(() => {
                 if (membersList[matricule]) {
