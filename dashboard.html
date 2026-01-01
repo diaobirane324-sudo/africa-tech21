@@ -2275,6 +2275,82 @@
             // Initialiser les particules
             createParticles();
         });
+        // ==================== RÉPARATION URGENTE IATECH ====================
+console.log("🔧 MODE RÉPARATION URGENTE ACTIVÉ");
+
+// 1. CRÉER LA FONCTION OUVERTURE
+window.ouvrirIATech = function() {
+    console.log("🚀 OUVERTURE IATECH - MODE URGENCE");
+    
+    // A. Trouver le modal
+    const modal = document.getElementById('iaTechModal');
+    if (!modal) {
+        console.error("❌ ERREUR: Modal IATECH introuvable");
+        alert("ERREUR CRITIQUE: Modal IATECH non trouvé dans le HTML");
+        return;
+    }
+    
+    // B. Afficher le modal
+    modal.style.display = 'flex';
+    console.log("✅ Modal affiché avec succès");
+    
+    // C. Configurer l'interface
+    document.getElementById('transcription').textContent = 
+        "✅ IATECH PRÊT! Tapez votre matricule";
+    document.getElementById('matriculeDisplay').textContent = 
+        "MATRICULE: ________";
+    document.getElementById('manualMatricule').value = "";
+    
+    // D. Afficher seulement l'étape matricule
+    document.getElementById('matriculeStep').style.display = 'block';
+    document.getElementById('chatStep').style.display = 'none';
+    document.getElementById('loadingStep').style.display = 'none';
+};
+
+// 2. CRÉER LA FONCTION FERMETURE
+window.fermerIATech = function() {
+    console.log("🔒 FERMETURE IATECH");
+    document.getElementById('iaTechModal').style.display = 'none';
+};
+
+// 3. FONCTION DE VALIDATION MANUELLE
+window.validerMatriculeManuel = function() {
+    const matricule = document.getElementById('manualMatricule').value.trim();
+    if (matricule) {
+        document.getElementById('matriculeDisplay').textContent = 
+            `MATRICULE: ${matricule}`;
+        
+        // Simuler validation
+        setTimeout(() => {
+            if (matricule.toUpperCase() === "MAJOR186ROBOTIC") {
+                alert("✅ MAJOR connecté!");
+                document.getElementById('matriculeStep').style.display = 'none';
+                document.getElementById('chatStep').style.display = 'block';
+            } else if (matricule.toUpperCase() === "ABDOU627INFORMATIC") {
+                alert("✅ ABDOU connecté!");
+                document.getElementById('matriculeStep').style.display = 'none';
+                document.getElementById('chatStep').style.display = 'block';
+            } else if (matricule.toUpperCase() === "SCIENTIFIC838MEDICAL") {
+                alert("✅ SCIENTIFIC connecté!");
+                document.getElementById('matriculeStep').style.display = 'none';
+                document.getElementById('chatStep').style.display = 'block';
+            } else {
+                alert("❌ Matricule inconnu");
+            }
+        }, 1000);
+    }
+};
+
+// 4. CORRIGER LE BOUTON HTML
+document.addEventListener('DOMContentLoaded', function() {
+    const boutonIATech = document.querySelector('.feature-card:last-child');
+    if (boutonIATech) {
+        boutonIATech.setAttribute('onclick', 'ouvrirIATech()');
+        console.log("✅ Bouton IATECH réparé");
+    }
+});
+
+console.log("✅ RÉPARATION TERMINÉE - IATECH PRÊT");
     </script>
 </body>
 </html>
