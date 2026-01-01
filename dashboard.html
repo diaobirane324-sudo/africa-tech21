@@ -1569,7 +1569,7 @@
                     <div class="manual-input">
                         <input type="text" 
                                id="manualMatricule" 
-                               placeholder="Ou saisir manuellement (ex: N@75199@DELTA@00)"
+                               placeholder="Ou saisir manuellement (ex: MAJOR186ROBOTIC)"
                                autocomplete="off">
                         <button onclick="validateManualMatricule()">
                             <i class="fas fa-check-circle"></i> VALIDER
@@ -1863,7 +1863,7 @@
                 const container = document.createElement('div');
                 container.style.display = 'inline-block';
                 container.style.margin = '0 15px';
-                container.style.textAlign = 'center';
+                container.style.text-align = 'center';
                 
                 const label = document.createElement('div');
                 label.className = 'chart-label';
@@ -1894,7 +1894,7 @@
                 const container = document.createElement('div');
                 container.style.display = 'inline-block';
                 container.style.margin = '0 15px';
-                container.style.textAlign = 'center';
+                container.style.text-align = 'center';
                 
                 const label = document.createElement('div');
                 label.className = 'chart-label';
@@ -1910,9 +1910,6 @@
 
         // Configuration
         const GEMINI_API_KEY = "AIzaSyBxW3Gk1k4P6CgH6m5v5X6Y7Z8A9B0C1D2E3F4"; // À CHANGER PLUS TARD
-        const MEMBERS_SHEET_URL = "https://script.google.com/macros/s/YOUR_GOOGLE_SHEET_URL/exec";
-
-        // Variables globales IATECH
         let currentStep = "matricule";
         let recognition = null;
         let synthesis = null;
@@ -1923,8 +1920,13 @@
 
         // Fonctions d'interface
         function openIATech() {
+            console.log("DEBUG: Tentative d'ouverture IATECH");
             document.getElementById('iaTechModal').style.display = 'flex';
-            startMatriculeRecognition();
+            
+            // DÉMARRER LA RECONNAISSANCE APRÈS UN COURT DÉLAI
+            setTimeout(() => {
+                startMatriculeRecognition();
+            }, 500);
         }
 
         function closeIATech() {
@@ -1953,37 +1955,74 @@
 
         // Étape 1: Reconnaissance vocale du matricule
         function startMatriculeRecognition() {
-            if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
-                document.getElementById('transcription').textContent = "❌ Reconnaissance vocale non supportée par votre navigateur";
+            console.log("DEBUG: Démarrage reconnaissance vocale");
+            
+            // VÉRIFIER COMPATIBILITÉ
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                document.getElementById('transcription').textContent = 
+                    "❌ Reconnaissance vocale non supportée. Utilisez Chrome/Edge.";
+                console.error("Navigateur non compatible avec SpeechRecognition");
                 return;
             }
             
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            recognition = new SpeechRecognition();
-            recognition.lang = 'fr-FR';
-            recognition.continuous = true;
-            recognition.interimResults = false;
-            
-            recognition.onresult = (event) => {
-                const transcript = event.results[event.results.length - 1][0].transcript;
-                document.getElementById('transcription').textContent = transcript;
+            try {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.lang = 'fr-FR';
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
                 
-                // Extraire le matricule
-                const matricule = extractMatricule(transcript);
-                if (matricule) {
-                    document.getElementById('matriculeDisplay').textContent = `MATRICULE: ${matricule}`;
-                    validateMatricule(matricule);
-                }
-            };
-            
-            recognition.onerror = (event) => {
-                console.error("Erreur reconnaissance:", event.error);
-                if (event.error !== 'no-speech') {
-                    document.getElementById('transcription').textContent = "❌ Erreur micro. Essayez manuellement.";
-                }
-            };
-            
-            recognition.start();
+                recognition.onstart = () => {
+                    console.log("DEBUG: Micro activé");
+                    document.getElementById('transcription').textContent = "🎤 Micro activé... Parlez maintenant";
+                };
+                
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    console.log("DEBUG: Transcription reçue:", transcript);
+                    document.getElementById('transcription').textContent = transcript;
+                    
+                    // Extraire le matricule
+                    const matricule = extractMatricule(transcript);
+                    if (matricule) {
+                        console.log("DEBUG: Matricule extrait:", matricule);
+                        document.getElementById('matriculeDisplay').textContent = `MATRICULE: ${matricule}`;
+                        validateMatricule(matricule);
+                    } else {
+                        document.getElementById('transcription').textContent = 
+                            "❌ Matricule non détecté. Dites 'Mon matricule est MAJOR186ROBOTIC'";
+                    }
+                };
+                
+                recognition.onerror = (event) => {
+                    console.error("DEBUG: Erreur reconnaissance:", event.error);
+                    if (event.error === 'not-allowed') {
+                        document.getElementById('transcription').textContent = 
+                            "❌ Permission microphone refusée. Autorisez le micro.";
+                    } else if (event.error !== 'no-speech') {
+                        document.getElementById('transcription').textContent = 
+                            "❌ Erreur micro. Essayez manuellement.";
+                    }
+                };
+                
+                recognition.onend = () => {
+                    console.log("DEBUG: Reconnaissance terminée, redémarrage...");
+                    // Redémarrer après 1 seconde
+                    setTimeout(() => {
+                        if (currentStep === "matricule") {
+                            recognition.start();
+                        }
+                    }, 1000);
+                };
+                
+                recognition.start();
+                
+            } catch (error) {
+                console.error("DEBUG: Erreur initialisation:", error);
+                document.getElementById('transcription').textContent = 
+                    "❌ Erreur technique. Utilisez la saisie manuelle.";
+            }
         }
 
         function stopRecognition() {
@@ -1993,109 +2032,102 @@
         }
 
         function extractMatricule(text) {
-            const patterns = [
-                /matricule\s*(est|:)?\s*([A-Z0-9@._-]+)/i,
-                /([A-Z0-9@._-]{8,})/i,
-                /code\s*(est|:)?\s*([A-Z0-9@._-]+)/i
-            ];
+            // GESTION AMÉLIORÉE POUR L'ÉPELLAGE
+            // "M A J O R 1 8 6 R O B O T I C" → "MAJOR186ROBOTIC"
+            // "mon matricule est major186robotic" → "MAJOR186ROBOTIC"
             
-            for (const pattern of patterns) {
-                const match = text.match(pattern);
-                if (match) {
-                    return match[2] || match[1];
+            // Enlever espaces et convertir en majuscules
+            let cleaned = text.toUpperCase().replace(/\s+/g, '');
+            
+            // Chercher directement les matricules connus
+            const matricules = ["MAJOR186ROBOTIC", "ABDOU627INFORMATIC", "SCIENTIFIC838MEDICAL"];
+            for (const matricule of matricules) {
+                if (cleaned.includes(matricule)) {
+                    return matricule;
                 }
             }
-            return null;
+            
+            // Sinon, chercher un pattern de 10+ caractères alphanumériques
+            const pattern = /[A-Z0-9]{10,}/;
+            const match = cleaned.match(pattern);
+            return match ? match[0] : cleaned;
         }
 
-   async function validateMatricule(matricule) {
-    console.log("DEBUG - Matricule brut reçu:", matricule);
-    
-    // LISTE RÉELLE DES MEMBRES AFRICA.TECH21
-    const membersList = {
-        "MAJOR186ROBOTIC": { 
-            name: "MAJOR", 
-            role: "Expert en Robotique",
-            fullTitle: "Major - Responsable Technique Principal"
-        },
-        "ABDOU627INFORMATIC": { 
-            name: "ABDOU", 
-            role: "Spécialiste Informatique",
-            fullTitle: "Abdou - Développeur & Analyste Système"
-        },
-        "SCIENTIFIC838MEDICAL": { 
-            name: "SCIENTIFIC", 
-            role: "Expert Scientifique Médical",
-            fullTitle: "Scientific - Recherche & Développement Médical"
-        }
-    };
-    
-    // EXTRACTION AMÉLIORÉE - capture n'importe quel code avec lettres/chiffres
-    const extractCode = (text) => {
-        // Cherche un bloc de lettres/chiffres de 10+ caractères
-        const match = text.match(/[A-Z0-9]{10,}/i);
-        if (match) {
-            console.log("DEBUG - Code extrait par regex:", match[0]);
-            return match[0].toUpperCase();
-        }
-        // Sinon, garde seulement lettres/chiffres
-        const cleaned = text.toUpperCase().replace(/[^A-Z0-9]/g, '');
-        console.log("DEBUG - Code nettoyé:", cleaned);
-        return cleaned;
-    };
-    
-    const cleanMatricule = extractCode(matricule);
-    console.log("DEBUG - Matricule final pour validation:", cleanMatricule);
-    
-    document.getElementById('transcription').textContent = `🔍 Vérification: ${cleanMatricule}`;
-    document.getElementById('matriculeDisplay').textContent = `MATRICULE: ${cleanMatricule}`;
-    
-    // Simuler délai de vérification (1.5 secondes)
-    setTimeout(() => {
-        if (membersList[cleanMatricule]) {
-            currentMember = { 
-                ...membersList[cleanMatricule], 
-                matricule: cleanMatricule 
+        // Étape 2: Validation matricule AVEC LES VRAIS MATRICULES
+        async function validateMatricule(matricule) {
+            console.log("DEBUG - Matricule brut reçu:", matricule);
+            
+            // LISTE RÉELLE DES MEMBRES AFRICA.TECH21
+            const membersList = {
+                "MAJOR186ROBOTIC": { 
+                    name: "MAJOR", 
+                    role: "Expert en Robotique",
+                    fullTitle: "Major - Responsable Technique Principal"
+                },
+                "ABDOU627INFORMATIC": { 
+                    name: "ABDOU", 
+                    role: "Spécialiste Informatique",
+                    fullTitle: "Abdou - Développeur & Analyste Système"
+                },
+                "SCIENTIFIC838MEDICAL": { 
+                    name: "SCIENTIFIC", 
+                    role: "Expert Scientifique Médical",
+                    fullTitle: "Scientific - Recherche & Développement Médical"
+                }
             };
             
-            // Message de bienvenue personnalisé
-            document.getElementById('transcription').textContent = 
-                `✅ Matricule vérifié ! Bienvenue ${currentMember.name}`;
+            // EXTRACTION AMÉLIORÉE
+            const extractCode = (text) => {
+                // Cherche directement les matricules connus
+                const matricules = ["MAJOR186ROBOTIC", "ABDOU627INFORMATIC", "SCIENTIFIC838MEDICAL"];
+                for (const m of matricules) {
+                    if (text.toUpperCase().includes(m)) {
+                        return m;
+                    }
+                }
+                // Sinon, garde seulement lettres/chiffres
+                return text.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            };
             
-            // Passer au chat IA
-            showChatStep();
+            const cleanMatricule = extractCode(matricule);
+            console.log("DEBUG - Matricule final pour validation:", cleanMatricule);
             
-            // Message vocal de bienvenue
-            speak(`Bienvenue ${currentMember.name}. Je suis IATECH, votre assistant technique spécialisé. Posez-moi vos questions sur la robotique, l'informatique ou les sciences médicales.`);
+            document.getElementById('transcription').textContent = `🔍 Vérification: ${cleanMatricule}`;
+            document.getElementById('matriculeDisplay').textContent = `MATRICULE: ${cleanMatricule}`;
             
-        } else {
-            // Matricule non reconnu
-            document.getElementById('transcription').textContent = 
-                "❌ Matricule non reconnu. Veuillez réessayer.";
-            document.getElementById('matriculeDisplay').textContent = "MATRICULE: INCONNU";
-            
-            // Message vocal d'erreur
-            speak("Matricule non reconnu dans la base de données. Veuillez présenter votre matricule valide.");
-            
-            // Réinitialiser après 3 secondes
+            // Simuler délai de vérification (1.5 secondes)
             setTimeout(() => {
-                document.getElementById('transcription').textContent = 
-                    "🎤 Micro activé... Présentez votre matricule";
-                document.getElementById('matriculeDisplay').textContent = "MATRICULE: ________";
-            }, 3000);
-        }
-    }, 1500);
-}
-            // Simuler un délai de vérification
-            setTimeout(() => {
-                if (membersList[matricule]) {
-                    currentMember = { ...membersList[matricule], matricule: matricule };
+                if (membersList[cleanMatricule]) {
+                    currentMember = { 
+                        ...membersList[cleanMatricule], 
+                        matricule: cleanMatricule 
+                    };
+                    
+                    // Message de bienvenue personnalisé
+                    document.getElementById('transcription').textContent = 
+                        `✅ Matricule vérifié ! Bienvenue ${currentMember.name}`;
+                    
+                    // Passer au chat IA
                     showChatStep();
-                    speak(`Bonjour ${currentMember.name}. Je suis IATECH, votre assistant technique. Posez-moi vos questions.`);
+                    
+                    // Message vocal de bienvenue
+                    speak(`Bienvenue ${currentMember.name}. Je suis IATECH, votre assistant technique spécialisé. Posez-moi vos questions sur la robotique, l'informatique ou les sciences médicales.`);
+                    
                 } else {
-                    document.getElementById('transcription').textContent = "❌ Matricule non reconnu. Essayez à nouveau.";
-                    document.getElementById('matriculeDisplay').textContent = "MATRICULE: INVALID";
-                    speak("Matricule non reconnu. Veuillez réessayer.");
+                    // Matricule non reconnu
+                    document.getElementById('transcription').textContent = 
+                        "❌ Matricule non reconnu. Veuillez réessayer.";
+                    document.getElementById('matriculeDisplay').textContent = "MATRICULE: INCONNU";
+                    
+                    // Message vocal d'erreur
+                    speak("Matricule non reconnu dans la base de données. Veuillez présenter votre matricule valide.");
+                    
+                    // Réinitialiser après 3 secondes
+                    setTimeout(() => {
+                        document.getElementById('transcription').textContent = 
+                            "🎤 Micro activé... Présentez votre matricule";
+                        document.getElementById('matriculeDisplay').textContent = "MATRICULE: ________";
+                    }, 3000);
                 }
             }, 1500);
         }
