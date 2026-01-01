@@ -1919,8 +1919,26 @@
         let isVoiceMode = true;
 
         // Fonctions d'interface
-        function openIATech() {
-            console.log("DEBUG: Tentative d'ouverture IATECH");
+     function ouvrirIATech() {
+    console.log("OUVERTURE IATECH...");
+    
+    // 1. Afficher le modal
+    const modal = document.getElementById('iaTechModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        console.log("✅ Modal affiché");
+    } else {
+        console.error("❌ Modal non trouvé");
+        return;
+    }
+    
+    // 2. Message de test
+    document.getElementById('transcription').textContent = 
+        "🎤 Test réussi! Tapez MAJOR186ROBOTIC";
+    
+    // 3. NE PAS démarrer la reconnaissance pour l'instant
+    console.log("Mode test activé");
+}
             document.getElementById('iaTechModal').style.display = 'flex';
             
             // DÉMARRER LA RECONNAISSANCE APRÈS UN COURT DÉLAI
