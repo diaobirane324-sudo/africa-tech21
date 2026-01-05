@@ -2036,9 +2036,15 @@
             }, 2000);
         }
         // ==================== ESPACE MAJOR ====================
-        function accederEspaceMajor() {
-            // Code simple pour commencer
-            window.open('espace-major.html', '_blank');
+              function accederEspaceMajor() {
+            // Demander le code
+            const code = prompt("🔒 CODE D'ACCÈS ESPACE MAJOR :");
+            
+            if (code === "Birane186@00") {
+                window.open('espace-major.html', '_blank');
+            } else {
+                alert("❌ Code incorrect. Accès refusé.");
+            }
         }
         // ==================== INITIALISATION ====================
         window.addEventListener('load', () => {
