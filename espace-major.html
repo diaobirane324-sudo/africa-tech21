@@ -668,7 +668,7 @@
     </div>
     <div class="power-particles" id="powerParticles"></div>
 
-    <!-- === HEADER COMMAND CENTER === -->
+       <!-- === HEADER COMMAND CENTER === -->
     <header class="command-header">
         <div class="header-content">
             <div class="major-logo">
@@ -685,6 +685,43 @@
                 <div class="status-indicator">
                     <div class="status-dot"></div>
                     <div class="status-text">SYSTÈME ACTIF</div>
+                </div>
+                
+                <!-- BOUTONS DE NAVIGATION -->
+                <div class="nav-buttons" style="display: flex; gap: 1rem; margin-left: 2rem;">
+                    <button onclick="retourDashboard()" 
+                            style="
+                                background: rgba(0, 240, 255, 0.1);
+                                border: 1px solid var(--major-blue);
+                                color: var(--major-blue);
+                                padding: 0.8rem 1.5rem;
+                                border-radius: 10px;
+                                cursor: pointer;
+                                font-family: 'Orbitron', sans-serif;
+                                font-size: 0.9rem;
+                                text-transform: uppercase;
+                                letter-spacing: 1px;
+                                transition: all 0.3s ease;
+                            ">
+                        <i class="fas fa-arrow-left"></i> DASHBOARD
+                    </button>
+                    
+                    <button onclick="fermerEspace()" 
+                            style="
+                                background: rgba(255, 0, 60, 0.1);
+                                border: 1px solid var(--major-red);
+                                color: var(--major-red);
+                                padding: 0.8rem 1.5rem;
+                                border-radius: 10px;
+                                cursor: pointer;
+                                font-family: 'Orbitron', sans-serif;
+                                font-size: 0.9rem;
+                                text-transform: uppercase;
+                                letter-spacing: 1px;
+                                transition: all 0.3s ease;
+                            ">
+                        <i class="fas fa-power-off"></i> FERMER
+                    </button>
                 </div>
             </div>
         </div>
