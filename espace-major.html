@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESPACE MAJOR | AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* === RÉINITIALISATION === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+        }
+
+        /* === VARIABLES DE COULEURS PUISSANTES === */
+        :root {
+            --major-gold: #FFD700;
+            --major-gold-glow: #FFEA00;
+            --major-red: #FF003C;
+            --major-blue: #00F0FF;
+            --major-purple: #9D00FF;
+            --major-black: #050505;
+            --major-dark: #0A0A0A;
+            --major-panel: rgba(10, 10, 10, 0.95);
+            --major-border: rgba(255, 215, 0, 0.3);
+            --text-major: #FFFFFF;
+            --text-secondary: #AAAAAA;
+            --glow-gold: 0 0 30px var(--major-gold);
+            --glow-red: 0 0 30px var(--major-red);
+            --glow-blue: 0 0 30px var(--major-blue);
+        }
+
+        /* === FOND ÉLITE === */
+        body {
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 60, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.03) 0%, transparent 70%),
+                linear-gradient(180deg, #000000 0%, #050505 50%, #0A0A0A 100%);
+            color: var(--text-major);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* === GRILLE HOLOGRAPHIQUE INTENSE === */
+        .hologram-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(255, 215, 0, 0.02) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(255, 0, 60, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 40s linear infinite;
+            pointer-events: none;
+            z-index: -3;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        /* === RAYONS LASER === */
+        .laser-beams {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        .laser {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--major-gold), transparent);
+            box-shadow: var(--glow-gold);
+            animation: laserScan 3s linear infinite;
+        }
+
+        .laser:nth-child(1) {
+            top: 20%;
+            left: 0;
+            width: 100%;
+            animation-delay: 0s;
+        }
+
+        .laser:nth-child(2) {
+            top: 40%;
+            left: 0;
+            width: 100%;
+            animation-delay: 1s;
+        }
+
+        .laser:nth-child(3) {
+            top: 60%;
+            left: 0;
+            width: 100%;
+            animation-delay: 2s;
+        }
+
+        @keyframes laserScan {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* === PARTICULES DE PUISSANCE === */
+        .power-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--major-gold);
+            border-radius: 50%;
+            box-shadow: var(--glow-gold);
+            animation: particleFloat 20s infinite linear;
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* === HEADER COMMAND CENTER === */
+        .command-header {
+            background: rgba(5, 5, 5, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid var(--major-gold);
+            padding: 1.5rem 3rem;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .command-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--major-gold), 
+                var(--major-red), 
+                var(--major-blue), 
+                transparent);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        /* === LOGO MAJOR PUISSANT === */
+        .major-logo {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .rank-badge {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--major-gold), var(--major-red));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        .rank-badge::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(135deg, var(--major-gold), var(--major-red));
+            border-radius: 50%;
+            filter: blur(10px);
+            opacity: 0.5;
+            animation: badgeGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes badgeGlow {
+            0%, 100% { opacity: 0.5; filter: blur(10px); }
+            50% { opacity: 0.8; filter: blur(15px); }
+        }
+
+        .rank-badge i {
+            font-size: 1.8rem;
+            color: var(--major-black);
+        }
+
+        .title-container h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            background: linear-gradient(45deg, var(--major-gold), #FFFFFF, var(--major-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 40px rgba(255, 215, 0, 0.7);
+            letter-spacing: 3px;
+            font-weight: 900;
+        }
+
+        .title-container .subtitle {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--major-blue);
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-top: 0.5rem;
+            text-shadow: var(--glow-blue);
+        }
+
+        /* === STATUT DU SYSTÈME === */
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            background: #00FF00;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #00FF00;
+            animation: statusPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .status-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: #00FF00;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* === CONTENU PRINCIPAL === */
+        .major-container {
+            padding: 2rem 3rem;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        /* === ÉCRAN D'ACCÈS === */
+        .access-screen {
+            background: var(--major-panel);
+            border: 2px solid var(--major-border);
+            border-radius: 20px;
+            padding: 4rem;
+            margin: 3rem auto;
+            max-width: 600px;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            box-shadow: 
+                0 0 60px rgba(255, 215, 0, 0.2),
+                inset 0 0 30px rgba(255, 215, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .access-screen::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, 
+                transparent, 
+                rgba(255, 215, 0, 0.05), 
+                transparent);
+            animation: accessGlow 6s linear infinite;
+        }
+
+        @keyframes accessGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .access-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--major-gold);
+            margin-bottom: 1.5rem;
+            text-shadow: var(--glow-gold);
+            position: relative;
+            z-index: 1;
+        }
+
+        .access-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .access-form {
+            position: relative;
+            z-index: 1;
+        }
+
+        .access-input {
+            width: 100%;
+            padding: 1.5rem 2rem;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid var(--major-gold);
+            border-radius: 15px;
+            color: var(--text-major);
+            font-size: 1.3rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            text-align: center;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .access-input:focus {
+            outline: none;
+            border-color: var(--major-red);
+            box-shadow: 
+                inset 0 0 30px rgba(0, 0, 0, 0.7),
+                0 0 40px rgba(255, 0, 60, 0.3);
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        .access-btn {
+            background: linear-gradient(135deg, var(--major-gold), var(--major-red));
+            color: var(--major-black);
+            border: none;
+            padding: 1.5rem 4rem;
+            border-radius: 15px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 10px 30px rgba(255, 215, 0, 0.3),
+                0 0 20px rgba(255, 0, 60, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .access-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .access-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 15px 40px rgba(255, 215, 0, 0.5),
+                0 0 30px rgba(255, 0, 60, 0.5);
+        }
+
+        .access-btn:hover::before {
+            left: 100%;
+        }
+
+        /* === ESPACE DE TRAVAIL (CACHÉ PAR DÉFAUT) === */
+        .workspace {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .workspace.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* === SECTION D'ACCUEIL === */
+        .welcome-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .welcome-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            background: linear-gradient(45deg, var(--major-gold), #FFFFFF, var(--major-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
+            margin-bottom: 1rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .command-header {
+                padding: 1rem;
+            }
+
+            .title-container h1 {
+                font-size: 2rem;
+            }
+
+            .title-container .subtitle {
+                font-size: 0.9rem;
+                letter-spacing: 4px;
+            }
+
+            .major-container {
+                padding: 1rem;
+            }
+
+            .access-screen {
+                padding: 2rem;
+                margin: 2rem auto;
+            }
+
+            .access-title {
+                font-size: 2rem;
+            }
+
+            .welcome-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- === EFFETS DE FOND === -->
+    <div class="hologram-overlay"></div>
+    <div class="laser-beams">
+        <div class="laser"></div>
+        <div class="laser"></div>
+        <div class="laser"></div>
+    </div>
+    <div class="power-particles" id="powerParticles"></div>
+
+    <!-- === HEADER COMMAND CENTER === -->
+    <header class="command-header">
+        <div class="header-content">
+            <div class="major-logo">
+                <div class="rank-badge">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="title-container">
+                    <h1>ESPACE MAJOR</h1>
+                    <div class="subtitle">LABORATOIRE TECHNIQUE PRIVÉ</div>
+                </div>
+            </div>
+            
+            <div class="system-status">
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <div class="status-text">SYSTÈME ACTIF</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- === CONTENU PRINCIPAL === -->
+    <main class="major-container">
+        <!-- Écran d'accès sécurisé -->
+        <section class="access-screen" id="accessScreen">
+            <h2 class="access-title">🔒 ACCÈS RESTREINT</h2>
+            <p class="access-subtitle">
+                Zone confidentielle - Niveau d'accès : MAJOR<br>
+                Présentez vos identifiants pour accéder au laboratoire technique
+            </p>
+            
+            <form class="access-form" id="accessForm">
+                <input type="password" 
+                       class="access-input" 
+                       id="accessCode"
+                       placeholder="ENTREZ LE CODE D'ACCÈS"
+                       autocomplete="off"
+                       required>
+                <button type="submit" class="access-btn">
+                    <i class="fas fa-lock-open"></i> DÉVERROUILLER L'ESPACE
+                </button>
+            </form>
+        </section>
+
+        <!-- Espace de travail (caché par défaut) -->
+        <section class="workspace" id="workspace">
+            <div class="welcome-section">
+                <h2 class="welcome-title">BIENVENU, MAJOR</h2>
+                <p class="welcome-subtitle">
+                    Interface de développement technique avancée. Éditez vos projets, 
+                    documentez les spécifications, sauvegardez vos travaux. 
+                    L'environnement est sécurisé et dédié exclusivement à vos développements.
+                </p>
+            </div>
+            
+            <!-- ICI JE VAIS AJOUTER L'ÉDITEUR DE CODE ET LE SYSTÈME DE FICHIERS -->
+            <div style="text-align: center; color: var(--major-gold); font-size: 1.3rem; margin-top: 4rem;">
+                <i class="fas fa-cog fa-spin"></i> Interface de développement en chargement...
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // === ÉTAPE 1 : CRÉATION DES PARTICULES DE PUISSANCE ===
+        function createPowerParticles() {
+            const particlesContainer = document.getElementById('powerParticles');
+            
+            for (let i = 0; i < 80; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Position aléatoire
+                particle.style.left = Math.random() * 100 + 'vw';
+                
+                // Délai d'animation aléatoire
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                
+                // Durée aléatoire
+                particle.style.animationDuration = (10 + Math.random() * 20) + 's';
+                
+                // Couleur aléatoire (or, rouge, bleu)
+                const colors = ['#FFD700', '#FF003C', '#00F0FF'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.background = randomColor;
+                particle.style.boxShadow = `0 0 15px ${randomColor}`;
+                
+                // Taille aléatoire
+                const size = 2 + Math.random() * 4;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                particlesContainer.appendChild(particle);
+            }
+            
+            console.log("✅ Particules de puissance créées");
+        }
+
+        // === ÉTAPE 2 : VÉRIFICATION DU CODE D'ACCÈS ===
+        const ACCESS_CODE = "Birane186@00";
+        
+        document.getElementById('accessForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Empêche le rechargement de la page
+            
+            const enteredCode = document.getElementById('accessCode').value;
+            
+            console.log("🔐 Code entré :", enteredCode);
+            
+            if (enteredCode === ACCESS_CODE) {
+                // CODE CORRECT
+                console.log("✅ Accès autorisé - Bienvenue MAJOR");
+                
+                // Animation de succès
+                const accessBtn = document.querySelector('.access-btn');
+                accessBtn.innerHTML = '<i class="fas fa-check"></i> ACCÈS AUTORISÉ';
+                accessBtn.style.background = 'linear-gradient(135deg, #00FF00, #00CC00)';
+                accessBtn.style.color = '#000';
+                
+                // Transition vers l'espace de travail
+                setTimeout(() => {
+                    // Masquer l'écran d'accès
+                    document.getElementById('accessScreen').style.display = 'none';
+                    
+                    // Afficher l'espace de travail
+                    const workspace = document.getElementById('workspace');
+                    workspace.classList.add('active');
+                    workspace.style.display = 'block';
+                    
+                    console.log("🚀 Espace MAJOR déverrouillé");
+                    
+                    // Ici, je vais charger l'éditeur de code (étape suivante)
+                    
+                }, 1000);
+                
+            } else {
+                // CODE INCORRECT
+                console.log("❌ Code incorrect");
+                
+                // Animation d'erreur
+                const accessInput = document.getElementById('accessCode');
+                const accessBtn = document.querySelector('.access-btn');
+                
+                // Effet de secousse
+                accessInput.style.animation = 'shake 0.5s';
+                accessInput.style.borderColor = '#FF003C';
+                accessInput.style.boxShadow = '0 0 30px rgba(255, 0, 60, 0.5)';
+                
+                // Message d'erreur sur le bouton
+                accessBtn.innerHTML = '<i class="fas fa-times"></i> CODE INCORRECT';
+                accessBtn.style.background = 'linear-gradient(135deg, #FF003C, #CC0000)';
+                
+                // Réinitialiser après 2 secondes
+                setTimeout(() => {
+                    accessInput.style.animation = '';
+                    accessInput.style.borderColor = 'var(--major-gold)';
+                    accessInput.style.boxShadow = 'inset 0 0 20px rgba(0, 0, 0, 0.5)';
+                    accessInput.value = '';
+                    
+                    accessBtn.innerHTML = '<i class="fas fa-lock-open"></i> DÉVERROUILLER L\'ESPACE';
+                    accessBtn.style.background = 'linear-gradient(135deg, var(--major-gold), var(--major-red))';
+                }, 2000);
+            }
+        });
+
+        // === ÉTAPE 3 : ANIMATION DE SECOUSE ===
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+                20%, 40%, 60%, 80% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // === ÉTAPE 4 : INITIALISATION ===
+        window.addEventListener('load', () => {
+            console.log("🚀 ESPACE MAJOR initialisé");
+            console.log("🔒 Code d'accès requis : Birane186@00");
+            
+            createPowerParticles();
+            
+            // Focus automatique sur le champ de code
+            setTimeout(() => {
+                document.getElementById('accessCode').focus();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
