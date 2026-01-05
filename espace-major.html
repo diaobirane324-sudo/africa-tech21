@@ -1025,7 +1025,33 @@ DESCRIPTION: Projet technique confidentiel
             }
         `;
         document.head.appendChild(style);
-
+        // === FONCTIONS DE NAVIGATION ===
+        function retourDashboard() {
+            // Demander confirmation
+            if (confirm("Retourner au Dashboard Principal ?\nVos modifications sont sauvegardées.")) {
+                window.location.href = 'dashboard.html';
+            }
+        }
+        
+        function fermerEspace() {
+            // Demander confirmation
+            if (confirm("Fermer l'Espace MAJOR ?\nVous serez déconnecté de l'interface.")) {
+                // Si tu veux vraiment fermer l'onglet/navigateur
+                if (window.opener) {
+                    window.close(); // Ferme si ouvert par JavaScript
+                } else {
+                    // Retour au dashboard
+                    window.location.href = 'dashboard.html';
+                }
+            }
+        }
+        
+        // Sauvegarde automatique avant de quitter
+        window.addEventListener('beforeunload', function(e) {
+            if (fichierActuel) {
+                sauvegarderFichier();
+            }
+        });
         // === ÉTAPE 5 : INITIALISATION ===
         window.addEventListener('load', () => {
             createPowerParticles();
