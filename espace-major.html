@@ -979,6 +979,34 @@ DESCRIPTION: Projet technique confidentiel développé dans l'ESPACE MAJOR
             ouvrirFichier(id);
         }
 
+        function renommerFichier(fichierId) {
+            // Trouver le fichier
+            const fichier = fichiersMajor.find(f => f.id === fichierId);
+            if (!fichier) return;
+            
+            // Demander le nouveau nom
+            const ancienNom = fichier.nom.replace('.js', '');
+            const nouveauNom = prompt("Nouveau nom pour le fichier :", ancienNom);
+            
+            // Vérifier si l'utilisateur a donné un nom valide
+            if (nouveauNom === null) return; // Annulation
+            
+            const nomFinal = nouveauNom.trim();
+            if (nomFinal === '' || nomFinal === ancienNom) return; // Nom vide ou inchangé
+            
+            // Ajouter .js si nécessaire
+            fichier.nom = nomFinal.endsWith('.js') ? nomFinal : nomFinal + '.js';
+            fichier.date = new Date().toISOString();
+            
+            // Sauvegarder et mettre à jour
+            sauvegarderFichiers();
+            afficherFichiers();
+            
+            // Mettre à jour le titre si c'est le fichier actuel
+            if (fichierActuel && fichierActuel.id === fichierId) {
+                document.getElementById('currentFileName').innerHTML = `<i class="fas fa-code"></i> ${fichier.nom}`;
+            }
+        }
 function initialiserProjet() {
     console.log("Projet MAJOR initialisé");
     // Votre code ici
