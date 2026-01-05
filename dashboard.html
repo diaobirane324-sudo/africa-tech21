@@ -2036,16 +2036,17 @@
             }, 2000);
         }
         // ==================== ESPACE MAJOR ====================
-              function accederEspaceMajor() {
-            // Demander le code
-            const code = prompt("🔒 CODE D'ACCÈS ESPACE MAJOR :");
-            
-            if (code === "Birane186@00") {
-                window.open('espace-major.html', '_blank');
-            } else {
-                alert("❌ Code incorrect. Accès refusé.");
-            }
-        }
+           function accederEspaceMajor() {
+    // Demander le code
+    const code = prompt("🔒 CODE D'ACCÈS ESPACE MAJOR :");
+    
+    if (code === "Birane186@00") {
+        // Ouvrir DANS LA MÊME PAGE
+        window.location.href = 'espace-major.html';
+    } else {
+        alert("❌ Code incorrect. Accès refusé.");
+    }
+}
         // ==================== INITIALISATION ====================
         window.addEventListener('load', () => {
             console.log("🚀 Dashboard chargé");
