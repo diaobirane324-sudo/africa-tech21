@@ -1030,7 +1030,7 @@
         <p>Système de gestion des points et mandats - Version 1.0</p>
     </footer>
 
- <script>
+<script>
     // ==================== CONFIGURATION API ====================
     const GOOGLE_SHEETS_API = "https://script.google.com/macros/s/AKfycbyHAqVpT0Pd8Aa-CIFx4z_5Hc3yxIRQ8pnr90gSktc4BIEcoCh9avXxJEdRwnKMDZU/exec";
     
@@ -1070,10 +1070,14 @@
             
             // Charger Bourguiba
             const bourguibaResponse = await fetch(`${GOOGLE_SHEETS_API}?action=getStudents&ecole=bourguiba`);
+            if (!bourguibaResponse.ok) throw new Error('Erreur réseau Bourguiba');
+            
             const bourguibaData = await bourguibaResponse.json();
             
             // Charger Mbao
             const mbaoResponse = await fetch(`${GOOGLE_SHEETS_API}?action=getStudents&ecole=mbao`);
+            if (!mbaoResponse.ok) throw new Error('Erreur réseau Mbao');
+            
             const mbaoData = await mbaoResponse.json();
             
             // Vider tableaux
@@ -1082,7 +1086,7 @@
             allStudents.length = 0;
             
             // Traiter Bourguiba
-            if (bourguibaData.students) {
+            if (bourguibaData.students && Array.isArray(bourguibaData.students)) {
                 bourguibaData.students.forEach((student, index) => {
                     const newStudent = {
                         id: index + 1,
@@ -1100,7 +1104,7 @@
             }
             
             // Traiter Mbao
-            if (mbaoData.students) {
+            if (mbaoData.students && Array.isArray(mbaoData.students)) {
                 mbaoData.students.forEach((student, index) => {
                     const newStudent = {
                         id: 1000 + index + 1,
@@ -1130,31 +1134,42 @@
     }
 
     function calculatePointsFromData(student) {
-        const club = student.club || student.Club || '';
-        const statut = student.statut || student.Statut || '';
-        const points = parseInt(student.points || student.Points || 0);
+        // Essayer de récupérer les points de différentes façons
+        const pointsStr = student.points || student.Points || '0';
+        let points = parseInt(pointsStr);
         
-        // Si déjà des points dans le Sheet, garder
-        if (points > 0) return points;
-        
-        // Sinon calculer selon règles
-        if (club.includes("Sport")) {
-            return statut === "Sélectionné" ? 100 : 0;
-        } else {
-            return statut === "Sélectionné" ? 100 : 0;
+        if (isNaN(points)) {
+            // Si pas de points, calculer selon statut
+            const statut = student.statut || student.Statut || 'En attente';
+            const club = student.club || student.Club || '';
+            
+            if (statut === "Sélectionné") {
+                return 100;
+            } else {
+                return 0;
+            }
         }
+        
+        return Math.max(0, Math.min(100, points));
     }
 
     function sortStudentsByClass() {
         const classOrder = ['6éme', '5éme', '4éme', '2nde', '1ére', 'TL2', 'TS2'];
         allStudents.sort((a, b) => {
-            return classOrder.indexOf(a.classe) - classOrder.indexOf(b.classe);
+            const indexA = classOrder.indexOf(a.classe);
+            const indexB = classOrder.indexOf(b.classe);
+            
+            if (indexA === -1 && indexB === -1) return 0;
+            if (indexA === -1) return 1;
+            if (indexB === -1) return -1;
+            
+            return indexA - indexB;
         });
     }
 
     async function saveStudentToAPI(studentData) {
         try {
-            const params = new URLSearchParams({
+            const data = {
                 action: 'saveStudent',
                 ecole: studentData.ecole,
                 nom: studentData.nom,
@@ -1166,25 +1181,37 @@
                 mandat: studentData.mandat || '',
                 admin: currentAdmin?.name || 'Admin',
                 adminMatricule: currentAdmin?.matricule || ''
+            };
+            
+            console.log('Envoi nouveau élève:', data);
+            
+            const response = await fetch(GOOGLE_SHEETS_API, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams(data)
             });
             
-            const response = await fetch(GOOGLE_SHEETS_API, { method: 'POST', body: params });
             const result = await response.json();
+            console.log('Réponse API:', result);
             
             if (result.success) {
                 await loadStudentsFromAPI();
                 return { success: true };
+            } else {
+                return { success: false, error: result.error || 'Erreur inconnue' };
             }
-            return { success: false, error: result.error };
             
         } catch (error) {
-            return { success: false, error: 'Erreur connexion' };
+            console.error('Erreur saveStudentToAPI:', error);
+            return { success: false, error: 'Erreur de connexion au serveur' };
         }
     }
 
     async function updateStudentPointsAPI(studentData) {
         try {
-            const params = new URLSearchParams({
+            const data = {
                 action: 'updatePoints',
                 id: studentData.id,
                 ecole: studentData.ecole,
@@ -1193,19 +1220,31 @@
                 etudiant: `${studentData.nom} ${studentData.prenom}`,
                 admin: currentAdmin?.name || 'Admin',
                 adminMatricule: currentAdmin?.matricule || ''
+            };
+            
+            console.log('Mise à jour points:', data);
+            
+            const response = await fetch(GOOGLE_SHEETS_API, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams(data)
             });
             
-            const response = await fetch(GOOGLE_SHEETS_API, { method: 'POST', body: params });
             const result = await response.json();
+            console.log('Réponse API:', result);
             
             if (result.success) {
                 await loadStudentsFromAPI();
                 return { success: true };
+            } else {
+                return { success: false, error: result.error || 'Erreur inconnue' };
             }
-            return { success: false, error: result.error };
             
         } catch (error) {
-            return { success: false, error: 'Erreur connexion' };
+            console.error('Erreur updateStudentPointsAPI:', error);
+            return { success: false, error: 'Erreur de connexion au serveur' };
         }
     }
 
@@ -1277,7 +1316,7 @@
 
     function createStudentCard(student) {
         const fullName = `${student.nom} ${student.prenom}`;
-        const initials = `${student.nom[0]}${student.prenom[0]}`.toUpperCase();
+        const initials = `${student.nom ? student.nom[0] : ''}${student.prenom ? student.prenom[0] : ''}`.toUpperCase();
         const statusClass = `status-${getStatusKey(student.statut)}`;
         const pointsPercentage = (student.points / 100) * 100;
         const pointsBarClass = student.points <= 30 ? 'points-danger' : student.points <= 60 ? 'points-warning' : '';
@@ -1306,7 +1345,7 @@
                     <div class="info-row">
                         <span class="info-label">École :</span>
                         <span class="info-value" style="color: ${student.ecole === 'bourguiba' ? '#2196F3' : '#9C27B0'}">
-                            ${student.ecole.toUpperCase()}
+                            ${student.ecole === 'bourguiba' ? 'BOURGUIBA' : 'MBAO'}
                         </span>
                     </div>
                 </div>
@@ -1366,15 +1405,18 @@
             if (currentSearchTerm) {
                 const searchTerm = currentSearchTerm.toLowerCase();
                 const fullName = `${student.nom} ${student.prenom}`.toLowerCase();
+                const classe = (student.classe || '').toLowerCase();
+                const club = (student.club || '').toLowerCase();
+                
                 if (!fullName.includes(searchTerm) && 
-                    !student.classe.toLowerCase().includes(searchTerm) &&
-                    !student.club.toLowerCase().includes(searchTerm)) {
+                    !classe.includes(searchTerm) &&
+                    !club.includes(searchTerm)) {
                     return false;
                 }
             }
             
             // Filtre classe
-            if (currentClassFilter !== 'all' && !student.classe.includes(currentClassFilter)) {
+            if (currentClassFilter !== 'all' && currentClassFilter !== student.classe) {
                 return false;
             }
             
@@ -1452,7 +1494,7 @@
         
         const modal = document.getElementById('editModal');
         document.getElementById('editStudentName').value = `${currentEditStudent.nom} ${currentEditStudent.prenom}`;
-        document.getElementById('editStudentSchool').value = currentEditStudent.ecole.toUpperCase();
+        document.getElementById('editStudentSchool').value = currentEditStudent.ecole === 'bourguiba' ? 'BOURGUIBA' : 'MBAO';
         document.getElementById('currentPoints').textContent = currentEditStudent.points;
         document.getElementById('editMandat').value = currentEditStudent.mandat || '';
         
@@ -1496,11 +1538,13 @@
             return;
         }
         
+        const mandat = document.getElementById('editMandat').value;
+        
         const updateResult = await updateStudentPointsAPI({
             id: currentEditStudent.id,
             ecole: currentEditStudent.ecole,
             points: currentPoints,
-            mandat: document.getElementById('editMandat').value,
+            mandat: mandat,
             nom: currentEditStudent.nom,
             prenom: currentEditStudent.prenom
         });
@@ -1556,20 +1600,29 @@
             return;
         }
         
+        // Calculer les points selon les règles
+        let points = 0;
+        if (statut === "Sélectionné") {
+            points = 100;
+        }
+        
+        const mandat = statut === 'Sélectionné' ? '2024-2025' : '';
+        
         const newStudent = {
             nom: nom,
             prenom: prenom,
             classe: classe,
             club: club,
             statut: statut,
-            points: calculatePoints({ club, statut }),
-            mandat: statut === 'Sélectionné' ? '2024-2025' : '',
+            points: points,
+            mandat: mandat,
             ecole: selectedEcole
         };
         
         const saveResult = await saveStudentToAPI(newStudent);
         
         if (saveResult.success) {
+            await loadStudentsFromAPI();
             updateDisplay();
             closeAddModal();
             alert(`✅ Élève ajouté et sauvegardé dans Google Sheets !`);
@@ -1578,16 +1631,8 @@
         }
     }
 
-    function calculatePoints(student) {
-        if (student.club.includes("Sport")) {
-            return student.statut === "Sélectionné" ? 100 : 0;
-        } else {
-            return student.statut === "Sélectionné" ? 100 : 0;
-        }
-    }
-
     // ==================== SUPPRESSION ÉLÈVE ====================
-    function deleteStudent(studentId, ecole) {
+    async function deleteStudent(studentId, ecole) {
         if (!confirm('Êtes-vous sûr de vouloir supprimer cet élève ? Cette action est irréversible.')) return;
         
         const matricule = prompt('Pour confirmer, entrez votre matricule administrateur :');
@@ -1596,27 +1641,43 @@
             return;
         }
         
-        // Supprimer localement
-        const studentIndex = allStudents.findIndex(s => s.id === studentId && s.ecole === ecole);
-        if (studentIndex !== -1) allStudents.splice(studentIndex, 1);
-        
-        if (ecole === 'bourguiba') {
-            const bourguibaIndex = bourguibaStudents.findIndex(s => s.id === studentId);
-            if (bourguibaIndex !== -1) bourguibaStudents.splice(bourguibaIndex, 1);
-        } else {
-            const mbaoIndex = mbaoStudents.findIndex(s => s.id === studentId);
-            if (mbaoIndex !== -1) mbaoStudents.splice(mbaoIndex, 1);
+        try {
+            // Envoyer la demande de suppression à l'API
+            const data = {
+                action: 'deleteStudent',
+                id: studentId,
+                ecole: ecole,
+                adminMatricule: matricule
+            };
+            
+            const response = await fetch(GOOGLE_SHEETS_API, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams(data)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                // Recharger les données
+                await loadStudentsFromAPI();
+                updateDisplay();
+                alert('✅ Élève supprimé avec succès.');
+            } else {
+                alert(`❌ Erreur: ${result.error || 'Impossible de supprimer l\'élève'}`);
+            }
+            
+        } catch (error) {
+            console.error('Erreur suppression:', error);
+            alert('❌ Erreur de connexion au serveur.');
         }
-        
-        updateDisplay();
-        alert('✅ Élève supprimé avec succès.');
-        
-        // TODO: Ajouter fonction pour supprimer du Google Sheet
     }
 
     // ==================== DONNÉES DE DÉMO ====================
     function loadDemoData() {
-        console.log('⚠️ Chargement données de démo');
+        console.log('⚠️ Chargement données de démo (API non disponible)');
         
         // Bourguiba
         bourguibaStudents.push(
