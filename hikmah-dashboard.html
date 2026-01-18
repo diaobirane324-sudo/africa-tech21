@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hikmah's Club - Dashboard Administration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --hikmah-green: #2E8B57;
+            --hikmah-light-green: #3CB371;
+            --hikmah-white: #FFFFFF;
+            --hikmah-gray: #F5F5F5;
+            --hikmah-dark: #1A1A1A;
+            --hikmah-border: #E0E0E0;
+            --hikmah-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --club-sport: #4CAF50;
+            --club-robotique: #2196F3;
+            --club-anglais: #FF9800;
+            --club-arabe: #9C27B0;
+            --club-physique: #FF5722;
+            --club-biochimie: #009688;
+            --club-clap: #795548;
+            --status-selected: #4CAF50;
+            --status-waiting: #FFC107;
+            --status-refused: #F44336;
+            --status-absent: #9E9E9E;
+        }
+
+        body {
+            background-color: var(--hikmah-gray);
+            font-family: 'Poppins', sans-serif;
+            color: var(--hikmah-dark);
+            min-height: 100vh;
+        }
+
+        /* HEADER DASHBOARD */
+        .dashboard-header {
+            background-color: var(--hikmah-white);
+            border-bottom: 3px solid var(--hikmah-green);
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(46, 139, 87, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .dashboard-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 3rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-nav {
+                padding: 0 1.5rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        .dashboard-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .dashboard-logo i {
+            color: var(--hikmah-green);
+            font-size: 2.2rem;
+        }
+
+        .dashboard-logo h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--hikmah-green);
+        }
+
+        .dashboard-logo span {
+            color: var(--hikmah-dark);
+            font-weight: 500;
+        }
+
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .admin-badge {
+            background: linear-gradient(135deg, var(--hikmah-green), var(--hikmah-light-green));
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(46, 139, 87, 0.3);
+        }
+
+        .logout-btn {
+            background-color: transparent;
+            border: 2px solid var(--hikmah-green);
+            color: var(--hikmah-green);
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            background-color: var(--hikmah-green);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* FILTRES ET RECHERCHE */
+        .filters-section {
+            background-color: var(--hikmah-white);
+            padding: 2rem 3rem;
+            margin: 2rem auto;
+            max-width: 1600px;
+            border-radius: 15px;
+            box-shadow: var(--hikmah-card-shadow);
+        }
+
+        .search-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--hikmah-border);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--hikmah-green);
+            box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.2);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid var(--hikmah-border);
+            background: white;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--hikmah-green);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background-color: var(--hikmah-green);
+            color: white;
+            border-color: var(--hikmah-green);
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--hikmah-border);
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(46, 139, 87, 0.1), rgba(60, 179, 113, 0.1));
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 150px;
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--hikmah-green);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .stat-label {
+            color: var(--hikmah-dark);
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+
+        /* CARTES DES ÉLÈVES */
+        .students-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 3rem 3rem;
+        }
+
+        .students-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .student-card {
+            background-color: var(--hikmah-white);
+            border-radius: 15px;
+            padding: 1.8rem;
+            box-shadow: var(--hikmah-card-shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-top: 5px solid var(--club-robotique);
+        }
+
+        .student-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .student-card[data-club*="Sport"] { border-top-color: var(--club-sport); }
+        .student-card[data-club*="Robotique"] { border-top-color: var(--club-robotique); }
+        .student-card[data-club*="Anglais"] { border-top-color: var(--club-anglais); }
+        .student-card[data-club*="Arabe"] { border-top-color: var(--club-arabe); }
+        .student-card[data-club*="Physique"] { border-top-color: var(--club-physique); }
+        .student-card[data-club*="Biochimie"] { border-top-color: var(--club-biochimie); }
+        .student-card[data-club*="CLAP"] { border-top-color: var(--club-clap); }
+
+        .student-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .student-avatar {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--hikmah-green), var(--hikmah-light-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .student-status {
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .status-selected { background-color: rgba(76, 175, 80, 0.1); color: var(--status-selected); }
+        .status-waiting { background-color: rgba(255, 193, 7, 0.1); color: var(--status-waiting); }
+        .status-refused { background-color: rgba(244, 67, 54, 0.1); color: var(--status-refused); }
+        .status-absent { background-color: rgba(158, 158, 158, 0.1); color: var(--status-absent); }
+
+        .student-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--hikmah-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .student-info {
+            margin: 1.2rem 0;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+        }
+
+        .info-label {
+            color: var(--hikmah-dark);
+            opacity: 0.7;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: var(--hikmah-dark);
+            font-weight: 600;
+        }
+
+        .points-container {
+            margin: 1.5rem 0;
+        }
+
+        .points-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .points-bar {
+            height: 10px;
+            background-color: var(--hikmah-border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .points-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--hikmah-light-green), var(--hikmah-green));
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .points-warning { background: linear-gradient(90deg, #FFC107, #FF9800); }
+        .points-danger { background: linear-gradient(90deg, #F44336, #D32F2F); }
+
+        .student-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .edit-btn {
+            background-color: var(--hikmah-green);
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: var(--hikmah-light-green);
+            transform: translateY(-2px);
+        }
+
+        .details-btn {
+            background-color: transparent;
+            border: 2px solid var(--hikmah-border);
+            color: var(--hikmah-dark);
+        }
+
+        .details-btn:hover {
+            border-color: var(--hikmah-green);
+            color: var(--hikmah-green);
+        }
+
+        /* MODAL DE MODIFICATION */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal {
+            background-color: var(--hikmah-white);
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--hikmah-border);
+        }
+
+        .modal-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            color: var(--hikmah-green);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--hikmah-dark);
+            cursor: pointer;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            opacity: 1;
+            transform: rotate(90deg);
+        }
+
+        .security-warning {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #FFC107;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 5px;
+        }
+
+        .security-warning i {
+            color: #FFC107;
+            margin-right: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: var(--hikmah-dark);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--hikmah-border);
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--hikmah-green);
+            box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.2);
+        }
+
+        .points-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .points-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: none;
+            background-color: var(--hikmah-green);
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .points-btn:hover {
+            background-color: var(--hikmah-light-green);
+            transform: scale(1.1);
+        }
+
+        .points-display {
+            flex: 1;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--hikmah-green);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn.confirm {
+            background-color: var(--hikmah-green);
+            color: white;
+        }
+
+        .modal-btn.confirm:hover {
+            background-color: var(--hikmah-light-green);
+            transform: translateY(-2px);
+        }
+
+        .modal-btn.cancel {
+            background-color: transparent;
+            border: 2px solid var(--hikmah-border);
+            color: var(--hikmah-dark);
+        }
+
+        .modal-btn.cancel:hover {
+            border-color: var(--hikmah-dark);
+        }
+
+        /* MESSAGE AUCUN RÉSULTAT */
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--hikmah-dark);
+            opacity: 0.5;
+            font-size: 1.2rem;
+        }
+
+        .no-results i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: var(--hikmah-border);
+        }
+
+        /* FOOTER */
+        .dashboard-footer {
+            background-color: var(--hikmah-dark);
+            color: var(--hikmah-white);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .dashboard-footer p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* LOADING */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--hikmah-green);
+            font-size: 1.2rem;
+        }
+
+        .loading i {
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .students-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters-section,
+            .students-container {
+                padding: 1.5rem;
+            }
+            
+            .search-container {
+                flex-direction: column;
+            }
+            
+            .search-input {
+                min-width: 100%;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="dashboard-header">
+        <nav class="dashboard-nav">
+            <a href="hikmah-accueil.html" class="dashboard-logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>HIKMAH'S <span>CLUB - DASHBOARD</span></h1>
+            </a>
+            <div class="admin-info">
+                <div class="admin-badge" id="adminBadge">
+                    <i class="fas fa-user-shield"></i>
+                    <span id="adminName">Chargement...</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- FILTRES ET STATISTIQUES -->
+    <section class="filters-section">
+        <div class="search-container">
+            <input type="text" 
+                   class="search-input" 
+                   id="searchInput" 
+                   placeholder="🔍 Rechercher un élève par nom, prénom ou classe..."
+                   onkeyup="filterStudents()">
+            
+            <div class="filter-buttons">
+                <button class="filter-btn" data-filter="all" onclick="setFilter('all')">
+                    <i class="fas fa-users"></i> Tous
+                </button>
+                <button class="filter-btn" data-filter="selected" onclick="setFilter('selected')">
+                    <i class="fas fa-check-circle"></i> Sélectionnés
+                </button>
+                <button class="filter-btn" data-filter="waiting" onclick="setFilter('waiting')">
+                    <i class="fas fa-clock"></i> En attente
+                </button>
+                <button class="filter-btn" data-filter="excluded" onclick="setFilter('excluded')">
+                    <i class="fas fa-ban"></i> Exclus
+                </button>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number" id="totalStudents">0</div>
+                <div class="stat-label">Élèves totaux</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="selectedStudents">0</div>
+                <div class="stat-label">Sélectionnés</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="waitingStudents">0</div>
+                <div class="stat-label">En attente</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="excludedStudents">0</div>
+                <div class="stat-label">Exclus (0 points)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CARTES DES ÉLÈVES -->
+    <section class="students-container">
+        <div class="students-grid" id="studentsGrid">
+            <!-- Les cartes seront générées par JavaScript -->
+            <div class="loading">
+                <i class="fas fa-spinner"></i> Chargement des élèves...
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL DE MODIFICATION -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Modifier les points</h2>
+                <button class="modal-close" onclick="closeEditModal()">&times;</button>
+            </div>
+            
+            <div class="security-warning">
+                <i class="fas fa-shield-alt"></i>
+                <strong>Sécurité requise :</strong> Pour modifier les points, vous devez confirmer votre identité d'administrateur.
+            </div>
+            
+            <div class="form-group">
+                <label>Élève :</label>
+                <input type="text" id="editStudentName" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label>Matricule Administrateur :</label>
+                <input type="password" 
+                       id="adminMatricule" 
+                       placeholder="Saisissez votre matricule unique"
+                       onkeyup="checkMatricule()">
+                <div id="matriculeError" style="color: #F44336; font-size: 0.9rem; margin-top: 0.5rem; display: none;">
+                    Matricule incorrect. Seuls les administrateurs peuvent modifier.
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Points actuels :</label>
+                <div class="points-controls">
+                    <button class="points-btn" onclick="changePoints(-5)">-5</button>
+                    <button class="points-btn" onclick="changePoints(-1)">-1</button>
+                    <div class="points-display" id="currentPoints">100</div>
+                    <button class="points-btn" onclick="changePoints(1)">+1</button>
+                    <button class="points-btn" onclick="changePoints(5)">+5</button>
+                </div>
+                <div style="text-align: center; margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
+                    Min: 0 | Max: 100
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Mandat :</label>
+                <input type="text" 
+                       id="editMandat" 
+                       placeholder="Ex: 2024-2025, 1 AN, 2 ANS...">
+            </div>
+            
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeEditModal()">Annuler</button>
+                <button class="modal-btn confirm" id="saveBtn" onclick="saveChanges()" disabled>
+                    <i class="fas fa-save"></i> Enregistrer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="dashboard-footer">
+        <p>HIKMAH'S CLUB &copy; 2024 - Dashboard Administratif</p>
+        <p>Système de gestion des points et mandats - Version 1.0</p>
+    </footer>
+
+    <script>
+        // ==================== DONNÉES DE TEST ====================
+        // Ces données seront remplacées par Google Sheets plus tard
+        const testStudents = [
+            {
+                id: 1,
+                nom: "Diouf",
+                prenom: "Mouhamed",
+                classe: "1ére L2",
+                club: "Sport (Football)",
+                statut: "Sélectionné",
+                points: 100,
+                mandat: "2024-2025",
+                dateInscription: "2024-01-01"
+            },
+            {
+                id: 2,
+                nom: "Wagué",
+                prenom: "Ablaye",
+                classe: "1ére L2",
+                club: "Sport (Football)",
+                statut: "Sélectionné",
+                points: 95,
+                mandat: "2024-2025",
+                dateInscription: "2024-01-01"
+            },
+            {
+                id: 3,
+                nom: "Diagne",
+                prenom: "Seynabou",
+                classe: "2nde L2",
+                club: "Informatique-Robotique",
+                statut: "En attente",
+                points: 0,
+                mandat: "",
+                dateInscription: "2024-01-01"
+            },
+            {
+                id: 4,
+                nom: "Ba",
+                prenom: "Nogaye",
+                classe: "1ére L2",
+                club: "Anglais",
+                statut: "Sélectionné",
+                points: 85,
+                mandat: "2024-2025",
+                dateInscription: "2024-01-01"
+            },
+            {
+                id: 5,
+                nom: "Kanté",
+                prenom: "Makhtar Abdou Aziz",
+                classe: "1ére L2",
+                club: "Sport (Football)",
+                statut: "Sélectionné",
+                points: 100,
+                mandat: "2024-2025",
+                dateInscription: "2024-01-01"
+            },
+            {
+                id: 6,
+                nom: "Madiara",
+                prenom: "Moustapha",
+                classe: "1ére L2",
+                club: "Informatique-Robotique",
+                statut: "Sélectionné",
+                points: 75,
+                mandat: "2024-2025",
+                dateInscription: "2024-01-01"
+            },
+            {
+                id: 7,
+                nom: "Diop",
+                prenom: "Mouhamad",
+                classe: "2nde SB",
+                club: "Sport (Football)",
+                statut: "En attente",
+                points: 0,
+                mandat: "",
+                dateInscription: "2024-01-01"
+            },
+            {
+                id: 8,
+                nom: "Barry",
+                prenom: "Abdou Razak",
+                classe: "2nde SB",
+                club: "Anglais",
+                statut: "Refusé",
+                points: 0,
+                mandat: "",
+                dateInscription: "2024-01-01"
+            }
+        ];
+
+        // ==================== VARIABLES GLOBALES ====================
+        let currentAdmin = null;
+        let students = [...testStudents];
+        let currentFilter = 'all';
+        let currentEditStudent = null;
+        let currentPoints = 100;
+
+        // ==================== MATRICULES ADMIN ====================
+        const adminMatricules = [
+            "Birane186@robotic",
+            "Salamaprésidentehc@00", 
+            "Sadiyaviceprésidentehc@01"
+        ];
+
+        // ==================== INITIALISATION ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAdminInfo();
+            renderStudents();
+            updateStats();
+            setupEventListeners();
+        });
+
+        // ==================== GESTION ADMIN ====================
+        function loadAdminInfo() {
+            const adminName = localStorage.getItem('hikmah_admin_name');
+            const adminMatricule = localStorage.getItem('hikmah_admin_matricule');
+            
+            if (!adminName || !adminMatricule) {
+                // Non connecté, rediriger vers login
+                window.location.href = 'hikmah-login.html';
+                return;
+            }
+            
+            currentAdmin = {
+                name: adminName,
+                matricule: adminMatricule
+            };
+            
+            document.getElementById('adminName').textContent = currentAdmin.name;
+            
+            // Vérifier si l'admin est autorisé
+            if (!adminMatricules.includes(adminMatricule)) {
+                alert('Accès non autorisé. Matricule invalide.');
+                logout();
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('hikmah_admin_logged_in');
+            localStorage.removeItem('hikmah_admin_name');
+            localStorage.removeItem('hikmah_admin_matricule');
+            localStorage.removeItem('hikmah_admin_email');
+            window.location.href = 'hikmah-login.html';
+        }
+
+        // ==================== RENDU DES CARTES ====================
+        function renderStudents(filteredStudents = students) {
+            const grid = document.getElementById('studentsGrid');
+            
+            if (filteredStudents.length === 0) {
+                grid.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <h3>Aucun élève trouvé</h3>
+                        <p>Aucun élève ne correspond à votre recherche.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = filteredStudents.map(student => {
+                const fullName = `${student.nom} ${student.prenom}`;
+                const initials = `${student.nom[0]}${student.prenom[0]}`.toUpperCase();
+                const statusClass = `status-${getStatusKey(student.statut)}`;
+                const pointsPercentage = (student.points / 100) * 100;
+                const pointsBarClass = student.points <= 30 ? 'points-danger' : student.points <= 60 ? 'points-warning' : '';
+                
+                return `
+                    <div class="student-card" data-club="${student.club}" data-status="${getStatusKey(student.statut)}">
+                        <div class="student-header">
+                            <div class="student-avatar">${initials}</div>
+                            <div class="student-status ${statusClass}">
+                                ${getStatusIcon(student.statut)} ${student.statut}
+                            </div>
+                        </div>
+                        
+                        <h3 class="student-name">${fullName}</h3>
+                        
+                        <div class="student-info">
+                            <div class="info-row">
+                                <span class="info-label">Classe :</span>
+                                <span class="info-value">${student.classe}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Club :</span>
+                                <span class="info-value">${student.club}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Mandat :</span>
+                                <span class="info-value">${student.mandat || 'Non défini'}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="points-container">
+                            <div class="points-label">
+                                <span>Points :</span>
+                                <span><strong>${student.points}</strong>/100</span>
+                            </div>
+                            <div class="points-bar">
+                                <div class="points-fill ${pointsBarClass}" style="width: ${pointsPercentage}%"></div>
+                            </div>
+                        </div>
+                        
+                        ${student.points === 0 ? 
+                            `<div style="color: #F44336; font-weight: 600; margin-top: 1rem;">
+                                <i class="fas fa-ban"></i> Élève exclu (0 points)
+                            </div>` : ''
+                        }
+                        
+                        <div class="student-actions">
+                            <button class="action-btn edit-btn" onclick="openEditModal(${student.id})">
+                                <i class="fas fa-edit"></i> Modifier
+                            </button>
+                            <button class="action-btn details-btn" onclick="showDetails(${student.id})">
+                                <i class="fas fa-info-circle"></i> Détails
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ==================== FONCTIONS UTILITAIRES ====================
+        function getStatusKey(statut) {
+            const statusMap = {
+                'Sélectionné': 'selected',
+                'En attente': 'waiting',
+                'Refusé': 'refused',
+                'Absent': 'absent'
+            };
+            return statusMap[statut] || 'waiting';
+        }
+
+        function getStatusIcon(statut) {
+            const icons = {
+                'Sélectionné': '✓',
+                'En attente': '⏳',
+                'Refusé': '✗',
+                'Absent': '👤'
+            };
+            return icons[statut] || '⏳';
+        }
+
+        // ==================== FILTRES ET RECHERCHE ====================
+        function setFilter(filter) {
+            currentFilter = filter;
+            
+            // Mettre à jour les boutons actifs
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.filter === filter);
+            });
+            
+            filterStudents();
+        }
+
+        function filterStudents() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            let filtered = students.filter(student => {
+                const fullName = `${student.nom} ${student.prenom}`.toLowerCase();
+                const matchesSearch = fullName.includes(searchTerm) || 
+                                    student.classe.toLowerCase().includes(searchTerm) ||
+                                    student.club.toLowerCase().includes(searchTerm);
+                
+                if (!matchesSearch) return false;
+                
+                if (currentFilter === 'all') return true;
+                if (currentFilter === 'selected') return student.statut === 'Sélectionné';
+                if (currentFilter === 'waiting') return student.statut === 'En attente';
+                if (currentFilter === 'excluded') return student.points === 0;
+                
+                return true;
+            });
+            
+            renderStudents(filtered);
+            updateStats(filtered);
+        }
+
+        function updateStats(filteredStudents = students) {
+            const total = filteredStudents.length;
+            const selected = filteredStudents.filter(s => s.statut === 'Sélectionné').length;
+            const waiting = filteredStudents.filter(s => s.statut === 'En attente').length;
+            const excluded = filteredStudents.filter(s => s.points === 0).length;
+            
+            document.getElementById('totalStudents').textContent = total;
+            document.getElementById('selectedStudents').textContent = selected;
+            document.getElementById('waitingStudents').textContent = waiting;
+            document.getElementById('excludedStudents').textContent = excluded;
+        }
+
+        // ==================== MODAL DE MODIFICATION ====================
+        function openEditModal(studentId) {
+            currentEditStudent = students.find(s => s.id === studentId);
+            if (!currentEditStudent) return;
+            
+            const modal = document.getElementById('editModal');
+            document.getElementById('editStudentName').value = 
+                `${currentEditStudent.nom} ${currentEditStudent.prenom}`;
+            document.getElementById('currentPoints').textContent = currentEditStudent.points;
+            document.getElementById('editMandat').value = currentEditStudent.mandat || '';
+            
+            currentPoints = currentEditStudent.points;
+            
+            // Réinitialiser le champ matricule
+            document.getElementById('adminMatricule').value = '';
+            document.getElementById('matriculeError').style.display = 'none';
+            document.getElementById('saveBtn').disabled = true;
+            
+            modal.style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+            currentEditStudent = null;
+        }
+
+        function checkMatricule() {
+            const matricule = document.getElementById('adminMatricule').value;
+            const errorDiv = document.getElementById('matriculeError');
+            const saveBtn = document.getElementById('saveBtn');
+            
+            if (adminMatricules.includes(matricule)) {
+                errorDiv.style.display = 'none';
+                saveBtn.disabled = false;
+                return true;
+            } else {
+                errorDiv.style.display = 'block';
+                saveBtn.disabled = true;
+                return false;
+            }
+        }
+
+        function changePoints(amount) {
+            currentPoints = Math.max(0, Math.min(100, currentPoints + amount));
+            document.getElementById('currentPoints').textContent = currentPoints;
+        }
+
+        function saveChanges() {
+            if (!currentEditStudent || !checkMatricule()) {
+                alert('Veuillez vérifier votre matricule administrateur.');
+                return;
+            }
+            
+            const matricule = document.getElementById('adminMatricule').value;
+            const adminName = adminMatricules.includes(matricule) ? 
+                (matricule === "Birane186@robotic" ? "Birane" : 
+                 matricule === "Salamaprésidentehc@00" ? "Salama" : "Sadiya") : "Admin";
+            
+            // Mettre à jour les données
+            currentEditStudent.points = currentPoints;
+            currentEditStudent.mandat = document.getElementById('editMandat').value;
+            
+            // Si points = 0, marquer comme exclu
+            if (currentPoints === 0) {
+                currentEditStudent.statut = 'Exclus';
+            }
+            
+            // ICI : Sauvegarder dans Google Sheet
+            // À IMPLÉMENTER : Connexion à Google Sheets API
+            
+            // Mettre à jour l'affichage
+            renderStudents();
+            updateStats();
+            
+            // Afficher confirmation
+            alert(`✅ Points mis à jour pour ${currentEditStudent.nom} ${currentEditStudent.prenom}\n` +
+                  `Nouveau score: ${currentPoints} points\n` +
+                  `Modifié par: ${adminName}`);
+            
+            closeEditModal();
+        }
+
+        function showDetails(studentId) {
+            const student = students.find(s => s.id === studentId);
+            if (!student) return;
+            
+            alert(`📋 DÉTAILS COMPLETS\n\n` +
+                  `Nom: ${student.nom} ${student.prenom}\n` +
+                  `Classe: ${student.classe}\n` +
+                  `Club: ${student.club}\n` +
+                  `Statut: ${student.statut}\n` +
+                  `Points: ${student.points}/100\n` +
+                  `Mandat: ${student.mandat || 'Non défini'}\n` +
+                  `Date d'inscription: ${student.dateInscription}`);
+        }
+
+        // ==================== ÉCOUTEURS D'ÉVÉNEMENTS ====================
+        function setupEventListeners() {
+            // Fermer modal en cliquant en dehors
+            document.getElementById('editModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeEditModal();
+                }
+            });
+            
+            // Recherche en temps réel
+            document.getElementById('searchInput').addEventListener('input', filterStudents);
+            
+            // Raccourci clavier : Échap pour fermer modal
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeEditModal();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
