@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hikmah's Club - Connexion Administration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --hikmah-green: #2E8B57;
+            --hikmah-light-green: #3CB371;
+            --hikmah-white: #FFFFFF;
+            --hikmah-gray: #F5F5F5;
+            --hikmah-dark: #1A1A1A;
+            --hikmah-border: #E0E0E0;
+            --hikmah-error: #DC3545;
+            --hikmah-success: #28A745;
+        }
+
+        body {
+            background-color: var(--hikmah-white);
+            font-family: 'Poppins', sans-serif;
+            color: var(--hikmah-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .hikmah-header {
+            background-color: var(--hikmah-white);
+            border-bottom: 2px solid var(--hikmah-green);
+            padding: 1.2rem 0;
+            box-shadow: 0 4px 12px rgba(46, 139, 87, 0.1);
+        }
+
+        .hikmah-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .hikmah-nav {
+                padding: 0 1.5rem;
+            }
+        }
+
+        .hikmah-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .hikmah-logo i {
+            color: var(--hikmah-green);
+            font-size: 2.2rem;
+        }
+
+        .hikmah-logo h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--hikmah-green);
+        }
+
+        .hikmah-logo span {
+            color: var(--hikmah-dark);
+            font-weight: 500;
+        }
+
+        .back-btn {
+            color: var(--hikmah-green);
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: var(--hikmah-light-green);
+            transform: translateX(-5px);
+        }
+
+        /* MAIN CONTENT */
+        .hikmah-main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, rgba(46, 139, 87, 0.05) 0%, rgba(255, 255, 255, 1) 100%);
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--hikmah-white);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--hikmah-border);
+        }
+
+        .login-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
+            color: var(--hikmah-green);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            text-align: center;
+            color: var(--hikmah-dark);
+            opacity: 0.7;
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* FORM */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .form-group label {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: var(--hikmah-dark);
+            font-size: 1rem;
+        }
+
+        .form-group input {
+            padding: 1rem 1.2rem;
+            border: 2px solid var(--hikmah-border);
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: var(--hikmah-white);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--hikmah-green);
+            box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.2);
+        }
+
+        .form-group input.error {
+            border-color: var(--hikmah-error);
+            background-color: rgba(220, 53, 69, 0.05);
+        }
+
+        .form-group input.success {
+            border-color: var(--hikmah-success);
+            background-color: rgba(40, 167, 69, 0.05);
+        }
+
+        .error-message {
+            color: var(--hikmah-error);
+            font-size: 0.9rem;
+            display: none;
+            margin-top: 0.3rem;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .toggle-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--hikmah-dark);
+            opacity: 0.6;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .toggle-btn:hover {
+            opacity: 1;
+        }
+
+        /* SUBMIT BUTTON */
+        .submit-btn {
+            background-color: var(--hikmah-green);
+            color: var(--hikmah-white);
+            border: none;
+            padding: 1.2rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(46, 139, 87, 0.3);
+        }
+
+        .submit-btn:hover {
+            background-color: var(--hikmah-light-green);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(46, 139, 87, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .submit-btn .spinner {
+            display: none;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* WELCOME MESSAGE */
+        .welcome-message {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(46, 139, 87, 0.1), rgba(60, 179, 113, 0.1));
+            border-radius: 15px;
+            margin-top: 2rem;
+            border: 2px solid var(--hikmah-green);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .welcome-message h3 {
+            color: var(--hikmah-green);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-message p {
+            color: var(--hikmah-dark);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .continue-btn {
+            background-color: var(--hikmah-green);
+            color: var(--hikmah-white);
+            border: none;
+            padding: 1rem 2rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .continue-btn:hover {
+            background-color: var(--hikmah-light-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(46, 139, 87, 0.3);
+        }
+
+        /* ADMIN LIST */
+        .admin-list {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--hikmah-border);
+        }
+
+        .admin-list h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--hikmah-green);
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .admin-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem;
+            background: var(--hikmah-gray);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .admin-name {
+            font-weight: 600;
+            color: var(--hikmah-dark);
+        }
+
+        .admin-matricule {
+            color: var(--hikmah-green);
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        /* FOOTER */
+        .hikmah-footer {
+            background-color: var(--hikmah-dark);
+            color: var(--hikmah-white);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .hikmah-footer p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 2rem;
+            }
+            
+            .login-title {
+                font-size: 1.8rem;
+            }
+            
+            .hikmah-nav {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="hikmah-header">
+        <nav class="hikmah-nav">
+            <a href="hikmah-accueil.html" class="hikmah-logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>HIKMAH'S <span>CLUB</span></h1>
+            </a>
+            <a href="hikmah-accueil.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Retour
+            </a>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="hikmah-main">
+        <div class="login-container">
+            <h1 class="login-title">Connexion Administration</h1>
+            <p class="login-subtitle">Accès réservé aux administrateurs du Hikmah's Club</p>
+            
+            <!-- FORMULAIRE DE CONNEXION -->
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Administrateur</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="votre@email.com" 
+                        required
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="matricule">Matricule Personnel</label>
+                    <div class="password-toggle">
+                        <input 
+                            type="password" 
+                            id="matricule" 
+                            name="matricule" 
+                            placeholder="Votre matricule unique" 
+                            required
+                        >
+                        <button type="button" class="toggle-btn" id="toggleMatricule">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="error-message" id="matriculeError">
+                        Matricule incorrect. Veuillez vérifier votre matricule.
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span id="btnText">Se Connecter</span>
+                    <i class="fas fa-spinner spinner" id="btnSpinner"></i>
+                </button>
+            </form>
+
+            <!-- MESSAGE DE BIENVENUE (caché par défaut) -->
+            <div class="welcome-message" id="welcomeMessage">
+                <h3 id="welcomeName">Bienvenue, [Nom] !</h3>
+                <p id="welcomeRole">Connexion réussie en tant qu'administrateur du Hikmah's Club</p>
+                <p>Vous allez être redirigé vers le tableau de bord dans <span id="countdown">5</span> secondes...</p>
+                <a href="hikmah-dashboard.html" class="continue-btn" id="continueBtn">
+                    <i class="fas fa-tachometer-alt"></i> Accéder au Dashboard
+                </a>
+            </div>
+
+            <!-- LISTE DES ADMINISTRATEURS (pour référence) -->
+            <div class="admin-list">
+                <h4>Administrateurs Autorisés</h4>
+                <div class="admin-item">
+                    <span class="admin-name">Birane</span>
+                    <span class="admin-matricule">"Birane186@robotic"</span>
+                </div>
+                <div class="admin-item">
+                    <span class="admin-name">Salama</span>
+                    <span class="admin-matricule">"Salamaprésidentehc@00"</span>
+                </div>
+                <div class="admin-item">
+                    <span class="admin-name">Sadiya</span>
+                    <span class="admin-matricule">"Sadiyaviceprésidentehc@01"</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="hikmah-footer">
+        <p>HIKMAH'S CLUB &copy; 2024 - Plateforme de gestion administrative</p>
+        <p>Accès sécurisé - Réservé aux administrateurs autorisés</p>
+    </footer>
+
+    <script>
+        // LISTE DES ADMINISTRATEURS AUTORISÉS
+        const admins = [
+            { name: "Birane", matricule: "Birane186@robotic" },
+            { name: "Salama", matricule: "Salamaprésidentehc@00" },
+            { name: "Sadiya", matricule: "Sadiyaviceprésidentehc@01" }
+        ];
+
+        // ÉLÉMENTS DU DOM
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const matriculeInput = document.getElementById('matricule');
+        const matriculeError = document.getElementById('matriculeError');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnSpinner = document.getElementById('btnSpinner');
+        const toggleMatriculeBtn = document.getElementById('toggleMatricule');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const welcomeName = document.getElementById('welcomeName');
+        const welcomeRole = document.getElementById('welcomeRole');
+        const countdownElement = document.getElementById('countdown');
+        const continueBtn = document.getElementById('continueBtn');
+
+        // BASCILE VISIBILITÉ MATRICULE
+        toggleMatriculeBtn.addEventListener('click', function() {
+            const type = matriculeInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            matriculeInput.setAttribute('type', type);
+            this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+        });
+
+        // VALIDATION DU FORMULAIRE
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Réinitialiser les erreurs
+            matriculeError.classList.remove('show');
+            matriculeInput.classList.remove('error');
+            
+            // Récupérer les valeurs
+            const email = emailInput.value.trim();
+            const matricule = matriculeInput.value.trim();
+            
+            // Validation basique de l'email
+            if (!email.includes('@') || email.length < 5) {
+                alert('Veuillez entrer un email valide');
+                emailInput.focus();
+                return;
+            }
+            
+            // Vérifier si le matricule est vide
+            if (matricule.length === 0) {
+                matriculeError.textContent = 'Le matricule est requis';
+                matriculeError.classList.add('show');
+                matriculeInput.classList.add('error');
+                matriculeInput.focus();
+                return;
+            }
+            
+            // Afficher le chargement
+            btnText.textContent = 'Vérification...';
+            btnSpinner.style.display = 'inline-block';
+            submitBtn.disabled = true;
+            
+            // Simuler une vérification (2 secondes)
+            setTimeout(() => {
+                // Vérifier le matricule
+                const admin = admins.find(a => a.matricule === matricule);
+                
+                if (admin) {
+                    // SUCCÈS
+                    matriculeInput.classList.add('success');
+                    
+                    // Afficher le message de bienvenue personnalisé
+                    welcomeName.textContent = `Bienvenue, ${admin.name} !`;
+                    
+                    if (admin.name === "Salama") {
+                        welcomeRole.textContent = "Connexion réussie en tant que Présidente du Hikmah's Club";
+                    } else if (admin.name === "Sadiya") {
+                        welcomeRole.textContent = "Connexion réussie en tant que Vice-Présidente du Hikmah's Club";
+                    } else {
+                        welcomeRole.textContent = "Connexion réussie en tant qu'administrateur du Hikmah's Club";
+                    }
+                    
+                    // Sauvegarder dans le localStorage
+                    localStorage.setItem('hikmah_admin_logged_in', 'true');
+                    localStorage.setItem('hikmah_admin_name', admin.name);
+                    localStorage.setItem('hikmah_admin_matricule', admin.matricule);
+                    localStorage.setItem('hikmah_admin_email', email);
+                    
+                    // Cacher le formulaire, afficher le message
+                    loginForm.style.display = 'none';
+                    welcomeMessage.style.display = 'block';
+                    
+                    // Lancer le compte à rebours
+                    startCountdown();
+                    
+                } else {
+                    // ÉCHEC
+                    matriculeError.textContent = 'Matricule incorrect. Vérifiez votre matricule.';
+                    matriculeError.classList.add('show');
+                    matriculeInput.classList.add('error');
+                    matriculeInput.focus();
+                }
+                
+                // Réinitialiser le bouton
+                btnText.textContent = 'Se Connecter';
+                btnSpinner.style.display = 'none';
+                submitBtn.disabled = false;
+                
+            }, 2000); // Fin du timeout
+        });
+
+        // COMPTE À REBOURS POUR REDIRECTION
+        function startCountdown() {
+            let seconds = 5;
+            countdownElement.textContent = seconds;
+            
+            const countdownInterval = setInterval(() => {
+                seconds--;
+                countdownElement.textContent = seconds;
+                
+                if (seconds <= 0) {
+                    clearInterval(countdownInterval);
+                    window.location.href = 'hikmah-dashboard.html';
+                }
+            }, 1000);
+        }
+
+        // REDIRECTION MANUELLE
+        continueBtn.addEventListener('click', function() {
+            window.location.href = 'hikmah-dashboard.html';
+        });
+
+        // VÉRIFIER SI DÉJÀ CONNECTÉ
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('hikmah_admin_logged_in');
+            
+            if (isLoggedIn === 'true') {
+                // Si déjà connecté, rediriger directement
+                window.location.href = 'hikmah-dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>
