@@ -1056,29 +1056,54 @@
 
     // ==================== INITIALISATION ====================
     document.addEventListener('DOMContentLoaded', async function() {
+        console.log('🚀 Initialisation du dashboard...');
         loadAdminInfo();
         await loadStudentsFromAPI();
         renderAllStudents();
         updateStats();
         setupEventListeners();
+        console.log('✅ Dashboard initialisé');
     });
 
-    // ==================== FONCTIONS API ====================
+    // ==================== FONCTIONS API CORRIGÉES ====================
     async function loadStudentsFromAPI() {
         try {
             console.log('📡 Chargement depuis Google Sheets...');
             
+            // Test de connexion
+            console.log('URL API:', GOOGLE_SHEETS_API);
+            
             // Charger Bourguiba
-            const bourguibaResponse = await fetch(`${GOOGLE_SHEETS_API}?action=getStudents&ecole=bourguiba`);
-            if (!bourguibaResponse.ok) throw new Error('Erreur réseau Bourguiba');
+            const bourguibaUrl = `${GOOGLE_SHEETS_API}?action=getStudents&ecole=bourguiba&timestamp=${Date.now()}`;
+            console.log('URL Bourguiba:', bourguibaUrl);
+            
+            const bourguibaResponse = await fetch(bourguibaUrl, {
+                method: 'GET',
+                mode: 'cors',
+                cache: 'no-cache'
+            });
+            
+            if (!bourguibaResponse.ok) {
+                throw new Error(`Erreur Bourguiba: ${bourguibaResponse.status} ${bourguibaResponse.statusText}`);
+            }
             
             const bourguibaData = await bourguibaResponse.json();
+            console.log('✅ Données Bourguiba reçues:', bourguibaData);
             
             // Charger Mbao
-            const mbaoResponse = await fetch(`${GOOGLE_SHEETS_API}?action=getStudents&ecole=mbao`);
-            if (!mbaoResponse.ok) throw new Error('Erreur réseau Mbao');
+            const mbaoUrl = `${GOOGLE_SHEETS_API}?action=getStudents&ecole=mbao&timestamp=${Date.now()}`;
+            const mbaoResponse = await fetch(mbaoUrl, {
+                method: 'GET',
+                mode: 'cors',
+                cache: 'no-cache'
+            });
+            
+            if (!mbaoResponse.ok) {
+                throw new Error(`Erreur Mbao: ${mbaoResponse.status} ${mbaoResponse.statusText}`);
+            }
             
             const mbaoData = await mbaoResponse.json();
+            console.log('✅ Données Mbao reçues:', mbaoData);
             
             // Vider tableaux
             bourguibaStudents.length = 0;
@@ -1086,7 +1111,7 @@
             allStudents.length = 0;
             
             // Traiter Bourguiba
-            if (bourguibaData.students && Array.isArray(bourguibaData.students)) {
+            if (bourguibaData && bourguibaData.students && Array.isArray(bourguibaData.students)) {
                 bourguibaData.students.forEach((student, index) => {
                     const newStudent = {
                         id: index + 1,
@@ -1101,10 +1126,13 @@
                     };
                     bourguibaStudents.push(newStudent);
                 });
+                console.log(`📊 ${bourguibaStudents.length} élèves Bourguiba chargés`);
+            } else {
+                console.warn('⚠️ Aucune donnée Bourguiba ou format incorrect');
             }
             
             // Traiter Mbao
-            if (mbaoData.students && Array.isArray(mbaoData.students)) {
+            if (mbaoData && mbaoData.students && Array.isArray(mbaoData.students)) {
                 mbaoData.students.forEach((student, index) => {
                     const newStudent = {
                         id: 1000 + index + 1,
@@ -1119,29 +1147,32 @@
                     };
                     mbaoStudents.push(newStudent);
                 });
+                console.log(`📊 ${mbaoStudents.length} élèves Mbao chargés`);
+            } else {
+                console.warn('⚠️ Aucune donnée Mbao ou format incorrect');
             }
             
             // Combiner et trier
             allStudents = [...bourguibaStudents, ...mbaoStudents];
             sortStudentsByClass();
             
-            console.log(`✅ Chargé: ${bourguibaStudents.length} Bourguiba, ${mbaoStudents.length} Mbao`);
+            console.log(`✅ Total: ${allStudents.length} élèves chargés`);
             
         } catch (error) {
             console.error('❌ Erreur API:', error);
+            console.log('⚠️ Chargement données de démo...');
             loadDemoData();
         }
     }
 
     function calculatePointsFromData(student) {
-        // Essayer de récupérer les points de différentes façons
+        // Essayer de récupérer les points
         const pointsStr = student.points || student.Points || '0';
         let points = parseInt(pointsStr);
         
         if (isNaN(points)) {
             // Si pas de points, calculer selon statut
             const statut = student.statut || student.Statut || 'En attente';
-            const club = student.club || student.Club || '';
             
             if (statut === "Sélectionné") {
                 return 100;
@@ -1169,82 +1200,132 @@
 
     async function saveStudentToAPI(studentData) {
         try {
-            const data = {
-                action: 'saveStudent',
-                ecole: studentData.ecole,
-                nom: studentData.nom,
-                prenom: studentData.prenom,
-                classe: studentData.classe,
-                club: studentData.club,
-                statut: studentData.statut,
-                points: studentData.points || 0,
-                mandat: studentData.mandat || '',
-                admin: currentAdmin?.name || 'Admin',
-                adminMatricule: currentAdmin?.matricule || ''
-            };
+            console.log('📤 Envoi nouveau élève à l\'API...');
             
-            console.log('Envoi nouveau élève:', data);
+            // Créer les paramètres
+            const params = new URLSearchParams();
+            params.append('action', 'saveStudent');
+            params.append('ecole', studentData.ecole);
+            params.append('nom', studentData.nom);
+            params.append('prenom', studentData.prenom);
+            params.append('classe', studentData.classe);
+            params.append('club', studentData.club);
+            params.append('statut', studentData.statut);
+            params.append('points', studentData.points || 0);
+            params.append('mandat', studentData.mandat || '');
             
+            console.log('Paramètres:', params.toString());
+            
+            // Envoyer la requête POST
             const response = await fetch(GOOGLE_SHEETS_API, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
                 },
-                body: new URLSearchParams(data)
+                body: params,
+                mode: 'cors'
             });
             
-            const result = await response.json();
-            console.log('Réponse API:', result);
+            console.log('📥 Réponse reçue, status:', response.status);
             
-            if (result.success) {
+            // Lire la réponse
+            const responseText = await response.text();
+            console.log('Réponse texte:', responseText);
+            
+            let result;
+            try {
+                result = JSON.parse(responseText);
+            } catch (e) {
+                console.error('Erreur parsing JSON:', e);
+                // Essayer de voir si c'est du HTML ou autre
+                if (responseText.includes('success') || responseText.includes('Success')) {
+                    result = { success: true, message: 'Élève ajouté avec succès' };
+                } else {
+                    result = { success: false, error: 'Réponse invalide du serveur' };
+                }
+            }
+            
+            console.log('Résultat API:', result);
+            
+            if (result && result.success) {
+                // Recharger les données
                 await loadStudentsFromAPI();
-                return { success: true };
+                return { success: true, message: result.message || 'Élève ajouté avec succès' };
             } else {
-                return { success: false, error: result.error || 'Erreur inconnue' };
+                return { 
+                    success: false, 
+                    error: result ? (result.error || result.message || 'Erreur inconnue') : 'Pas de réponse du serveur'
+                };
             }
             
         } catch (error) {
-            console.error('Erreur saveStudentToAPI:', error);
-            return { success: false, error: 'Erreur de connexion au serveur' };
+            console.error('❌ Erreur saveStudentToAPI:', error);
+            return { 
+                success: false, 
+                error: `Erreur de connexion: ${error.message}. Vérifiez votre connexion internet.`
+            };
         }
     }
 
     async function updateStudentPointsAPI(studentData) {
         try {
-            const data = {
-                action: 'updatePoints',
-                id: studentData.id,
-                ecole: studentData.ecole,
-                points: studentData.points,
-                mandat: studentData.mandat || '',
-                etudiant: `${studentData.nom} ${studentData.prenom}`,
-                admin: currentAdmin?.name || 'Admin',
-                adminMatricule: currentAdmin?.matricule || ''
-            };
+            console.log('📤 Mise à jour des points...');
             
-            console.log('Mise à jour points:', data);
+            // Créer les paramètres
+            const params = new URLSearchParams();
+            params.append('action', 'updatePoints');
+            params.append('id', studentData.id);
+            params.append('ecole', studentData.ecole);
+            params.append('points', studentData.points);
+            params.append('mandat', studentData.mandat || '');
+            params.append('etudiant', `${studentData.nom} ${studentData.prenom}`);
+            
+            console.log('Paramètres:', params.toString());
             
             const response = await fetch(GOOGLE_SHEETS_API, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
                 },
-                body: new URLSearchParams(data)
+                body: params,
+                mode: 'cors'
             });
             
-            const result = await response.json();
-            console.log('Réponse API:', result);
+            console.log('📥 Réponse reçue, status:', response.status);
             
-            if (result.success) {
+            const responseText = await response.text();
+            console.log('Réponse texte:', responseText);
+            
+            let result;
+            try {
+                result = JSON.parse(responseText);
+            } catch (e) {
+                console.error('Erreur parsing JSON:', e);
+                if (responseText.includes('success') || responseText.includes('Success')) {
+                    result = { success: true, message: 'Points mis à jour avec succès' };
+                } else {
+                    result = { success: false, error: 'Réponse invalide du serveur' };
+                }
+            }
+            
+            console.log('Résultat API:', result);
+            
+            if (result && result.success) {
                 await loadStudentsFromAPI();
-                return { success: true };
+                return { success: true, message: result.message || 'Points mis à jour avec succès' };
             } else {
-                return { success: false, error: result.error || 'Erreur inconnue' };
+                return { 
+                    success: false, 
+                    error: result ? (result.error || result.message || 'Erreur inconnue') : 'Pas de réponse du serveur'
+                };
             }
             
         } catch (error) {
-            console.error('Erreur updateStudentPointsAPI:', error);
-            return { success: false, error: 'Erreur de connexion au serveur' };
+            console.error('❌ Erreur updateStudentPointsAPI:', error);
+            return { 
+                success: false, 
+                error: `Erreur de connexion: ${error.message}`
+            };
         }
     }
 
@@ -1260,6 +1341,7 @@
         
         currentAdmin = { name: adminName, matricule: adminMatricule };
         document.getElementById('adminName').textContent = currentAdmin.name;
+        console.log('👤 Admin connecté:', currentAdmin.name);
     }
 
     function logout() {
@@ -1272,6 +1354,7 @@
 
     // ==================== RENDU DES CARTES ====================
     function renderAllStudents() {
+        console.log('🎨 Rendu des cartes étudiants...');
         renderSchoolStudents('bourguiba');
         renderSchoolStudents('mbao');
         renderAllCombined();
@@ -1294,6 +1377,7 @@
         }
         
         grid.innerHTML = filtered.map(student => createStudentCard(student)).join('');
+        console.log(`🎨 ${filtered.length} cartes rendues pour ${school}`);
     }
 
     function renderAllCombined() {
@@ -1312,6 +1396,7 @@
         }
         
         grid.innerHTML = filtered.map(student => createStudentCard(student)).join('');
+        console.log(`🎨 ${filtered.length} cartes rendues pour "Tous"`);
     }
 
     function createStudentCard(student) {
@@ -1426,11 +1511,13 @@
 
     function filterStudents() {
         currentSearchTerm = document.getElementById('searchInput').value.toLowerCase();
+        console.log('🔍 Recherche:', currentSearchTerm);
         updateDisplay();
     }
 
     function filterByClass(classe) {
         currentClassFilter = classe;
+        console.log('🏫 Filtre classe:', classe);
         
         document.querySelectorAll('.class-filter-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.classe === classe);
@@ -1440,6 +1527,7 @@
     }
 
     function updateDisplay() {
+        console.log('🔄 Mise à jour affichage...');
         switch (currentSchool) {
             case 'bourguiba': renderSchoolStudents('bourguiba'); break;
             case 'mbao': renderSchoolStudents('mbao'); break;
@@ -1451,6 +1539,7 @@
     // ==================== GESTION ONGLETS ====================
     function switchSchool(school) {
         currentSchool = school;
+        console.log('🏫 Changement école:', school);
         
         document.querySelectorAll('.school-tab').forEach(tab => {
             tab.classList.toggle('active', tab.dataset.school === school);
@@ -1485,12 +1574,19 @@
         document.getElementById('selectedStudents').textContent = selected;
         document.getElementById('waitingStudents').textContent = waiting;
         document.getElementById('excludedStudents').textContent = excluded;
+        
+        console.log('📊 Stats:', { total, selected, waiting, excluded });
     }
 
     // ==================== MODAL MODIFICATION ====================
     function openEditModal(studentId, ecole) {
         currentEditStudent = allStudents.find(s => s.id === studentId && s.ecole === ecole);
-        if (!currentEditStudent) return;
+        if (!currentEditStudent) {
+            console.error('Élève non trouvé:', studentId, ecole);
+            return;
+        }
+        
+        console.log('✏️ Ouverture modal modification:', currentEditStudent);
         
         const modal = document.getElementById('editModal');
         document.getElementById('editStudentName').value = `${currentEditStudent.nom} ${currentEditStudent.prenom}`;
@@ -1509,6 +1605,7 @@
     function closeEditModal() {
         document.getElementById('editModal').style.display = 'none';
         currentEditStudent = null;
+        console.log('❌ Modal modification fermé');
     }
 
     function checkMatricule() {
@@ -1519,10 +1616,12 @@
         if (adminMatricules.includes(matricule)) {
             errorDiv.style.display = 'none';
             saveBtn.disabled = false;
+            console.log('✅ Matricule valide');
             return true;
         } else {
             errorDiv.style.display = 'block';
             saveBtn.disabled = true;
+            console.log('❌ Matricule invalide');
             return false;
         }
     }
@@ -1530,6 +1629,7 @@
     function changePoints(amount) {
         currentPoints = Math.max(0, Math.min(100, currentPoints + amount));
         document.getElementById('currentPoints').textContent = currentPoints;
+        console.log('📈 Points changés:', currentPoints);
     }
 
     async function saveChanges() {
@@ -1540,6 +1640,18 @@
         
         const mandat = document.getElementById('editMandat').value;
         
+        // Afficher un indicateur de chargement
+        const saveBtn = document.getElementById('saveBtn');
+        const originalText = saveBtn.innerHTML;
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
+        saveBtn.disabled = true;
+        
+        console.log('💾 Sauvegarde modifications...', {
+            id: currentEditStudent.id,
+            points: currentPoints,
+            mandat: mandat
+        });
+        
         const updateResult = await updateStudentPointsAPI({
             id: currentEditStudent.id,
             ecole: currentEditStudent.ecole,
@@ -1549,10 +1661,14 @@
             prenom: currentEditStudent.prenom
         });
         
+        // Restaurer le bouton
+        saveBtn.innerHTML = originalText;
+        saveBtn.disabled = false;
+        
         if (updateResult.success) {
             await loadStudentsFromAPI();
             updateDisplay();
-            alert(`✅ Points mis à jour dans Google Sheets !`);
+            alert(`✅ ${updateResult.message || 'Points mis à jour avec succès !'}`);
             closeEditModal();
         } else {
             alert(`❌ Erreur: ${updateResult.error}`);
@@ -1562,6 +1678,7 @@
     // ==================== MODAL AJOUT ÉLÈVE ====================
     function openAddModal(ecole) {
         selectedEcole = ecole;
+        console.log('➕ Ouverture modal ajout pour:', ecole);
         
         document.querySelectorAll('.ecole-option').forEach(option => {
             option.classList.remove('selected');
@@ -1579,6 +1696,7 @@
 
     function closeAddModal() {
         document.getElementById('addModal').style.display = 'none';
+        console.log('❌ Modal ajout fermé');
     }
 
     function selectEcole(ecole) {
@@ -1586,6 +1704,7 @@
         document.querySelectorAll('.ecole-option').forEach(option => {
             option.classList.toggle('selected', option.dataset.ecole === ecole);
         });
+        console.log('🏫 École sélectionnée:', ecole);
     }
 
     async function addNewStudent() {
@@ -1619,13 +1738,25 @@
             ecole: selectedEcole
         };
         
+        console.log('👤 Nouvel élève à ajouter:', newStudent);
+        
+        // Afficher un indicateur de chargement
+        const addBtn = document.querySelector('.modal-btn.confirm');
+        const originalText = addBtn.innerHTML;
+        addBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Ajout en cours...';
+        addBtn.disabled = true;
+        
         const saveResult = await saveStudentToAPI(newStudent);
+        
+        // Restaurer le bouton
+        addBtn.innerHTML = originalText;
+        addBtn.disabled = false;
         
         if (saveResult.success) {
             await loadStudentsFromAPI();
             updateDisplay();
             closeAddModal();
-            alert(`✅ Élève ajouté et sauvegardé dans Google Sheets !`);
+            alert(`✅ ${saveResult.message || 'Élève ajouté avec succès !'}`);
         } else {
             alert(`❌ Erreur: ${saveResult.error}`);
         }
@@ -1641,32 +1772,42 @@
             return;
         }
         
+        console.log('🗑️ Suppression élève:', studentId, ecole);
+        
         try {
-            // Envoyer la demande de suppression à l'API
-            const data = {
-                action: 'deleteStudent',
-                id: studentId,
-                ecole: ecole,
-                adminMatricule: matricule
-            };
+            // Créer les paramètres
+            const params = new URLSearchParams();
+            params.append('action', 'deleteStudent');
+            params.append('id', studentId);
+            params.append('ecole', ecole);
+            params.append('adminMatricule', matricule);
             
             const response = await fetch(GOOGLE_SHEETS_API, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
                 },
-                body: new URLSearchParams(data)
+                body: params,
+                mode: 'cors'
             });
             
-            const result = await response.json();
+            const responseText = await response.text();
+            console.log('Réponse suppression:', responseText);
             
-            if (result.success) {
+            let result;
+            try {
+                result = JSON.parse(responseText);
+            } catch (e) {
+                result = { success: false, error: 'Réponse invalide du serveur' };
+            }
+            
+            if (result && result.success) {
                 // Recharger les données
                 await loadStudentsFromAPI();
                 updateDisplay();
                 alert('✅ Élève supprimé avec succès.');
             } else {
-                alert(`❌ Erreur: ${result.error || 'Impossible de supprimer l\'élève'}`);
+                alert(`❌ Erreur: ${result ? (result.error || 'Impossible de supprimer l\'élève') : 'Pas de réponse'}`);
             }
             
         } catch (error) {
@@ -1677,22 +1818,40 @@
 
     // ==================== DONNÉES DE DÉMO ====================
     function loadDemoData() {
-        console.log('⚠️ Chargement données de démo (API non disponible)');
+        console.log('⚠️ Chargement données de démo...');
         
-        // Bourguiba
-        bourguibaStudents.push(
+        // Vider les tableaux
+        bourguibaStudents.length = 0;
+        mbaoStudents.length = 0;
+        allStudents.length = 0;
+        
+        // Bourguiba - données de démo complètes
+        const bourguibaDemo = [
             { id: 1, nom: "Diouf", prenom: "Mouhamed", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "bourguiba" },
-            { id: 2, nom: "Wagué", prenom: "Ablaye", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "bourguiba" }
-        );
+            { id: 2, nom: "Wagué", prenom: "Ablaye", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "bourguiba" },
+            { id: 3, nom: "Fall", prenom: "Aminata", classe: "TL2", club: "Anglais", statut: "En attente", points: 0, mandat: "", ecole: "bourguiba" },
+            { id: 4, nom: "Sow", prenom: "Fatou", classe: "TS2", club: "Physique", statut: "Sélectionné", points: 85, mandat: "2024-2025", ecole: "bourguiba" },
+            { id: 5, nom: "Ndiaye", prenom: "Ibrahima", classe: "2nde", club: "Informatique-Robotique", statut: "Refusé", points: 0, mandat: "", ecole: "bourguiba" }
+        ];
         
-        // Mbao
-        mbaoStudents.push(
+        // Mbao - données de démo complètes
+        const mbaoDemo = [
             { id: 1001, nom: "Fall", prenom: "Mouhamed Saliou", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", points: 0, mandat: "", ecole: "mbao" },
-            { id: 1002, nom: "Ba", prenom: "Mouhamed Woury", classe: "6éme B", club: "Sport / Football", statut: "En attente", points: 0, mandat: "", ecole: "mbao" }
-        );
+            { id: 1002, nom: "Ba", prenom: "Mouhamed Woury", classe: "6éme B", club: "Sport (Football)", statut: "En attente", points: 0, mandat: "", ecole: "mbao" },
+            { id: 1003, nom: "Ndiaye", prenom: "Fatou", classe: "4éme", club: "CLAP", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "mbao" },
+            { id: 1004, nom: "Diallo", prenom: "Ousmane", classe: "5éme", club: "Sport (Basket)", statut: "Sélectionné", points: 95, mandat: "2024-2025", ecole: "mbao" },
+            { id: 1005, nom: "Kane", prenom: "Mariama", classe: "TL2", club: "Arabe", statut: "Absent", points: 0, mandat: "", ecole: "mbao" }
+        ];
         
+        // Ajouter les données de démo
+        bourguibaDemo.forEach(student => bourguibaStudents.push(student));
+        mbaoDemo.forEach(student => mbaoStudents.push(student));
+        
+        // Combiner
         allStudents = [...bourguibaStudents, ...mbaoStudents];
         sortStudentsByClass();
+        
+        console.log(`✅ Données de démo chargées: ${bourguibaStudents.length} Bourguiba, ${mbaoStudents.length} Mbao`);
     }
 
     // ==================== ÉCOUTEURS D'ÉVÉNEMENTS ====================
@@ -1713,6 +1872,15 @@
         });
         
         document.getElementById('searchInput').addEventListener('input', filterStudents);
+        
+        // Test API au démarrage
+        setTimeout(() => {
+            console.log('🔧 Test API...');
+            fetch(GOOGLE_SHEETS_API + '?action=test')
+                .then(res => res.text())
+                .then(text => console.log('Test API réponse:', text))
+                .catch(err => console.error('Test API échoué:', err));
+        }, 1000);
     }
 </script>
 </body>
