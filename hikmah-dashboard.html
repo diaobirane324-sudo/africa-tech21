@@ -1031,13 +1031,6 @@
     </footer>
 
 <script>
-    // ==================== CONFIGURATION API ====================
-    const GOOGLE_SHEETS_API = "https://script.google.com/macros/s/AKfycbyHAqVpT0Pd8Aa-CIFx4z_5Hc3yxIRQ8pnr90gSktc4BIEcoCh9avXxJEdRwnKMDZU/exec";
-    
-    // ==================== DONNÉES ====================
-    const bourguibaStudents = [];
-    const mbaoStudents = [];
-
     // ==================== VARIABLES GLOBALES ====================
     let currentAdmin = null;
     let allStudents = [];
@@ -1054,141 +1047,377 @@
         "Sadiyaviceprésidentehc@01"
     ];
 
+    // ==================== DONNÉES DES ÉLÈVES MBAO ====================
+    const mbaoStudentsData = [
+        // 6éme B
+        { nom: "Fall", prenom: "Mouhamed Saliou", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 8, mandat: "" },
+        { nom: "Ba", prenom: "Mouhamed Woury", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Soumaré", prenom: "Mouhamed", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 7, mandat: "" },
+        { nom: "Ndiaye", prenom: "Mouhamed Al Bachir", classe: "6éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
+        { nom: "Ndiaye", prenom: "Mouhamed Al Bachir", classe: "6éme B", club: "Anglais", statut: "Sélectionné", totaux: 10, mandat: "2024-2025" },
+        { nom: "Paye", prenom: "Ahmad Imran", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 9, mandat: "" },
+        { nom: "Sako", prenom: "Yoba Moussa", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Sako", prenom: "Yoba Moussa", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 9, mandat: "" },
+        { nom: "Ba", prenom: "Abdoul Aziz", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Ba", prenom: "Abdoul Aziz", classe: "6éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 10, mandat: "" },
+        { nom: "Coulibaly", prenom: "Mouhamed Abdallah", classe: "6éme B", club: "Sport", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Coulibaly", prenom: "Mouhamed Abdallah", classe: "6éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+        { nom: "Wilson", prenom: "Aboubacry Sadikh", classe: "6éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+        { nom: "Maiga", prenom: "Abdourahmane", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Maiga", prenom: "Abdourahmane", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 9, mandat: "" },
+        { nom: "Niang", prenom: "Mouhamed", classe: "6éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 10, mandat: "" },
+        { nom: "Niang", prenom: "Mouhamed", classe: "6éme B", club: "Arabe", statut: "Sélectionné", totaux: 10, mandat: "2024-2025" },
+        { nom: "Niang", prenom: "Mouhamed Sakhir", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Niang", prenom: "Mouhamed Sakhir", classe: "6éme B", club: "Arabe", statut: "Sélectionné", totaux: 10, mandat: "2024-2025" },
+        { nom: "Tine", prenom: "Ahmad Fatih", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 9, mandat: "" },
+        { nom: "Ka", prenom: "Mangoné", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Ka", prenom: "Mangoné", classe: "6éme B", club: "Anglais", statut: "Sélectionné", totaux: 9, mandat: "2024-2025" },
+        { nom: "Touré", prenom: "Mouhamed Salih", classe: "6éme B", club: "Sport", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Sow", prenom: "Issa", classe: "6éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
+        { nom: "Ba", prenom: "Mouhamadou Aminy", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Fall", prenom: "Mouhamed", classe: "6éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+        { nom: "Ba", prenom: "Amadou Tidiane", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Diouf", prenom: "Cheikhou", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Diouf", prenom: "Cheikhou", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 8, mandat: "" },
+        { nom: "Gueye", prenom: "Cheikh Matsarr", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Gueye", prenom: "Cheikh Matsarr", classe: "6éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
+
+        // 5éme B
+        { nom: "Diol", prenom: "Yaye Aminata", classe: "5éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 10, mandat: "" },
+        { nom: "Diol", prenom: "Yaye Aminata", classe: "5éme B", club: "Anglais", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
+        { nom: "Fall", prenom: "Fatima", classe: "5éme B", club: "Sport / Taekwondo", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Fall", prenom: "Fatima", classe: "5éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 6, mandat: "" },
+        { nom: "Have", prenom: "Ndeye Arame Fatima", classe: "5éme B", club: "Sport / Taekwondo", statut: "En attente", totaux: 1, mandat: "" },
+        { nom: "Have", prenom: "Ndeye Arame Fatima", classe: "5éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
+        { nom: "Séne", prenom: "Aby", classe: "5éme B", club: "Sport / Basket", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Séne", prenom: "Aby", classe: "5éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 5, mandat: "" },
+        { nom: "Sylla", prenom: "Fatima Tamar", classe: "5éme B", club: "Anglais", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+        { nom: "Sylla", prenom: "Fatima Tamar", classe: "5éme B", club: "Biochimie", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Diop", prenom: "Aida mbéne", classe: "5éme B", club: "Anglais", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Diop", prenom: "Aida Mbéne", classe: "5éme B", club: "CLAP", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Dieng", prenom: "Aminata Manoumbé", classe: "5éme B", club: "Anglais", statut: "Sélectionné", totaux: 11, mandat: "2024-2025" },
+        { nom: "Dieng", prenom: "Aminata Manoumbé", classe: "5éme B", club: "Physique", statut: "Sélectionné", totaux: 9, mandat: "2024-2025" },
+        { nom: "Diaw", prenom: "Aboubacar", classe: "5éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Diaw", prenom: "Aboubacar", classe: "5éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
+        { nom: "Mboup", prenom: "Mouhamed Moustapha", classe: "5éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Niang", prenom: "Maryam", classe: "5éme B", club: "CLAP", statut: "Refusé", totaux: 4, mandat: "" },
+        { nom: "Niang", prenom: "Maryam", classe: "5éme B", club: "Sport / Karaté", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Paye", prenom: "Fatimata Bintou", classe: "5éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 6, mandat: "" },
+        { nom: "Hussein", prenom: "Souad Omar El backry", classe: "5éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 10, mandat: "" },
+        { nom: "Sy", prenom: "Oumou Kalsoum", classe: "5éme B", club: "Sport / Basket", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Sy", prenom: "Oumou Kalsoum", classe: "5éme B", club: "Anglais", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+        { nom: "Touré", prenom: "Adjia Yacine", classe: "5éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+        { nom: "NDOUR", prenom: "Coumba", classe: "5éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
+        { nom: "NDOUR", prenom: "Coumba", classe: "5éme B", club: "Anglais", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
+        { nom: "Hane", prenom: "Diamilatou", classe: "5éme B", club: "CLAP", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+        { nom: "Hane", prenom: "Diamilatou", classe: "5éme B", club: "Physique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
+        { nom: "Séne", prenom: "pape Daouda", classe: "5éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Séne", prenom: "pape Daouda", classe: "5éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
+        { nom: "Kébé", prenom: "Fatima", classe: "5éme B", club: "Anglais", statut: "Sélectionné", totaux: 10, mandat: "2024-2025" },
+        { nom: "Manga", prenom: "Mouhamed", classe: "5éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
+        { nom: "Manga", prenom: "Mouhamed", classe: "5éme B", club: "Physique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
+        { nom: "Diop", prenom: "Ndeye Aby", classe: "5éme B", club: "Sport", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Diop", prenom: "Ndeye Aby", classe: "5éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Sow", prenom: "Rougui", classe: "5éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
+        { nom: "Sow", prenom: "Rougui", classe: "5éme B", club: "Biochimie", statut: "Sélectionné", totaux: 8, mandat: "2024-2025" },
+        { nom: "Jaiteh", prenom: "Matidah", classe: "5éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
+        { nom: "Jaiteh", prenom: "Maidah", classe: "5éme B", club: "Biochimie", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
+        { nom: "Diallo", prenom: "Diamilatou", classe: "5éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
+        { nom: "Diallo", prenom: "Diamilatou", classe: "5éme B", club: "Physique", statut: "Sélectionné", totaux: 10, mandat: "2024-2025" },
+        { nom: "Loum", prenom: "Abdallah", classe: "5éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Loum", prenom: "Abdallah", classe: "5éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 9, mandat: "" },
+        { nom: "Ba", prenom: "Alpha El Makhtar", classe: "5éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 10, mandat: "" },
+        { nom: "Ba", prenom: "Alpha El Makhtar", classe: "5éme B", club: "Anglais", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
+        { nom: "Dia", prenom: "Mariéme Arame", classe: "5éme B", club: "Sport / Volle ball", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Dia", prenom: "Mariéme Arame", classe: "5éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 9, mandat: "" },
+        { nom: "Diallo", prenom: "Abdou Raouf Khatab", classe: "5éme B", club: "CLAP", statut: "Refusé", totaux: 4, mandat: "" },
+        { nom: "Diallo", prenom: "Abdou Raouf Khatab", classe: "5éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Thioune", prenom: "Fatimatou", classe: "5éme B", club: "CLAP", statut: "Sélectionné", totaux: 7, mandat: "2024-2025" },
+        { nom: "Thioune", prenom: "Fatimatou", classe: "5éme B", club: "Arabe", statut: "Sélectionné", totaux: 7, mandat: "2024-2025" },
+
+        // 6éme A
+        { nom: "Ba", prenom: "Oumy", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Ba", prenom: "Oumy", classe: "6éme A", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Loum", prenom: "Awa", classe: "6éme A", club: "Physique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Loum", prenom: "Awa", classe: "6éme A", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Siaman", prenom: "Khadja", classe: "6éme A", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Siaman", prenom: "Khadja", classe: "6éme A", club: "Physique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Sarr", prenom: "Oumou Khairy", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Sarr", prenom: "Oumou Khairy", classe: "6éme A", club: "Arabe", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Séne", prenom: "Amina", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Séne", prenom: "Amina", classe: "6éme A", club: "CLAP", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Seck", prenom: "Ndeye Mama", classe: "6éme A", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Seck", prenom: "Ndeye Mama", classe: "6éme A", club: "Physique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Ba", prenom: "Fatimata", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
+        { nom: "Barry", prenom: "Fatimata", classe: "6éme A", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Barry", prenom: "Fatimata", classe: "6éme A", club: "physique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
+        { nom: "Baldé", prenom: "Awa", classe: "6éme A", club: "Arabe", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
+        { nom: "Baldé", prenom: "Awa", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
+        { nom: "Fall", prenom: "Madjiguéne", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Fall", prenom: "Madjiguéne", classe: "6éme A", club: "Physique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Diouf", prenom: "Bitty", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Mballo", prenom: "Fatoumata", classe: "6éme A", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+        { nom: "Mballo", prenom: "Fatoumata", classe: "6éme A", club: "Physique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+        { nom: "Sagna", prenom: "Fatoumata", classe: "6éme A", club: "Biochimie", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Sagna", prenom: "Fatoumata", classe: "6éme A", club: "Physique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Diop", prenom: "Ramatoulahi", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Talla", prenom: "Aissatou", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 19, mandat: "2024-2025" },
+        { nom: "Ndiaye", prenom: "Mariame", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Ndiaye", prenom: "Fatou Kiné", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Ndiaye", prenom: "Fatou Kiné", classe: "6éme A", club: "Arabe", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Kébé", prenom: "Boury", classe: "6éme A", club: "CLAP", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
+        { nom: "Djialéne", prenom: "Awa", classe: "6éme A", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
+        { nom: "Ndiaye", prenom: "Aicha", classe: "6éme A", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
+        { nom: "Ndiaye", prenom: "Aicha", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
+        { nom: "Djialéne", prenom: "Awa", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
+        { nom: "Ndiaye", prenom: "Mariame", classe: "6éme A", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Basse", prenom: "Aissata", classe: "6éme A", club: "Biochimie", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+        { nom: "Basse", prenom: "Aissata", classe: "6éme A", club: "CLAP", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+
+        // 4éme
+        { nom: "Pouye", prenom: "Abdourahmane", classe: "4éme", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Pouye", prenom: "Abdourahmane", classe: "4éme", club: "Biochimie", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Diop", prenom: "Ndeye Anta", classe: "4éme", club: "CLAP", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Diop", prenom: "Ndeye Anta", classe: "4éme", club: "Physique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Seydi", prenom: "Mariama", classe: "4éme", club: "Anglais", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
+        { nom: "Diao", prenom: "Fatima", classe: "4éme", club: "CLAP", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
+        { nom: "Gning", prenom: "Coumba Malick", classe: "4éme", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Seck", prenom: "Adjia Awa", classe: "4éme", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
+        { nom: "Baldé", prenom: "Al hassan", classe: "4éme", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
+        { nom: "Ngom", prenom: "Daouda", classe: "4éme", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
+        { nom: "Ba", prenom: "Dieynaba", classe: "4éme", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Ba", prenom: "Halimatou", classe: "4éme", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
+        { nom: "Pouye", prenom: "Penda", classe: "4éme", club: "CLAP", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "sow", prenom: "Fatima", classe: "4éme", club: "Sport", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Sow", prenom: "Hafsatou", classe: "4éme", club: "Biochimie", statut: "Sélectionné", totaux: 10, mandat: "2024-2025" },
+        { nom: "Badji", prenom: "Abdoulaye", classe: "4éme", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Dieng", prenom: "Fatou", classe: "4éme", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
+        { nom: "Dieng", prenom: "Fatou", classe: "4éme", club: "CLAP", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
+
+        // 2nde S
+        { nom: "Maiga", prenom: "Khadja", classe: "2nde S", club: "Physique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Siaman", prenom: "Oufaly", classe: "2nde S", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
+        { nom: "Basse", prenom: "Cheikh Habibou", classe: "2nde S", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
+        { nom: "Diop", prenom: "Maman Aissatou Fassa", classe: "2nde S", club: "CLAP", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Diop", prenom: "Maman Aissatou Fassa", classe: "2nde S", club: "Physique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Lô", prenom: "Amina", classe: "2nde S", club: "Biochimie", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
+        { nom: "Lô", prenom: "Amina", classe: "2nde S", club: "Anglais", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
+        { nom: "Tine", prenom: "Sokhna Moumy Mbacké", classe: "2nde S", club: "Anglais", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
+        { nom: "Tine", prenom: "Sokhna Moumy Mbacké", classe: "2nde S", club: "Informatique-robotique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
+        { nom: "Kane", prenom: "Ibrahima", classe: "2nde S", club: "Informatique-robotique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Bane", prenom: "Malick", classe: "2nde S", club: "Informatique-robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
+        { nom: "Kane", prenom: "Mame Anna", classe: "2nde S", club: "Anglais", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
+        { nom: "Kane", prenom: "Mame Anna", classe: "2nde S", club: "Physique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
+        { nom: "Barry", prenom: "Mariama", classe: "2nde S", club: "Anglais", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Diaby", prenom: "Aboubacar", classe: "2nde S", club: "Informatique-robotique", statut: "En attente", totaux: 11, mandat: "" },
+        { nom: "Diaby", prenom: "Aboubacar", classe: "2nde S", club: "Physique", statut: "Sélectionné", totaux: 11, mandat: "2024-2025" },
+        { nom: "Badji", prenom: "Aminata", classe: "2nde S", club: "Biologie", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+        { nom: "Bâ", prenom: "Awa Sadikhatou", classe: "2nde S", club: "Physique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
+        { nom: "Bâ", prenom: "Awa Sadikhatou", classe: "2nde S", club: "Anglais", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
+        { nom: "Badji", prenom: "Nassiroudine", classe: "2nde S", club: "Informatique-robotique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
+        { nom: "Badji", prenom: "Nassiroudine", classe: "2nde S", club: "Arabe", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
+        { nom: "Loum", prenom: "Aboubacar", classe: "2nde S", club: "Informatique-robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
+        { nom: "Loum", prenom: "Aboubacar", classe: "2nde S", club: "Sport / FOOTBALL", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Sow", prenom: "Ousmane", classe: "2nde S", club: "Informatique-robotique", statut: "En attente", totaux: 11, mandat: "" },
+        { nom: "Sow", prenom: "Ousmane", classe: "2nde S", club: "Sport / FOOTBALL", statut: "En attente", totaux: 0, mandat: "" },
+
+        // 1ére S2
+        { nom: "Thiam", prenom: "Fatimatou", classe: "1ére S2", club: "Biochimie", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Thiam", prenom: "Fatimatou", classe: "1ére S2", club: "Anglais", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Diop", prenom: "Sokhna Momy Mbacké", classe: "1ére S2", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
+        { nom: "Diop", prenom: "Sokhna Momy Mbacké", classe: "1ére S2", club: "Biochimie", statut: "Sélectionné", totaux: 11, mandat: "2024-2025" },
+        { nom: "Diouf", prenom: "Abdoul Malick", classe: "1ére S2", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
+        { nom: "Ba", prenom: "Maryam", classe: "1ére S2", club: "Biochimie", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
+        { nom: "Ba", prenom: "Maryam", classe: "1ére S2", club: "Physique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
+        { nom: "Touré", prenom: "Babacar", classe: "1ére S2", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Diol", prenom: "Mouhamed Nabi", classe: "1ére S2", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+        { nom: "Diaby", prenom: "Ansoumane Taha", classe: "1ére S2", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
+        { nom: "Clédjio", prenom: "Yaye AÏcha", classe: "1er S2", club: "Biochimie", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
+        { nom: "Pouye", prenom: "Mouhamed Aboubakr", classe: "1er S2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Diallo", prenom: "Thierno Abass", classe: "1er S2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+        { nom: "Have", prenom: "Mouhamed Ngoné", classe: "1er S2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
+        { nom: "Diouf", prenom: "Mouhamadou Al Amine", classe: "1er S2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+        { nom: "Diamé", prenom: "Mouhamed", classe: "1er S2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
+        { nom: "Sagna", prenom: "Mariama", classe: "1er S2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+        { nom: "Diop", prenom: "Mouhamadoul Moustapha", classe: "1er S2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+
+        // 4éme autres
+        { nom: "Baldé", prenom: "Pape Dicory", classe: "4éme", club: "Anglais", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Baldé", prenom: "Ppe Dicory", classe: "4éme", club: "Sport / FOOTBALL", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Diouf", prenom: "Tening", classe: "4éme", club: "Sport / Taekwondo", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Diouf", prenom: "Tening", classe: "4éme", club: "Informatique-robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
+        { nom: "Sarr", prenom: "Asmar", classe: "4éme", club: "CLAP", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
+        { nom: "Sarr", prenom: "Asmar", classe: "4éme", club: "Sport / Athlétisme", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Niang", prenom: "Ahmad", classe: "4éme", club: "Sport / FOOTBALL", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Niang", prenom: "Ahmad", classe: "4éme", club: "Anglais", statut: "Sélectionné", totaux: 11, mandat: "2024-2025" },
+        { nom: "Cissé", prenom: "Aby", classe: "4éme", club: "Informatique-robotique", statut: "En attente", totaux: 10, mandat: "" },
+        { nom: "Cissé", prenom: "Aby", classe: "4éme", club: "Physique", statut: "Sélectionné", totaux: 8, mandat: "2024-2025" },
+        { nom: "Coulibaly", prenom: "Aicha", classe: "4éme", club: "Arabe", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+        { nom: "Bah", prenom: "Fatoumata Binta", classe: "4éme", club: "Clap", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
+        { nom: "Bah", prenom: "Fatoumata", classe: "4éme", club: "Sport / Athlétisme", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Dièdhiou", prenom: "Pape Ousmane", classe: "4éme", club: "Anglais", statut: "Sélectionné", totaux: 10, mandat: "2024-2025" },
+        { nom: "Dièdhiou", prenom: "Pape Ousmane", classe: "4éme", club: "Physique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
+        { nom: "Loum", prenom: "Rokhaya", classe: "4éme", club: "Clap", statut: "Sélectionné", totaux: 10, mandat: "2024-2025" },
+        { nom: "Clédjo", prenom: "Mouhamed Moustapha", classe: "4éme", club: "Informatique-robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+        { nom: "Loum", prenom: "Moussa Ibn Abdallah", classe: "4éme", club: "Informatique-robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Loum", prenom: "Moussa Ibn Abdallah", classe: "4éme", club: "sport / Basket-ball", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Senghor", prenom: "Babacar", classe: "4éme", club: "sport / Taekwondo", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Senghor", prenom: "Babacar", classe: "4éme", club: "Informatique-robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
+        { nom: "Touré", prenom: "Abocar", classe: "4éme", club: "Informatique-robotique", statut: "Refusé", totaux: 8, mandat: "" },
+        { nom: "Touré", prenom: "Abocar", classe: "4eme", club: "Sport / FOOTBALL", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Pouye", prenom: "Penda Sago", classe: "4éme", club: "Clap", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
+
+        // TL2
+        { nom: "Diallo", prenom: "Mariama", classe: "TL2", club: "Sport/ Athlétisme", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Ciss", prenom: "Oumou", classe: "TL2", club: "Sport/karaté", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Sy Seck", prenom: "El hadj Abdoul aziz", classe: "TL2", club: "CLAP", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Badji", prenom: "Ndeye Yacine", classe: "TL2", club: "Biochimie", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Loum", prenom: "Oumoul Khayri", classe: "TL2", club: "Biochimie", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Fall", prenom: "Mouhamadou", classe: "TL2", club: "Sport/ basket", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Cissé", prenom: "Sérigne Babacar", classe: "TL2", club: "Informatique-robotique", statut: "Refusé", totaux: 9, mandat: "" },
+        { nom: "Bane", prenom: "Cheikh Ibrahima", classe: "TL2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
+        { nom: "Diallo", prenom: "Mariama", classe: "TL2", club: "Informatique-robotique", statut: "Refusé", totaux: 9, mandat: "" },
+        { nom: "Fall", prenom: "Mouhamadou", classe: "TL2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Ciss", prenom: "Oumou", classe: "TL2", club: "Informatique-robotique", statut: "En attente", totaux: 10, mandat: "" },
+        { nom: "Seck", prenom: "El hadji Abdoul Aziz sy", classe: "TL2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Badji", prenom: "Ndeye Yacine", classe: "TL2", club: "Informatique-robotique", statut: "En attente", totaux: 10, mandat: "" },
+        { nom: "Loum", prenom: "Oumoul Khayri", classe: "TL2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+
+        // TS2
+        { nom: "Ndao", prenom: "Mouhammad", classe: "TS2", club: "Sport/basket", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Sow", prenom: "Mouhamed", classe: "TS2", club: "Physique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Ba", prenom: "Racky Gassama", classe: "TS2", club: "Physique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Fall", prenom: "Adja Nogaye", classe: "TS2", club: "Biochimie", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Gning", prenom: "Fama Malick", classe: "TS2", club: "Biochimie", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Séne", prenom: "Khadija", classe: "TS2", club: "Physique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Diéne", prenom: "Mariama", classe: "TS2", club: "Biochimie", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Baldé", prenom: "Assietou", classe: "TS2", club: "Biochimie", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Daffé", prenom: "Mouhamed Moustapha", classe: "TS2", club: "Informatique-robotique", statut: "En attente", totaux: 11, mandat: "" },
+        { nom: "Diaby", prenom: "Mouhamed", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
+        { nom: "Ndao", prenom: "Mouhamed", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
+        { nom: "Sow", prenom: "Mouhamed", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
+        { nom: "Lo", prenom: "Mouhamed Abdallah", classe: "TS2", club: "Informatique-robotique", statut: "Refusé", totaux: 9, mandat: "" },
+        { nom: "Ba", prenom: "Racky Gassama", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
+        { nom: "Fall", prenom: "Adja Nogaye", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Kanouté", prenom: "Issa", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
+        { nom: "Gning", prenom: "Fama Malick", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
+        { nom: "Ba", prenom: "Mouhamed Boye", classe: "TS2", club: "Sport / Football", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Niasse", prenom: "Mouhamed", classe: "TS2", club: "Sport / Football", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Séne", prenom: "Khadija", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
+        { nom: "Kane", prenom: "Khadijatou", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Ba", prenom: "Aminata", classe: "TS2", club: "Physique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Diéne", prenom: "Mariama", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
+        { nom: "Baldé", prenom: "Assiétou", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
+        { nom: "Loum", prenom: "Abdoul Hamid", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Baldé", prenom: "Mouhamed Yacine", classe: "TS2", club: "Informatique-robotique", statut: "En attente", totaux: 10, mandat: "" },
+
+        // Sports supplémentaires
+        { nom: "Ndiaye", prenom: "El hadj cheikh", classe: "5ème", club: "Sport / Taekwondo", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Djigal", prenom: "Aissatou", classe: "5ème", club: "Sport / Taekwondo", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Diamé", prenom: "Mouhamad", classe: "1er S2", club: "Sport / Basket-ball", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Diol", prenom: "Mouhamed Nabi", classe: "1er S2", club: "Sport / Basket-ball", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Diop", prenom: "Mouhamadoul Moustapha", classe: "1er S2", club: "Sport / Basket-ball", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Have", prenom: "Mouhamad Ngoné", classe: "1er S2", club: "Sport / Basket-ball", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Clédjo", prenom: "Yaye AÏcha", classe: "1er S2", club: "Sport / Basket-ball", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Diallo", prenom: "Abass", classe: "1er S2", club: "Sport / Football", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Coulibaly", prenom: "Abdallah", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Diouf", prenom: "Cheikhou", classe: "6émé B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Ba", prenom: "Mouhamed Woury", classe: "6émé B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Ndiaye", prenom: "Mouhamed", classe: "6éme", club: "Sport / Karaté", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Bah", prenom: "Amadou Tidiane", classe: "6eme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Sall", prenom: "Omar Bayo", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Maiga", prenom: "Abdourahmane", classe: "6éme", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Siaman", prenom: "Oufaly", classe: "2nd S", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Bane", prenom: "Malick", classe: "2nd S", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Mballo", prenom: "Aliou", classe: "2nd S", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Basse", prenom: "Cheikh hadjibou", classe: "2nd S", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Barry", prenom: "Maryam", classe: "2nd S", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Maiga", prenom: "Sokhna Khady", classe: "2nd S", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Badji", prenom: "Aminatou", classe: "2nd S", club: "Informatique-robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
+        { nom: "Niang", prenom: "Aicha", classe: "6éme", club: "Biochimie", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Niang", prenom: "Aicha", classe: "6éme", club: "CLAP", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
+        { nom: "Sarr", prenom: "Oumou khari", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 10, mandat: "2024-2025" }
+    ];
+
+    // Données de Bourguiba (simples pour l'exemple)
+    const bourguibaStudentsData = [
+        { nom: "Diouf", prenom: "Mouhamed", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", totaux: 100, mandat: "2024-2025" },
+        { nom: "Wagué", prenom: "Ablaye", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", totaux: 100, mandat: "2024-2025" },
+        { nom: "Fall", prenom: "Aminata", classe: "TL2", club: "Anglais", statut: "En attente", totaux: 0, mandat: "" },
+        { nom: "Sow", prenom: "Fatou", classe: "TS2", club: "Physique", statut: "Sélectionné", totaux: 85, mandat: "2024-2025" },
+        { nom: "Ndiaye", prenom: "Ibrahima", classe: "2nde", club: "Informatique-Robotique", statut: "Refusé", totaux: 0, mandat: "" }
+    ];
+
     // ==================== INITIALISATION ====================
-    document.addEventListener('DOMContentLoaded', async function() {
+    document.addEventListener('DOMContentLoaded', function() {
         console.log('🚀 Initialisation du dashboard...');
         loadAdminInfo();
-        await loadStudentsFromAPI();
+        loadAllStudents();
         renderAllStudents();
         updateStats();
         setupEventListeners();
-        console.log('✅ Dashboard initialisé');
+        console.log(`✅ Dashboard initialisé avec ${allStudents.length} élèves`);
     });
 
-    // ==================== FONCTIONS API CORRIGÉES ====================
-    async function loadStudentsFromAPI() {
-        try {
-            console.log('📡 Chargement depuis Google Sheets...');
-            
-            // Test de connexion
-            console.log('URL API:', GOOGLE_SHEETS_API);
-            
-            // Charger Bourguiba
-            const bourguibaUrl = `${GOOGLE_SHEETS_API}?action=getStudents&ecole=bourguiba&timestamp=${Date.now()}`;
-            console.log('URL Bourguiba:', bourguibaUrl);
-            
-            const bourguibaResponse = await fetch(bourguibaUrl, {
-                method: 'GET',
-                mode: 'cors',
-                cache: 'no-cache'
+    // ==================== CHARGEMENT DES DONNÉES ====================
+    function loadAllStudents() {
+        console.log('📊 Chargement des données des élèves...');
+        
+        // Convertir les données brutes en format standard
+        allStudents = [];
+        
+        // Ajouter les élèves Mbao
+        mbaoStudentsData.forEach((student, index) => {
+            const points = calculatePointsFromTotaux(student.totaux, student.statut);
+            allStudents.push({
+                id: 1000 + index + 1,
+                nom: student.nom,
+                prenom: student.prenom,
+                classe: student.classe,
+                club: student.club,
+                statut: student.statut,
+                points: points,
+                mandat: student.mandat,
+                ecole: 'mbao',
+                totaux: student.totaux
             });
-            
-            if (!bourguibaResponse.ok) {
-                throw new Error(`Erreur Bourguiba: ${bourguibaResponse.status} ${bourguibaResponse.statusText}`);
-            }
-            
-            const bourguibaData = await bourguibaResponse.json();
-            console.log('✅ Données Bourguiba reçues:', bourguibaData);
-            
-            // Charger Mbao
-            const mbaoUrl = `${GOOGLE_SHEETS_API}?action=getStudents&ecole=mbao&timestamp=${Date.now()}`;
-            const mbaoResponse = await fetch(mbaoUrl, {
-                method: 'GET',
-                mode: 'cors',
-                cache: 'no-cache'
+        });
+        
+        // Ajouter les élèves Bourguiba
+        bourguibaStudentsData.forEach((student, index) => {
+            allStudents.push({
+                id: index + 1,
+                nom: student.nom,
+                prenom: student.prenom,
+                classe: student.classe,
+                club: student.club,
+                statut: student.statut,
+                points: student.totaux,
+                mandat: student.mandat,
+                ecole: 'bourguiba',
+                totaux: student.totaux
             });
-            
-            if (!mbaoResponse.ok) {
-                throw new Error(`Erreur Mbao: ${mbaoResponse.status} ${mbaoResponse.statusText}`);
-            }
-            
-            const mbaoData = await mbaoResponse.json();
-            console.log('✅ Données Mbao reçues:', mbaoData);
-            
-            // Vider tableaux
-            bourguibaStudents.length = 0;
-            mbaoStudents.length = 0;
-            allStudents.length = 0;
-            
-            // Traiter Bourguiba
-            if (bourguibaData && bourguibaData.students && Array.isArray(bourguibaData.students)) {
-                bourguibaData.students.forEach((student, index) => {
-                    const newStudent = {
-                        id: index + 1,
-                        nom: student.nom || student.Nom || '',
-                        prenom: student.prenom || student.Prénom || '',
-                        classe: student.classe || student.Classe || '',
-                        club: student.club || student.Club || '',
-                        statut: student.statut || student.Statut || 'En attente',
-                        points: calculatePointsFromData(student),
-                        mandat: student.mandat || student.Mandat || '',
-                        ecole: 'bourguiba'
-                    };
-                    bourguibaStudents.push(newStudent);
-                });
-                console.log(`📊 ${bourguibaStudents.length} élèves Bourguiba chargés`);
-            } else {
-                console.warn('⚠️ Aucune donnée Bourguiba ou format incorrect');
-            }
-            
-            // Traiter Mbao
-            if (mbaoData && mbaoData.students && Array.isArray(mbaoData.students)) {
-                mbaoData.students.forEach((student, index) => {
-                    const newStudent = {
-                        id: 1000 + index + 1,
-                        nom: student.nom || student.Nom || '',
-                        prenom: student.prenom || student.Prénom || '',
-                        classe: student.classe || student.Classe || '',
-                        club: student.club || student.Club || '',
-                        statut: student.statut || student.Statut || 'En attente',
-                        points: calculatePointsFromData(student),
-                        mandat: student.mandat || student.Mandat || '',
-                        ecole: 'mbao'
-                    };
-                    mbaoStudents.push(newStudent);
-                });
-                console.log(`📊 ${mbaoStudents.length} élèves Mbao chargés`);
-            } else {
-                console.warn('⚠️ Aucune donnée Mbao ou format incorrect');
-            }
-            
-            // Combiner et trier
-            allStudents = [...bourguibaStudents, ...mbaoStudents];
-            sortStudentsByClass();
-            
-            console.log(`✅ Total: ${allStudents.length} élèves chargés`);
-            
-        } catch (error) {
-            console.error('❌ Erreur API:', error);
-            console.log('⚠️ Chargement données de démo...');
-            loadDemoData();
-        }
+        });
+        
+        sortStudentsByClass();
+        console.log(`✅ ${allStudents.length} élèves chargés (${mbaoStudentsData.length} Mbao + ${bourguibaStudentsData.length} Bourguiba)`);
     }
 
-    function calculatePointsFromData(student) {
-        // Essayer de récupérer les points
-        const pointsStr = student.points || student.Points || '0';
-        let points = parseInt(pointsStr);
-        
-        if (isNaN(points)) {
-            // Si pas de points, calculer selon statut
-            const statut = student.statut || student.Statut || 'En attente';
-            
-            if (statut === "Sélectionné") {
-                return 100;
-            } else {
-                return 0;
-            }
+    function calculatePointsFromTotaux(totaux, statut) {
+        if (statut === "Sélectionné") {
+            // Convertir les totaux en points sur 100
+            // Les totaux vont de 0 à 20 environ, on multiplie par 5 pour avoir sur 100
+            return Math.min(100, Math.max(0, totaux * 5));
+        } else {
+            return 0;
         }
-        
-        return Math.max(0, Math.min(100, points));
     }
 
     function sortStudentsByClass() {
         const classOrder = ['6éme', '5éme', '4éme', '2nde', '1ére', 'TL2', 'TS2'];
         allStudents.sort((a, b) => {
-            const indexA = classOrder.indexOf(a.classe);
-            const indexB = classOrder.indexOf(b.classe);
+            const indexA = classOrder.indexOf(a.classe.substring(0, 2));
+            const indexB = classOrder.indexOf(b.classe.substring(0, 2));
             
             if (indexA === -1 && indexB === -1) return 0;
             if (indexA === -1) return 1;
@@ -1196,137 +1425,6 @@
             
             return indexA - indexB;
         });
-    }
-
-    async function saveStudentToAPI(studentData) {
-        try {
-            console.log('📤 Envoi nouveau élève à l\'API...');
-            
-            // Créer les paramètres
-            const params = new URLSearchParams();
-            params.append('action', 'saveStudent');
-            params.append('ecole', studentData.ecole);
-            params.append('nom', studentData.nom);
-            params.append('prenom', studentData.prenom);
-            params.append('classe', studentData.classe);
-            params.append('club', studentData.club);
-            params.append('statut', studentData.statut);
-            params.append('points', studentData.points || 0);
-            params.append('mandat', studentData.mandat || '');
-            
-            console.log('Paramètres:', params.toString());
-            
-            // Envoyer la requête POST
-            const response = await fetch(GOOGLE_SHEETS_API, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-                },
-                body: params,
-                mode: 'cors'
-            });
-            
-            console.log('📥 Réponse reçue, status:', response.status);
-            
-            // Lire la réponse
-            const responseText = await response.text();
-            console.log('Réponse texte:', responseText);
-            
-            let result;
-            try {
-                result = JSON.parse(responseText);
-            } catch (e) {
-                console.error('Erreur parsing JSON:', e);
-                // Essayer de voir si c'est du HTML ou autre
-                if (responseText.includes('success') || responseText.includes('Success')) {
-                    result = { success: true, message: 'Élève ajouté avec succès' };
-                } else {
-                    result = { success: false, error: 'Réponse invalide du serveur' };
-                }
-            }
-            
-            console.log('Résultat API:', result);
-            
-            if (result && result.success) {
-                // Recharger les données
-                await loadStudentsFromAPI();
-                return { success: true, message: result.message || 'Élève ajouté avec succès' };
-            } else {
-                return { 
-                    success: false, 
-                    error: result ? (result.error || result.message || 'Erreur inconnue') : 'Pas de réponse du serveur'
-                };
-            }
-            
-        } catch (error) {
-            console.error('❌ Erreur saveStudentToAPI:', error);
-            return { 
-                success: false, 
-                error: `Erreur de connexion: ${error.message}. Vérifiez votre connexion internet.`
-            };
-        }
-    }
-
-    async function updateStudentPointsAPI(studentData) {
-        try {
-            console.log('📤 Mise à jour des points...');
-            
-            // Créer les paramètres
-            const params = new URLSearchParams();
-            params.append('action', 'updatePoints');
-            params.append('id', studentData.id);
-            params.append('ecole', studentData.ecole);
-            params.append('points', studentData.points);
-            params.append('mandat', studentData.mandat || '');
-            params.append('etudiant', `${studentData.nom} ${studentData.prenom}`);
-            
-            console.log('Paramètres:', params.toString());
-            
-            const response = await fetch(GOOGLE_SHEETS_API, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-                },
-                body: params,
-                mode: 'cors'
-            });
-            
-            console.log('📥 Réponse reçue, status:', response.status);
-            
-            const responseText = await response.text();
-            console.log('Réponse texte:', responseText);
-            
-            let result;
-            try {
-                result = JSON.parse(responseText);
-            } catch (e) {
-                console.error('Erreur parsing JSON:', e);
-                if (responseText.includes('success') || responseText.includes('Success')) {
-                    result = { success: true, message: 'Points mis à jour avec succès' };
-                } else {
-                    result = { success: false, error: 'Réponse invalide du serveur' };
-                }
-            }
-            
-            console.log('Résultat API:', result);
-            
-            if (result && result.success) {
-                await loadStudentsFromAPI();
-                return { success: true, message: result.message || 'Points mis à jour avec succès' };
-            } else {
-                return { 
-                    success: false, 
-                    error: result ? (result.error || result.message || 'Erreur inconnue') : 'Pas de réponse du serveur'
-                };
-            }
-            
-        } catch (error) {
-            console.error('❌ Erreur updateStudentPointsAPI:', error);
-            return { 
-                success: false, 
-                error: `Erreur de connexion: ${error.message}`
-            };
-        }
     }
 
     // ==================== GESTION ADMIN ====================
@@ -1400,8 +1498,8 @@
     }
 
     function createStudentCard(student) {
-        const fullName = `${student.nom} ${student.prenom}`;
-        const initials = `${student.nom ? student.nom[0] : ''}${student.prenom ? student.prenom[0] : ''}`.toUpperCase();
+        const fullName = `${student.prenom} ${student.nom}`;
+        const initials = `${student.prenom ? student.prenom[0] : ''}${student.nom ? student.nom[0] : ''}`.toUpperCase();
         const statusClass = `status-${getStatusKey(student.statut)}`;
         const pointsPercentage = (student.points / 100) * 100;
         const pointsBarClass = student.points <= 30 ? 'points-danger' : student.points <= 60 ? 'points-warning' : '';
@@ -1433,6 +1531,12 @@
                             ${student.ecole === 'bourguiba' ? 'BOURGUIBA' : 'MBAO'}
                         </span>
                     </div>
+                    ${student.totaux !== undefined ? `
+                    <div class="info-row">
+                        <span class="info-label">Totaux :</span>
+                        <span class="info-value">${student.totaux}/20</span>
+                    </div>
+                    ` : ''}
                 </div>
                 
                 <div class="points-container">
@@ -1466,7 +1570,10 @@
     function getStatusKey(statut) {
         const statusMap = {
             'Sélectionné': 'selected',
+            'Sélectionné': 'selected',
+            'Sélectionner': 'selected',
             'En attente': 'waiting',
+            'Refusé': 'refused',
             'Refusé': 'refused',
             'Absent': 'absent'
         };
@@ -1476,7 +1583,10 @@
     function getStatusIcon(statut) {
         const icons = {
             'Sélectionné': '✓',
+            'Sélectionné': '✓',
+            'Sélectionner': '✓',
             'En attente': '⏳',
+            'Refusé': '✗',
             'Refusé': '✗',
             'Absent': '👤'
         };
@@ -1489,7 +1599,7 @@
             // Recherche
             if (currentSearchTerm) {
                 const searchTerm = currentSearchTerm.toLowerCase();
-                const fullName = `${student.nom} ${student.prenom}`.toLowerCase();
+                const fullName = `${student.prenom} ${student.nom}`.toLowerCase();
                 const classe = (student.classe || '').toLowerCase();
                 const club = (student.club || '').toLowerCase();
                 
@@ -1501,7 +1611,7 @@
             }
             
             // Filtre classe
-            if (currentClassFilter !== 'all' && currentClassFilter !== student.classe) {
+            if (currentClassFilter !== 'all' && !student.classe.includes(currentClassFilter)) {
                 return false;
             }
             
@@ -1566,7 +1676,7 @@
         studentsToCount = filterStudentsList(studentsToCount);
         
         const total = studentsToCount.length;
-        const selected = studentsToCount.filter(s => s.statut === 'Sélectionné').length;
+        const selected = studentsToCount.filter(s => s.statut === 'Sélectionné' || s.statut === 'Sélectionné' || s.statut === 'Sélectionner').length;
         const waiting = studentsToCount.filter(s => s.statut === 'En attente').length;
         const excluded = studentsToCount.filter(s => s.points === 0).length;
         
@@ -1589,7 +1699,7 @@
         console.log('✏️ Ouverture modal modification:', currentEditStudent);
         
         const modal = document.getElementById('editModal');
-        document.getElementById('editStudentName').value = `${currentEditStudent.nom} ${currentEditStudent.prenom}`;
+        document.getElementById('editStudentName').value = `${currentEditStudent.prenom} ${currentEditStudent.nom}`;
         document.getElementById('editStudentSchool').value = currentEditStudent.ecole === 'bourguiba' ? 'BOURGUIBA' : 'MBAO';
         document.getElementById('currentPoints').textContent = currentEditStudent.points;
         document.getElementById('editMandat').value = currentEditStudent.mandat || '';
@@ -1632,7 +1742,7 @@
         console.log('📈 Points changés:', currentPoints);
     }
 
-    async function saveChanges() {
+    function saveChanges() {
         if (!currentEditStudent || !checkMatricule()) {
             alert('Veuillez vérifier votre matricule administrateur.');
             return;
@@ -1652,27 +1762,22 @@
             mandat: mandat
         });
         
-        const updateResult = await updateStudentPointsAPI({
-            id: currentEditStudent.id,
-            ecole: currentEditStudent.ecole,
-            points: currentPoints,
-            mandat: mandat,
-            nom: currentEditStudent.nom,
-            prenom: currentEditStudent.prenom
-        });
+        // Mettre à jour localement
+        currentEditStudent.points = currentPoints;
+        currentEditStudent.mandat = mandat;
         
-        // Restaurer le bouton
-        saveBtn.innerHTML = originalText;
-        saveBtn.disabled = false;
-        
-        if (updateResult.success) {
-            await loadStudentsFromAPI();
+        // Simuler un délai de sauvegarde
+        setTimeout(() => {
+            // Restaurer le bouton
+            saveBtn.innerHTML = originalText;
+            saveBtn.disabled = false;
+            
+            // Mettre à jour l'affichage
+            renderAllStudents();
             updateDisplay();
-            alert(`✅ ${updateResult.message || 'Points mis à jour avec succès !'}`);
+            alert(`✅ Points mis à jour avec succès !`);
             closeEditModal();
-        } else {
-            alert(`❌ Erreur: ${updateResult.error}`);
-        }
+        }, 500);
     }
 
     // ==================== MODAL AJOUT ÉLÈVE ====================
@@ -1707,7 +1812,7 @@
         console.log('🏫 École sélectionnée:', ecole);
     }
 
-    async function addNewStudent() {
+    function addNewStudent() {
         const nom = document.getElementById('addNom').value.trim();
         const prenom = document.getElementById('addPrenom').value.trim();
         const classe = document.getElementById('addClasse').value;
@@ -1721,13 +1826,16 @@
         
         // Calculer les points selon les règles
         let points = 0;
+        let totaux = 0;
         if (statut === "Sélectionné") {
             points = 100;
+            totaux = 20;
         }
         
         const mandat = statut === 'Sélectionné' ? '2024-2025' : '';
         
         const newStudent = {
+            id: allStudents.length + 1,
             nom: nom,
             prenom: prenom,
             classe: classe,
@@ -1735,7 +1843,8 @@
             statut: statut,
             points: points,
             mandat: mandat,
-            ecole: selectedEcole
+            ecole: selectedEcole,
+            totaux: totaux
         };
         
         console.log('👤 Nouvel élève à ajouter:', newStudent);
@@ -1746,24 +1855,26 @@
         addBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Ajout en cours...';
         addBtn.disabled = true;
         
-        const saveResult = await saveStudentToAPI(newStudent);
+        // Ajouter localement
+        allStudents.push(newStudent);
         
-        // Restaurer le bouton
-        addBtn.innerHTML = originalText;
-        addBtn.disabled = false;
-        
-        if (saveResult.success) {
-            await loadStudentsFromAPI();
+        // Simuler un délai
+        setTimeout(() => {
+            // Restaurer le bouton
+            addBtn.innerHTML = originalText;
+            addBtn.disabled = false;
+            
+            // Mettre à jour l'affichage
+            sortStudentsByClass();
+            renderAllStudents();
             updateDisplay();
             closeAddModal();
-            alert(`✅ ${saveResult.message || 'Élève ajouté avec succès !'}`);
-        } else {
-            alert(`❌ Erreur: ${saveResult.error}`);
-        }
+            alert(`✅ Élève ajouté avec succès !`);
+        }, 500);
     }
 
     // ==================== SUPPRESSION ÉLÈVE ====================
-    async function deleteStudent(studentId, ecole) {
+    function deleteStudent(studentId, ecole) {
         if (!confirm('Êtes-vous sûr de vouloir supprimer cet élève ? Cette action est irréversible.')) return;
         
         const matricule = prompt('Pour confirmer, entrez votre matricule administrateur :');
@@ -1774,84 +1885,20 @@
         
         console.log('🗑️ Suppression élève:', studentId, ecole);
         
-        try {
-            // Créer les paramètres
-            const params = new URLSearchParams();
-            params.append('action', 'deleteStudent');
-            params.append('id', studentId);
-            params.append('ecole', ecole);
-            params.append('adminMatricule', matricule);
+        // Trouver l'index de l'élève
+        const studentIndex = allStudents.findIndex(s => s.id === studentId && s.ecole === ecole);
+        
+        if (studentIndex !== -1) {
+            // Supprimer l'élève
+            allStudents.splice(studentIndex, 1);
             
-            const response = await fetch(GOOGLE_SHEETS_API, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-                },
-                body: params,
-                mode: 'cors'
-            });
-            
-            const responseText = await response.text();
-            console.log('Réponse suppression:', responseText);
-            
-            let result;
-            try {
-                result = JSON.parse(responseText);
-            } catch (e) {
-                result = { success: false, error: 'Réponse invalide du serveur' };
-            }
-            
-            if (result && result.success) {
-                // Recharger les données
-                await loadStudentsFromAPI();
-                updateDisplay();
-                alert('✅ Élève supprimé avec succès.');
-            } else {
-                alert(`❌ Erreur: ${result ? (result.error || 'Impossible de supprimer l\'élève') : 'Pas de réponse'}`);
-            }
-            
-        } catch (error) {
-            console.error('Erreur suppression:', error);
-            alert('❌ Erreur de connexion au serveur.');
+            // Mettre à jour l'affichage
+            renderAllStudents();
+            updateDisplay();
+            alert('✅ Élève supprimé avec succès.');
+        } else {
+            alert('❌ Élève non trouvé.');
         }
-    }
-
-    // ==================== DONNÉES DE DÉMO ====================
-    function loadDemoData() {
-        console.log('⚠️ Chargement données de démo...');
-        
-        // Vider les tableaux
-        bourguibaStudents.length = 0;
-        mbaoStudents.length = 0;
-        allStudents.length = 0;
-        
-        // Bourguiba - données de démo complètes
-        const bourguibaDemo = [
-            { id: 1, nom: "Diouf", prenom: "Mouhamed", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "bourguiba" },
-            { id: 2, nom: "Wagué", prenom: "Ablaye", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "bourguiba" },
-            { id: 3, nom: "Fall", prenom: "Aminata", classe: "TL2", club: "Anglais", statut: "En attente", points: 0, mandat: "", ecole: "bourguiba" },
-            { id: 4, nom: "Sow", prenom: "Fatou", classe: "TS2", club: "Physique", statut: "Sélectionné", points: 85, mandat: "2024-2025", ecole: "bourguiba" },
-            { id: 5, nom: "Ndiaye", prenom: "Ibrahima", classe: "2nde", club: "Informatique-Robotique", statut: "Refusé", points: 0, mandat: "", ecole: "bourguiba" }
-        ];
-        
-        // Mbao - données de démo complètes
-        const mbaoDemo = [
-            { id: 1001, nom: "Fall", prenom: "Mouhamed Saliou", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", points: 0, mandat: "", ecole: "mbao" },
-            { id: 1002, nom: "Ba", prenom: "Mouhamed Woury", classe: "6éme B", club: "Sport (Football)", statut: "En attente", points: 0, mandat: "", ecole: "mbao" },
-            { id: 1003, nom: "Ndiaye", prenom: "Fatou", classe: "4éme", club: "CLAP", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "mbao" },
-            { id: 1004, nom: "Diallo", prenom: "Ousmane", classe: "5éme", club: "Sport (Basket)", statut: "Sélectionné", points: 95, mandat: "2024-2025", ecole: "mbao" },
-            { id: 1005, nom: "Kane", prenom: "Mariama", classe: "TL2", club: "Arabe", statut: "Absent", points: 0, mandat: "", ecole: "mbao" }
-        ];
-        
-        // Ajouter les données de démo
-        bourguibaDemo.forEach(student => bourguibaStudents.push(student));
-        mbaoDemo.forEach(student => mbaoStudents.push(student));
-        
-        // Combiner
-        allStudents = [...bourguibaStudents, ...mbaoStudents];
-        sortStudentsByClass();
-        
-        console.log(`✅ Données de démo chargées: ${bourguibaStudents.length} Bourguiba, ${mbaoStudents.length} Mbao`);
     }
 
     // ==================== ÉCOUTEURS D'ÉVÉNEMENTS ====================
@@ -1873,14 +1920,11 @@
         
         document.getElementById('searchInput').addEventListener('input', filterStudents);
         
-        // Test API au démarrage
-        setTimeout(() => {
-            console.log('🔧 Test API...');
-            fetch(GOOGLE_SHEETS_API + '?action=test')
-                .then(res => res.text())
-                .then(text => console.log('Test API réponse:', text))
-                .catch(err => console.error('Test API échoué:', err));
-        }, 1000);
+        // Message de bienvenue
+        console.log('🎉 Dashboard Hikmah\'s Club prêt !');
+        console.log(`📊 Total élèves: ${allStudents.length}`);
+        console.log(`🏫 MBAO: ${allStudents.filter(s => s.ecole === 'mbao').length} élèves`);
+        console.log(`🏫 BOURGUIBA: ${allStudents.filter(s => s.ecole === 'bourguiba').length} élèves`);
     }
 </script>
 </body>
