@@ -1030,39 +1030,251 @@
         <p>Système de gestion des points et mandats - Version 1.0</p>
     </footer>
 
-    <script>
-        // ==================== DONNÉES ====================
-        // Données de BOURGUIBA (250+ élèves)
-        const bourguibaStudents = [
-            // Données Bourguiba seront insérées ici
-            // Format: { id, nom, prenom, classe, club, statut, points, mandat, ecole: "bourguiba" }
-        ];
+   <script>
+    // ==================== CONFIGURATION API ====================
+    const GOOGLE_SHEETS_API = "https://script.google.com/macros/s/AKfycbyHAqVpT0Pd8Aa-CIFx4z_5Hc3yxIRQ8pnr90gSktc4BIEcoCh9avXxJEdRwnKMDZU/exec";
+    
+    // ==================== DONNÉES ====================
+    const bourguibaStudents = []; // Chargé depuis Google Sheets
+    const mbaoStudents = []; // Chargé depuis Google Sheets
 
-        // Données de MBAO (200+ élèves)
-        const mbaoStudents = [
-            // Données Mbao seront insérées ici
-            // Format: { id, nom, prenom, classe, club, statut, points, mandat, ecole: "mbao" }
-        ];
+    // ==================== VARIABLES GLOBALES ====================
+    let currentAdmin = null;
+    let allStudents = [];
+    let currentSchool = 'bourguiba';
+    let currentClassFilter = 'all';
+    let currentSearchTerm = '';
+    let currentEditStudent = null;
+    let currentPoints = 100;
+    let selectedEcole = 'bourguiba';
 
-        // ==================== VARIABLES GLOBALES ====================
-        let currentAdmin = null;
-        let allStudents = [];
-        let currentSchool = 'bourguiba';
-        let currentClassFilter = 'all';
-        let currentSearchTerm = '';
-        let currentEditStudent = null;
-        let currentPoints = 100;
-        let selectedEcole = 'bourguiba';
+    // Matricules administrateurs
+    const adminMatricules = [
+        "Birane186@robotic",
+        "Salamaprésidentehc@00", 
+        "Sadiyaviceprésidentehc@01"
+    ];
 
-        // Matricules administrateurs
-        const adminMatricules = [
-            "Birane186@robotic",
-            "Salamaprésidentehc@00", 
-            "Sadiyaviceprésidentehc@01"
-        ];
+    // ==================== INITIALISATION ====================
+    document.addEventListener('DOMContentLoaded', async function() {
+        loadAdminInfo();
+        await loadStudentsFromAPI(); // CHANGÉ : Chargement depuis ton Sheet
+        renderAllStudents();
+        updateStats();
+        setupEventListeners();
+    });
 
-        // ==================== INITIALISATION ====================
-        document.addEventListener('DOMContentLoaded', function() {
+    // ==================== FONCTIONS API ====================
+    async function loadStudentsFromAPI() {
+        try {
+            console.log('📡 Chargement des élèves depuis Google Sheets...');
+            
+            // Charger élèves BOURGUIBA
+            const bourguibaResponse = await fetch(`${GOOGLE_SHEETS_API}?action=getStudents&ecole=bourguiba`);
+            const bourguibaData = await bourguibaResponse.json();
+            console.log('Bourguiba chargés:', bourguibaData.students?.length || 0);
+            
+            // Charger élèves MBAO
+            const mbaoResponse = await fetch(`${GOOGLE_SHEETS_API}?action=getStudents&ecole=mbao`);
+            const mbaoData = await mbaoResponse.json();
+            console.log('Mbao chargés:', mbaoData.students?.length || 0);
+            
+            // Vider les tableaux existants
+            bourguibaStudents.length = 0;
+            mbaoStudents.length = 0;
+            allStudents.length = 0;
+            
+            // Formater et ajouter élèves Bourguiba
+            if (bourguibaData.students && bourguibaData.students.length > 0) {
+                bourguibaData.students.forEach((student, index) => {
+                    bourguibaStudents.push({
+                        id: index + 1,
+                        nom: student.nom || student.Nom || '',
+                        prenom: student.prenom || student.Prénom || '',
+                        classe: student.classe || student.Classe || '',
+                        club: student.club || student.Club || '',
+                        statut: student.statut || student.Statut || 'En attente',
+                        points: parseInt(student.points || student.Points || 0),
+                        mandat: student.mandat || student.Mandat || '',
+                        ecole: 'bourguiba'
+                    });
+                });
+            } else {
+                console.log('⚠️ Aucun élève Bourguiba trouvé dans le Sheet');
+            }
+            
+            // Formater et ajouter élèves Mbao
+            if (mbaoData.students && mbaoData.students.length > 0) {
+                mbaoData.students.forEach((student, index) => {
+                    mbaoStudents.push({
+                        id: 1000 + index + 1,
+                        nom: student.nom || student.Nom || '',
+                        prenom: student.prenom || student.Prénom || '',
+                        classe: student.classe || student.Classe || '',
+                        club: student.club || student.Club || '',
+                        statut: student.statut || student.Statut || 'En attente',
+                        points: parseInt(student.points || student.Points || 0),
+                        mandat: student.mandat || student.Mandat || '',
+                        ecole: 'mbao'
+                    });
+                });
+            } else {
+                console.log('⚠️ Aucun élève Mbao trouvé dans le Sheet');
+            }
+            
+            // Combiner tous les élèves
+            allStudents = [...bourguibaStudents, ...mbaoStudents];
+            
+            // Trier par classe
+            const classOrder = ['6éme', '5éme', '4éme', '2nde', '1ére', 'TL2', 'TS2'];
+            allStudents.sort((a, b) => {
+                return classOrder.indexOf(a.classe) - classOrder.indexOf(b.classe);
+            });
+            
+            console.log('✅ Chargement terminé. Total élèves:', allStudents.length);
+            
+        } catch (error) {
+            console.error('❌ Erreur chargement API:', error);
+            alert('Erreur de connexion au Google Sheet. Vérifie ta connexion internet.');
+            // Charger données de démo en cas d'erreur
+            loadDemoData();
+        }
+    }
+
+    // Fonction de démo (seulement si API échoue)
+    function loadDemoData() {
+        bourguibaStudents.push(
+            { id: 1, nom: "Diouf", prenom: "Mouhamed", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "bourguiba" },
+            { id: 2, nom: "Wagué", prenom: "Ablaye", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "bourguiba" }
+        );
+        
+        mbaoStudents.push(
+            { id: 1001, nom: "Fall", prenom: "Mouhamed Saliou", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", points: 0, mandat: "", ecole: "mbao" },
+            { id: 1002, nom: "Ba", prenom: "Mouhamed Woury", classe: "6éme B", club: "Sport / Football", statut: "En attente", points: 0, mandat: "", ecole: "mbao" }
+        );
+        
+        allStudents = [...bourguibaStudents, ...mbaoStudents];
+    }
+
+    // ==================== FONCTIONS DE SAUVEGARDE ====================
+    async function saveStudentToAPI(studentData) {
+        try {
+            const params = new URLSearchParams({
+                action: 'saveStudent',
+                ecole: studentData.ecole,
+                nom: studentData.nom,
+                prenom: studentData.prenom,
+                classe: studentData.classe,
+                club: studentData.club,
+                statut: studentData.statut,
+                points: studentData.points || 0,
+                mandat: studentData.mandat || '',
+                admin: currentAdmin?.name || 'Admin',
+                adminMatricule: currentAdmin?.matricule || ''
+            });
+            
+            const response = await fetch(GOOGLE_SHEETS_API, {
+                method: 'POST',
+                body: params
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                console.log('✅ Élève sauvegardé dans Google Sheets');
+                // Recharger les données depuis le Sheet
+                await loadStudentsFromAPI();
+                return { success: true };
+            } else {
+                console.error('❌ Erreur sauvegarde:', result.error);
+                return { success: false, error: result.error };
+            }
+            
+        } catch (error) {
+            console.error('❌ Erreur API:', error);
+            return { success: false, error: 'Erreur de connexion' };
+        }
+    }
+
+    async function updateStudentPointsAPI(studentData) {
+        try {
+            const params = new URLSearchParams({
+                action: 'updatePoints',
+                id: studentData.id,
+                ecole: studentData.ecole,
+                points: studentData.points,
+                mandat: studentData.mandat || '',
+                etudiant: `${studentData.nom} ${studentData.prenom}`,
+                admin: currentAdmin?.name || 'Admin',
+                adminMatricule: currentAdmin?.matricule || ''
+            });
+            
+            const response = await fetch(GOOGLE_SHEETS_API, {
+                method: 'POST',
+                body: params
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                console.log('✅ Points mis à jour dans Google Sheets');
+                return { success: true };
+            } else {
+                console.error('❌ Erreur mise à jour:', result.error);
+                return { success: false, error: result.error };
+            }
+            
+        } catch (error) {
+            console.error('❌ Erreur API:', error);
+            return { success: false, error: 'Erreur de connexion' };
+        }
+    }
+
+    // ==================== MODIFICATION DES FONCTIONS EXISTANTES ====================
+    // TU DOIS AUSSI MODIFIER CES FONCTIONS (plus bas dans ton code) :
+    
+    // 1. Dans la fonction addNewStudent(), remplace la fin par :
+    async function addNewStudent() {
+        // ... ton code existant ...
+        
+        // AU LIEU DE ajouter directement aux tableaux :
+        // Appeler l'API pour sauvegarder
+        const saveResult = await saveStudentToAPI(newStudent);
+        
+        if (saveResult.success) {
+            // Recharger l'affichage
+            updateDisplay();
+            closeAddModal();
+            alert(`✅ Élève ajouté et sauvegardé dans Google Sheets !`);
+        } else {
+            alert(`❌ Erreur: ${saveResult.error}`);
+        }
+    }
+
+    // 2. Dans la fonction saveChanges(), remplace la fin par :
+    async function saveChanges() {
+        // ... ton code existant de vérification matricule ...
+        
+        // Sauvegarder via API
+        const updateResult = await updateStudentPointsAPI({
+            id: currentEditStudent.id,
+            ecole: currentEditStudent.ecole,
+            points: currentPoints,
+            mandat: document.getElementById('editMandat').value,
+            nom: currentEditStudent.nom,
+            prenom: currentEditStudent.prenom
+        });
+        
+        if (updateResult.success) {
+            // Recharger depuis API
+            await loadStudentsFromAPI();
+            updateDisplay();
+            alert(`✅ Points mis à jour dans Google Sheets !`);
+            closeEditModal();
+        } else {
+            alert(`❌ Erreur: ${updateResult.error}`);
+        }
+    }
             loadAdminInfo();
             initializeData();
             renderAllStudents();
