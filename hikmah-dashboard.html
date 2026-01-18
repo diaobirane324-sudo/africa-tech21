@@ -1030,13 +1030,13 @@
         <p>Système de gestion des points et mandats - Version 1.0</p>
     </footer>
 
-   <script>
+ <script>
     // ==================== CONFIGURATION API ====================
     const GOOGLE_SHEETS_API = "https://script.google.com/macros/s/AKfycbyHAqVpT0Pd8Aa-CIFx4z_5Hc3yxIRQ8pnr90gSktc4BIEcoCh9avXxJEdRwnKMDZU/exec";
     
     // ==================== DONNÉES ====================
-    const bourguibaStudents = []; // Chargé depuis Google Sheets
-    const mbaoStudents = []; // Chargé depuis Google Sheets
+    const bourguibaStudents = [];
+    const mbaoStudents = [];
 
     // ==================== VARIABLES GLOBALES ====================
     let currentAdmin = null;
@@ -1048,7 +1048,6 @@
     let currentPoints = 100;
     let selectedEcole = 'bourguiba';
 
-    // Matricules administrateurs
     const adminMatricules = [
         "Birane186@robotic",
         "Salamaprésidentehc@00", 
@@ -1058,7 +1057,7 @@
     // ==================== INITIALISATION ====================
     document.addEventListener('DOMContentLoaded', async function() {
         loadAdminInfo();
-        await loadStudentsFromAPI(); // CHANGÉ : Chargement depuis ton Sheet
+        await loadStudentsFromAPI();
         renderAllStudents();
         updateStats();
         setupEventListeners();
@@ -1067,96 +1066,92 @@
     // ==================== FONCTIONS API ====================
     async function loadStudentsFromAPI() {
         try {
-            console.log('📡 Chargement des élèves depuis Google Sheets...');
+            console.log('📡 Chargement depuis Google Sheets...');
             
-            // Charger élèves BOURGUIBA
+            // Charger Bourguiba
             const bourguibaResponse = await fetch(`${GOOGLE_SHEETS_API}?action=getStudents&ecole=bourguiba`);
             const bourguibaData = await bourguibaResponse.json();
-            console.log('Bourguiba chargés:', bourguibaData.students?.length || 0);
             
-            // Charger élèves MBAO
+            // Charger Mbao
             const mbaoResponse = await fetch(`${GOOGLE_SHEETS_API}?action=getStudents&ecole=mbao`);
             const mbaoData = await mbaoResponse.json();
-            console.log('Mbao chargés:', mbaoData.students?.length || 0);
             
-            // Vider les tableaux existants
+            // Vider tableaux
             bourguibaStudents.length = 0;
             mbaoStudents.length = 0;
             allStudents.length = 0;
             
-            // Formater et ajouter élèves Bourguiba
-            if (bourguibaData.students && bourguibaData.students.length > 0) {
+            // Traiter Bourguiba
+            if (bourguibaData.students) {
                 bourguibaData.students.forEach((student, index) => {
-                    bourguibaStudents.push({
+                    const newStudent = {
                         id: index + 1,
                         nom: student.nom || student.Nom || '',
                         prenom: student.prenom || student.Prénom || '',
                         classe: student.classe || student.Classe || '',
                         club: student.club || student.Club || '',
                         statut: student.statut || student.Statut || 'En attente',
-                        points: parseInt(student.points || student.Points || 0),
+                        points: calculatePointsFromData(student),
                         mandat: student.mandat || student.Mandat || '',
                         ecole: 'bourguiba'
-                    });
+                    };
+                    bourguibaStudents.push(newStudent);
                 });
-            } else {
-                console.log('⚠️ Aucun élève Bourguiba trouvé dans le Sheet');
             }
             
-            // Formater et ajouter élèves Mbao
-            if (mbaoData.students && mbaoData.students.length > 0) {
+            // Traiter Mbao
+            if (mbaoData.students) {
                 mbaoData.students.forEach((student, index) => {
-                    mbaoStudents.push({
+                    const newStudent = {
                         id: 1000 + index + 1,
                         nom: student.nom || student.Nom || '',
                         prenom: student.prenom || student.Prénom || '',
                         classe: student.classe || student.Classe || '',
                         club: student.club || student.Club || '',
                         statut: student.statut || student.Statut || 'En attente',
-                        points: parseInt(student.points || student.Points || 0),
+                        points: calculatePointsFromData(student),
                         mandat: student.mandat || student.Mandat || '',
                         ecole: 'mbao'
-                    });
+                    };
+                    mbaoStudents.push(newStudent);
                 });
-            } else {
-                console.log('⚠️ Aucun élève Mbao trouvé dans le Sheet');
             }
             
-            // Combiner tous les élèves
+            // Combiner et trier
             allStudents = [...bourguibaStudents, ...mbaoStudents];
+            sortStudentsByClass();
             
-            // Trier par classe
-            const classOrder = ['6éme', '5éme', '4éme', '2nde', '1ére', 'TL2', 'TS2'];
-            allStudents.sort((a, b) => {
-                return classOrder.indexOf(a.classe) - classOrder.indexOf(b.classe);
-            });
-            
-            console.log('✅ Chargement terminé. Total élèves:', allStudents.length);
+            console.log(`✅ Chargé: ${bourguibaStudents.length} Bourguiba, ${mbaoStudents.length} Mbao`);
             
         } catch (error) {
-            console.error('❌ Erreur chargement API:', error);
-            alert('Erreur de connexion au Google Sheet. Vérifie ta connexion internet.');
-            // Charger données de démo en cas d'erreur
+            console.error('❌ Erreur API:', error);
             loadDemoData();
         }
     }
 
-    // Fonction de démo (seulement si API échoue)
-    function loadDemoData() {
-        bourguibaStudents.push(
-            { id: 1, nom: "Diouf", prenom: "Mouhamed", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "bourguiba" },
-            { id: 2, nom: "Wagué", prenom: "Ablaye", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "bourguiba" }
-        );
+    function calculatePointsFromData(student) {
+        const club = student.club || student.Club || '';
+        const statut = student.statut || student.Statut || '';
+        const points = parseInt(student.points || student.Points || 0);
         
-        mbaoStudents.push(
-            { id: 1001, nom: "Fall", prenom: "Mouhamed Saliou", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", points: 0, mandat: "", ecole: "mbao" },
-            { id: 1002, nom: "Ba", prenom: "Mouhamed Woury", classe: "6éme B", club: "Sport / Football", statut: "En attente", points: 0, mandat: "", ecole: "mbao" }
-        );
+        // Si déjà des points dans le Sheet, garder
+        if (points > 0) return points;
         
-        allStudents = [...bourguibaStudents, ...mbaoStudents];
+        // Sinon calculer selon règles
+        if (club.includes("Sport")) {
+            return statut === "Sélectionné" ? 100 : 0;
+        } else {
+            return statut === "Sélectionné" ? 100 : 0;
+        }
     }
 
-    // ==================== FONCTIONS DE SAUVEGARDE ====================
+    function sortStudentsByClass() {
+        const classOrder = ['6éme', '5éme', '4éme', '2nde', '1ére', 'TL2', 'TS2'];
+        allStudents.sort((a, b) => {
+            return classOrder.indexOf(a.classe) - classOrder.indexOf(b.classe);
+        });
+    }
+
     async function saveStudentToAPI(studentData) {
         try {
             const params = new URLSearchParams({
@@ -1173,26 +1168,17 @@
                 adminMatricule: currentAdmin?.matricule || ''
             });
             
-            const response = await fetch(GOOGLE_SHEETS_API, {
-                method: 'POST',
-                body: params
-            });
-            
+            const response = await fetch(GOOGLE_SHEETS_API, { method: 'POST', body: params });
             const result = await response.json();
             
             if (result.success) {
-                console.log('✅ Élève sauvegardé dans Google Sheets');
-                // Recharger les données depuis le Sheet
                 await loadStudentsFromAPI();
                 return { success: true };
-            } else {
-                console.error('❌ Erreur sauvegarde:', result.error);
-                return { success: false, error: result.error };
             }
+            return { success: false, error: result.error };
             
         } catch (error) {
-            console.error('❌ Erreur API:', error);
-            return { success: false, error: 'Erreur de connexion' };
+            return { success: false, error: 'Erreur connexion' };
         }
     }
 
@@ -1209,53 +1195,307 @@
                 adminMatricule: currentAdmin?.matricule || ''
             });
             
-            const response = await fetch(GOOGLE_SHEETS_API, {
-                method: 'POST',
-                body: params
-            });
-            
+            const response = await fetch(GOOGLE_SHEETS_API, { method: 'POST', body: params });
             const result = await response.json();
             
             if (result.success) {
-                console.log('✅ Points mis à jour dans Google Sheets');
+                await loadStudentsFromAPI();
                 return { success: true };
-            } else {
-                console.error('❌ Erreur mise à jour:', result.error);
-                return { success: false, error: result.error };
             }
+            return { success: false, error: result.error };
             
         } catch (error) {
-            console.error('❌ Erreur API:', error);
-            return { success: false, error: 'Erreur de connexion' };
+            return { success: false, error: 'Erreur connexion' };
         }
     }
 
-    // ==================== MODIFICATION DES FONCTIONS EXISTANTES ====================
-    // TU DOIS AUSSI MODIFIER CES FONCTIONS (plus bas dans ton code) :
-    
-    // 1. Dans la fonction addNewStudent(), remplace la fin par :
-    async function addNewStudent() {
-        // ... ton code existant ...
+    // ==================== GESTION ADMIN ====================
+    function loadAdminInfo() {
+        const adminName = localStorage.getItem('hikmah_admin_name');
+        const adminMatricule = localStorage.getItem('hikmah_admin_matricule');
         
-        // AU LIEU DE ajouter directement aux tableaux :
-        // Appeler l'API pour sauvegarder
-        const saveResult = await saveStudentToAPI(newStudent);
+        if (!adminName || !adminMatricule) {
+            window.location.href = 'hikmah-login.html';
+            return;
+        }
         
-        if (saveResult.success) {
-            // Recharger l'affichage
-            updateDisplay();
-            closeAddModal();
-            alert(`✅ Élève ajouté et sauvegardé dans Google Sheets !`);
+        currentAdmin = { name: adminName, matricule: adminMatricule };
+        document.getElementById('adminName').textContent = currentAdmin.name;
+    }
+
+    function logout() {
+        localStorage.removeItem('hikmah_admin_logged_in');
+        localStorage.removeItem('hikmah_admin_name');
+        localStorage.removeItem('hikmah_admin_matricule');
+        localStorage.removeItem('hikmah_admin_email');
+        window.location.href = 'hikmah-login.html';
+    }
+
+    // ==================== RENDU DES CARTES ====================
+    function renderAllStudents() {
+        renderSchoolStudents('bourguiba');
+        renderSchoolStudents('mbao');
+        renderAllCombined();
+    }
+
+    function renderSchoolStudents(school) {
+        const grid = document.getElementById(`${school}Grid`);
+        const students = allStudents.filter(s => s.ecole === school);
+        const filtered = filterStudentsList(students);
+        
+        if (filtered.length === 0) {
+            grid.innerHTML = `
+                <div class="no-results">
+                    <i class="fas fa-search"></i>
+                    <h3>Aucun élève trouvé</h3>
+                    <p>Aucun élève ne correspond à votre recherche.</p>
+                </div>
+            `;
+            return;
+        }
+        
+        grid.innerHTML = filtered.map(student => createStudentCard(student)).join('');
+    }
+
+    function renderAllCombined() {
+        const grid = document.getElementById('allGrid');
+        const filtered = filterStudentsList(allStudents);
+        
+        if (filtered.length === 0) {
+            grid.innerHTML = `
+                <div class="no-results">
+                    <i class="fas fa-search"></i>
+                    <h3>Aucun élève trouvé</h3>
+                    <p>Aucun élève ne correspond à votre recherche.</p>
+                </div>
+            `;
+            return;
+        }
+        
+        grid.innerHTML = filtered.map(student => createStudentCard(student)).join('');
+    }
+
+    function createStudentCard(student) {
+        const fullName = `${student.nom} ${student.prenom}`;
+        const initials = `${student.nom[0]}${student.prenom[0]}`.toUpperCase();
+        const statusClass = `status-${getStatusKey(student.statut)}`;
+        const pointsPercentage = (student.points / 100) * 100;
+        const pointsBarClass = student.points <= 30 ? 'points-danger' : student.points <= 60 ? 'points-warning' : '';
+        
+        return `
+            <div class="student-card" data-ecole="${student.ecole}" data-classe="${student.classe}" data-status="${getStatusKey(student.statut)}">
+                <div class="student-header">
+                    <div class="student-avatar">${initials}</div>
+                    <div class="student-status ${statusClass}">
+                        ${getStatusIcon(student.statut)} ${student.statut}
+                    </div>
+                </div>
+                
+                <h3 class="student-name">${fullName}</h3>
+                <div class="student-classe">${student.classe}</div>
+                
+                <div class="student-info">
+                    <div class="info-row">
+                        <span class="info-label">Club :</span>
+                        <span class="info-value">${student.club}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Mandat :</span>
+                        <span class="info-value">${student.mandat || 'Non défini'}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">École :</span>
+                        <span class="info-value" style="color: ${student.ecole === 'bourguiba' ? '#2196F3' : '#9C27B0'}">
+                            ${student.ecole.toUpperCase()}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="points-container">
+                    <div class="points-label">
+                        <span>Points :</span>
+                        <span><strong>${student.points}</strong>/100</span>
+                    </div>
+                    <div class="points-bar">
+                        <div class="points-fill ${pointsBarClass}" style="width: ${pointsPercentage}%"></div>
+                    </div>
+                </div>
+                
+                ${student.points === 0 ? 
+                    `<div style="color: #F44336; font-weight: 600; margin-top: 1rem;">
+                        <i class="fas fa-ban"></i> Élève exclu (0 points)
+                    </div>` : ''
+                }
+                
+                <div class="student-actions">
+                    <button class="action-btn edit-btn" onclick="openEditModal(${student.id}, '${student.ecole}')">
+                        <i class="fas fa-edit"></i> Modifier
+                    </button>
+                    <button class="action-btn delete-btn" onclick="deleteStudent(${student.id}, '${student.ecole}')">
+                        <i class="fas fa-trash"></i> Supprimer
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    function getStatusKey(statut) {
+        const statusMap = {
+            'Sélectionné': 'selected',
+            'En attente': 'waiting',
+            'Refusé': 'refused',
+            'Absent': 'absent'
+        };
+        return statusMap[statut] || 'waiting';
+    }
+
+    function getStatusIcon(statut) {
+        const icons = {
+            'Sélectionné': '✓',
+            'En attente': '⏳',
+            'Refusé': '✗',
+            'Absent': '👤'
+        };
+        return icons[statut] || '⏳';
+    }
+
+    // ==================== FILTRES ET RECHERCHE ====================
+    function filterStudentsList(students) {
+        return students.filter(student => {
+            // Recherche
+            if (currentSearchTerm) {
+                const searchTerm = currentSearchTerm.toLowerCase();
+                const fullName = `${student.nom} ${student.prenom}`.toLowerCase();
+                if (!fullName.includes(searchTerm) && 
+                    !student.classe.toLowerCase().includes(searchTerm) &&
+                    !student.club.toLowerCase().includes(searchTerm)) {
+                    return false;
+                }
+            }
+            
+            // Filtre classe
+            if (currentClassFilter !== 'all' && !student.classe.includes(currentClassFilter)) {
+                return false;
+            }
+            
+            return true;
+        });
+    }
+
+    function filterStudents() {
+        currentSearchTerm = document.getElementById('searchInput').value.toLowerCase();
+        updateDisplay();
+    }
+
+    function filterByClass(classe) {
+        currentClassFilter = classe;
+        
+        document.querySelectorAll('.class-filter-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.classe === classe);
+        });
+        
+        updateDisplay();
+    }
+
+    function updateDisplay() {
+        switch (currentSchool) {
+            case 'bourguiba': renderSchoolStudents('bourguiba'); break;
+            case 'mbao': renderSchoolStudents('mbao'); break;
+            case 'all': renderAllCombined(); break;
+        }
+        updateStats();
+    }
+
+    // ==================== GESTION ONGLETS ====================
+    function switchSchool(school) {
+        currentSchool = school;
+        
+        document.querySelectorAll('.school-tab').forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.school === school);
+        });
+        
+        document.querySelectorAll('.school-section').forEach(section => {
+            section.classList.remove('active');
+        });
+        
+        document.getElementById(`${school}Section`).classList.add('active');
+        updateDisplay();
+    }
+
+    // ==================== STATISTIQUES ====================
+    function updateStats() {
+        let studentsToCount = [];
+        
+        switch (currentSchool) {
+            case 'bourguiba': studentsToCount = allStudents.filter(s => s.ecole === 'bourguiba'); break;
+            case 'mbao': studentsToCount = allStudents.filter(s => s.ecole === 'mbao'); break;
+            case 'all': studentsToCount = allStudents; break;
+        }
+        
+        studentsToCount = filterStudentsList(studentsToCount);
+        
+        const total = studentsToCount.length;
+        const selected = studentsToCount.filter(s => s.statut === 'Sélectionné').length;
+        const waiting = studentsToCount.filter(s => s.statut === 'En attente').length;
+        const excluded = studentsToCount.filter(s => s.points === 0).length;
+        
+        document.getElementById('totalStudents').textContent = total;
+        document.getElementById('selectedStudents').textContent = selected;
+        document.getElementById('waitingStudents').textContent = waiting;
+        document.getElementById('excludedStudents').textContent = excluded;
+    }
+
+    // ==================== MODAL MODIFICATION ====================
+    function openEditModal(studentId, ecole) {
+        currentEditStudent = allStudents.find(s => s.id === studentId && s.ecole === ecole);
+        if (!currentEditStudent) return;
+        
+        const modal = document.getElementById('editModal');
+        document.getElementById('editStudentName').value = `${currentEditStudent.nom} ${currentEditStudent.prenom}`;
+        document.getElementById('editStudentSchool').value = currentEditStudent.ecole.toUpperCase();
+        document.getElementById('currentPoints').textContent = currentEditStudent.points;
+        document.getElementById('editMandat').value = currentEditStudent.mandat || '';
+        
+        currentPoints = currentEditStudent.points;
+        document.getElementById('adminMatricule').value = '';
+        document.getElementById('matriculeError').style.display = 'none';
+        document.getElementById('saveBtn').disabled = true;
+        
+        modal.style.display = 'flex';
+    }
+
+    function closeEditModal() {
+        document.getElementById('editModal').style.display = 'none';
+        currentEditStudent = null;
+    }
+
+    function checkMatricule() {
+        const matricule = document.getElementById('adminMatricule').value;
+        const errorDiv = document.getElementById('matriculeError');
+        const saveBtn = document.getElementById('saveBtn');
+        
+        if (adminMatricules.includes(matricule)) {
+            errorDiv.style.display = 'none';
+            saveBtn.disabled = false;
+            return true;
         } else {
-            alert(`❌ Erreur: ${saveResult.error}`);
+            errorDiv.style.display = 'block';
+            saveBtn.disabled = true;
+            return false;
         }
     }
 
-    // 2. Dans la fonction saveChanges(), remplace la fin par :
+    function changePoints(amount) {
+        currentPoints = Math.max(0, Math.min(100, currentPoints + amount));
+        document.getElementById('currentPoints').textContent = currentPoints;
+    }
+
     async function saveChanges() {
-        // ... ton code existant de vérification matricule ...
+        if (!currentEditStudent || !checkMatricule()) {
+            alert('Veuillez vérifier votre matricule administrateur.');
+            return;
+        }
         
-        // Sauvegarder via API
         const updateResult = await updateStudentPointsAPI({
             id: currentEditStudent.id,
             ecole: currentEditStudent.ecole,
@@ -1266,7 +1506,6 @@
         });
         
         if (updateResult.success) {
-            // Recharger depuis API
             await loadStudentsFromAPI();
             updateDisplay();
             alert(`✅ Points mis à jour dans Google Sheets !`);
@@ -1275,569 +1514,145 @@
             alert(`❌ Erreur: ${updateResult.error}`);
         }
     }
-            loadAdminInfo();
-            initializeData();
-            renderAllStudents();
-            updateStats();
-            setupEventListeners();
+
+    // ==================== MODAL AJOUT ÉLÈVE ====================
+    function openAddModal(ecole) {
+        selectedEcole = ecole;
+        
+        document.querySelectorAll('.ecole-option').forEach(option => {
+            option.classList.remove('selected');
+            if (option.dataset.ecole === ecole) option.classList.add('selected');
         });
+        
+        document.getElementById('addNom').value = '';
+        document.getElementById('addPrenom').value = '';
+        document.getElementById('addClasse').value = '';
+        document.getElementById('addClub').value = '';
+        document.getElementById('addStatut').value = 'Sélectionné';
+        
+        document.getElementById('addModal').style.display = 'flex';
+    }
 
-        function initializeData() {
-            // Nettoyage et préparation des données
-            processBourguibaData();
-            processMbaoData();
-            
-            // Combiner toutes les données
-            allStudents = [...bourguibaStudents, ...mbaoStudents];
-            
-            // Trier par classe (ordre: 6éme, 5éme, 4éme, 2nde, 1ére, TL2, TS2)
-            allStudents.sort((a, b) => {
-                const classOrder = ['6éme', '5éme', '4éme', '2nde', '1ére', 'TL2', 'TS2'];
-                return classOrder.indexOf(a.classe) - classOrder.indexOf(b.classe);
-            });
+    function closeAddModal() {
+        document.getElementById('addModal').style.display = 'none';
+    }
+
+    function selectEcole(ecole) {
+        selectedEcole = ecole;
+        document.querySelectorAll('.ecole-option').forEach(option => {
+            option.classList.toggle('selected', option.dataset.ecole === ecole);
+        });
+    }
+
+    async function addNewStudent() {
+        const nom = document.getElementById('addNom').value.trim();
+        const prenom = document.getElementById('addPrenom').value.trim();
+        const classe = document.getElementById('addClasse').value;
+        const club = document.getElementById('addClub').value;
+        const statut = document.getElementById('addStatut').value;
+        
+        if (!nom || !prenom || !classe || !club) {
+            alert('Veuillez remplir tous les champs obligatoires.');
+            return;
         }
-
-        function processBourguibaData() {
-            // Nettoyer les données Bourguiba
-            bourguibaStudents.forEach(student => {
-                // Calculer les points selon la règle Sport/Statut
-                student.points = calculatePoints(student);
-                
-                // Ajouter école
-                student.ecole = "bourguiba";
-                
-                // Ajouter mandat si vide
-                if (!student.mandat && student.statut === "Sélectionné") {
-                    student.mandat = "2024-2025";
-                }
-            });
-        }
-
-        function processMbaoData() {
-            // Nettoyer les données Mbao
-            mbaoStudents.forEach(student => {
-                // Calculer les points selon la règle Sport/Statut
-                student.points = calculatePoints(student);
-                
-                // Ajouter école
-                student.ecole = "mbao";
-                
-                // Ajouter mandat si vide
-                if (!student.mandat && student.statut === "Sélectionné") {
-                    student.mandat = "2024-2025";
-                }
-            });
-        }
-
-        function calculatePoints(student) {
-            // Règle: Sport + En attente = 0 points
-            // Sport + Sélectionné = 100 points
-            // Autres clubs: Sélectionné = 100, Autres = 0
-            
-            if (student.club.includes("Sport")) {
-                return student.statut === "Sélectionné" ? 100 : 0;
-            } else {
-                return student.statut === "Sélectionné" ? 100 : 0;
-            }
-        }
-
-        // ==================== GESTION ADMIN ====================
-        function loadAdminInfo() {
-            const adminName = localStorage.getItem('hikmah_admin_name');
-            const adminMatricule = localStorage.getItem('hikmah_admin_matricule');
-            
-            if (!adminName || !adminMatricule) {
-                window.location.href = 'hikmah-login.html';
-                return;
-            }
-            
-            currentAdmin = {
-                name: adminName,
-                matricule: adminMatricule
-            };
-            
-            document.getElementById('adminName').textContent = currentAdmin.name;
-        }
-
-        function logout() {
-            localStorage.removeItem('hikmah_admin_logged_in');
-            localStorage.removeItem('hikmah_admin_name');
-            localStorage.removeItem('hikmah_admin_matricule');
-            localStorage.removeItem('hikmah_admin_email');
-            window.location.href = 'hikmah-login.html';
-        }
-
-        // ==================== RENDU DES CARTES ====================
-        function renderAllStudents() {
-            renderSchoolStudents('bourguiba');
-            renderSchoolStudents('mbao');
-            renderAllCombined();
-        }
-
-        function renderSchoolStudents(school) {
-            const grid = document.getElementById(`${school}Grid`);
-            const students = allStudents.filter(s => s.ecole === school);
-            const filtered = filterStudentsList(students);
-            
-            if (filtered.length === 0) {
-                grid.innerHTML = `
-                    <div class="no-results">
-                        <i class="fas fa-search"></i>
-                        <h3>Aucun élève trouvé</h3>
-                        <p>Aucun élève ne correspond à votre recherche.</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            grid.innerHTML = filtered.map(student => createStudentCard(student)).join('');
-        }
-
-        function renderAllCombined() {
-            const grid = document.getElementById('allGrid');
-            const filtered = filterStudentsList(allStudents);
-            
-            if (filtered.length === 0) {
-                grid.innerHTML = `
-                    <div class="no-results">
-                        <i class="fas fa-search"></i>
-                        <h3>Aucun élève trouvé</h3>
-                        <p>Aucun élève ne correspond à votre recherche.</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            grid.innerHTML = filtered.map(student => createStudentCard(student)).join('');
-        }
-
-        function createStudentCard(student) {
-            const fullName = `${student.nom} ${student.prenom}`;
-            const initials = `${student.nom[0]}${student.prenom[0]}`.toUpperCase();
-            const statusClass = `status-${getStatusKey(student.statut)}`;
-            const pointsPercentage = (student.points / 100) * 100;
-            const pointsBarClass = student.points <= 30 ? 'points-danger' : student.points <= 60 ? 'points-warning' : '';
-            
-            return `
-                <div class="student-card" data-ecole="${student.ecole}" data-classe="${student.classe}" data-status="${getStatusKey(student.statut)}">
-                    <div class="student-header">
-                        <div class="student-avatar">${initials}</div>
-                        <div class="student-status ${statusClass}">
-                            ${getStatusIcon(student.statut)} ${student.statut}
-                        </div>
-                    </div>
-                    
-                    <h3 class="student-name">${fullName}</h3>
-                    <div class="student-classe">${student.classe}</div>
-                    
-                    <div class="student-info">
-                        <div class="info-row">
-                            <span class="info-label">Club :</span>
-                            <span class="info-value">${student.club}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Mandat :</span>
-                            <span class="info-value">${student.mandat || 'Non défini'}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">École :</span>
-                            <span class="info-value" style="color: ${student.ecole === 'bourguiba' ? '#2196F3' : '#9C27B0'}">
-                                ${student.ecole.toUpperCase()}
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <div class="points-container">
-                        <div class="points-label">
-                            <span>Points :</span>
-                            <span><strong>${student.points}</strong>/100</span>
-                        </div>
-                        <div class="points-bar">
-                            <div class="points-fill ${pointsBarClass}" style="width: ${pointsPercentage}%"></div>
-                        </div>
-                    </div>
-                    
-                    ${student.points === 0 ? 
-                        `<div style="color: #F44336; font-weight: 600; margin-top: 1rem;">
-                            <i class="fas fa-ban"></i> Élève exclu (0 points)
-                        </div>` : ''
-                    }
-                    
-                    <div class="student-actions">
-                        <button class="action-btn edit-btn" onclick="openEditModal(${student.id}, '${student.ecole}')">
-                            <i class="fas fa-edit"></i> Modifier
-                        </button>
-                        <button class="action-btn delete-btn" onclick="deleteStudent(${student.id}, '${student.ecole}')">
-                            <i class="fas fa-trash"></i> Supprimer
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function getStatusKey(statut) {
-            const statusMap = {
-                'Sélectionné': 'selected',
-                'En attente': 'waiting',
-                'Refusé': 'refused',
-                'Absent': 'absent'
-            };
-            return statusMap[statut] || 'waiting';
-        }
-
-        function getStatusIcon(statut) {
-            const icons = {
-                'Sélectionné': '✓',
-                'En attente': '⏳',
-                'Refusé': '✗',
-                'Absent': '👤'
-            };
-            return icons[statut] || '⏳';
-        }
-
-        // ==================== FILTRES ET RECHERCHE ====================
-        function filterStudentsList(students) {
-            return students.filter(student => {
-                // Filtre par recherche
-                if (currentSearchTerm) {
-                    const searchTerm = currentSearchTerm.toLowerCase();
-                    const fullName = `${student.nom} ${student.prenom}`.toLowerCase();
-                    if (!fullName.includes(searchTerm) && 
-                        !student.classe.toLowerCase().includes(searchTerm) &&
-                        !student.club.toLowerCase().includes(searchTerm)) {
-                        return false;
-                    }
-                }
-                
-                // Filtre par classe
-                if (currentClassFilter !== 'all' && !student.classe.includes(currentClassFilter)) {
-                    return false;
-                }
-                
-                return true;
-            });
-        }
-
-        function filterStudents() {
-            currentSearchTerm = document.getElementById('searchInput').value.toLowerCase();
+        
+        const newStudent = {
+            nom: nom,
+            prenom: prenom,
+            classe: classe,
+            club: club,
+            statut: statut,
+            points: calculatePoints({ club, statut }),
+            mandat: statut === 'Sélectionné' ? '2024-2025' : '',
+            ecole: selectedEcole
+        };
+        
+        const saveResult = await saveStudentToAPI(newStudent);
+        
+        if (saveResult.success) {
             updateDisplay();
-        }
-
-        function filterByClass(classe) {
-            currentClassFilter = classe;
-            
-            // Mettre à jour les boutons actifs
-            document.querySelectorAll('.class-filter-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.classe === classe);
-            });
-            
-            updateDisplay();
-        }
-
-        function updateDisplay() {
-            switch (currentSchool) {
-                case 'bourguiba':
-                    renderSchoolStudents('bourguiba');
-                    break;
-                case 'mbao':
-                    renderSchoolStudents('mbao');
-                    break;
-                case 'all':
-                    renderAllCombined();
-                    break;
-            }
-            updateStats();
-        }
-
-        // ==================== GESTION DES ONGLETS ====================
-        function switchSchool(school) {
-            currentSchool = school;
-            
-            // Mettre à jour les onglets actifs
-            document.querySelectorAll('.school-tab').forEach(tab => {
-                tab.classList.toggle('active', tab.dataset.school === school);
-            });
-            
-            // Afficher la bonne section
-            document.querySelectorAll('.school-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            document.getElementById(`${school}Section`).classList.add('active');
-            
-            // Re-rendre les élèves
-            updateDisplay();
-        }
-
-        // ==================== STATISTIQUES ====================
-        function updateStats() {
-            let studentsToCount = [];
-            
-            switch (currentSchool) {
-                case 'bourguiba':
-                    studentsToCount = allStudents.filter(s => s.ecole === 'bourguiba');
-                    break;
-                case 'mbao':
-                    studentsToCount = allStudents.filter(s => s.ecole === 'mbao');
-                    break;
-                case 'all':
-                    studentsToCount = allStudents;
-                    break;
-            }
-            
-            // Appliquer les filtres actuels
-            studentsToCount = filterStudentsList(studentsToCount);
-            
-            const total = studentsToCount.length;
-            const selected = studentsToCount.filter(s => s.statut === 'Sélectionné').length;
-            const waiting = studentsToCount.filter(s => s.statut === 'En attente').length;
-            const excluded = studentsToCount.filter(s => s.points === 0).length;
-            
-            document.getElementById('totalStudents').textContent = total;
-            document.getElementById('selectedStudents').textContent = selected;
-            document.getElementById('waitingStudents').textContent = waiting;
-            document.getElementById('excludedStudents').textContent = excluded;
-        }
-
-        // ==================== MODAL MODIFICATION ====================
-        function openEditModal(studentId, ecole) {
-            currentEditStudent = allStudents.find(s => s.id === studentId && s.ecole === ecole);
-            if (!currentEditStudent) return;
-            
-            const modal = document.getElementById('editModal');
-            document.getElementById('editStudentName').value = 
-                `${currentEditStudent.nom} ${currentEditStudent.prenom}`;
-            document.getElementById('editStudentSchool').value = 
-                currentEditStudent.ecole.toUpperCase();
-            document.getElementById('currentPoints').textContent = currentEditStudent.points;
-            document.getElementById('editMandat').value = currentEditStudent.mandat || '';
-            
-            currentPoints = currentEditStudent.points;
-            
-            // Réinitialiser
-            document.getElementById('adminMatricule').value = '';
-            document.getElementById('matriculeError').style.display = 'none';
-            document.getElementById('saveBtn').disabled = true;
-            
-            modal.style.display = 'flex';
-        }
-
-        function closeEditModal() {
-            document.getElementById('editModal').style.display = 'none';
-            currentEditStudent = null;
-        }
-
-        function checkMatricule() {
-            const matricule = document.getElementById('adminMatricule').value;
-            const errorDiv = document.getElementById('matriculeError');
-            const saveBtn = document.getElementById('saveBtn');
-            
-            if (adminMatricules.includes(matricule)) {
-                errorDiv.style.display = 'none';
-                saveBtn.disabled = false;
-                return true;
-            } else {
-                errorDiv.style.display = 'block';
-                saveBtn.disabled = true;
-                return false;
-            }
-        }
-
-        function changePoints(amount) {
-            currentPoints = Math.max(0, Math.min(100, currentPoints + amount));
-            document.getElementById('currentPoints').textContent = currentPoints;
-        }
-
-        function saveChanges() {
-            if (!currentEditStudent || !checkMatricule()) {
-                alert('Veuillez vérifier votre matricule administrateur.');
-                return;
-            }
-            
-            // Mettre à jour l'élève
-            currentEditStudent.points = currentPoints;
-            currentEditStudent.mandat = document.getElementById('editMandat').value;
-            
-            // Si points = 0, marquer comme exclu
-            if (currentPoints === 0 && currentEditStudent.statut !== 'Refusé') {
-                currentEditStudent.statut = 'En attente';
-            }
-            
-            // Mettre à jour l'affichage
-            updateDisplay();
-            
-            // Afficher confirmation
-            alert(`✅ Points mis à jour pour ${currentEditStudent.nom} ${currentEditStudent.prenom}\nNouveau score: ${currentPoints} points`);
-            
-            closeEditModal();
-        }
-
-        // ==================== MODAL AJOUT ÉLÈVE ====================
-        function openAddModal(ecole) {
-            selectedEcole = ecole;
-            
-            // Sélectionner l'école correspondante
-            document.querySelectorAll('.ecole-option').forEach(option => {
-                option.classList.remove('selected');
-                if (option.dataset.ecole === ecole) {
-                    option.classList.add('selected');
-                }
-            });
-            
-            // Réinitialiser les champs
-            document.getElementById('addNom').value = '';
-            document.getElementById('addPrenom').value = '';
-            document.getElementById('addClasse').value = '';
-            document.getElementById('addClub').value = '';
-            document.getElementById('addStatut').value = 'Sélectionné';
-            
-            document.getElementById('addModal').style.display = 'flex';
-        }
-
-        function closeAddModal() {
-            document.getElementById('addModal').style.display = 'none';
-        }
-
-        function selectEcole(ecole) {
-            selectedEcole = ecole;
-            document.querySelectorAll('.ecole-option').forEach(option => {
-                option.classList.toggle('selected', option.dataset.ecole === ecole);
-            });
-        }
-
-        function addNewStudent() {
-            const nom = document.getElementById('addNom').value.trim();
-            const prenom = document.getElementById('addPrenom').value.trim();
-            const classe = document.getElementById('addClasse').value;
-            const club = document.getElementById('addClub').value;
-            const statut = document.getElementById('addStatut').value;
-            
-            // Validation
-            if (!nom || !prenom || !classe || !club) {
-                alert('Veuillez remplir tous les champs obligatoires.');
-                return;
-            }
-            
-            // Créer le nouvel élève
-            const newId = Math.max(...allStudents.map(s => s.id), 0) + 1;
-            const newStudent = {
-                id: newId,
-                nom: nom,
-                prenom: prenom,
-                classe: classe,
-                club: club,
-                statut: statut,
-                points: calculatePoints({ club, statut }),
-                mandat: statut === 'Sélectionné' ? '2024-2025' : '',
-                ecole: selectedEcole
-            };
-            
-            // Ajouter aux données
-            if (selectedEcole === 'bourguiba') {
-                bourguibaStudents.push(newStudent);
-            } else {
-                mbaoStudents.push(newStudent);
-            }
-            
-            // Mettre à jour toutes les données
-            allStudents.push(newStudent);
-            
-            // Trier à nouveau
-            allStudents.sort((a, b) => {
-                const classOrder = ['6éme', '5éme', '4éme', '2nde', '1ére', 'TL2', 'TS2'];
-                return classOrder.indexOf(a.classe) - classOrder.indexOf(b.classe);
-            });
-            
-            // Mettre à jour l'affichage
-            updateDisplay();
-            
-            // Fermer le modal
             closeAddModal();
-            
-            // Confirmation
-            alert(`✅ Élève ajouté avec succès !\n${prenom} ${nom} - ${classe} - ${club}`);
+            alert(`✅ Élève ajouté et sauvegardé dans Google Sheets !`);
+        } else {
+            alert(`❌ Erreur: ${saveResult.error}`);
         }
+    }
 
-        // ==================== SUPPRESSION ÉLÈVE ====================
-        function deleteStudent(studentId, ecole) {
-            if (!confirm('Êtes-vous sûr de vouloir supprimer cet élève ? Cette action est irréversible.')) {
-                return;
-            }
-            
-            // Demander le matricule administrateur
-            const matricule = prompt('Pour confirmer la suppression, entrez votre matricule administrateur :');
-            
-            if (!adminMatricules.includes(matricule)) {
-                alert('Matricule incorrect. Suppression annulée.');
-                return;
-            }
-            
-            // Supprimer l'élève
-            const studentIndex = allStudents.findIndex(s => s.id === studentId && s.ecole === ecole);
-            if (studentIndex !== -1) {
-                allStudents.splice(studentIndex, 1);
-            }
-            
-            // Supprimer de la liste correspondante
-            if (ecole === 'bourguiba') {
-                const bourguibaIndex = bourguibaStudents.findIndex(s => s.id === studentId);
-                if (bourguibaIndex !== -1) bourguibaStudents.splice(bourguibaIndex, 1);
-            } else {
-                const mbaoIndex = mbaoStudents.findIndex(s => s.id === studentId);
-                if (mbaoIndex !== -1) mbaoStudents.splice(mbaoIndex, 1);
-            }
-            
-            // Mettre à jour l'affichage
-            updateDisplay();
-            
-            alert('✅ Élève supprimé avec succès.');
+    function calculatePoints(student) {
+        if (student.club.includes("Sport")) {
+            return student.statut === "Sélectionné" ? 100 : 0;
+        } else {
+            return student.statut === "Sélectionné" ? 100 : 0;
         }
+    }
 
-        // ==================== ÉCOUTEURS D'ÉVÉNEMENTS ====================
-        function setupEventListeners() {
-            // Fermer modals en cliquant en dehors
-            document.getElementById('editModal').addEventListener('click', function(e) {
-                if (e.target === this) closeEditModal();
-            });
-            
-            document.getElementById('addModal').addEventListener('click', function(e) {
-                if (e.target === this) closeAddModal();
-            });
-            
-            // Raccourci Échap
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeEditModal();
-                    closeAddModal();
-                }
-            });
-            
-            // Recherche en temps réel
-            document.getElementById('searchInput').addEventListener('input', filterStudents);
+    // ==================== SUPPRESSION ÉLÈVE ====================
+    function deleteStudent(studentId, ecole) {
+        if (!confirm('Êtes-vous sûr de vouloir supprimer cet élève ? Cette action est irréversible.')) return;
+        
+        const matricule = prompt('Pour confirmer, entrez votre matricule administrateur :');
+        if (!adminMatricules.includes(matricule)) {
+            alert('Matricule incorrect. Suppression annulée.');
+            return;
         }
-
-        // ==================== FONCTIONS DE DÉMO ====================
-        // Ces données seront remplacées par les vraies données dans la version finale
-        function loadDemoData() {
-            // Données de démonstration Bourguiba
-            bourguibaStudents.push(
-                { id: 1, nom: "Diouf", prenom: "Mouhamed", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "bourguiba" },
-                { id: 2, nom: "Wagué", prenom: "Ablaye", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "bourguiba" },
-                { id: 3, nom: "Ba", prenom: "Nogaye", classe: "1ére L2", club: "Anglais", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "bourguiba" },
-                { id: 4, nom: "Diagne", prenom: "Seynabou", classe: "2nde L2", club: "Informatique-Robotique", statut: "En attente", points: 0, mandat: "", ecole: "bourguiba" }
-            );
-            
-            // Données de démonstration Mbao
-            mbaoStudents.push(
-                { id: 1001, nom: "Fall", prenom: "Mouhamed Saliou", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", points: 0, mandat: "", ecole: "mbao" },
-                { id: 1002, nom: "Ba", prenom: "Mouhamed Woury", classe: "6éme B", club: "Sport / Football", statut: "En attente", points: 0, mandat: "", ecole: "mbao" },
-                { id: 1003, nom: "Ndiaye", prenom: "Mouhamed Al Bachir", classe: "6éme B", club: "Informatique-Robotique", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "mbao" },
-                { id: 1004, nom: "Coulibaly", prenom: "Mouhamed Abdallah", classe: "6éme B", club: "Informatique-Robotique", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "mbao" }
-            );
+        
+        // Supprimer localement
+        const studentIndex = allStudents.findIndex(s => s.id === studentId && s.ecole === ecole);
+        if (studentIndex !== -1) allStudents.splice(studentIndex, 1);
+        
+        if (ecole === 'bourguiba') {
+            const bourguibaIndex = bourguibaStudents.findIndex(s => s.id === studentId);
+            if (bourguibaIndex !== -1) bourguibaStudents.splice(bourguibaIndex, 1);
+        } else {
+            const mbaoIndex = mbaoStudents.findIndex(s => s.id === studentId);
+            if (mbaoIndex !== -1) mbaoStudents.splice(mbaoIndex, 1);
         }
+        
+        updateDisplay();
+        alert('✅ Élève supprimé avec succès.');
+        
+        // TODO: Ajouter fonction pour supprimer du Google Sheet
+    }
 
-        // Charger les données de démo au démarrage
-        loadDemoData();
-    </script>
+    // ==================== DONNÉES DE DÉMO ====================
+    function loadDemoData() {
+        console.log('⚠️ Chargement données de démo');
+        
+        // Bourguiba
+        bourguibaStudents.push(
+            { id: 1, nom: "Diouf", prenom: "Mouhamed", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "bourguiba" },
+            { id: 2, nom: "Wagué", prenom: "Ablaye", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "bourguiba" }
+        );
+        
+        // Mbao
+        mbaoStudents.push(
+            { id: 1001, nom: "Fall", prenom: "Mouhamed Saliou", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", points: 0, mandat: "", ecole: "mbao" },
+            { id: 1002, nom: "Ba", prenom: "Mouhamed Woury", classe: "6éme B", club: "Sport / Football", statut: "En attente", points: 0, mandat: "", ecole: "mbao" }
+        );
+        
+        allStudents = [...bourguibaStudents, ...mbaoStudents];
+        sortStudentsByClass();
+    }
+
+    // ==================== ÉCOUTEURS D'ÉVÉNEMENTS ====================
+    function setupEventListeners() {
+        document.getElementById('editModal').addEventListener('click', function(e) {
+            if (e.target === this) closeEditModal();
+        });
+        
+        document.getElementById('addModal').addEventListener('click', function(e) {
+            if (e.target === this) closeAddModal();
+        });
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeEditModal();
+                closeAddModal();
+            }
+        });
+        
+        document.getElementById('searchInput').addEventListener('input', filterStudents);
+    }
+</script>
 </body>
 </html>
