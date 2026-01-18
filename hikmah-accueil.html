@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hikmah's Club - Excellence & Leadership</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --hikmah-green: #2E8B57;  /* Vert professionnel */
+            --hikmah-light-green: #3CB371;
+            --hikmah-white: #FFFFFF;
+            --hikmah-gray: #F5F5F5;
+            --hikmah-dark: #1A1A1A;
+            --hikmah-border: #E0E0E0;
+        }
+
+        body {
+            background-color: var(--hikmah-white);
+            font-family: 'Poppins', sans-serif;
+            color: var(--hikmah-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER PROFESSIONNEL */
+        .hikmah-header {
+            background-color: var(--hikmah-white);
+            border-bottom: 2px solid var(--hikmah-green);
+            box-shadow: 0 4px 12px rgba(46, 139, 87, 0.1);
+            padding: 1.2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .hikmah-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .hikmah-nav {
+                padding: 0 1.5rem;
+            }
+        }
+
+        .hikmah-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hikmah-logo i {
+            color: var(--hikmah-green);
+            font-size: 2.2rem;
+        }
+
+        .hikmah-logo h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--hikmah-green);
+            letter-spacing: 0.5px;
+        }
+
+        .hikmah-logo span {
+            color: var(--hikmah-dark);
+            font-weight: 500;
+        }
+
+        .hikmah-btn {
+            background-color: var(--hikmah-green);
+            color: var(--hikmah-white);
+            border: none;
+            padding: 0.9rem 2rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(46, 139, 87, 0.2);
+        }
+
+        .hikmah-btn:hover {
+            background-color: var(--hikmah-light-green);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(46, 139, 87, 0.3);
+        }
+
+        /* HERO SECTION */
+        .hikmah-hero {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(46, 139, 87, 0.05) 0%, rgba(255, 255, 255, 1) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3.2rem;
+            font-weight: 700;
+            color: var(--hikmah-green);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--hikmah-light-green);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--hikmah-dark);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.8;
+        }
+
+        .hikmah-card {
+            background: var(--hikmah-white);
+            border-radius: 16px;
+            padding: 3rem;
+            max-width: 500px;
+            margin: 2rem auto;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--hikmah-border);
+            text-align: center;
+        }
+
+        .hikmah-card h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            color: var(--hikmah-green);
+            margin-bottom: 1.5rem;
+        }
+
+        .hikmah-card p {
+            color: var(--hikmah-dark);
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        .hikmah-features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--hikmah-green);
+            font-weight: 500;
+        }
+
+        .feature i {
+            font-size: 1.2rem;
+        }
+
+        /* FOOTER */
+        .hikmah-footer {
+            background-color: var(--hikmah-dark);
+            color: var(--hikmah-white);
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .hikmah-footer p {
+            opacity: 0.8;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* DÉCORATIONS */
+        .accent-circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .circle-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--hikmah-green);
+            top: -150px;
+            right: -150px;
+        }
+
+        .circle-2 {
+            width: 200px;
+            height: 200px;
+            background: var(--hikmah-light-green);
+            bottom: -100px;
+            left: -100px;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="hikmah-header">
+        <nav class="hikmah-nav">
+            <div class="hikmah-logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>HIKMAH'S <span>CLUB</span></h1>
+            </div>
+            <a href="hikmah-login.html" class="hikmah-btn">
+                <i class="fas fa-sign-in-alt"></i> Connexion Administration
+            </a>
+        </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <main class="hikmah-hero">
+        <!-- DÉCORATIONS -->
+        <div class="accent-circle circle-1"></div>
+        <div class="accent-circle circle-2"></div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">HIKMAH'S CLUB</h1>
+            <p class="hero-subtitle">Excellence & Leadership</p>
+            <p class="hero-description">
+                Plateforme de gestion administrative exclusive pour le suivi des membres, 
+                des points et des mandats du club d'élite Hikmah's Club.
+            </p>
+            
+            <div class="hikmah-card">
+                <h2>Accès Administrateur</h2>
+                <p>
+                    Cette plateforme est réservée aux membres autorisés de l'administration 
+                    du Hikmah's Club. Veuillez utiliser vos identifiants officiels pour accéder 
+                    au tableau de bord de gestion.
+                </p>
+                <a href="hikmah-login.html" class="hikmah-btn">
+                    <i class="fas fa-lock"></i> Se Connecter
+                </a>
+            </div>
+            
+            <div class="hikmah-features">
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Accès sécurisé</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Gestion des points</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-users-cog"></i>
+                    <span>Administration</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="hikmah-footer">
+        <p>HIKMAH'S CLUB &copy; 2024 - Tous droits réservés</p>
+        <p>Plateforme de gestion administrative interne</p>
+    </footer>
+
+    <script>
+        // Animation simple au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            const card = document.querySelector('.hikmah-card');
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                card.style.transition = 'all 0.6s ease-out';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 300);
+        });
+    </script>
+</body>
+</html>
