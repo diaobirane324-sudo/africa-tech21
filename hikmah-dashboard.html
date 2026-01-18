@@ -7,11 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --hikmah-green: #2E8B57;
@@ -20,14 +16,8 @@
             --hikmah-gray: #F5F5F5;
             --hikmah-dark: #1A1A1A;
             --hikmah-border: #E0E0E0;
-            --hikmah-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --club-sport: #4CAF50;
-            --club-robotique: #2196F3;
-            --club-anglais: #FF9800;
-            --club-arabe: #9C27B0;
-            --club-physique: #FF5722;
-            --club-biochimie: #009688;
-            --club-clap: #795548;
+            --bourguiba-color: #2196F3;
+            --mbao-color: #9C27B0;
             --status-selected: #4CAF50;
             --status-waiting: #FFC107;
             --status-refused: #F44336;
@@ -41,7 +31,7 @@
             min-height: 100vh;
         }
 
-        /* HEADER DASHBOARD */
+        /* HEADER */
         .dashboard-header {
             background-color: var(--hikmah-white);
             border-bottom: 3px solid var(--hikmah-green);
@@ -57,16 +47,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 3rem;
-            max-width: 1600px;
+            max-width: 1800px;
             margin: 0 auto;
-        }
-
-        @media (max-width: 768px) {
-            .dashboard-nav {
-                padding: 0 1.5rem;
-                flex-direction: column;
-                gap: 1rem;
-            }
         }
 
         .dashboard-logo {
@@ -86,11 +68,6 @@
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--hikmah-green);
-        }
-
-        .dashboard-logo span {
-            color: var(--hikmah-dark);
-            font-weight: 500;
         }
 
         .admin-info {
@@ -131,14 +108,56 @@
             transform: translateY(-2px);
         }
 
+        /* ONGLETS ÉCOLES */
+        .school-tabs {
+            display: flex;
+            background: white;
+            padding: 0 3rem;
+            border-bottom: 2px solid var(--hikmah-border);
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .school-tab {
+            padding: 1.2rem 2rem;
+            border: none;
+            background: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .school-tab:hover {
+            background-color: var(--hikmah-gray);
+        }
+
+        .school-tab.active {
+            border-bottom-color: var(--hikmah-green);
+            color: var(--hikmah-green);
+        }
+
+        .school-tab[data-school="bourguiba"] {
+            color: var(--bourguiba-color);
+        }
+
+        .school-tab[data-school="mbao"] {
+            color: var(--mbao-color);
+        }
+
         /* FILTRES ET RECHERCHE */
         .filters-section {
             background-color: var(--hikmah-white);
             padding: 2rem 3rem;
             margin: 2rem auto;
-            max-width: 1600px;
+            max-width: 1800px;
             border-radius: 15px;
-            box-shadow: var(--hikmah-card-shadow);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
         .search-container {
@@ -165,37 +184,38 @@
             box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.2);
         }
 
-        .filter-buttons {
+        /* FILTRES CLASSE */
+        .class-filters {
             display: flex;
-            gap: 1rem;
+            gap: 0.8rem;
             flex-wrap: wrap;
+            margin-bottom: 1.5rem;
         }
 
-        .filter-btn {
-            padding: 0.8rem 1.5rem;
+        .class-filter-btn {
+            padding: 0.6rem 1.2rem;
             border: 2px solid var(--hikmah-border);
             background: white;
-            border-radius: 8px;
+            border-radius: 20px;
             font-family: 'Montserrat', sans-serif;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 0.9rem;
         }
 
-        .filter-btn:hover {
+        .class-filter-btn:hover {
             border-color: var(--hikmah-green);
             transform: translateY(-2px);
         }
 
-        .filter-btn.active {
+        .class-filter-btn.active {
             background-color: var(--hikmah-green);
             color: white;
             border-color: var(--hikmah-green);
         }
 
+        /* STATISTIQUES */
         .stats-container {
             display: flex;
             justify-content: space-between;
@@ -230,27 +250,86 @@
 
         /* CARTES DES ÉLÈVES */
         .students-container {
-            max-width: 1600px;
+            max-width: 1800px;
             margin: 0 auto;
             padding: 0 3rem 3rem;
         }
 
-        .students-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
+        .school-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
         }
 
+        .school-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .school-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--hikmah-border);
+        }
+
+        .school-header h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            color: var(--hikmah-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .school-header[data-school="bourguiba"] h2 {
+            color: var(--bourguiba-color);
+        }
+
+        .school-header[data-school="mbao"] h2 {
+            color: var(--mbao-color);
+        }
+
+        .add-student-btn {
+            background-color: var(--hikmah-green);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .add-student-btn:hover {
+            background-color: var(--hikmah-light-green);
+            transform: translateY(-2px);
+        }
+
+        .students-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* CARTE ÉLÈVE */
         .student-card {
             background-color: var(--hikmah-white);
             border-radius: 15px;
             padding: 1.8rem;
-            box-shadow: var(--hikmah-card-shadow);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            border-top: 5px solid var(--club-robotique);
         }
 
         .student-card:hover {
@@ -258,13 +337,13 @@
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
         }
 
-        .student-card[data-club*="Sport"] { border-top-color: var(--club-sport); }
-        .student-card[data-club*="Robotique"] { border-top-color: var(--club-robotique); }
-        .student-card[data-club*="Anglais"] { border-top-color: var(--club-anglais); }
-        .student-card[data-club*="Arabe"] { border-top-color: var(--club-arabe); }
-        .student-card[data-club*="Physique"] { border-top-color: var(--club-physique); }
-        .student-card[data-club*="Biochimie"] { border-top-color: var(--club-biochimie); }
-        .student-card[data-club*="CLAP"] { border-top-color: var(--club-clap); }
+        .student-card[data-ecole="bourguiba"] {
+            border-left: 5px solid var(--bourguiba-color);
+        }
+
+        .student-card[data-ecole="mbao"] {
+            border-left: 5px solid var(--mbao-color);
+        }
 
         .student-header {
             display: flex;
@@ -306,6 +385,17 @@
             font-weight: 700;
             color: var(--hikmah-dark);
             margin-bottom: 0.5rem;
+        }
+
+        .student-classe {
+            display: inline-block;
+            background-color: rgba(46, 139, 87, 0.1);
+            color: var(--hikmah-green);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
         }
 
         .student-info {
@@ -387,15 +477,31 @@
             transform: translateY(-2px);
         }
 
-        .details-btn {
+        .delete-btn {
             background-color: transparent;
-            border: 2px solid var(--hikmah-border);
-            color: var(--hikmah-dark);
+            border: 2px solid #F44336;
+            color: #F44336;
         }
 
-        .details-btn:hover {
-            border-color: var(--hikmah-green);
-            color: var(--hikmah-green);
+        .delete-btn:hover {
+            background-color: #F44336;
+            color: white;
+        }
+
+        /* MESSAGE AUCUN RÉSULTAT */
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--hikmah-dark);
+            opacity: 0.5;
+            font-size: 1.2rem;
+            grid-column: 1 / -1;
+        }
+
+        .no-results i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: var(--hikmah-border);
         }
 
         /* MODAL DE MODIFICATION */
@@ -411,11 +517,6 @@
             align-items: center;
             z-index: 2000;
             animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         .modal {
@@ -471,11 +572,6 @@
             padding: 1rem;
             margin-bottom: 2rem;
             border-radius: 5px;
-        }
-
-        .security-warning i {
-            color: #FFC107;
-            margin-right: 10px;
         }
 
         .form-group {
@@ -576,19 +672,38 @@
             border-color: var(--hikmah-dark);
         }
 
-        /* MESSAGE AUCUN RÉSULTAT */
-        .no-results {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--hikmah-dark);
-            opacity: 0.5;
-            font-size: 1.2rem;
+        /* MODAL AJOUT ÉLÈVE */
+        .ecole-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
-        .no-results i {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            color: var(--hikmah-border);
+        .ecole-option {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid var(--hikmah-border);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ecole-option:hover {
+            border-color: var(--hikmah-green);
+        }
+
+        .ecole-option.selected {
+            border-color: var(--hikmah-green);
+            background-color: rgba(46, 139, 87, 0.1);
+        }
+
+        .ecole-option[data-ecole="bourguiba"] {
+            border-color: var(--bourguiba-color);
+        }
+
+        .ecole-option[data-ecole="mbao"] {
+            border-color: var(--mbao-color);
         }
 
         /* FOOTER */
@@ -606,43 +721,27 @@
             margin-top: 0.5rem;
         }
 
-        /* LOADING */
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: var(--hikmah-green);
-            font-size: 1.2rem;
-        }
-
-        .loading i {
-            animation: spin 1s linear infinite;
-            margin-right: 10px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         /* RESPONSIVE */
         @media (max-width: 768px) {
-            .students-grid {
-                grid-template-columns: 1fr;
-            }
-            
+            .dashboard-nav,
+            .school-tabs,
             .filters-section,
             .students-container {
-                padding: 1.5rem;
+                padding: 1rem;
             }
-            
+
             .search-container {
                 flex-direction: column;
             }
-            
+
             .search-input {
                 min-width: 100%;
             }
-            
+
+            .students-grid {
+                grid-template-columns: 1fr;
+            }
+
             .stats-container {
                 flex-direction: column;
             }
@@ -669,7 +768,20 @@
         </nav>
     </header>
 
-    <!-- FILTRES ET STATISTIQUES -->
+    <!-- ONGLETS ÉCOLES -->
+    <div class="school-tabs">
+        <button class="school-tab active" data-school="bourguiba" onclick="switchSchool('bourguiba')">
+            <i class="fas fa-school"></i> BOURGUIBA
+        </button>
+        <button class="school-tab" data-school="mbao" onclick="switchSchool('mbao')">
+            <i class="fas fa-school"></i> MBAO
+        </button>
+        <button class="school-tab" data-school="all" onclick="switchSchool('all')">
+            <i class="fas fa-users"></i> TOUS LES ÉLÈVES
+        </button>
+    </div>
+
+    <!-- FILTRES ET RECHERCHE -->
     <section class="filters-section">
         <div class="search-container">
             <input type="text" 
@@ -677,23 +789,37 @@
                    id="searchInput" 
                    placeholder="🔍 Rechercher un élève par nom, prénom ou classe..."
                    onkeyup="filterStudents()">
-            
-            <div class="filter-buttons">
-                <button class="filter-btn" data-filter="all" onclick="setFilter('all')">
-                    <i class="fas fa-users"></i> Tous
-                </button>
-                <button class="filter-btn" data-filter="selected" onclick="setFilter('selected')">
-                    <i class="fas fa-check-circle"></i> Sélectionnés
-                </button>
-                <button class="filter-btn" data-filter="waiting" onclick="setFilter('waiting')">
-                    <i class="fas fa-clock"></i> En attente
-                </button>
-                <button class="filter-btn" data-filter="excluded" onclick="setFilter('excluded')">
-                    <i class="fas fa-ban"></i> Exclus
-                </button>
-            </div>
         </div>
 
+        <!-- FILTRES PAR CLASSE -->
+        <div class="class-filters">
+            <button class="class-filter-btn active" data-classe="all" onclick="filterByClass('all')">
+                Toutes les classes
+            </button>
+            <button class="class-filter-btn" data-classe="6éme" onclick="filterByClass('6éme')">
+                6éme
+            </button>
+            <button class="class-filter-btn" data-classe="5éme" onclick="filterByClass('5éme')">
+                5éme
+            </button>
+            <button class="class-filter-btn" data-classe="4éme" onclick="filterByClass('4éme')">
+                4éme
+            </button>
+            <button class="class-filter-btn" data-classe="2nde" onclick="filterByClass('2nde')">
+                2nde
+            </button>
+            <button class="class-filter-btn" data-classe="1ére" onclick="filterByClass('1ére')">
+                1ére
+            </button>
+            <button class="class-filter-btn" data-classe="TL2" onclick="filterByClass('TL2')">
+                TL2
+            </button>
+            <button class="class-filter-btn" data-classe="TS2" onclick="filterByClass('TS2')">
+                TS2
+            </button>
+        </div>
+
+        <!-- STATISTIQUES -->
         <div class="stats-container">
             <div class="stat-card">
                 <div class="stat-number" id="totalStudents">0</div>
@@ -714,17 +840,45 @@
         </div>
     </section>
 
-    <!-- CARTES DES ÉLÈVES -->
+    <!-- SECTION BOURGUIBA -->
     <section class="students-container">
-        <div class="students-grid" id="studentsGrid">
-            <!-- Les cartes seront générées par JavaScript -->
-            <div class="loading">
-                <i class="fas fa-spinner"></i> Chargement des élèves...
+        <div class="school-section active" id="bourguibaSection">
+            <div class="school-header" data-school="bourguiba">
+                <h2><i class="fas fa-school"></i> ÉCOLE BOURGUIBA</h2>
+                <button class="add-student-btn" onclick="openAddModal('bourguiba')">
+                    <i class="fas fa-user-plus"></i> Ajouter un élève
+                </button>
+            </div>
+            <div class="students-grid" id="bourguibaGrid">
+                <!-- Cartes Bourguiba générées par JavaScript -->
+            </div>
+        </div>
+
+        <!-- SECTION MBAO -->
+        <div class="school-section" id="mbaoSection">
+            <div class="school-header" data-school="mbao">
+                <h2><i class="fas fa-school"></i> ÉCOLE MBAO</h2>
+                <button class="add-student-btn" onclick="openAddModal('mbao')">
+                    <i class="fas fa-user-plus"></i> Ajouter un élève
+                </button>
+            </div>
+            <div class="students-grid" id="mbaoGrid">
+                <!-- Cartes Mbao générées par JavaScript -->
+            </div>
+        </div>
+
+        <!-- SECTION TOUS -->
+        <div class="school-section" id="allSection">
+            <div class="school-header">
+                <h2><i class="fas fa-users"></i> TOUS LES ÉLÈVES (BOURGUIBA + MBAO)</h2>
+            </div>
+            <div class="students-grid" id="allGrid">
+                <!-- Toutes les cartes générées par JavaScript -->
             </div>
         </div>
     </section>
 
-    <!-- MODAL DE MODIFICATION -->
+    <!-- MODAL MODIFICATION POINTS -->
     <div class="modal-overlay" id="editModal">
         <div class="modal">
             <div class="modal-header">
@@ -740,6 +894,11 @@
             <div class="form-group">
                 <label>Élève :</label>
                 <input type="text" id="editStudentName" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label>École :</label>
+                <input type="text" id="editStudentSchool" readonly>
             </div>
             
             <div class="form-group">
@@ -783,6 +942,88 @@
         </div>
     </div>
 
+    <!-- MODAL AJOUT ÉLÈVE -->
+    <div class="modal-overlay" id="addModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Ajouter un nouvel élève</h2>
+                <button class="modal-close" onclick="closeAddModal()">&times;</button>
+            </div>
+            
+            <div class="form-group">
+                <label>Sélectionner l'école :</label>
+                <div class="ecole-selector">
+                    <div class="ecole-option selected" data-ecole="bourguiba" onclick="selectEcole('bourguiba')">
+                        <i class="fas fa-school"></i><br>
+                        BOURGUIBA
+                    </div>
+                    <div class="ecole-option" data-ecole="mbao" onclick="selectEcole('mbao')">
+                        <i class="fas fa-school"></i><br>
+                        MBAO
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Nom de famille :</label>
+                <input type="text" id="addNom" placeholder="Nom">
+            </div>
+            
+            <div class="form-group">
+                <label>Prénom :</label>
+                <input type="text" id="addPrenom" placeholder="Prénom">
+            </div>
+            
+            <div class="form-group">
+                <label>Classe :</label>
+                <select id="addClasse">
+                    <option value="">Sélectionner une classe</option>
+                    <option value="6éme">6éme</option>
+                    <option value="5éme">5éme</option>
+                    <option value="4éme">4éme</option>
+                    <option value="2nde">2nde</option>
+                    <option value="1ére">1ére</option>
+                    <option value="TL2">TL2</option>
+                    <option value="TS2">TS2</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Club :</label>
+                <select id="addClub">
+                    <option value="">Sélectionner un club</option>
+                    <option value="Informatique-Robotique">Informatique-Robotique</option>
+                    <option value="Sport (Football)">Sport (Football)</option>
+                    <option value="Sport (Basket)">Sport (Basket)</option>
+                    <option value="Sport (Taekwondo)">Sport (Taekwondo)</option>
+                    <option value="Sport (Handball)">Sport (Handball)</option>
+                    <option value="Anglais">Anglais</option>
+                    <option value="Arabe">Arabe</option>
+                    <option value="Physique">Physique</option>
+                    <option value="Biochimie">Biochimie</option>
+                    <option value="CLAP">CLAP (Littérature, Arts et Philosophie)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Statut :</label>
+                <select id="addStatut">
+                    <option value="Sélectionné">Sélectionné</option>
+                    <option value="En attente">En attente</option>
+                    <option value="Refusé">Refusé</option>
+                    <option value="Absent">Absent</option>
+                </select>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeAddModal()">Annuler</button>
+                <button class="modal-btn confirm" onclick="addNewStudent()">
+                    <i class="fas fa-user-plus"></i> Ajouter l'élève
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- FOOTER -->
     <footer class="dashboard-footer">
         <p>HIKMAH'S CLUB &copy; 2024 - Dashboard Administratif</p>
@@ -790,107 +1031,30 @@
     </footer>
 
     <script>
-        // ==================== DONNÉES DE TEST ====================
-        // Ces données seront remplacées par Google Sheets plus tard
-        const testStudents = [
-            {
-                id: 1,
-                nom: "Diouf",
-                prenom: "Mouhamed",
-                classe: "1ére L2",
-                club: "Sport (Football)",
-                statut: "Sélectionné",
-                points: 100,
-                mandat: "2024-2025",
-                dateInscription: "2024-01-01"
-            },
-            {
-                id: 2,
-                nom: "Wagué",
-                prenom: "Ablaye",
-                classe: "1ére L2",
-                club: "Sport (Football)",
-                statut: "Sélectionné",
-                points: 95,
-                mandat: "2024-2025",
-                dateInscription: "2024-01-01"
-            },
-            {
-                id: 3,
-                nom: "Diagne",
-                prenom: "Seynabou",
-                classe: "2nde L2",
-                club: "Informatique-Robotique",
-                statut: "En attente",
-                points: 0,
-                mandat: "",
-                dateInscription: "2024-01-01"
-            },
-            {
-                id: 4,
-                nom: "Ba",
-                prenom: "Nogaye",
-                classe: "1ére L2",
-                club: "Anglais",
-                statut: "Sélectionné",
-                points: 85,
-                mandat: "2024-2025",
-                dateInscription: "2024-01-01"
-            },
-            {
-                id: 5,
-                nom: "Kanté",
-                prenom: "Makhtar Abdou Aziz",
-                classe: "1ére L2",
-                club: "Sport (Football)",
-                statut: "Sélectionné",
-                points: 100,
-                mandat: "2024-2025",
-                dateInscription: "2024-01-01"
-            },
-            {
-                id: 6,
-                nom: "Madiara",
-                prenom: "Moustapha",
-                classe: "1ére L2",
-                club: "Informatique-Robotique",
-                statut: "Sélectionné",
-                points: 75,
-                mandat: "2024-2025",
-                dateInscription: "2024-01-01"
-            },
-            {
-                id: 7,
-                nom: "Diop",
-                prenom: "Mouhamad",
-                classe: "2nde SB",
-                club: "Sport (Football)",
-                statut: "En attente",
-                points: 0,
-                mandat: "",
-                dateInscription: "2024-01-01"
-            },
-            {
-                id: 8,
-                nom: "Barry",
-                prenom: "Abdou Razak",
-                classe: "2nde SB",
-                club: "Anglais",
-                statut: "Refusé",
-                points: 0,
-                mandat: "",
-                dateInscription: "2024-01-01"
-            }
+        // ==================== DONNÉES ====================
+        // Données de BOURGUIBA (250+ élèves)
+        const bourguibaStudents = [
+            // Données Bourguiba seront insérées ici
+            // Format: { id, nom, prenom, classe, club, statut, points, mandat, ecole: "bourguiba" }
+        ];
+
+        // Données de MBAO (200+ élèves)
+        const mbaoStudents = [
+            // Données Mbao seront insérées ici
+            // Format: { id, nom, prenom, classe, club, statut, points, mandat, ecole: "mbao" }
         ];
 
         // ==================== VARIABLES GLOBALES ====================
         let currentAdmin = null;
-        let students = [...testStudents];
-        let currentFilter = 'all';
+        let allStudents = [];
+        let currentSchool = 'bourguiba';
+        let currentClassFilter = 'all';
+        let currentSearchTerm = '';
         let currentEditStudent = null;
         let currentPoints = 100;
+        let selectedEcole = 'bourguiba';
 
-        // ==================== MATRICULES ADMIN ====================
+        // Matricules administrateurs
         const adminMatricules = [
             "Birane186@robotic",
             "Salamaprésidentehc@00", 
@@ -900,10 +1064,70 @@
         // ==================== INITIALISATION ====================
         document.addEventListener('DOMContentLoaded', function() {
             loadAdminInfo();
-            renderStudents();
+            initializeData();
+            renderAllStudents();
             updateStats();
             setupEventListeners();
         });
+
+        function initializeData() {
+            // Nettoyage et préparation des données
+            processBourguibaData();
+            processMbaoData();
+            
+            // Combiner toutes les données
+            allStudents = [...bourguibaStudents, ...mbaoStudents];
+            
+            // Trier par classe (ordre: 6éme, 5éme, 4éme, 2nde, 1ére, TL2, TS2)
+            allStudents.sort((a, b) => {
+                const classOrder = ['6éme', '5éme', '4éme', '2nde', '1ére', 'TL2', 'TS2'];
+                return classOrder.indexOf(a.classe) - classOrder.indexOf(b.classe);
+            });
+        }
+
+        function processBourguibaData() {
+            // Nettoyer les données Bourguiba
+            bourguibaStudents.forEach(student => {
+                // Calculer les points selon la règle Sport/Statut
+                student.points = calculatePoints(student);
+                
+                // Ajouter école
+                student.ecole = "bourguiba";
+                
+                // Ajouter mandat si vide
+                if (!student.mandat && student.statut === "Sélectionné") {
+                    student.mandat = "2024-2025";
+                }
+            });
+        }
+
+        function processMbaoData() {
+            // Nettoyer les données Mbao
+            mbaoStudents.forEach(student => {
+                // Calculer les points selon la règle Sport/Statut
+                student.points = calculatePoints(student);
+                
+                // Ajouter école
+                student.ecole = "mbao";
+                
+                // Ajouter mandat si vide
+                if (!student.mandat && student.statut === "Sélectionné") {
+                    student.mandat = "2024-2025";
+                }
+            });
+        }
+
+        function calculatePoints(student) {
+            // Règle: Sport + En attente = 0 points
+            // Sport + Sélectionné = 100 points
+            // Autres clubs: Sélectionné = 100, Autres = 0
+            
+            if (student.club.includes("Sport")) {
+                return student.statut === "Sélectionné" ? 100 : 0;
+            } else {
+                return student.statut === "Sélectionné" ? 100 : 0;
+            }
+        }
 
         // ==================== GESTION ADMIN ====================
         function loadAdminInfo() {
@@ -911,7 +1135,6 @@
             const adminMatricule = localStorage.getItem('hikmah_admin_matricule');
             
             if (!adminName || !adminMatricule) {
-                // Non connecté, rediriger vers login
                 window.location.href = 'hikmah-login.html';
                 return;
             }
@@ -922,12 +1145,6 @@
             };
             
             document.getElementById('adminName').textContent = currentAdmin.name;
-            
-            // Vérifier si l'admin est autorisé
-            if (!adminMatricules.includes(adminMatricule)) {
-                alert('Accès non autorisé. Matricule invalide.');
-                logout();
-            }
         }
 
         function logout() {
@@ -939,10 +1156,18 @@
         }
 
         // ==================== RENDU DES CARTES ====================
-        function renderStudents(filteredStudents = students) {
-            const grid = document.getElementById('studentsGrid');
+        function renderAllStudents() {
+            renderSchoolStudents('bourguiba');
+            renderSchoolStudents('mbao');
+            renderAllCombined();
+        }
+
+        function renderSchoolStudents(school) {
+            const grid = document.getElementById(`${school}Grid`);
+            const students = allStudents.filter(s => s.ecole === school);
+            const filtered = filterStudentsList(students);
             
-            if (filteredStudents.length === 0) {
+            if (filtered.length === 0) {
                 grid.innerHTML = `
                     <div class="no-results">
                         <i class="fas fa-search"></i>
@@ -953,69 +1178,91 @@
                 return;
             }
             
-            grid.innerHTML = filteredStudents.map(student => {
-                const fullName = `${student.nom} ${student.prenom}`;
-                const initials = `${student.nom[0]}${student.prenom[0]}`.toUpperCase();
-                const statusClass = `status-${getStatusKey(student.statut)}`;
-                const pointsPercentage = (student.points / 100) * 100;
-                const pointsBarClass = student.points <= 30 ? 'points-danger' : student.points <= 60 ? 'points-warning' : '';
-                
-                return `
-                    <div class="student-card" data-club="${student.club}" data-status="${getStatusKey(student.statut)}">
-                        <div class="student-header">
-                            <div class="student-avatar">${initials}</div>
-                            <div class="student-status ${statusClass}">
-                                ${getStatusIcon(student.statut)} ${student.statut}
-                            </div>
-                        </div>
-                        
-                        <h3 class="student-name">${fullName}</h3>
-                        
-                        <div class="student-info">
-                            <div class="info-row">
-                                <span class="info-label">Classe :</span>
-                                <span class="info-value">${student.classe}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Club :</span>
-                                <span class="info-value">${student.club}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Mandat :</span>
-                                <span class="info-value">${student.mandat || 'Non défini'}</span>
-                            </div>
-                        </div>
-                        
-                        <div class="points-container">
-                            <div class="points-label">
-                                <span>Points :</span>
-                                <span><strong>${student.points}</strong>/100</span>
-                            </div>
-                            <div class="points-bar">
-                                <div class="points-fill ${pointsBarClass}" style="width: ${pointsPercentage}%"></div>
-                            </div>
-                        </div>
-                        
-                        ${student.points === 0 ? 
-                            `<div style="color: #F44336; font-weight: 600; margin-top: 1rem;">
-                                <i class="fas fa-ban"></i> Élève exclu (0 points)
-                            </div>` : ''
-                        }
-                        
-                        <div class="student-actions">
-                            <button class="action-btn edit-btn" onclick="openEditModal(${student.id})">
-                                <i class="fas fa-edit"></i> Modifier
-                            </button>
-                            <button class="action-btn details-btn" onclick="showDetails(${student.id})">
-                                <i class="fas fa-info-circle"></i> Détails
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+            grid.innerHTML = filtered.map(student => createStudentCard(student)).join('');
         }
 
-        // ==================== FONCTIONS UTILITAIRES ====================
+        function renderAllCombined() {
+            const grid = document.getElementById('allGrid');
+            const filtered = filterStudentsList(allStudents);
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <h3>Aucun élève trouvé</h3>
+                        <p>Aucun élève ne correspond à votre recherche.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = filtered.map(student => createStudentCard(student)).join('');
+        }
+
+        function createStudentCard(student) {
+            const fullName = `${student.nom} ${student.prenom}`;
+            const initials = `${student.nom[0]}${student.prenom[0]}`.toUpperCase();
+            const statusClass = `status-${getStatusKey(student.statut)}`;
+            const pointsPercentage = (student.points / 100) * 100;
+            const pointsBarClass = student.points <= 30 ? 'points-danger' : student.points <= 60 ? 'points-warning' : '';
+            
+            return `
+                <div class="student-card" data-ecole="${student.ecole}" data-classe="${student.classe}" data-status="${getStatusKey(student.statut)}">
+                    <div class="student-header">
+                        <div class="student-avatar">${initials}</div>
+                        <div class="student-status ${statusClass}">
+                            ${getStatusIcon(student.statut)} ${student.statut}
+                        </div>
+                    </div>
+                    
+                    <h3 class="student-name">${fullName}</h3>
+                    <div class="student-classe">${student.classe}</div>
+                    
+                    <div class="student-info">
+                        <div class="info-row">
+                            <span class="info-label">Club :</span>
+                            <span class="info-value">${student.club}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Mandat :</span>
+                            <span class="info-value">${student.mandat || 'Non défini'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">École :</span>
+                            <span class="info-value" style="color: ${student.ecole === 'bourguiba' ? '#2196F3' : '#9C27B0'}">
+                                ${student.ecole.toUpperCase()}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="points-container">
+                        <div class="points-label">
+                            <span>Points :</span>
+                            <span><strong>${student.points}</strong>/100</span>
+                        </div>
+                        <div class="points-bar">
+                            <div class="points-fill ${pointsBarClass}" style="width: ${pointsPercentage}%"></div>
+                        </div>
+                    </div>
+                    
+                    ${student.points === 0 ? 
+                        `<div style="color: #F44336; font-weight: 600; margin-top: 1rem;">
+                            <i class="fas fa-ban"></i> Élève exclu (0 points)
+                        </div>` : ''
+                    }
+                    
+                    <div class="student-actions">
+                        <button class="action-btn edit-btn" onclick="openEditModal(${student.id}, '${student.ecole}')">
+                            <i class="fas fa-edit"></i> Modifier
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteStudent(${student.id}, '${student.ecole}')">
+                            <i class="fas fa-trash"></i> Supprimer
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
         function getStatusKey(statut) {
             const statusMap = {
                 'Sélectionné': 'selected',
@@ -1037,45 +1284,102 @@
         }
 
         // ==================== FILTRES ET RECHERCHE ====================
-        function setFilter(filter) {
-            currentFilter = filter;
-            
-            // Mettre à jour les boutons actifs
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.filter === filter);
-            });
-            
-            filterStudents();
-        }
-
-        function filterStudents() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            
-            let filtered = students.filter(student => {
-                const fullName = `${student.nom} ${student.prenom}`.toLowerCase();
-                const matchesSearch = fullName.includes(searchTerm) || 
-                                    student.classe.toLowerCase().includes(searchTerm) ||
-                                    student.club.toLowerCase().includes(searchTerm);
+        function filterStudentsList(students) {
+            return students.filter(student => {
+                // Filtre par recherche
+                if (currentSearchTerm) {
+                    const searchTerm = currentSearchTerm.toLowerCase();
+                    const fullName = `${student.nom} ${student.prenom}`.toLowerCase();
+                    if (!fullName.includes(searchTerm) && 
+                        !student.classe.toLowerCase().includes(searchTerm) &&
+                        !student.club.toLowerCase().includes(searchTerm)) {
+                        return false;
+                    }
+                }
                 
-                if (!matchesSearch) return false;
-                
-                if (currentFilter === 'all') return true;
-                if (currentFilter === 'selected') return student.statut === 'Sélectionné';
-                if (currentFilter === 'waiting') return student.statut === 'En attente';
-                if (currentFilter === 'excluded') return student.points === 0;
+                // Filtre par classe
+                if (currentClassFilter !== 'all' && !student.classe.includes(currentClassFilter)) {
+                    return false;
+                }
                 
                 return true;
             });
-            
-            renderStudents(filtered);
-            updateStats(filtered);
         }
 
-        function updateStats(filteredStudents = students) {
-            const total = filteredStudents.length;
-            const selected = filteredStudents.filter(s => s.statut === 'Sélectionné').length;
-            const waiting = filteredStudents.filter(s => s.statut === 'En attente').length;
-            const excluded = filteredStudents.filter(s => s.points === 0).length;
+        function filterStudents() {
+            currentSearchTerm = document.getElementById('searchInput').value.toLowerCase();
+            updateDisplay();
+        }
+
+        function filterByClass(classe) {
+            currentClassFilter = classe;
+            
+            // Mettre à jour les boutons actifs
+            document.querySelectorAll('.class-filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.classe === classe);
+            });
+            
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            switch (currentSchool) {
+                case 'bourguiba':
+                    renderSchoolStudents('bourguiba');
+                    break;
+                case 'mbao':
+                    renderSchoolStudents('mbao');
+                    break;
+                case 'all':
+                    renderAllCombined();
+                    break;
+            }
+            updateStats();
+        }
+
+        // ==================== GESTION DES ONGLETS ====================
+        function switchSchool(school) {
+            currentSchool = school;
+            
+            // Mettre à jour les onglets actifs
+            document.querySelectorAll('.school-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.school === school);
+            });
+            
+            // Afficher la bonne section
+            document.querySelectorAll('.school-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.getElementById(`${school}Section`).classList.add('active');
+            
+            // Re-rendre les élèves
+            updateDisplay();
+        }
+
+        // ==================== STATISTIQUES ====================
+        function updateStats() {
+            let studentsToCount = [];
+            
+            switch (currentSchool) {
+                case 'bourguiba':
+                    studentsToCount = allStudents.filter(s => s.ecole === 'bourguiba');
+                    break;
+                case 'mbao':
+                    studentsToCount = allStudents.filter(s => s.ecole === 'mbao');
+                    break;
+                case 'all':
+                    studentsToCount = allStudents;
+                    break;
+            }
+            
+            // Appliquer les filtres actuels
+            studentsToCount = filterStudentsList(studentsToCount);
+            
+            const total = studentsToCount.length;
+            const selected = studentsToCount.filter(s => s.statut === 'Sélectionné').length;
+            const waiting = studentsToCount.filter(s => s.statut === 'En attente').length;
+            const excluded = studentsToCount.filter(s => s.points === 0).length;
             
             document.getElementById('totalStudents').textContent = total;
             document.getElementById('selectedStudents').textContent = selected;
@@ -1083,20 +1387,22 @@
             document.getElementById('excludedStudents').textContent = excluded;
         }
 
-        // ==================== MODAL DE MODIFICATION ====================
-        function openEditModal(studentId) {
-            currentEditStudent = students.find(s => s.id === studentId);
+        // ==================== MODAL MODIFICATION ====================
+        function openEditModal(studentId, ecole) {
+            currentEditStudent = allStudents.find(s => s.id === studentId && s.ecole === ecole);
             if (!currentEditStudent) return;
             
             const modal = document.getElementById('editModal');
             document.getElementById('editStudentName').value = 
                 `${currentEditStudent.nom} ${currentEditStudent.prenom}`;
+            document.getElementById('editStudentSchool').value = 
+                currentEditStudent.ecole.toUpperCase();
             document.getElementById('currentPoints').textContent = currentEditStudent.points;
             document.getElementById('editMandat').value = currentEditStudent.mandat || '';
             
             currentPoints = currentEditStudent.points;
             
-            // Réinitialiser le champ matricule
+            // Réinitialiser
             document.getElementById('adminMatricule').value = '';
             document.getElementById('matriculeError').style.display = 'none';
             document.getElementById('saveBtn').disabled = true;
@@ -1136,68 +1442,190 @@
                 return;
             }
             
-            const matricule = document.getElementById('adminMatricule').value;
-            const adminName = adminMatricules.includes(matricule) ? 
-                (matricule === "Birane186@robotic" ? "Birane" : 
-                 matricule === "Salamaprésidentehc@00" ? "Salama" : "Sadiya") : "Admin";
-            
-            // Mettre à jour les données
+            // Mettre à jour l'élève
             currentEditStudent.points = currentPoints;
             currentEditStudent.mandat = document.getElementById('editMandat').value;
             
             // Si points = 0, marquer comme exclu
-            if (currentPoints === 0) {
-                currentEditStudent.statut = 'Exclus';
+            if (currentPoints === 0 && currentEditStudent.statut !== 'Refusé') {
+                currentEditStudent.statut = 'En attente';
             }
             
-            // ICI : Sauvegarder dans Google Sheet
-            // À IMPLÉMENTER : Connexion à Google Sheets API
-            
             // Mettre à jour l'affichage
-            renderStudents();
-            updateStats();
+            updateDisplay();
             
             // Afficher confirmation
-            alert(`✅ Points mis à jour pour ${currentEditStudent.nom} ${currentEditStudent.prenom}\n` +
-                  `Nouveau score: ${currentPoints} points\n` +
-                  `Modifié par: ${adminName}`);
+            alert(`✅ Points mis à jour pour ${currentEditStudent.nom} ${currentEditStudent.prenom}\nNouveau score: ${currentPoints} points`);
             
             closeEditModal();
         }
 
-        function showDetails(studentId) {
-            const student = students.find(s => s.id === studentId);
-            if (!student) return;
+        // ==================== MODAL AJOUT ÉLÈVE ====================
+        function openAddModal(ecole) {
+            selectedEcole = ecole;
             
-            alert(`📋 DÉTAILS COMPLETS\n\n` +
-                  `Nom: ${student.nom} ${student.prenom}\n` +
-                  `Classe: ${student.classe}\n` +
-                  `Club: ${student.club}\n` +
-                  `Statut: ${student.statut}\n` +
-                  `Points: ${student.points}/100\n` +
-                  `Mandat: ${student.mandat || 'Non défini'}\n` +
-                  `Date d'inscription: ${student.dateInscription}`);
+            // Sélectionner l'école correspondante
+            document.querySelectorAll('.ecole-option').forEach(option => {
+                option.classList.remove('selected');
+                if (option.dataset.ecole === ecole) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // Réinitialiser les champs
+            document.getElementById('addNom').value = '';
+            document.getElementById('addPrenom').value = '';
+            document.getElementById('addClasse').value = '';
+            document.getElementById('addClub').value = '';
+            document.getElementById('addStatut').value = 'Sélectionné';
+            
+            document.getElementById('addModal').style.display = 'flex';
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').style.display = 'none';
+        }
+
+        function selectEcole(ecole) {
+            selectedEcole = ecole;
+            document.querySelectorAll('.ecole-option').forEach(option => {
+                option.classList.toggle('selected', option.dataset.ecole === ecole);
+            });
+        }
+
+        function addNewStudent() {
+            const nom = document.getElementById('addNom').value.trim();
+            const prenom = document.getElementById('addPrenom').value.trim();
+            const classe = document.getElementById('addClasse').value;
+            const club = document.getElementById('addClub').value;
+            const statut = document.getElementById('addStatut').value;
+            
+            // Validation
+            if (!nom || !prenom || !classe || !club) {
+                alert('Veuillez remplir tous les champs obligatoires.');
+                return;
+            }
+            
+            // Créer le nouvel élève
+            const newId = Math.max(...allStudents.map(s => s.id), 0) + 1;
+            const newStudent = {
+                id: newId,
+                nom: nom,
+                prenom: prenom,
+                classe: classe,
+                club: club,
+                statut: statut,
+                points: calculatePoints({ club, statut }),
+                mandat: statut === 'Sélectionné' ? '2024-2025' : '',
+                ecole: selectedEcole
+            };
+            
+            // Ajouter aux données
+            if (selectedEcole === 'bourguiba') {
+                bourguibaStudents.push(newStudent);
+            } else {
+                mbaoStudents.push(newStudent);
+            }
+            
+            // Mettre à jour toutes les données
+            allStudents.push(newStudent);
+            
+            // Trier à nouveau
+            allStudents.sort((a, b) => {
+                const classOrder = ['6éme', '5éme', '4éme', '2nde', '1ére', 'TL2', 'TS2'];
+                return classOrder.indexOf(a.classe) - classOrder.indexOf(b.classe);
+            });
+            
+            // Mettre à jour l'affichage
+            updateDisplay();
+            
+            // Fermer le modal
+            closeAddModal();
+            
+            // Confirmation
+            alert(`✅ Élève ajouté avec succès !\n${prenom} ${nom} - ${classe} - ${club}`);
+        }
+
+        // ==================== SUPPRESSION ÉLÈVE ====================
+        function deleteStudent(studentId, ecole) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer cet élève ? Cette action est irréversible.')) {
+                return;
+            }
+            
+            // Demander le matricule administrateur
+            const matricule = prompt('Pour confirmer la suppression, entrez votre matricule administrateur :');
+            
+            if (!adminMatricules.includes(matricule)) {
+                alert('Matricule incorrect. Suppression annulée.');
+                return;
+            }
+            
+            // Supprimer l'élève
+            const studentIndex = allStudents.findIndex(s => s.id === studentId && s.ecole === ecole);
+            if (studentIndex !== -1) {
+                allStudents.splice(studentIndex, 1);
+            }
+            
+            // Supprimer de la liste correspondante
+            if (ecole === 'bourguiba') {
+                const bourguibaIndex = bourguibaStudents.findIndex(s => s.id === studentId);
+                if (bourguibaIndex !== -1) bourguibaStudents.splice(bourguibaIndex, 1);
+            } else {
+                const mbaoIndex = mbaoStudents.findIndex(s => s.id === studentId);
+                if (mbaoIndex !== -1) mbaoStudents.splice(mbaoIndex, 1);
+            }
+            
+            // Mettre à jour l'affichage
+            updateDisplay();
+            
+            alert('✅ Élève supprimé avec succès.');
         }
 
         // ==================== ÉCOUTEURS D'ÉVÉNEMENTS ====================
         function setupEventListeners() {
-            // Fermer modal en cliquant en dehors
+            // Fermer modals en cliquant en dehors
             document.getElementById('editModal').addEventListener('click', function(e) {
-                if (e.target === this) {
+                if (e.target === this) closeEditModal();
+            });
+            
+            document.getElementById('addModal').addEventListener('click', function(e) {
+                if (e.target === this) closeAddModal();
+            });
+            
+            // Raccourci Échap
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
                     closeEditModal();
+                    closeAddModal();
                 }
             });
             
             // Recherche en temps réel
             document.getElementById('searchInput').addEventListener('input', filterStudents);
-            
-            // Raccourci clavier : Échap pour fermer modal
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeEditModal();
-                }
-            });
         }
+
+        // ==================== FONCTIONS DE DÉMO ====================
+        // Ces données seront remplacées par les vraies données dans la version finale
+        function loadDemoData() {
+            // Données de démonstration Bourguiba
+            bourguibaStudents.push(
+                { id: 1, nom: "Diouf", prenom: "Mouhamed", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "bourguiba" },
+                { id: 2, nom: "Wagué", prenom: "Ablaye", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "bourguiba" },
+                { id: 3, nom: "Ba", prenom: "Nogaye", classe: "1ére L2", club: "Anglais", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "bourguiba" },
+                { id: 4, nom: "Diagne", prenom: "Seynabou", classe: "2nde L2", club: "Informatique-Robotique", statut: "En attente", points: 0, mandat: "", ecole: "bourguiba" }
+            );
+            
+            // Données de démonstration Mbao
+            mbaoStudents.push(
+                { id: 1001, nom: "Fall", prenom: "Mouhamed Saliou", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", points: 0, mandat: "", ecole: "mbao" },
+                { id: 1002, nom: "Ba", prenom: "Mouhamed Woury", classe: "6éme B", club: "Sport / Football", statut: "En attente", points: 0, mandat: "", ecole: "mbao" },
+                { id: 1003, nom: "Ndiaye", prenom: "Mouhamed Al Bachir", classe: "6éme B", club: "Informatique-Robotique", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "mbao" },
+                { id: 1004, nom: "Coulibaly", prenom: "Mouhamed Abdallah", classe: "6éme B", club: "Informatique-Robotique", statut: "Sélectionné", points: 100, mandat: "2024-2025", ecole: "mbao" }
+            );
+        }
+
+        // Charger les données de démo au démarrage
+        loadDemoData();
     </script>
 </body>
 </html>
