@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AZIMUT - Hikmah's Club</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --azimut-blue: #2C3E50;
+            --azimut-light: #3498DB;
+            --azimut-white: #FFFFFF;
+            --azimut-gray: #ECF0F1;
+            --azimut-dark: #1A1A1A;
+            --azimut-green: #27AE60;
+            --azimut-red: #E74C3C;
+        }
+        
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            width: 95%;
+            max-width: 450px;
+            margin: 50px auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .azimut-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .azimut-logo h1 {
+            color: var(--azimut-blue);
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+        
+        .azimut-logo p {
+            color: #7F8C8D;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--azimut-blue);
+            font-weight: 600;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--azimut-light);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--azimut-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            background: var(--azimut-light);
+        }
+        
+        .error-message {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--azimut-red);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+            font-weight: 600;
+        }
+        
+        /* Dashboard */
+        .dashboard-container {
+            display: none;
+            min-height: 100vh;
+        }
+        
+        .dashboard-header {
+            background: var(--azimut-blue);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .dashboard-header h2 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .logout-btn {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: white;
+            color: var(--azimut-blue);
+        }
+        
+        .dashboard-content {
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .data-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            color: var(--azimut-blue);
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--azimut-gray);
+        }
+        
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .data-table th {
+            background: var(--azimut-gray);
+            color: var(--azimut-blue);
+            font-weight: 700;
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .data-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-table tr:hover {
+            background: #f9f9f9;
+        }
+        
+        .present-badge {
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--azimut-green);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .absent-badge {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--azimut-red);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        /* Form */
+        .add-form {
+            background: var(--azimut-gray);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 8px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .submit-btn {
+            background: var(--azimut-green);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .submit-btn:hover {
+            background: #219653;
+        }
+        
+        .success-message {
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--azimut-green);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+            font-weight: 600;
+        }
+        
+        .stats-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--azimut-blue);
+        }
+        
+        .stat-label {
+            color: #7F8C8D;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+            }
+            
+            .data-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .login-container {
+                padding: 25px;
+                margin: 20px;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Écran de connexion -->
+    <div class="login-container" id="loginContainer">
+        <div class="azimut-logo">
+            <h1><i class="fas fa-compass"></i> AZIMUT</h1>
+            <p>Système interne - Hikmah's Club</p>
+        </div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label><i class="fas fa-envelope"></i> Email Administrateur</label>
+                <input type="email" 
+                       class="form-control" 
+                       id="adminEmail" 
+                       placeholder="ex: birane@hikmah.com"
+                       required>
+            </div>
+            
+            <div class="form-group">
+                <label><i class="fas fa-key"></i> Matricule Administrateur</label>
+                <input type="password" 
+                       class="form-control" 
+                       id="adminMatricule" 
+                       placeholder="Votre matricule unique"
+                       required>
+            </div>
+            
+            <button type="submit" class="login-btn">
+                <i class="fas fa-sign-in-alt"></i> Accéder à AZIMUT
+            </button>
+            
+            <div class="error-message" id="loginError">
+                <i class="fas fa-exclamation-triangle"></i> Accès refusé. Email ou matricule incorrect.
+            </div>
+        </form>
+    </div>
+    
+    <!-- Dashboard AZIMUT -->
+    <div class="dashboard-container" id="dashboardContainer">
+        <div class="dashboard-header">
+            <h2><i class="fas fa-compass"></i> TABLEAU DE BORD AZIMUT</h2>
+            <div class="user-info">
+                <div class="user-badge" id="userBadge">
+                    <i class="fas fa-user-cog"></i> <span id="userName">Admin</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </div>
+        </div>
+        
+        <div class="dashboard-content">
+            <!-- Statistiques -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalPresences">0</div>
+                    <div class="stat-label">Présences totales</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalAbsences">0</div>
+                    <div class="stat-label">Absences totales</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalMembers">0</div>
+                    <div class="stat-label">Membres enregistrés</div>
+                </div>
+            </div>
+            
+            <!-- Tableau des données -->
+            <div class="data-section">
+                <h3 class="section-title"><i class="fas fa-table"></i> DONNÉES EXISTANTES</h3>
+                <div style="overflow-x: auto;">
+                    <table class="data-table" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Phone number</th>
+                                <th>Date et heure</th>
+                                <th>Présent(P)</th>
+                                <th>Absent(A)</th>
+                                <th>Justificatif</th>
+                                <th>Nom de l'événement</th>
+                                <th>VOTER OUI/NON</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Données chargées par JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Formulaire d'ajout -->
+            <div class="data-section">
+                <h3 class="section-title"><i class="fas fa-plus-circle"></i> AJOUTER UNE NOUVELLE ENTRÉE</h3>
+                <div class="add-form">
+                    <form id="presenceForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nom</label>
+                                <input type="text" class="form-control" id="inputNom" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Prénom</label>
+                                <input type="text" class="form-control" id="inputPrenom" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone number</label>
+                                <input type="tel" class="form-control" id="inputPhone" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Date et heure</label>
+                                <input type="datetime-local" class="form-control" id="inputDateTime" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Présence</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="presence" value="present" checked> 
+                                        Présent(P)
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="presence" value="absent"> 
+                                        Absent(A)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Justificatif (si absent)</label>
+                                <input type="text" class="form-control" id="inputJustificatif" placeholder="Ex: Examen, Maladie...">
+                            </div>
+                            <div class="form-group">
+                                <label>Nom de l'événement</label>
+                                <input type="text" class="form-control" id="inputEvent" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>VOTER OUI/NON</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="vote" value="OUI" checked> OUI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="vote" value="NON"> NON
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-save"></i> Enregistrer l'entrée
+                        </button>
+                        
+                        <div class="success-message" id="successMessage">
+                            <i class="fas fa-check-circle"></i> Données ajoutées avec succès !
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+// ==================== DONNÉES ====================
+const existingData = [
+    // Vos données exactes
+    { nom: "Salama", prenom: "Oumou", phone: "77-652-61-08", date: "21/01/26", present: "OUI", absent: "", justificatif: "OK", event: "AG 24/01/26", vote: "OUI" },
+    { nom: "Diallo", prenom: "Fatima", phone: "70-602-71-66", date: "21/01/26", present: "OUI", absent: "", justificatif: "OK", event: "AG 24/01/26", vote: "OUI" },
+    { nom: "Diagne", prenom: "Akhmad Shérif", phone: "77-736-60-36", date: "21/01/26", present: "OUI", absent: "", justificatif: "OK", event: "AG 24/01/26", vote: "OUI" },
+    { nom: "Kane", prenom: "Aissatou", phone: "78-769-84-86", date: "21/01/26", present: "", absent: "OUI", justificatif: "Elle est au someone a DAUST", event: "AG 24/01/26", vote: "OUI" },
+    { nom: "Diao", prenom: "Birane", phone: "77-186-69-34", date: "21/01/26", present: "OUI", absent: "", justificatif: "OK", event: "AG 24/01/26", vote: "OUI" },
+    { nom: "Séne", prenom: "Penda", phone: "78-488-85-86", date: "21/01/26", present: "OUI", absent: "", justificatif: "OK", event: "AG 24/01/26", vote: "OUI" },
+    { nom: "Diack", prenom: "Racky safiétou", phone: "77 095 89 88", date: "21/01/26", present: "", absent: "OUI", justificatif: "Va a la salle le samedi", event: "AG 24/01/26", vote: "OUI" },
+    { nom: "Touré", prenom: "Sokhna bintou diakhaté", phone: "77 276 81 20", date: "21/01/26", present: "", absent: "OUI", justificatif: "A un examen", event: "AG 24/01/26", vote: "OUI" },
+    { nom: "Séye", prenom: "Ibrahima proper", phone: "70-583-85-82", date: "21/01/26", present: "", absent: "OUI", justificatif: "?", event: "AG 24/01/26", vote: "OUI" },
+    { nom: "Ba", prenom: "Bineta", phone: "76-780-13-82", date: "21/01/26", present: "", absent: "OUI", justificatif: "Prépare des examens pour lundi", event: "AG 24/01/26", vote: "OUI" },
+    { nom: "Fall", prenom: "Ramatoulaye", phone: "", date: "21/01/26", present: "", absent: "OUI", justificatif: "A un devoir le samedi a partir de 12H", event: "AG 24/01/26", vote: "OUI" },
+    { nom: "Dia", prenom: "Seydi", phone: "77-584-94-71", date: "21/01/26", present: "OUI", absent: "", justificatif: "", event: "AG 24/01/26", vote: "OUI" },
+    { nom: "Badji", prenom: "Fadel", phone: "78 520 04 18", date: "23/01/26", present: "", absent: "OUI", justificatif: "?", event: "AG 24/01/26", vote: "OUI" },
+    { nom: "Ba", prenom: "Al Hassane", phone: "76-368-35-78", date: "23/01/26", present: "", absent: "OUI", justificatif: "?", event: "AG 24/01/26", vote: "OUI" },
+    { nom: "Diallo", prenom: "Mamadou", phone: "76-382-37-40", date: "23/01/26", present: "", absent: "OUI", justificatif: "Il est au someone a DAUST", event: "AG 24/01/26", vote: "OUI" },
+    { nom: "Kanouté", prenom: "Mouhamed", phone: "78 438 43 13", date: "22/01/26", present: "OUI", absent: "", justificatif: "OK", event: "AG 24/01/26", vote: "OUI" },
+    { nom: "Kounta", prenom: "Fatima", phone: "76-801-01-04", date: "21/01/26", present: "", absent: "OUI", justificatif: "?", event: "AG 24/01/26", vote: "" },
+    { nom: "Bocoum", prenom: "Mouhamed", phone: "71-047-64-38", date: "21/01/26", present: "", absent: "OUI", justificatif: "?", event: "AG 24/01/26", vote: "" },
+    { nom: "Ba", prenom: "Abdou Hakim", phone: "76 -337- 31 -25", date: "22/01/26", present: "", absent: "OUI", justificatif: "?", event: "AG 24/01/26", vote: "NON" },
+    { nom: "Ngom", prenom: "Seydina Mouhamed", phone: "78 753 18 25", date: "22/01/26", present: "", absent: "OUI", justificatif: "A devoir a cette heure", event: "AG 24/01/26", vote: "NON" },
+    { nom: "Mariama", prenom: "Gueye", phone: "76-768-12-07", date: "21/01/26", present: "", absent: "OUI", justificatif: "?", event: "AG 24/01/26", vote: "" },
+    { nom: "", prenom: "", phone: "77-632-11-12", date: "21/01/26", present: "", absent: "OUI", justificatif: "?", event: "AG 24/01/26", vote: "" }
+];
+
+// Administrateurs
+const adminCredentials = [
+    { email: "birane@hikmah.com", matricule: "Birane186@robotic", name: "Birane186" },
+    { email: "salama@hikmah.com", matricule: "SalamaPrésidentHC@00", name: "SalamaPrés" },
+    { email: "sadiya@hikmah.com", matricule: "SadiyaVicePrésidentHC@01", name: "SadiyaVice" }
+];
+
+let currentAdmin = null;
+let allData = [...existingData];
+
+// ==================== INITIALISATION ====================
+document.addEventListener('DOMContentLoaded', function() {
+    // Écouteurs
+    document.getElementById('loginForm').addEventListener('submit', login);
+    document.getElementById('presenceForm').addEventListener('submit', addNewEntry);
+    
+    // Radio button justificatif
+    document.querySelectorAll('input[name="presence"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            document.getElementById('inputJustificatif').required = this.value === 'absent';
+        });
+    });
+});
+
+// ==================== CONNEXION ====================
+function login(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('adminEmail').value.trim();
+    const matricule = document.getElementById('adminMatricule').value.trim();
+    const errorDiv = document.getElementById('loginError');
+    
+    const admin = adminCredentials.find(a => 
+        a.email === email && a.matricule === matricule
+    );
+    
+    if (admin) {
+        currentAdmin = admin;
+        document.getElementById('userName').textContent = admin.name;
+        
+        // Afficher dashboard
+        document.getElementById('loginContainer').style.display = 'none';
+        document.getElementById('dashboardContainer').style.display = 'block';
+        
+        // Charger données
+        loadData();
+    } else {
+        errorDiv.style.display = 'block';
+        setTimeout(() => errorDiv.style.display = 'none', 3000);
+    }
+}
+
+// ==================== CHARGER DONNÉES ====================
+function loadData() {
+    const tableBody = document.getElementById('tableBody');
+    tableBody.innerHTML = '';
+    
+    let totalP = 0;
+    let totalA = 0;
+    
+    allData.forEach(item => {
+        const row = document.createElement('tr');
+        
+        // Comptage
+        if (item.present === "OUI") totalP++;
+        if (item.absent === "OUI") totalA++;
+        
+        row.innerHTML = `
+            <td>${item.nom || ''}</td>
+            <td>${item.prenom || ''}</td>
+            <td>${item.phone || ''}</td>
+            <td>${item.date || ''}</td>
+            <td>${item.present === "OUI" ? '<span class="present-badge">OUI</span>' : ''}</td>
+            <td>${item.absent === "OUI" ? '<span class="absent-badge">OUI</span>' : ''}</td>
+            <td>${item.justificatif || ''}</td>
+            <td>${item.event || ''}</td>
+            <td>${item.vote || ''}</td>
+        `;
+        
+        tableBody.appendChild(row);
+    });
+    
+    // Mettre à jour les stats
+    document.getElementById('totalPresences').textContent = totalP;
+    document.getElementById('totalAbsences').textContent = totalA;
+    document.getElementById('totalMembers').textContent = allData.length;
+}
+
+// ==================== AJOUTER ENTRÉE ====================
+function addNewEntry(e) {
+    e.preventDefault();
+    
+    // Récupérer valeurs
+    const nom = document.getElementById('inputNom').value.trim();
+    const prenom = document.getElementById('inputPrenom').value.trim();
+    const phone = document.getElementById('inputPhone').value.trim();
+    const dateTime = document.getElementById('inputDateTime').value;
+    const isPresent = document.querySelector('input[name="presence"]:checked').value === 'present';
+    const justificatif = document.getElementById('inputJustificatif').value.trim();
+    const event = document.getElementById('inputEvent').value.trim();
+    const vote = document.querySelector('input[name="vote"]:checked').value;
+    
+    // Format date
+    const dateObj = new Date(dateTime);
+    const formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}/${(dateObj.getMonth()+1).toString().padStart(2, '0')}/${dateObj.getFullYear().toString().slice(-2)}`;
+    
+    // Créer nouvel objet
+    const newEntry = {
+        nom: nom,
+        prenom: prenom,
+        phone: phone,
+        date: formattedDate,
+        present: isPresent ? "OUI" : "",
+        absent: isPresent ? "" : "OUI",
+        justificatif: isPresent ? "OK" : justificatif,
+        event: event,
+        vote: vote
+    };
+    
+    // Ajouter aux données
+    allData.push(newEntry);
+    
+    // Réinitialiser formulaire
+    document.getElementById('presenceForm').reset();
+    
+    // Afficher succès
+    const successMsg = document.getElementById('successMessage');
+    successMsg.style.display = 'block';
+    setTimeout(() => successMsg.style.display = 'none', 3000);
+    
+    // Recharger données
+    loadData();
+}
+
+// ==================== DÉCONNEXION ====================
+function logout() {
+    currentAdmin = null;
+    document.getElementById('adminEmail').value = '';
+    document.getElementById('adminMatricule').value = '';
+    
+    document.getElementById('dashboardContainer').style.display = 'none';
+    document.getElementById('loginContainer').style.display = 'block';
+}
+</script>
+</body>
+</html>
