@@ -2391,12 +2391,64 @@ const bourguibaStudentsData = [
             if (e.target === this) closeAddModal();
         });
         
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeEditModal();
-                closeAddModal();
-            }
-        });
+       document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeEditModal();
+        closeAddModal();
+    }
+    
+    // RACCOURCI AZIMUT - Ctrl+Shift+A
+    if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+        e.preventDefault();
+        window.open('azimut.html', '_blank');
+        console.log('🔐 AZIMUT ouvert avec Ctrl+Shift+A');
+    }
+});
+C'est TOUT DANS LE MÊME addEventListener :
+
+javascript
+// ❌ MAUVAIS (ce que vous avez fait) :
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        // ...
+    }
+    
+    // ERREUR : un addEventListener dans un autre !
+    document.addEventListener('keydown', function(e) {
+        // ...
+    });
+});
+
+// ✅ CORRECT (ce qu'il faut faire) :
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        // ...
+    }
+    
+    if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+        // ...
+    }
+});
+Corrigez comme ça :
+
+javascript
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeEditModal();
+        closeAddModal();
+    }
+    
+    // RACCOURCI AZIMUT - Ctrl+Shift+A
+    if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+        e.preventDefault();
+        window.open('azimut.html', '_blank');
+        console.log('🔐 AZIMUT ouvert avec Ctrl+Shift+A');
+    }
+});
+Pas de deuxième addEventListener ! Juste un if supplémentaire dans le même écouteur.
+
+
+
         
         document.getElementById('searchInput').addEventListener('input', filterStudents);
         
