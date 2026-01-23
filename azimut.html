@@ -16,6 +16,7 @@
             --azimut-dark: #1A1A1A;
             --azimut-green: #27AE60;
             --azimut-red: #E74C3C;
+            --azimut-yellow: #F1C40F;
         }
         
         body {
@@ -272,15 +273,36 @@
             background: #219653;
         }
         
+        .submit-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+        
         .success-message {
-            background: rgba(39, 174, 96, 0.1);
-            color: var(--azimut-green);
             padding: 12px;
             border-radius: 8px;
             margin-top: 15px;
             text-align: center;
             display: none;
             font-weight: 600;
+        }
+        
+        .success {
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--azimut-green);
+            border-left: 4px solid var(--azimut-green);
+        }
+        
+        .warning {
+            background: rgba(241, 196, 15, 0.1);
+            color: var(--azimut-yellow);
+            border-left: 4px solid var(--azimut-yellow);
+        }
+        
+        .error {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--azimut-red);
+            border-left: 4px solid var(--azimut-red);
         }
         
         .stats-container {
@@ -307,6 +329,22 @@
         .stat-label {
             color: #7F8C8D;
             margin-top: 5px;
+        }
+        
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .sync-online {
+            color: var(--azimut-green);
+        }
+        
+        .sync-offline {
+            color: var(--azimut-red);
         }
         
         @media (max-width: 768px) {
@@ -379,6 +417,10 @@
         <div class="dashboard-header">
             <h2><i class="fas fa-compass"></i> TABLEAU DE BORD AZIMUT</h2>
             <div class="user-info">
+                <div class="sync-status" id="syncStatus">
+                    <i class="fas fa-circle sync-offline" id="syncIcon"></i>
+                    <span id="syncText">Hors ligne</span>
+                </div>
                 <div class="user-badge" id="userBadge">
                     <i class="fas fa-user-cog"></i> <span id="userName">Admin</span>
                 </div>
@@ -495,12 +537,12 @@
                             </div>
                         </div>
                         
-                        <button type="submit" class="submit-btn">
-                            <i class="fas fa-save"></i> Enregistrer l'entrée
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            <i class="fas fa-save"></i> <span id="submitText">Enregistrer l'entrée</span>
                         </button>
                         
                         <div class="success-message" id="successMessage">
-                            <i class="fas fa-check-circle"></i> Données ajoutées avec succès !
+                            <!-- Message dynamique -->
                         </div>
                     </form>
                 </div>
@@ -509,9 +551,11 @@
     </div>
 
 <script>
+// ==================== CONFIGURATION ====================
+const AZIMUT_API_URL = "https://script.google.com/macros/s/AKfycbwgIYXPQY_FvhnIFD0hWGJauAYfTnyHb8F_Q03lx5KTQqvvRAOWhVJ3X9b7PxQYO79C/exec";
+
 // ==================== DONNÉES ====================
 const existingData = [
-    // Vos données exactes
     { nom: "Salama", prenom: "Oumou", phone: "77-652-61-08", date: "21/01/26", present: "OUI", absent: "", justificatif: "OK", event: "AG 24/01/26", vote: "OUI" },
     { nom: "Diallo", prenom: "Fatima", phone: "70-602-71-66", date: "21/01/26", present: "OUI", absent: "", justificatif: "OK", event: "AG 24/01/26", vote: "OUI" },
     { nom: "Diagne", prenom: "Akhmad Shérif", phone: "77-736-60-36", date: "21/01/26", present: "OUI", absent: "", justificatif: "OK", event: "AG 24/01/26", vote: "OUI" },
@@ -545,6 +589,7 @@ const adminCredentials = [
 
 let currentAdmin = null;
 let allData = [...existingData];
+let isOnline = false;
 
 // ==================== INITIALISATION ====================
 document.addEventListener('DOMContentLoaded', function() {
@@ -558,7 +603,42 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('inputJustificatif').required = this.value === 'absent';
         });
     });
+    
+    // Tester la connexion à l'API
+    testConnection();
 });
+
+// ==================== TEST CONNEXION API ====================
+async function testConnection() {
+    try {
+        const response = await fetch(AZIMUT_API_URL + "?test=true", {
+            method: 'GET',
+            mode: 'no-cors'
+        });
+        updateSyncStatus(true);
+    } catch (error) {
+        updateSyncStatus(false);
+    }
+}
+
+// ==================== MISE À JOUR STATUT ====================
+function updateSyncStatus(online) {
+    isOnline = online;
+    const syncIcon = document.getElementById('syncIcon');
+    const syncText = document.getElementById('syncText');
+    
+    if (online) {
+        syncIcon.className = 'fas fa-circle sync-online';
+        syncIcon.style.color = 'var(--azimut-green)';
+        syncText.textContent = 'Connecté à Google Sheets';
+        syncText.style.color = 'var(--azimut-green)';
+    } else {
+        syncIcon.className = 'fas fa-circle sync-offline';
+        syncIcon.style.color = 'var(--azimut-red)';
+        syncText.textContent = 'Hors ligne - Sauvegarde locale';
+        syncText.style.color = 'var(--azimut-red)';
+    }
+}
 
 // ==================== CONNEXION ====================
 function login(e) {
@@ -624,9 +704,43 @@ function loadData() {
     document.getElementById('totalMembers').textContent = allData.length;
 }
 
+// ==================== ENVOYER À GOOGLE SHEETS ====================
+async function sendToGoogleSheets(data) {
+    if (!isOnline) return { success: false, error: "Hors ligne" };
+    
+    try {
+        // Ajouter l'admin qui envoie
+        data.adminName = currentAdmin ? currentAdmin.name : "Admin";
+        
+        // Envoyer à l'API
+        const response = await fetch(AZIMUT_API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            return { success: true, data: result };
+        } else {
+            return { success: false, error: "Erreur serveur" };
+        }
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+}
+
 // ==================== AJOUTER ENTRÉE ====================
-function addNewEntry(e) {
+async function addNewEntry(e) {
     e.preventDefault();
+    
+    // Désactiver bouton
+    const submitBtn = document.getElementById('submitBtn');
+    const submitText = document.getElementById('submitText');
+    submitBtn.disabled = true;
+    submitText.textContent = 'Envoi en cours...';
     
     // Récupérer valeurs
     const nom = document.getElementById('inputNom').value.trim();
@@ -638,9 +752,19 @@ function addNewEntry(e) {
     const event = document.getElementById('inputEvent').value.trim();
     const vote = document.querySelector('input[name="vote"]:checked').value;
     
+    // Vérification basique
+    if (!nom || !prenom || !event) {
+        showMessage('Veuillez remplir tous les champs obligatoires', 'error');
+        submitBtn.disabled = false;
+        submitText.textContent = 'Enregistrer l\'entrée';
+        return;
+    }
+    
     // Format date
     const dateObj = new Date(dateTime);
-    const formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}/${(dateObj.getMonth()+1).toString().padStart(2, '0')}/${dateObj.getFullYear().toString().slice(-2)}`;
+    const formattedDate = dateTime ? 
+        `${dateObj.getDate().toString().padStart(2, '0')}/${(dateObj.getMonth()+1).toString().padStart(2, '0')}/${dateObj.getFullYear().toString().slice(-2)}` : 
+        new Date().toLocaleDateString('fr-FR');
     
     // Créer nouvel objet
     const newEntry = {
@@ -655,19 +779,50 @@ function addNewEntry(e) {
         vote: vote
     };
     
-    // Ajouter aux données
+    // Tentative d'envoi à Google Sheets
+    let googleSheetsSuccess = false;
+    
+    if (isOnline) {
+        const result = await sendToGoogleSheets(newEntry);
+        googleSheetsSuccess = result.success;
+    }
+    
+    // Ajouter aux données locales
     allData.push(newEntry);
+    
+    // Afficher message approprié
+    if (googleSheetsSuccess) {
+        showMessage('<i class="fas fa-check-circle"></i> Données envoyées à Google Sheets !', 'success');
+    } else if (isOnline) {
+        showMessage('<i class="fas fa-exclamation-triangle"></i> Données sauvegardées localement (erreur Google Sheets)', 'warning');
+    } else {
+        showMessage('<i class="fas fa-database"></i> Données sauvegardées localement (mode hors ligne)', 'warning');
+    }
     
     // Réinitialiser formulaire
     document.getElementById('presenceForm').reset();
     
-    // Afficher succès
-    const successMsg = document.getElementById('successMessage');
-    successMsg.style.display = 'block';
-    setTimeout(() => successMsg.style.display = 'none', 3000);
-    
     // Recharger données
     loadData();
+    
+    // Réactiver bouton après 2 secondes
+    setTimeout(() => {
+        submitBtn.disabled = false;
+        submitText.textContent = 'Enregistrer l\'entrée';
+    }, 2000);
+}
+
+// ==================== AFFICHER MESSAGE ====================
+function showMessage(message, type = 'success') {
+    const messageDiv = document.getElementById('successMessage');
+    messageDiv.innerHTML = message;
+    messageDiv.className = `success-message ${type}`;
+    messageDiv.style.display = 'block';
+    
+    // Cacher après 4 secondes
+    setTimeout(() => {
+        messageDiv.style.display = 'none';
+    }, 4000);
 }
 
 // ==================== DÉCONNEXION ====================
@@ -679,6 +834,46 @@ function logout() {
     document.getElementById('dashboardContainer').style.display = 'none';
     document.getElementById('loginContainer').style.display = 'block';
 }
+
+// ==================== SAUVEGARDE AUTOMATIQUE ====================
+// Sauvegarde les données dans localStorage toutes les minutes
+setInterval(() => {
+    if (allData.length > 0) {
+        localStorage.setItem('azimut_backup', JSON.stringify(allData));
+        localStorage.setItem('azimut_backup_time', new Date().toISOString());
+    }
+}, 60000);
+
+// Charger sauvegarde au démarrage
+window.addEventListener('load', () => {
+    const backup = localStorage.getItem('azimut_backup');
+    const backupTime = localStorage.getItem('azimut_backup_time');
+    
+    if (backup && backupTime) {
+        const backupDate = new Date(backupTime);
+        const now = new Date();
+        const diffHours = (now - backupDate) / (1000 * 60 * 60);
+        
+        if (diffHours < 24) { // Sauvegarde de moins de 24h
+            try {
+                const parsedBackup = JSON.parse(backup);
+                if (parsedBackup.length > 0) {
+                    // Fusionner avec données existantes
+                    allData = [...existingData, ...parsedBackup.filter(item => 
+                        !existingData.some(existing => 
+                            existing.nom === item.nom && 
+                            existing.prenom === item.prenom && 
+                            existing.date === item.date
+                        )
+                    )];
+                    console.log(`Sauvegarde chargée: ${parsedBackup.length} entrées`);
+                }
+            } catch (e) {
+                console.error('Erreur chargement sauvegarde:', e);
+            }
+        }
+    }
+});
 </script>
 </body>
 </html>
