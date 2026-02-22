@@ -2551,11 +2551,29 @@
         });
         
         // Message de bienvenue
-        console.log('🎉 Dashboard Hikmah\'s Club prêt !');
+               console.log('🎉 Dashboard Hikmah\'s Club prêt !');
         console.log(`📊 Total élèves: ${allStudents.length}`);
         console.log(`🏫 MBAO: ${allStudents.filter(s => s.ecole === 'mbao').length} élèves`);
         console.log(`🏫 BOURGUIBA: ${allStudents.filter(s => s.ecole === 'bourguiba').length} élèves`);
     }
+
+    // ACCÈS CLUB MANAGEMENT
+    function openClubManagement() {
+        const code = prompt("Code d'accès:");
+        if (code === "200400") {
+            window.open('club-management.html', '_blank');
+        } else if (code !== null) {
+            alert("Code incorrect");
+        }
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.shiftKey && e.key === 'M') {
+            e.preventDefault();
+            openClubManagement();
+        }
+    });
+
 </script>
 </body>
 </html>
