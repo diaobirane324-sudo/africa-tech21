@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hikmah's Club - Gestion des Membres</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --hikmah-green: #2E8B57;
+            --hikmah-light-green: #3CB371;
+            --hikmah-white: #FFFFFF;
+            --hikmah-gray: #F5F5F5;
+            --hikmah-dark: #1A1A1A;
+            --hikmah-border: #E0E0E0;
+            
+            /* Couleurs des clubs */
+            --club-robotique: #FF5722;
+            --club-informatique: #2196F3;
+            --club-physique: #9C27B0;
+            --club-biochimie: #4CAF50;
+            --club-sport: #FF9800;
+            --club-clap: #E91E63;
+            --club-arabe: #009688;
+            --club-anglais: #3F51B5;
+            
+            /* Statuts */
+            --responsable: #4CAF50;
+            --assistant: #FFC107;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Container principal */
+        .club-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Header */
+        .club-header {
+            background: linear-gradient(135deg, var(--hikmah-green), var(--hikmah-light-green));
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .club-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .club-header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        /* Barre d'outils */
+        .toolbar {
+            padding: 20px 30px;
+            background: white;
+            border-bottom: 2px solid var(--hikmah-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid var(--hikmah-border);
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--hikmah-green);
+            box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.2);
+        }
+
+        .filter-club {
+            padding: 12px 20px;
+            border: 2px solid var(--hikmah-border);
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            min-width: 200px;
+        }
+
+        .add-member-btn {
+            background: var(--hikmah-green);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .add-member-btn:hover {
+            background: var(--hikmah-light-green);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 139, 87, 0.3);
+        }
+
+        /* Grille des membres */
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            padding: 30px;
+        }
+
+        /* Carte membre */
+        .member-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .member-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Badge de club */
+        .club-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .club-robotique { background: var(--club-robotique); }
+        .club-informatique { background: var(--club-informatique); }
+        .club-physique { background: var(--club-physique); }
+        .club-biochimie { background: var(--club-biochimie); }
+        .club-sport { background: var(--club-sport); }
+        .club-clap { background: var(--club-clap); }
+        .club-arabe { background: var(--club-arabe); }
+        .club-anglais { background: var(--club-anglais); }
+
+        /* Avatar */
+        .member-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--hikmah-green), var(--hikmah-light-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2em;
+            font-weight: 700;
+            margin: 0 auto 15px;
+            border: 3px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Infos membre */
+        .member-name {
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .member-phone {
+            text-align: center;
+            color: #666;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        /* Rôle (responsable/assistant) */
+        .member-role {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .role-responsable {
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--responsable);
+            border: 1px solid var(--responsable);
+        }
+
+        .role-assistant {
+            background: rgba(255, 193, 7, 0.1);
+            color: var(--assistant);
+            border: 1px solid var(--assistant);
+        }
+
+        /* Club responsable (champ modifiable) */
+        .responsible-club {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .responsible-club select {
+            padding: 5px;
+            border: 1px solid var(--hikmah-border);
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Statistiques réunions */
+        .meeting-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .stat-number {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--hikmah-green);
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        /* Historique réunions */
+        .meeting-history {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            border: 1px solid var(--hikmah-border);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid var(--hikmah-border);
+            font-size: 0.9em;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-date {
+            font-weight: 600;
+            color: var(--hikmah-green);
+        }
+
+        .history-theme {
+            color: #666;
+        }
+
+        .history-status {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+        }
+
+        .status-present {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4CAF50;
+        }
+
+        .status-absent {
+            background: rgba(244, 67, 54, 0.1);
+            color: #F44336;
+        }
+
+        .status-justified {
+            background: rgba(255, 193, 7, 0.1);
+            color: #FFC107;
+        }
+
+        /* Boutons d'action */
+        .member-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .edit-btn {
+            background: var(--hikmah-green);
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background: var(--hikmah-light-green);
+        }
+
+        .delete-btn {
+            background: #F44336;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #D32F2F;
+        }
+
+        .history-btn {
+            background: #2196F3;
+            color: white;
+        }
+
+        .history-btn:hover {
+            background: #1976D2;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--hikmah-border);
+        }
+
+        .modal-header h2 {
+            color: var(--hikmah-green);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid var(--hikmah-border);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-btn.save {
+            background: var(--hikmah-green);
+            color: white;
+        }
+
+        .modal-btn.cancel {
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        /* Code access modal */
+        .code-modal {
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .code-input {
+            font-size: 2em;
+            letter-spacing: 10px;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .code-error {
+            color: #F44336;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Footer */
+        .club-footer {
+            background: var(--hikmah-dark);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .back-link {
+            color: var(--hikmah-light-green);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+            z-index: 3000;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .toolbar {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .members-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- MODAL CODE ACCÈS -->
+    <div class="modal-overlay" id="codeModal" style="display: flex;">
+        <div class="modal code-modal">
+            <div class="modal-header">
+                <h2>🔐 Accès sécurisé</h2>
+            </div>
+            <p style="margin-bottom: 20px;">Entrez le code d'accès pour gérer les membres</p>
+            <input type="password" id="accessCode" class="code-input" maxlength="6" placeholder="------">
+            <div class="code-error" id="codeError">Code incorrect !</div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="window.location.href='hikmah-dashboard.html'">Retour</button>
+                <button class="modal-btn save" onclick="checkAccessCode()">Valider</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL AJOUT/MODIFICATION MEMBRE -->
+    <div class="modal-overlay" id="memberModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">Ajouter un membre</h2>
+                <button class="modal-close" onclick="closeMemberModal()">&times;</button>
+            </div>
+            
+            <form id="memberForm" onsubmit="event.preventDefault(); saveMember();">
+                <input type="hidden" id="memberId">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nom</label>
+                        <input type="text" id="memberNom" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Prénom</label>
+                        <input type="text" id="memberPrenom" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Téléphone</label>
+                    <input type="tel" id="memberPhone" placeholder="77 123 45 67" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Club d'appartenance</label>
+                        <select id="memberClub" required>
+                            <option value="">Sélectionner...</option>
+                            <option value="robotique">Robotique</option>
+                            <option value="informatique">Informatique</option>
+                            <option value="physique">Physique</option>
+                            <option value="biochimie">Biochimie</option>
+                            <option value="sport">Sport</option>
+                            <option value="clap">CLAP</option>
+                            <option value="arabe">Arabe</option>
+                            <option value="anglais">Anglais</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Rôle</label>
+                        <select id="memberRole" required>
+                            <option value="assistant">Assistant</option>
+                            <option value="responsable">Responsable</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Responsable de quel club ?</label>
+                    <select id="responsibleClub">
+                        <option value="">Non responsable</option>
+                        <option value="robotique">Robotique</option>
+                        <option value="informatique">Informatique</option>
+                        <option value="physique">Physique</option>
+                        <option value="biochimie">Biochimie</option>
+                        <option value="sport">Sport</option>
+                        <option value="clap">CLAP</option>
+                        <option value="arabe">Arabe</option>
+                        <option value="anglais">Anglais</option>
+                    </select>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="modal-btn cancel" onclick="closeMemberModal()">Annuler</button>
+                    <button type="submit" class="modal-btn save">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL AJOUT RÉUNION -->
+    <div class="modal-overlay" id="meetingModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Ajouter une réunion</h2>
+                <button class="modal-close" onclick="closeMeetingModal()">&times;</button>
+            </div>
+            
+            <form id="meetingForm" onsubmit="event.preventDefault(); addMeeting();">
+                <input type="hidden" id="meetingMemberId">
+                
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="meetingDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Heure</label>
+                    <input type="time" id="meetingTime" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Thème de la réunion</label>
+                    <input type="text" id="meetingTheme" placeholder="Ex: Introduction à la robotique" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Présence</label>
+                    <select id="meetingPresence" required>
+                        <option value="present">Présent</option>
+                        <option value="absent">Absent</option>
+                        <option value="justifie">Absent justifié</option>
+                    </select>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="modal-btn cancel" onclick="closeMeetingModal()">Annuler</button>
+                    <button type="submit" class="modal-btn save">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- LOADING -->
+    <div class="loading" id="loading">
+        <i class="fas fa-spinner fa-spin fa-3x" style="color: var(--hikmah-green);"></i>
+        <p style="margin-top: 10px;">Chargement...</p>
+    </div>
+
+    <!-- PAGE PRINCIPALE (cachée tant que code non validé) -->
+    <div id="mainContent" style="display: none;">
+        <div class="club-container">
+            <div class="club-header">
+                <h1><i class="fas fa-users-cog"></i> GESTION DES MEMBRES DU CLUB</h1>
+                <p>Administration complète des membres - Clubs: Robotique, Informatique, Physique, Biochimie, Sport, CLAP, Arabe, Anglais</p>
+            </div>
+
+            <div class="toolbar">
+                <div class="search-box">
+                    <input type="text" id="searchMember" placeholder="Rechercher un membre..." onkeyup="filterMembers()">
+                    <select id="clubFilter" class="filter-club" onchange="filterMembers()">
+                        <option value="all">Tous les clubs</option>
+                        <option value="robotique">Robotique</option>
+                        <option value="informatique">Informatique</option>
+                        <option value="physique">Physique</option>
+                        <option value="biochimie">Biochimie</option>
+                        <option value="sport">Sport</option>
+                        <option value="clap">CLAP</option>
+                        <option value="arabe">Arabe</option>
+                        <option value="anglais">Anglais</option>
+                    </select>
+                </div>
+                <button class="add-member-btn" onclick="openAddMemberModal()">
+                    <i class="fas fa-user-plus"></i> Ajouter un membre
+                </button>
+            </div>
+
+            <div class="members-grid" id="membersGrid">
+                <!-- Les cartes seront générées ici -->
+            </div>
+
+            <div class="club-footer">
+                <p>HIKMAH'S CLUB - Gestion des membres</p>
+                <a href="hikmah-dashboard.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Retour au Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== VARIABLES GLOBALES ====================
+        const ACCESS_CODE = "200400";
+        let members = [];
+        let currentEditId = null;
+        let currentMemberForMeeting = null;
+
+        // ==================== VÉRIFICATION CODE ACCÈS ====================
+        function checkAccessCode() {
+            const code = document.getElementById('accessCode').value;
+            if (code === ACCESS_CODE) {
+                document.getElementById('codeModal').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                loadMembers();
+            } else {
+                document.getElementById('codeError').style.display = 'block';
+                document.getElementById('accessCode').value = '';
+            }
+        }
+
+        // ==================== GESTION DU CHARGEMENT ====================
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        // ==================== CHARGEMENT DES MEMBRES ====================
+        function loadMembers() {
+            showLoading();
+            
+            // Simuler un chargement
+            setTimeout(() => {
+                const savedMembers = localStorage.getItem('hikmah_club_members');
+                if (savedMembers) {
+                    members = JSON.parse(savedMembers);
+                } else {
+                    // Données par défaut
+                    members = [
+                        {
+                            id: 1,
+                            nom: "Diop",
+                            prenom: "Mamadou",
+                            telephone: "77 123 45 67",
+                            club: "robotique",
+                            role: "responsable",
+                            responsibleClub: "informatique",
+                            reunions: {
+                                assistees: 12,
+                                ratees: 3,
+                                justifiees: 1,
+                                historique: [
+                                    { date: "2024-02-15", heure: "15:00", theme: "Introduction à la robotique", present: true },
+                                    { date: "2024-02-08", heure: "15:00", theme: "Programmation avancée", present: false, justifie: true },
+                                    { date: "2024-02-01", heure: "15:00", theme: "Montage électronique", present: false, justifie: false }
+                                ]
+                            }
+                        },
+                        {
+                            id: 2,
+                            nom: "Fall",
+                            prenom: "Aminata",
+                            telephone: "78 987 65 43",
+                            club: "informatique",
+                            role: "assistant",
+                            responsibleClub: "",
+                            reunions: {
+                                assistees: 8,
+                                ratees: 2,
+                                justifiees: 2,
+                                historique: [
+                                    { date: "2024-02-15", heure: "15:00", theme: "Introduction à la robotique", present: true },
+                                    { date: "2024-02-08", heure: "15:00", theme: "Programmation avancée", present: true }
+                                ]
+                            }
+                        },
+                        {
+                            id: 3,
+                            nom: "Ndiaye",
+                            prenom: "Fatou",
+                            telephone: "76 543 21 09",
+                            club: "clap",
+                            role: "responsable",
+                            responsibleClub: "clap",
+                            reunions: {
+                                assistees: 15,
+                                ratees: 1,
+                                justifiees: 0,
+                                historique: [
+                                    { date: "2024-02-14", heure: "16:00", theme: "Poésie africaine", present: true },
+                                    { date: "2024-02-07", heure: "16:00", theme: "Philosophie moderne", present: true }
+                                ]
+                            }
+                        },
+                        {
+                            id: 4,
+                            nom: "Ba",
+                            prenom: "Oumar",
+                            telephone: "70 111 22 33",
+                            club: "sport",
+                            role: "assistant",
+                            responsibleClub: "",
+                            reunions: {
+                                assistees: 5,
+                                ratees: 4,
+                                justifiees: 2,
+                                historique: [
+                                    { date: "2024-02-13", heure: "17:00", theme: "Entraînement football", present: true },
+                                    { date: "2024-02-06", heure: "17:00", theme: "Préparation match", present: false, justifie: true }
+                                ]
+                            }
+                        }
+                    ];
+                    localStorage.setItem('hikmah_club_members', JSON.stringify(members));
+                }
+                
+                renderMembers();
+                hideLoading();
+            }, 500);
+        }
+
+        // ==================== RENDU DES CARTES ====================
+        function renderMembers() {
+            const grid = document.getElementById('membersGrid');
+            const searchTerm = document.getElementById('searchMember')?.value.toLowerCase() || '';
+            const clubFilter = document.getElementById('clubFilter')?.value || 'all';
+            
+            let filteredMembers = members;
+            
+            // Filtre par recherche
+            if (searchTerm) {
+                filteredMembers = filteredMembers.filter(m => 
+                    m.nom.toLowerCase().includes(searchTerm) ||
+                    m.prenom.toLowerCase().includes(searchTerm) ||
+                    m.telephone.includes(searchTerm)
+                );
+            }
+            
+            // Filtre par club
+            if (clubFilter !== 'all') {
+                filteredMembers = filteredMembers.filter(m => m.club === clubFilter);
+            }
+            
+            if (filteredMembers.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                        <i class="fas fa-users-slash fa-4x" style="color: #ccc; margin-bottom: 20px;"></i>
+                        <h3 style="color: #666;">Aucun membre trouvé</h3>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = filteredMembers.map(member => createMemberCard(member)).join('');
+        }
+
+        function createMemberCard(member) {
+            const initials = (member.prenom[0] + member.nom[0]).toUpperCase();
+            const clubClass = `club-${member.club}`;
+            const roleClass = member.role === 'responsable' ? 'role-responsable' : 'role-assistant';
+            const roleText = member.role === 'responsable' ? '👑 Responsable' : '🤝 Assistant';
+            
+            // Déterminer le nom du club pour l'affichage
+            const clubNames = {
+                'robotique': 'Robotique',
+                'informatique': 'Informatique',
+                'physique': 'Physique',
+                'biochimie': 'Biochimie',
+                'sport': 'Sport',
+                'clap': 'CLAP',
+                'arabe': 'Arabe',
+                'anglais': 'Anglais'
+            };
+            
+            return `
+                <div class="member-card" data-id="${member.id}">
+                    <div class="club-badge ${clubClass}">${clubNames[member.club]}</div>
+                    
+                    <div class="member-avatar">${initials}</div>
+                    
+                    <div class="member-name">${member.prenom} ${member.nom}</div>
+                    
+                    <div class="member-phone">
+                        <i class="fas fa-phone"></i> ${member.telephone}
+                    </div>
+                    
+                    <div class="member-role">
+                        <span class="role-badge ${roleClass}">${roleText}</span>
+                    </div>
+                    
+                    <div class="responsible-club">
+                        <span><i class="fas fa-tasks"></i> Responsable de:</span>
+                        <select onchange="updateResponsibleClub(${member.id}, this.value)">
+                            <option value="">Non responsable</option>
+                            <option value="robotique" ${member.responsibleClub === 'robotique' ? 'selected' : ''}>Robotique</option>
+                            <option value="informatique" ${member.responsibleClub === 'informatique' ? 'selected' : ''}>Informatique</option>
+                            <option value="physique" ${member.responsibleClub === 'physique' ? 'selected' : ''}>Physique</option>
+                            <option value="biochimie" ${member.responsibleClub === 'biochimie' ? 'selected' : ''}>Biochimie</option>
+                            <option value="sport" ${member.responsibleClub === 'sport' ? 'selected' : ''}>Sport</option>
+                            <option value="clap" ${member.responsibleClub === 'clap' ? 'selected' : ''}>CLAP</option>
+                            <option value="arabe" ${member.responsibleClub === 'arabe' ? 'selected' : ''}>Arabe</option>
+                            <option value="anglais" ${member.responsibleClub === 'anglais' ? 'selected' : ''}>Anglais</option>
+                        </select>
+                    </div>
+                    
+                    <div class="meeting-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">${member.reunions.assistees}</div>
+                            <div class="stat-label">Assistées</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${member.reunions.ratees}</div>
+                            <div class="stat-label">Ratées</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${member.reunions.justifiees}</div>
+                            <div class="stat-label">Justifiées</div>
+                        </div>
+                    </div>
+                    
+                    <div class="meeting-history" id="history-${member.id}">
+                        ${member.reunions.historique.slice(-3).map(meeting => `
+                            <div class="history-item">
+                                <div>
+                                    <span class="history-date">${meeting.date}</span>
+                                    <span class="history-theme">${meeting.theme}</span>
+                                </div>
+                                <span class="history-status status-${meeting.present ? 'present' : (meeting.justifie ? 'justified' : 'absent')}">
+                                    ${meeting.present ? '✓' : (meeting.justifie ? '⚠️' : '✗')}
+                                </span>
+                            </div>
+                        `).join('')}
+                        ${member.reunions.historique.length > 3 ? '<div style="text-align: center; margin-top: 5px;">...</div>' : ''}
+                    </div>
+                    
+                    <div class="member-actions">
+                        <button class="action-btn edit-btn" onclick="openEditMemberModal(${member.id})">
+                            <i class="fas fa-edit"></i> Modifier
+                        </button>
+                        <button class="action-btn history-btn" onclick="openAddMeetingModal(${member.id})">
+                            <i class="fas fa-calendar-plus"></i> Réunion
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteMember(${member.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ==================== FILTRES ====================
+        function filterMembers() {
+            renderMembers();
+        }
+
+        // ==================== CRUD MEMBRES ====================
+        function openAddMemberModal() {
+            currentEditId = null;
+            document.getElementById('modalTitle').textContent = 'Ajouter un membre';
+            document.getElementById('memberId').value = '';
+            document.getElementById('memberNom').value = '';
+            document.getElementById('memberPrenom').value = '';
+            document.getElementById('memberPhone').value = '';
+            document.getElementById('memberClub').value = '';
+            document.getElementById('memberRole').value = 'assistant';
+            document.getElementById('responsibleClub').value = '';
+            document.getElementById('memberModal').style.display = 'flex';
+        }
+
+        function openEditMemberModal(id) {
+            const member = members.find(m => m.id === id);
+            if (!member) return;
+            
+            currentEditId = id;
+            document.getElementById('modalTitle').textContent = 'Modifier le membre';
+            document.getElementById('memberId').value = member.id;
+            document.getElementById('memberNom').value = member.nom;
+            document.getElementById('memberPrenom').value = member.prenom;
+            document.getElementById('memberPhone').value = member.telephone;
+            document.getElementById('memberClub').value = member.club;
+            document.getElementById('memberRole').value = member.role;
+            document.getElementById('responsibleClub').value = member.responsibleClub || '';
+            document.getElementById('memberModal').style.display = 'flex';
+        }
+
+        function closeMemberModal() {
+            document.getElementById('memberModal').style.display = 'none';
+        }
+
+        function saveMember() {
+            const memberData = {
+                id: currentEditId || Date.now(),
+                nom: document.getElementById('memberNom').value,
+                prenom: document.getElementById('memberPrenom').value,
+                telephone: document.getElementById('memberPhone').value,
+                club: document.getElementById('memberClub').value,
+                role: document.getElementById('memberRole').value,
+                responsibleClub: document.getElementById('responsibleClub').value,
+                reunions: currentEditId ? 
+                    members.find(m => m.id === currentEditId).reunions : 
+                    { assistees: 0, ratees: 0, justifiees: 0, historique: [] }
+            };
+            
+            if (currentEditId) {
+                const index = members.findIndex(m => m.id === currentEditId);
+                members[index] = { ...members[index], ...memberData };
+            } else {
+                members.push(memberData);
+            }
+            
+            localStorage.setItem('hikmah_club_members', JSON.stringify(members));
+            closeMemberModal();
+            renderMembers();
+        }
+
+        function deleteMember(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer ce membre ?')) {
+                members = members.filter(m => m.id !== id);
+                localStorage.setItem('hikmah_club_members', JSON.stringify(members));
+                renderMembers();
+            }
+        }
+
+        // ==================== GESTION RESPONSABLE CLUB ====================
+        function updateResponsibleClub(memberId, club) {
+            const member = members.find(m => m.id === memberId);
+            if (member) {
+                member.responsibleClub = club;
+                localStorage.setItem('hikmah_club_members', JSON.stringify(members));
+            }
+        }
+
+        // ==================== GESTION RÉUNIONS ====================
+        function openAddMeetingModal(memberId) {
+            currentMemberForMeeting = memberId;
+            document.getElementById('meetingMemberId').value = memberId;
+            document.getElementById('meetingDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('meetingTime').value = '15:00';
+            document.getElementById('meetingTheme').value = '';
+            document.getElementById('meetingPresence').value = 'present';
+            document.getElementById('meetingModal').style.display = 'flex';
+        }
+
+        function closeMeetingModal() {
+            document.getElementById('meetingModal').style.display = 'none';
+        }
+
+        function addMeeting() {
+            const memberId = parseInt(document.getElementById('meetingMemberId').value);
+            const member = members.find(m => m.id === memberId);
+            
+            if (!member) return;
+            
+            const meeting = {
+                date: document.getElementById('meetingDate').value,
+                heure: document.getElementById('meetingTime').value,
+                theme: document.getElementById('meetingTheme').value,
+                present: document.getElementById('meetingPresence').value === 'present',
+                justifie: document.getElementById('meetingPresence').value === 'justifie'
+            };
+            
+            // Ajouter à l'historique
+            member.reunions.historique.push(meeting);
+            
+            // Mettre à jour les compteurs
+            if (meeting.present) {
+                member.reunions.assistees++;
+            } else if (meeting.justifie) {
+                member.reunions.ratees++;
+                member.reunions.justifiees++;
+            } else {
+                member.reunions.ratees++;
+            }
+            
+            localStorage.setItem('hikmah_club_members', JSON.stringify(members));
+            closeMeetingModal();
+            renderMembers();
+        }
+
+        // ==================== INITIALISATION ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Si on arrive directement sur la page sans passer par le dashboard
+            if (window.location.hash === '#code') {
+                document.getElementById('codeModal').style.display = 'flex';
+            }
+            
+            // Raccourci clavier pour valider le code avec Entrée
+            document.getElementById('accessCode')?.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkAccessCode();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
