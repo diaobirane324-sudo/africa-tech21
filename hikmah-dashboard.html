@@ -1066,19 +1066,32 @@
     <!-- FOOTER -->
     <footer class="dashboard-footer">
         <p>HIKMAH'S CLUB &copy; 2024 - Dashboard Administratif</p>
-        <p>Système de gestion des points et mandats - Version 1.2</p>
-        <p style="font-size: 0.8rem; opacity: 0.5; margin-top: 5px;">
-            <i class="fas fa-keyboard"></i> Raccourci: Ctrl+Shift+A pour AZIMUT
-        </p>
-    </footer>
-<!-- BOUTON CACHÉ POUR ACCÈS CLUB MANAGEMENT -->
-<div style="position: relative; margin-top: 20px;">
-    <span id="secretAccess" style="opacity: 0.1; cursor: pointer; font-size: 12px;" 
-          onclick="openClubManagement()" 
-          title="🔐 Accès administration clubs">
-        🔒
-    </span>
+      <p>Système de gestion des points et mandats - Version 1.2</p>
+    <p style="font-size: 0.8rem; opacity: 0.5; margin-top: 5px;">
+        <i class="fas fa-keyboard"></i> Raccourci: Ctrl+Shift+A pour AZIMUT
+    </p>
+</footer>
+
+<!-- BOUTON ADMIN CLUBS -->
+<div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+    <button onclick="openClubManagement()" style="
+        background: #2E8B57;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 12px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(46, 139, 87, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    ">
+        <i class="fas fa-users-cog"></i> Gestion des Clubs
+    </button>
 </div>
+
 <script>
     // ==================== VARIABLES GLOBALES ====================
     let currentAdmin = null;
