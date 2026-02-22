@@ -1071,7 +1071,14 @@
             <i class="fas fa-keyboard"></i> Raccourci: Ctrl+Shift+A pour AZIMUT
         </p>
     </footer>
-
+<!-- BOUTON CACHÉ POUR ACCÈS CLUB MANAGEMENT -->
+<div style="position: relative; margin-top: 20px;">
+    <span id="secretAccess" style="opacity: 0.1; cursor: pointer; font-size: 12px;" 
+          onclick="openClubManagement()" 
+          title="🔐 Accès administration clubs">
+        🔒
+    </span>
+</div>
 <script>
     // ==================== VARIABLES GLOBALES ====================
     let currentAdmin = null;
