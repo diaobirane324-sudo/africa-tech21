@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hikmah's Club - Gestion des Membres</title>
+    <title>Hikmah's Club - Gestion Complète des Membres</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -140,7 +140,7 @@
         /* Grille des membres */
         .members-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
             gap: 25px;
             padding: 30px;
         }
@@ -243,26 +243,61 @@
             border: 1px solid var(--assistant);
         }
 
-        /* Club responsable (champ modifiable) */
-        .responsible-club {
+        /* Clubs responsable (plusieurs) */
+        .responsible-clubs {
             background: #f8f9fa;
-            padding: 10px;
+            padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
+        }
+
+        .responsible-clubs h4 {
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 0.95em;
+        }
+
+        .club-tags {
             display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .club-tag {
+            background: var(--hikmah-green);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            display: inline-flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 5px;
         }
 
-        .responsible-club select {
-            padding: 5px;
-            border: 1px solid var(--hikmah-border);
-            border-radius: 5px;
-            font-family: 'Poppins', sans-serif;
+        .club-tag i {
+            cursor: pointer;
+            opacity: 0.7;
         }
 
-        /* Statistiques réunions */
-        .meeting-stats {
+        .club-tag i:hover {
+            opacity: 1;
+        }
+
+        .add-club-btn {
+            background: none;
+            border: 2px dashed var(--hikmah-green);
+            color: var(--hikmah-green);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Statistiques événements */
+        .event-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
@@ -287,9 +322,9 @@
             color: #666;
         }
 
-        /* Historique réunions */
-        .meeting-history {
-            max-height: 250px;
+        /* Historique événements */
+        .event-history {
+            max-height: 300px;
             overflow-y: auto;
             margin-bottom: 20px;
             border: 1px solid var(--hikmah-border);
@@ -297,32 +332,57 @@
             padding: 10px;
         }
 
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px;
+        .event-item {
+            padding: 10px;
             border-bottom: 1px solid var(--hikmah-border);
             font-size: 0.9em;
         }
 
-        .history-item:last-child {
+        .event-item:last-child {
             border-bottom: none;
         }
 
-        .history-date {
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .event-date {
             font-weight: 600;
             color: var(--hikmah-green);
         }
 
-        .history-theme {
-            color: #666;
-        }
-
-        .history-status {
+        .event-type {
             padding: 2px 8px;
             border-radius: 12px;
             font-size: 0.8em;
+            background: #e0e0e0;
+        }
+
+        .type-reunion { background: #2196F3; color: white; }
+        .type-activite { background: #FF9800; color: white; }
+
+        .event-theme {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .event-justification {
+            color: #666;
+            font-style: italic;
+            font-size: 0.85em;
+            margin-top: 3px;
+            padding-left: 10px;
+            border-left: 2px solid #FFC107;
+        }
+
+        .event-status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-top: 3px;
         }
 
         .status-present {
@@ -333,11 +393,6 @@
         .status-absent {
             background: rgba(244, 67, 54, 0.1);
             color: #F44336;
-        }
-
-        .status-justified {
-            background: rgba(255, 193, 7, 0.1);
-            color: #FFC107;
         }
 
         /* Boutons d'action */
@@ -379,12 +434,12 @@
             background: #D32F2F;
         }
 
-        .history-btn {
+        .event-btn {
             background: #2196F3;
             color: white;
         }
 
-        .history-btn:hover {
+        .event-btn:hover {
             background: #1976D2;
         }
 
@@ -454,10 +509,35 @@
             font-family: 'Poppins', sans-serif;
         }
 
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
+        }
+
+        /* Checkbox groupes */
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding: 10px;
+            border: 1px solid var(--hikmah-border);
+            border-radius: 8px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
         }
 
         .modal-actions {
@@ -553,6 +633,10 @@
             .form-row {
                 grid-template-columns: 1fr;
             }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -626,18 +710,41 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Responsable de quel club ?</label>
-                    <select id="responsibleClub">
-                        <option value="">Non responsable</option>
-                        <option value="robotique">Robotique</option>
-                        <option value="informatique">Informatique</option>
-                        <option value="physique">Physique</option>
-                        <option value="biochimie">Biochimie</option>
-                        <option value="sport">Sport</option>
-                        <option value="clap">CLAP</option>
-                        <option value="arabe">Arabe</option>
-                        <option value="anglais">Anglais</option>
-                    </select>
+                    <label>Responsable de quels clubs ?</label>
+                    <div class="checkbox-group" id="responsibleClubsContainer">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="clubRobotique" value="robotique">
+                            <label for="clubRobotique">Robotique</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="clubInformatique" value="informatique">
+                            <label for="clubInformatique">Informatique</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="clubPhysique" value="physique">
+                            <label for="clubPhysique">Physique</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="clubBiochimie" value="biochimie">
+                            <label for="clubBiochimie">Biochimie</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="clubSport" value="sport">
+                            <label for="clubSport">Sport</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="clubClap" value="clap">
+                            <label for="clubClap">CLAP</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="clubArabe" value="arabe">
+                            <label for="clubArabe">Arabe</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="clubAnglais" value="anglais">
+                            <label for="clubAnglais">Anglais</label>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="modal-actions">
@@ -648,45 +755,61 @@
         </div>
     </div>
 
-    <!-- MODAL AJOUT/MODIFICATION RÉUNION -->
-    <div class="modal-overlay" id="meetingModal">
+    <!-- MODAL AJOUT/MODIFICATION ÉVÉNEMENT -->
+    <div class="modal-overlay" id="eventModal">
         <div class="modal">
             <div class="modal-header">
-                <h2 id="meetingModalTitle">Ajouter une réunion</h2>
-                <button class="modal-close" onclick="closeMeetingModal()">&times;</button>
+                <h2 id="eventModalTitle">Ajouter un événement</h2>
+                <button class="modal-close" onclick="closeEventModal()">&times;</button>
             </div>
             
-            <form id="meetingForm" onsubmit="event.preventDefault(); saveMeeting();">
-                <input type="hidden" id="meetingMemberId">
-                <input type="hidden" id="meetingIndex">
+            <form id="eventForm" onsubmit="event.preventDefault(); saveEvent();">
+                <input type="hidden" id="eventMemberId">
+                <input type="hidden" id="eventIndex">
                 
-                <div class="form-group">
-                    <label>Date</label>
-                    <input type="date" id="meetingDate" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="eventDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Heure</label>
+                        <input type="time" id="eventTime" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select id="eventType" required onchange="toggleJustification()">
+                            <option value="reunion">Réunion</option>
+                            <option value="activite">Activité</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Présence</label>
+                        <select id="eventPresence" required onchange="toggleJustification()">
+                            <option value="present">Présent</option>
+                            <option value="absent">Absent</option>
+                        </select>
+                    </div>
                 </div>
                 
                 <div class="form-group">
-                    <label>Heure</label>
-                    <input type="time" id="meetingTime" required>
+                    <label>Titre / Thème</label>
+                    <input type="text" id="eventTheme" placeholder="Ex: Introduction à la robotique" required>
                 </div>
                 
-                <div class="form-group">
-                    <label>Thème de la réunion</label>
-                    <input type="text" id="meetingTheme" placeholder="Ex: Introduction à la robotique" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>Présence</label>
-                    <select id="meetingPresence" required>
-                        <option value="present">Présent</option>
-                        <option value="absent">Absent non justifié</option>
-                        <option value="justifie">Absent justifié</option>
-                    </select>
+                <div class="form-group" id="justificationGroup" style="display: none;">
+                    <label>Justification de l'absence</label>
+                    <textarea id="eventJustification" placeholder="Expliquez la raison de l'absence..."></textarea>
                 </div>
                 
                 <div class="modal-actions">
-                    <button type="button" class="modal-btn cancel" onclick="closeMeetingModal()">Annuler</button>
-                    <button type="submit" class="modal-btn save" id="meetingSaveBtn">Ajouter</button>
+                    <button type="button" class="modal-btn cancel" onclick="closeEventModal()">Annuler</button>
+                    <button type="submit" class="modal-btn save" id="eventSaveBtn">Ajouter</button>
                 </div>
             </form>
         </div>
@@ -698,12 +821,12 @@
         <p style="margin-top: 10px;">Chargement...</p>
     </div>
 
-    <!-- PAGE PRINCIPALE (cachée tant que code non validé) -->
+    <!-- PAGE PRINCIPALE -->
     <div id="mainContent" style="display: none;">
         <div class="club-container">
             <div class="club-header">
-                <h1><i class="fas fa-users-cog"></i> GESTION DES MEMBRES DU CLUB</h1>
-                <p>Administration complète des membres - Clubs: Robotique, Informatique, Physique, Biochimie, Sport, CLAP, Arabe, Anglais</p>
+                <h1><i class="fas fa-users-cog"></i> GESTION COMPLÈTE DES MEMBRES</h1>
+                <p>Administration - Clubs: Robotique, Informatique, Physique, Biochimie, Sport, CLAP, Arabe, Anglais</p>
             </div>
 
             <div class="toolbar">
@@ -731,7 +854,7 @@
             </div>
 
             <div class="club-footer">
-                <p>HIKMAH'S CLUB - Gestion des membres</p>
+                <p>HIKMAH'S CLUB - Gestion complète v2.0</p>
                 <a href="hikmah-dashboard.html" class="back-link">
                     <i class="fas fa-arrow-left"></i> Retour au Dashboard
                 </a>
@@ -772,11 +895,11 @@
             showLoading();
             
             setTimeout(() => {
-                const savedMembers = localStorage.getItem('hikmah_club_members');
+                const savedMembers = localStorage.getItem('hikmah_club_members_v2');
                 if (savedMembers) {
                     members = JSON.parse(savedMembers);
                 } else {
-                    // Données par défaut
+                    // Données par défaut avec les nouvelles fonctionnalités
                     members = [
                         {
                             id: 1,
@@ -785,17 +908,38 @@
                             telephone: "77 123 45 67",
                             club: "robotique",
                             role: "responsable",
-                            responsibleClub: "informatique",
-                            reunions: {
-                                assistees: 12,
-                                ratees: 3,
-                                justifiees: 1,
-                                historique: [
-                                    { date: "2024-02-15", heure: "15:00", theme: "Introduction à la robotique", present: true },
-                                    { date: "2024-02-08", heure: "15:00", theme: "Programmation avancée", present: false, justifie: true },
-                                    { date: "2024-02-01", heure: "15:00", theme: "Montage électronique", present: false, justifie: false }
-                                ]
-                            }
+                            responsibleClubs: ["informatique", "physique"], // Plusieurs clubs
+                            stats: {
+                                total: 5,
+                                presents: 3,
+                                absents: 2,
+                                justifies: 1
+                            },
+                            historique: [
+                                { 
+                                    date: "2024-02-15", 
+                                    heure: "15:00", 
+                                    type: "reunion",
+                                    theme: "Introduction à la robotique", 
+                                    present: true 
+                                },
+                                { 
+                                    date: "2024-02-08", 
+                                    heure: "15:00", 
+                                    type: "reunion",
+                                    theme: "Programmation avancée", 
+                                    present: false,
+                                    justification: "Maladie (certificat médical)"
+                                },
+                                { 
+                                    date: "2024-02-01", 
+                                    heure: "14:00", 
+                                    type: "activite",
+                                    theme: "Sortie pédagogique", 
+                                    present: false,
+                                    justification: "Examen de mathématiques"
+                                }
+                            ]
                         },
                         {
                             id: 2,
@@ -804,55 +948,40 @@
                             telephone: "78 987 65 43",
                             club: "informatique",
                             role: "assistant",
-                            responsibleClub: "",
-                            reunions: {
-                                assistees: 8,
-                                ratees: 2,
-                                justifiees: 2,
-                                historique: [
-                                    { date: "2024-02-15", heure: "15:00", theme: "Introduction à la robotique", present: true },
-                                    { date: "2024-02-08", heure: "15:00", theme: "Programmation avancée", present: true }
-                                ]
-                            }
-                        },
-                        {
-                            id: 3,
-                            nom: "Ndiaye",
-                            prenom: "Fatou",
-                            telephone: "76 543 21 09",
-                            club: "clap",
-                            role: "responsable",
-                            responsibleClub: "clap",
-                            reunions: {
-                                assistees: 15,
-                                ratees: 1,
-                                justifiees: 0,
-                                historique: [
-                                    { date: "2024-02-14", heure: "16:00", theme: "Poésie africaine", present: true },
-                                    { date: "2024-02-07", heure: "16:00", theme: "Philosophie moderne", present: true }
-                                ]
-                            }
-                        },
-                        {
-                            id: 4,
-                            nom: "Ba",
-                            prenom: "Oumar",
-                            telephone: "70 111 22 33",
-                            club: "sport",
-                            role: "assistant",
-                            responsibleClub: "",
-                            reunions: {
-                                assistees: 5,
-                                ratees: 4,
-                                justifiees: 2,
-                                historique: [
-                                    { date: "2024-02-13", heure: "17:00", theme: "Entraînement football", present: true },
-                                    { date: "2024-02-06", heure: "17:00", theme: "Préparation match", present: false, justifie: true }
-                                ]
-                            }
+                            responsibleClubs: [],
+                            stats: {
+                                total: 3,
+                                presents: 2,
+                                absents: 1,
+                                justifies: 1
+                            },
+                            historique: [
+                                { 
+                                    date: "2024-02-15", 
+                                    heure: "15:00", 
+                                    type: "reunion",
+                                    theme: "Introduction à la robotique", 
+                                    present: true 
+                                },
+                                { 
+                                    date: "2024-02-08", 
+                                    heure: "15:00", 
+                                    type: "reunion",
+                                    theme: "Programmation avancée", 
+                                    present: true 
+                                },
+                                { 
+                                    date: "2024-02-10", 
+                                    heure: "10:00", 
+                                    type: "activite",
+                                    theme: "Atelier pratique", 
+                                    present: false,
+                                    justification: "Visite médicale"
+                                }
+                            ]
                         }
                     ];
-                    localStorage.setItem('hikmah_club_members', JSON.stringify(members));
+                    localStorage.setItem('hikmah_club_members_v2', JSON.stringify(members));
                 }
                 
                 renderMembers();
@@ -912,6 +1041,20 @@
                 'anglais': 'Anglais'
             };
             
+            // Calculer les stats si elles n'existent pas
+            if (!member.stats) {
+                const presents = member.historique.filter(e => e.present).length;
+                const absents = member.historique.filter(e => !e.present).length;
+                const justifies = member.historique.filter(e => !e.present && e.justification).length;
+                
+                member.stats = {
+                    total: member.historique.length,
+                    presents: presents,
+                    absents: absents,
+                    justifies: justifies
+                };
+            }
+            
             return `
                 <div class="member-card" data-id="${member.id}">
                     <div class="club-badge ${clubClass}">${clubNames[member.club]}</div>
@@ -928,65 +1071,75 @@
                         <span class="role-badge ${roleClass}">${roleText}</span>
                     </div>
                     
-                    <div class="responsible-club">
-                        <span><i class="fas fa-tasks"></i> Responsable de:</span>
-                        <select onchange="updateResponsibleClub(${member.id}, this.value)">
-                            <option value="">Non responsable</option>
-                            <option value="robotique" ${member.responsibleClub === 'robotique' ? 'selected' : ''}>Robotique</option>
-                            <option value="informatique" ${member.responsibleClub === 'informatique' ? 'selected' : ''}>Informatique</option>
-                            <option value="physique" ${member.responsibleClub === 'physique' ? 'selected' : ''}>Physique</option>
-                            <option value="biochimie" ${member.responsibleClub === 'biochimie' ? 'selected' : ''}>Biochimie</option>
-                            <option value="sport" ${member.responsibleClub === 'sport' ? 'selected' : ''}>Sport</option>
-                            <option value="clap" ${member.responsibleClub === 'clap' ? 'selected' : ''}>CLAP</option>
-                            <option value="arabe" ${member.responsibleClub === 'arabe' ? 'selected' : ''}>Arabe</option>
-                            <option value="anglais" ${member.responsibleClub === 'anglais' ? 'selected' : ''}>Anglais</option>
-                        </select>
-                    </div>
-                    
-                    <div class="meeting-stats">
-                        <div class="stat-item">
-                            <div class="stat-number">${member.reunions.assistees}</div>
-                            <div class="stat-label">Assistées</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">${member.reunions.ratees}</div>
-                            <div class="stat-label">Ratées</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">${member.reunions.justifiees}</div>
-                            <div class="stat-label">Justifiées</div>
+                    <div class="responsible-clubs">
+                        <h4><i class="fas fa-tasks"></i> Responsable de:</h4>
+                        <div class="club-tags">
+                            ${member.responsibleClubs && member.responsibleClubs.length > 0 ? 
+                                member.responsibleClubs.map(club => 
+                                    `<span class="club-tag">${clubNames[club]}</span>`
+                                ).join('') 
+                                : '<span style="color: #999;">Aucun club</span>'
+                            }
                         </div>
                     </div>
                     
-                    <div class="meeting-history">
-                        ${member.reunions.historique.map((meeting, index) => `
-                            <div class="history-item">
-                                <div style="flex: 1;">
-                                    <span class="history-date">${meeting.date}</span>
-                                    <span class="history-theme">${meeting.theme}</span>
+                    <div class="event-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">${member.stats.total}</div>
+                            <div class="stat-label">Total</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${member.stats.presents}</div>
+                            <div class="stat-label">Présents</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${member.stats.absents}</div>
+                            <div class="stat-label">Absents</div>
+                        </div>
+                    </div>
+                    
+                    <div class="event-history">
+                        ${member.historique.slice().reverse().map((event, index) => {
+                            const originalIndex = member.historique.length - 1 - index;
+                            return `
+                                <div class="event-item">
+                                    <div class="event-header">
+                                        <span class="event-date">${event.date}</span>
+                                        <span class="event-type type-${event.type}">${event.type}</span>
+                                    </div>
+                                    <div class="event-theme">${event.theme}</div>
+                                    ${!event.present && event.justification ? 
+                                        `<div class="event-justification">
+                                            <i class="fas fa-quote-left"></i> ${event.justification}
+                                        </div>` : ''
+                                    }
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
+                                        <span class="event-status status-${event.present ? 'present' : 'absent'}">
+                                            ${event.present ? '✓ Présent' : '✗ Absent'}
+                                        </span>
+                                        <div>
+                                            <button onclick="openEditEventModal(${member.id}, ${originalIndex})" style="background: none; border: none; color: #2196F3; cursor: pointer; margin-right: 5px;">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button onclick="deleteEvent(${member.id}, ${originalIndex})" style="background: none; border: none; color: #F44336; cursor: pointer;">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div style="display: flex; align-items: center; gap: 5px;">
-                                    <span class="history-status status-${meeting.present ? 'present' : (meeting.justifie ? 'justified' : 'absent')}">
-                                        ${meeting.present ? '✓' : (meeting.justifie ? '⚠️' : '✗')}
-                                    </span>
-                                    <button onclick="openEditMeetingModal(${member.id}, ${index})" style="background: none; border: none; color: #2196F3; cursor: pointer; font-size: 14px;">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button onclick="deleteMeeting(${member.id}, ${index})" style="background: none; border: none; color: #F44336; cursor: pointer; font-size: 14px;">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        `).join('')}
-                        ${member.reunions.historique.length === 0 ? '<div style="text-align: center; color: #999; padding: 10px;">Aucune réunion</div>' : ''}
+                            `;
+                        }).join('')}
+                        ${member.historique.length === 0 ? 
+                            '<div style="text-align: center; color: #999; padding: 20px;">Aucun événement</div>' : ''
+                        }
                     </div>
                     
                     <div class="member-actions">
                         <button class="action-btn edit-btn" onclick="openEditMemberModal(${member.id})">
                             <i class="fas fa-edit"></i> Modifier
                         </button>
-                        <button class="action-btn history-btn" onclick="openAddMeetingModal(${member.id})">
-                            <i class="fas fa-calendar-plus"></i> Réunion
+                        <button class="action-btn event-btn" onclick="openAddEventModal(${member.id})">
+                            <i class="fas fa-calendar-plus"></i> + Event
                         </button>
                         <button class="action-btn delete-btn" onclick="deleteMember(${member.id})">
                             <i class="fas fa-trash"></i>
@@ -1011,7 +1164,12 @@
             document.getElementById('memberPhone').value = '';
             document.getElementById('memberClub').value = '';
             document.getElementById('memberRole').value = 'assistant';
-            document.getElementById('responsibleClub').value = '';
+            
+            // Décocher toutes les cases
+            document.querySelectorAll('#responsibleClubsContainer input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+            
             document.getElementById('memberModal').style.display = 'flex';
         }
 
@@ -1027,7 +1185,12 @@
             document.getElementById('memberPhone').value = member.telephone;
             document.getElementById('memberClub').value = member.club;
             document.getElementById('memberRole').value = member.role;
-            document.getElementById('responsibleClub').value = member.responsibleClub || '';
+            
+            // Cocher les clubs responsables
+            document.querySelectorAll('#responsibleClubsContainer input[type="checkbox"]').forEach(cb => {
+                cb.checked = member.responsibleClubs && member.responsibleClubs.includes(cb.value);
+            });
+            
             document.getElementById('memberModal').style.display = 'flex';
         }
 
@@ -1036,6 +1199,12 @@
         }
 
         function saveMember() {
+            // Récupérer les clubs responsables cochés
+            const responsibleClubs = [];
+            document.querySelectorAll('#responsibleClubsContainer input[type="checkbox"]:checked').forEach(cb => {
+                responsibleClubs.push(cb.value);
+            });
+            
             const memberData = {
                 id: currentEditId || Date.now(),
                 nom: document.getElementById('memberNom').value,
@@ -1043,10 +1212,12 @@
                 telephone: document.getElementById('memberPhone').value,
                 club: document.getElementById('memberClub').value,
                 role: document.getElementById('memberRole').value,
-                responsibleClub: document.getElementById('responsibleClub').value,
-                reunions: currentEditId ? 
-                    members.find(m => m.id === currentEditId).reunions : 
-                    { assistees: 0, ratees: 0, justifiees: 0, historique: [] }
+                responsibleClubs: responsibleClubs,
+                historique: currentEditId ? 
+                    members.find(m => m.id === currentEditId).historique : [],
+                stats: currentEditId ? 
+                    members.find(m => m.id === currentEditId).stats : 
+                    { total: 0, presents: 0, absents: 0, justifies: 0 }
             };
             
             if (currentEditId) {
@@ -1056,7 +1227,7 @@
                 members.push(memberData);
             }
             
-            localStorage.setItem('hikmah_club_members', JSON.stringify(members));
+            localStorage.setItem('hikmah_club_members_v2', JSON.stringify(members));
             closeMemberModal();
             renderMembers();
         }
@@ -1064,136 +1235,137 @@
         function deleteMember(id) {
             if (confirm('Êtes-vous sûr de vouloir supprimer ce membre ?')) {
                 members = members.filter(m => m.id !== id);
-                localStorage.setItem('hikmah_club_members', JSON.stringify(members));
+                localStorage.setItem('hikmah_club_members_v2', JSON.stringify(members));
                 renderMembers();
             }
         }
 
-        // ==================== GESTION RESPONSABLE CLUB ====================
-        function updateResponsibleClub(memberId, club) {
-            const member = members.find(m => m.id === memberId);
-            if (member) {
-                member.responsibleClub = club;
-                localStorage.setItem('hikmah_club_members', JSON.stringify(members));
+        // ==================== GESTION ÉVÉNEMENTS ====================
+        function toggleJustification() {
+            const presence = document.getElementById('eventPresence').value;
+            const justificationGroup = document.getElementById('justificationGroup');
+            
+            if (presence === 'absent') {
+                justificationGroup.style.display = 'block';
+            } else {
+                justificationGroup.style.display = 'none';
             }
         }
 
-        // ==================== GESTION RÉUNIONS ====================
-        function openAddMeetingModal(memberId) {
-            document.getElementById('meetingModalTitle').textContent = 'Ajouter une réunion';
-            document.getElementById('meetingMemberId').value = memberId;
-            document.getElementById('meetingIndex').value = '';
-            document.getElementById('meetingDate').value = new Date().toISOString().split('T')[0];
-            document.getElementById('meetingTime').value = '15:00';
-            document.getElementById('meetingTheme').value = '';
-            document.getElementById('meetingPresence').value = 'present';
-            document.getElementById('meetingSaveBtn').textContent = 'Ajouter';
-            document.getElementById('meetingModal').style.display = 'flex';
+        function openAddEventModal(memberId) {
+            document.getElementById('eventModalTitle').textContent = 'Ajouter un événement';
+            document.getElementById('eventMemberId').value = memberId;
+            document.getElementById('eventIndex').value = '';
+            document.getElementById('eventDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('eventTime').value = '15:00';
+            document.getElementById('eventType').value = 'reunion';
+            document.getElementById('eventTheme').value = '';
+            document.getElementById('eventPresence').value = 'present';
+            document.getElementById('eventJustification').value = '';
+            document.getElementById('justificationGroup').style.display = 'none';
+            document.getElementById('eventSaveBtn').textContent = 'Ajouter';
+            document.getElementById('eventModal').style.display = 'flex';
         }
 
-        function openEditMeetingModal(memberId, meetingIndex) {
+        function openEditEventModal(memberId, eventIndex) {
             const member = members.find(m => m.id === memberId);
             if (!member) return;
             
-            const meeting = member.reunions.historique[meetingIndex];
+            const event = member.historique[eventIndex];
             
-            document.getElementById('meetingModalTitle').textContent = 'Modifier la réunion';
-            document.getElementById('meetingMemberId').value = memberId;
-            document.getElementById('meetingIndex').value = meetingIndex;
-            document.getElementById('meetingDate').value = meeting.date;
-            document.getElementById('meetingTime').value = meeting.heure;
-            document.getElementById('meetingTheme').value = meeting.theme;
-            document.getElementById('meetingPresence').value = meeting.present ? 'present' : (meeting.justifie ? 'justifie' : 'absent');
-            document.getElementById('meetingSaveBtn').textContent = 'Modifier';
-            document.getElementById('meetingModal').style.display = 'flex';
+            document.getElementById('eventModalTitle').textContent = 'Modifier l\'événement';
+            document.getElementById('eventMemberId').value = memberId;
+            document.getElementById('eventIndex').value = eventIndex;
+            document.getElementById('eventDate').value = event.date;
+            document.getElementById('eventTime').value = event.heure;
+            document.getElementById('eventType').value = event.type || 'reunion';
+            document.getElementById('eventTheme').value = event.theme;
+            document.getElementById('eventPresence').value = event.present ? 'present' : 'absent';
+            document.getElementById('eventJustification').value = event.justification || '';
+            
+            if (!event.present) {
+                document.getElementById('justificationGroup').style.display = 'block';
+            } else {
+                document.getElementById('justificationGroup').style.display = 'none';
+            }
+            
+            document.getElementById('eventSaveBtn').textContent = 'Modifier';
+            document.getElementById('eventModal').style.display = 'flex';
         }
 
-        function closeMeetingModal() {
-            document.getElementById('meetingModal').style.display = 'none';
+        function closeEventModal() {
+            document.getElementById('eventModal').style.display = 'none';
         }
 
-        function saveMeeting() {
-            const memberId = parseInt(document.getElementById('meetingMemberId').value);
+        function saveEvent() {
+            const memberId = parseInt(document.getElementById('eventMemberId').value);
             const member = members.find(m => m.id === memberId);
             if (!member) return;
             
-            const meetingData = {
-                date: document.getElementById('meetingDate').value,
-                heure: document.getElementById('meetingTime').value,
-                theme: document.getElementById('meetingTheme').value,
-                present: document.getElementById('meetingPresence').value === 'present',
-                justifie: document.getElementById('meetingPresence').value === 'justifie'
+            const presence = document.getElementById('eventPresence').value;
+            const isPresent = presence === 'present';
+            
+            const eventData = {
+                date: document.getElementById('eventDate').value,
+                heure: document.getElementById('eventTime').value,
+                type: document.getElementById('eventType').value,
+                theme: document.getElementById('eventTheme').value,
+                present: isPresent,
+                justification: !isPresent ? document.getElementById('eventJustification').value : ''
             };
             
-            const meetingIndex = document.getElementById('meetingIndex').value;
+            const eventIndex = document.getElementById('eventIndex').value;
             
-            if (meetingIndex !== '') {
+            if (eventIndex !== '') {
                 // MODIFICATION
-                const oldMeeting = member.reunions.historique[meetingIndex];
+                const oldEvent = member.historique[eventIndex];
                 
-                // Enlever l'ancienne réunion des compteurs
-                if (oldMeeting.present) {
-                    member.reunions.assistees--;
-                } else if (oldMeeting.justifie) {
-                    member.reunions.ratees--;
-                    member.reunions.justifiees--;
-                } else {
-                    member.reunions.ratees--;
-                }
-                
-                // Mettre à jour la réunion
-                member.reunions.historique[meetingIndex] = meetingData;
-                
-                // Ajouter la nouvelle réunion aux compteurs
-                if (meetingData.present) {
-                    member.reunions.assistees++;
-                } else if (meetingData.justifie) {
-                    member.reunions.ratees++;
-                    member.reunions.justifiees++;
-                } else {
-                    member.reunions.ratees++;
-                }
+                // Mettre à jour l'événement
+                member.historique[eventIndex] = eventData;
             } else {
                 // AJOUT
-                member.reunions.historique.push(meetingData);
-                
-                if (meetingData.present) {
-                    member.reunions.assistees++;
-                } else if (meetingData.justifie) {
-                    member.reunions.ratees++;
-                    member.reunions.justifiees++;
-                } else {
-                    member.reunions.ratees++;
-                }
+                member.historique.push(eventData);
             }
             
-            localStorage.setItem('hikmah_club_members', JSON.stringify(members));
-            closeMeetingModal();
+            // Recalculer les stats
+            const presents = member.historique.filter(e => e.present).length;
+            const absents = member.historique.filter(e => !e.present).length;
+            const justifies = member.historique.filter(e => !e.present && e.justification).length;
+            
+            member.stats = {
+                total: member.historique.length,
+                presents: presents,
+                absents: absents,
+                justifies: justifies
+            };
+            
+            localStorage.setItem('hikmah_club_members_v2', JSON.stringify(members));
+            closeEventModal();
             renderMembers();
         }
 
-        function deleteMeeting(memberId, meetingIndex) {
-            if (!confirm('Supprimer cette réunion ?')) return;
+        function deleteEvent(memberId, eventIndex) {
+            if (!confirm('Supprimer cet événement ?')) return;
             
             const member = members.find(m => m.id === memberId);
             if (!member) return;
             
-            const meeting = member.reunions.historique[meetingIndex];
+            // Supprimer l'événement
+            member.historique.splice(eventIndex, 1);
             
-            // Enlever des compteurs
-            if (meeting.present) {
-                member.reunions.assistees--;
-            } else if (meeting.justifie) {
-                member.reunions.ratees--;
-                member.reunions.justifiees--;
-            } else {
-                member.reunions.ratees--;
-            }
+            // Recalculer les stats
+            const presents = member.historique.filter(e => e.present).length;
+            const absents = member.historique.filter(e => !e.present).length;
+            const justifies = member.historique.filter(e => !e.present && e.justification).length;
             
-            // Supprimer l'historique
-            member.reunions.historique.splice(meetingIndex, 1);
+            member.stats = {
+                total: member.historique.length,
+                presents: presents,
+                absents: absents,
+                justifies: justifies
+            };
             
-            localStorage.setItem('hikmah_club_members', JSON.stringify(members));
+            localStorage.setItem('hikmah_club_members_v2', JSON.stringify(members));
             renderMembers();
         }
 
