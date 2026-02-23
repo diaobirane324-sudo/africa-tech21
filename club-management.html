@@ -140,7 +140,7 @@
         /* Grille des membres */
         .members-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
             gap: 25px;
             padding: 30px;
         }
@@ -289,7 +289,7 @@
 
         /* Historique réunions */
         .meeting-history {
-            max-height: 200px;
+            max-height: 250px;
             overflow-y: auto;
             margin-bottom: 20px;
             border: 1px solid var(--hikmah-border);
@@ -648,16 +648,17 @@
         </div>
     </div>
 
-    <!-- MODAL AJOUT RÉUNION -->
+    <!-- MODAL AJOUT/MODIFICATION RÉUNION -->
     <div class="modal-overlay" id="meetingModal">
         <div class="modal">
             <div class="modal-header">
-                <h2>Ajouter une réunion</h2>
+                <h2 id="meetingModalTitle">Ajouter une réunion</h2>
                 <button class="modal-close" onclick="closeMeetingModal()">&times;</button>
             </div>
             
-            <form id="meetingForm" onsubmit="event.preventDefault(); addMeeting();">
+            <form id="meetingForm" onsubmit="event.preventDefault(); saveMeeting();">
                 <input type="hidden" id="meetingMemberId">
+                <input type="hidden" id="meetingIndex">
                 
                 <div class="form-group">
                     <label>Date</label>
@@ -678,14 +679,14 @@
                     <label>Présence</label>
                     <select id="meetingPresence" required>
                         <option value="present">Présent</option>
-                        <option value="absent">Absent</option>
+                        <option value="absent">Absent non justifié</option>
                         <option value="justifie">Absent justifié</option>
                     </select>
                 </div>
                 
                 <div class="modal-actions">
                     <button type="button" class="modal-btn cancel" onclick="closeMeetingModal()">Annuler</button>
-                    <button type="submit" class="modal-btn save">Ajouter</button>
+                    <button type="submit" class="modal-btn save" id="meetingSaveBtn">Ajouter</button>
                 </div>
             </form>
         </div>
@@ -743,7 +744,6 @@
         const ACCESS_CODE = "200400";
         let members = [];
         let currentEditId = null;
-        let currentMemberForMeeting = null;
 
         // ==================== VÉRIFICATION CODE ACCÈS ====================
         function checkAccessCode() {
@@ -771,7 +771,6 @@
         function loadMembers() {
             showLoading();
             
-            // Simuler un chargement
             setTimeout(() => {
                 const savedMembers = localStorage.getItem('hikmah_club_members');
                 if (savedMembers) {
@@ -902,7 +901,6 @@
             const roleClass = member.role === 'responsable' ? 'role-responsable' : 'role-assistant';
             const roleText = member.role === 'responsable' ? '👑 Responsable' : '🤝 Assistant';
             
-            // Déterminer le nom du club pour l'affichage
             const clubNames = {
                 'robotique': 'Robotique',
                 'informatique': 'Informatique',
@@ -960,19 +958,27 @@
                         </div>
                     </div>
                     
-                    <div class="meeting-history" id="history-${member.id}">
-                        ${member.reunions.historique.slice(-3).map(meeting => `
+                    <div class="meeting-history">
+                        ${member.reunions.historique.map((meeting, index) => `
                             <div class="history-item">
-                                <div>
+                                <div style="flex: 1;">
                                     <span class="history-date">${meeting.date}</span>
                                     <span class="history-theme">${meeting.theme}</span>
                                 </div>
-                                <span class="history-status status-${meeting.present ? 'present' : (meeting.justifie ? 'justified' : 'absent')}">
-                                    ${meeting.present ? '✓' : (meeting.justifie ? '⚠️' : '✗')}
-                                </span>
+                                <div style="display: flex; align-items: center; gap: 5px;">
+                                    <span class="history-status status-${meeting.present ? 'present' : (meeting.justifie ? 'justified' : 'absent')}">
+                                        ${meeting.present ? '✓' : (meeting.justifie ? '⚠️' : '✗')}
+                                    </span>
+                                    <button onclick="openEditMeetingModal(${member.id}, ${index})" style="background: none; border: none; color: #2196F3; cursor: pointer; font-size: 14px;">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button onclick="deleteMeeting(${member.id}, ${index})" style="background: none; border: none; color: #F44336; cursor: pointer; font-size: 14px;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
                             </div>
                         `).join('')}
-                        ${member.reunions.historique.length > 3 ? '<div style="text-align: center; margin-top: 5px;">...</div>' : ''}
+                        ${member.reunions.historique.length === 0 ? '<div style="text-align: center; color: #999; padding: 10px;">Aucune réunion</div>' : ''}
                     </div>
                     
                     <div class="member-actions">
@@ -1074,12 +1080,31 @@
 
         // ==================== GESTION RÉUNIONS ====================
         function openAddMeetingModal(memberId) {
-            currentMemberForMeeting = memberId;
+            document.getElementById('meetingModalTitle').textContent = 'Ajouter une réunion';
             document.getElementById('meetingMemberId').value = memberId;
+            document.getElementById('meetingIndex').value = '';
             document.getElementById('meetingDate').value = new Date().toISOString().split('T')[0];
             document.getElementById('meetingTime').value = '15:00';
             document.getElementById('meetingTheme').value = '';
             document.getElementById('meetingPresence').value = 'present';
+            document.getElementById('meetingSaveBtn').textContent = 'Ajouter';
+            document.getElementById('meetingModal').style.display = 'flex';
+        }
+
+        function openEditMeetingModal(memberId, meetingIndex) {
+            const member = members.find(m => m.id === memberId);
+            if (!member) return;
+            
+            const meeting = member.reunions.historique[meetingIndex];
+            
+            document.getElementById('meetingModalTitle').textContent = 'Modifier la réunion';
+            document.getElementById('meetingMemberId').value = memberId;
+            document.getElementById('meetingIndex').value = meetingIndex;
+            document.getElementById('meetingDate').value = meeting.date;
+            document.getElementById('meetingTime').value = meeting.heure;
+            document.getElementById('meetingTheme').value = meeting.theme;
+            document.getElementById('meetingPresence').value = meeting.present ? 'present' : (meeting.justifie ? 'justifie' : 'absent');
+            document.getElementById('meetingSaveBtn').textContent = 'Modifier';
             document.getElementById('meetingModal').style.display = 'flex';
         }
 
@@ -1087,13 +1112,12 @@
             document.getElementById('meetingModal').style.display = 'none';
         }
 
-        function addMeeting() {
+        function saveMeeting() {
             const memberId = parseInt(document.getElementById('meetingMemberId').value);
             const member = members.find(m => m.id === memberId);
-            
             if (!member) return;
             
-            const meeting = {
+            const meetingData = {
                 date: document.getElementById('meetingDate').value,
                 heure: document.getElementById('meetingTime').value,
                 theme: document.getElementById('meetingTheme').value,
@@ -1101,17 +1125,46 @@
                 justifie: document.getElementById('meetingPresence').value === 'justifie'
             };
             
-            // Ajouter à l'historique
-            member.reunions.historique.push(meeting);
+            const meetingIndex = document.getElementById('meetingIndex').value;
             
-            // Mettre à jour les compteurs
-            if (meeting.present) {
-                member.reunions.assistees++;
-            } else if (meeting.justifie) {
-                member.reunions.ratees++;
-                member.reunions.justifiees++;
+            if (meetingIndex !== '') {
+                // MODIFICATION
+                const oldMeeting = member.reunions.historique[meetingIndex];
+                
+                // Enlever l'ancienne réunion des compteurs
+                if (oldMeeting.present) {
+                    member.reunions.assistees--;
+                } else if (oldMeeting.justifie) {
+                    member.reunions.ratees--;
+                    member.reunions.justifiees--;
+                } else {
+                    member.reunions.ratees--;
+                }
+                
+                // Mettre à jour la réunion
+                member.reunions.historique[meetingIndex] = meetingData;
+                
+                // Ajouter la nouvelle réunion aux compteurs
+                if (meetingData.present) {
+                    member.reunions.assistees++;
+                } else if (meetingData.justifie) {
+                    member.reunions.ratees++;
+                    member.reunions.justifiees++;
+                } else {
+                    member.reunions.ratees++;
+                }
             } else {
-                member.reunions.ratees++;
+                // AJOUT
+                member.reunions.historique.push(meetingData);
+                
+                if (meetingData.present) {
+                    member.reunions.assistees++;
+                } else if (meetingData.justifie) {
+                    member.reunions.ratees++;
+                    member.reunions.justifiees++;
+                } else {
+                    member.reunions.ratees++;
+                }
             }
             
             localStorage.setItem('hikmah_club_members', JSON.stringify(members));
@@ -1119,14 +1172,37 @@
             renderMembers();
         }
 
+        function deleteMeeting(memberId, meetingIndex) {
+            if (!confirm('Supprimer cette réunion ?')) return;
+            
+            const member = members.find(m => m.id === memberId);
+            if (!member) return;
+            
+            const meeting = member.reunions.historique[meetingIndex];
+            
+            // Enlever des compteurs
+            if (meeting.present) {
+                member.reunions.assistees--;
+            } else if (meeting.justifie) {
+                member.reunions.ratees--;
+                member.reunions.justifiees--;
+            } else {
+                member.reunions.ratees--;
+            }
+            
+            // Supprimer l'historique
+            member.reunions.historique.splice(meetingIndex, 1);
+            
+            localStorage.setItem('hikmah_club_members', JSON.stringify(members));
+            renderMembers();
+        }
+
         // ==================== INITIALISATION ====================
         document.addEventListener('DOMContentLoaded', function() {
-            // Si on arrive directement sur la page sans passer par le dashboard
             if (window.location.hash === '#code') {
                 document.getElementById('codeModal').style.display = 'flex';
             }
             
-            // Raccourci clavier pour valider le code avec Entrée
             document.getElementById('accessCode')?.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     checkAccessCode();
