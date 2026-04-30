@@ -1254,7 +1254,7 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
             document.getElementById('editPoints').textContent = editingPoints;
         }
 
-        function saveStudentChanges() {
+       async function saveStudentChanges() {
             const adminCode = document.getElementById('editAdminCode').value;
             
             if (adminCode !== ADMIN_CODE) {
