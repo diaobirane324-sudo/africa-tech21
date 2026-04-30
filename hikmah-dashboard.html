@@ -942,20 +942,20 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
         let nextId = 1;
 
         // ============ INITIALISATION ============
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Démarrage Dashboard Hikmah...');
-            showLoading(true);
-            
-            loadAdminInfo();
-            loadStudents();
-            renderAll();
-            updateStats();
-            
-            showLoading(false);
-            updateSyncStatus(true);
-            
-            console.log(`✅ Dashboard prêt - ${allStudents.length} élèves chargés`);
-        });
+       document.addEventListener('DOMContentLoaded', async function() {
+    console.log('🚀 Démarrage Dashboard Hikmah...');
+    showLoading(true);
+    
+    loadAdminInfo();
+    await loadStudents(); // ATTENTION: ajouter "await"
+    renderAll();
+    updateStats();
+    
+    showLoading(false);
+    updateSyncStatus(true);
+    
+    console.log(`✅ Dashboard prêt - ${allStudents.length} élèves chargés`);
+});
 
         // ============ GESTION ADMIN ============
         function loadAdminInfo() {
