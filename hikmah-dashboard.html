@@ -7,589 +7,572 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
         :root {
-            --hikmah-green: #2E8B57;
-            --hikmah-light-green: #3CB371;
-            --hikmah-white: #FFFFFF;
-            --hikmah-gray: #F5F5F5;
-            --hikmah-dark: #1A1A1A;
-            --hikmah-border: #E0E0E0;
-            --bourguiba-color: #2196F3;
-            --mbao-color: #9C27B0;
-            --status-selected: #4CAF50;
-            --status-waiting: #FFC107;
-            --status-refused: #F44336;
-            --status-absent: #9E9E9E;
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #0f3460;
+            --highlight: #e94560;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --info: #3498db;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --card-bg: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            background-color: var(--hikmah-gray);
             font-family: 'Poppins', sans-serif;
-            color: var(--hikmah-dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
 
-        /* HEADER */
-        .dashboard-header {
-            background-color: var(--hikmah-white);
-            border-bottom: 3px solid var(--hikmah-green);
-            padding: 1rem 0;
-            box-shadow: 0 4px 20px rgba(46, 139, 87, 0.1);
+        .glass-header {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding: 1rem 2rem;
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
-        .dashboard-nav {
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 3rem;
-            max-width: 1800px;
-            margin: 0 auto;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
-        .dashboard-logo {
+        .logo-section {
             display: flex;
             align-items: center;
-            gap: 12px;
-            text-decoration: none;
+            gap: 15px;
         }
 
-        .dashboard-logo i {
-            color: var(--hikmah-green);
-            font-size: 2.2rem;
-        }
-
-        .dashboard-logo h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--hikmah-green);
-        }
-
-        .admin-info {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .admin-badge {
-            background: linear-gradient(135deg, var(--hikmah-green), var(--hikmah-light-green));
-            color: white;
-            padding: 0.6rem 1.2rem;
-            border-radius: 20px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(46, 139, 87, 0.3);
-        }
-
-        .logout-btn {
-            background-color: transparent;
-            border: 2px solid var(--hikmah-green);
-            color: var(--hikmah-green);
-            padding: 0.6rem 1.5rem;
-            border-radius: 8px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .logout-btn:hover {
-            background-color: var(--hikmah-green);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        /* ONGLETS ÉCOLES */
-        .school-tabs {
-            display: flex;
-            background: white;
-            padding: 0 3rem;
-            border-bottom: 2px solid var(--hikmah-border);
-            max-width: 1800px;
-            margin: 0 auto;
-        }
-
-        .school-tab {
-            padding: 1.2rem 2rem;
-            border: none;
-            background: none;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
-        }
-
-        .school-tab:hover {
-            background-color: var(--hikmah-gray);
-        }
-
-        .school-tab.active {
-            border-bottom-color: var(--hikmah-green);
-            color: var(--hikmah-green);
-        }
-
-        .school-tab[data-school="bourguiba"] {
-            color: var(--bourguiba-color);
-        }
-
-        .school-tab[data-school="mbao"] {
-            color: var(--mbao-color);
-        }
-
-        /* FILTRES ET RECHERCHE */
-        .filters-section {
-            background-color: var(--hikmah-white);
-            padding: 2rem 3rem;
-            margin: 2rem auto;
-            max-width: 1800px;
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        .search-container {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .search-input {
-            flex: 1;
-            min-width: 300px;
-            padding: 1rem 1.5rem;
-            border: 2px solid var(--hikmah-border);
-            border-radius: 10px;
-            font-size: 1rem;
-            font-family: 'Poppins', sans-serif;
-            transition: all 0.3s ease;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--hikmah-green);
-            box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.2);
-        }
-
-        /* FILTRES CLASSE */
-        .class-filters {
-            display: flex;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-            margin-bottom: 1.5rem;
-        }
-
-        .class-filter-btn {
-            padding: 0.6rem 1.2rem;
-            border: 2px solid var(--hikmah-border);
-            background: white;
-            border-radius: 20px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-
-        .class-filter-btn:hover {
-            border-color: var(--hikmah-green);
-            transform: translateY(-2px);
-        }
-
-        .class-filter-btn.active {
-            background-color: var(--hikmah-green);
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
             color: white;
-            border-color: var(--hikmah-green);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
-        /* STATISTIQUES */
-        .stats-container {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--hikmah-border);
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, rgba(46, 139, 87, 0.1), rgba(60, 179, 113, 0.1));
-            padding: 1.5rem;
-            border-radius: 10px;
-            text-align: center;
-            min-width: 150px;
-            flex: 1;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--hikmah-green);
+        .logo-text h1 {
             font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            color: white;
+            font-weight: 700;
         }
 
-        .stat-label {
-            color: var(--hikmah-dark);
+        .logo-text span {
+            font-size: 0.8rem;
             opacity: 0.8;
-            margin-top: 0.5rem;
-        }
-
-        /* CARTES DES ÉLÈVES */
-        .students-container {
-            max-width: 1800px;
-            margin: 0 auto;
-            padding: 0 3rem 3rem;
-        }
-
-        .school-section {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .school-section.active {
             display: block;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .school-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--hikmah-border);
-        }
-
-        .school-header h2 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.8rem;
-            color: var(--hikmah-dark);
+        .admin-section {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 20px;
         }
 
-        .school-header[data-school="bourguiba"] h2 {
-            color: var(--bourguiba-color);
-        }
-
-        .school-header[data-school="mbao"] h2 {
-            color: var(--mbao-color);
-        }
-
-        .add-student-btn {
-            background-color: var(--hikmah-green);
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
             color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
         }
 
-        .add-student-btn:hover {
-            background-color: var(--hikmah-light-green);
-            transform: translateY(-2px);
-        }
-
-        .students-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1.5rem;
-        }
-
-        /* CARTE ÉLÈVE */
-        .student-card {
-            background-color: var(--hikmah-white);
-            border-radius: 15px;
-            padding: 1.8rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .student-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-        }
-
-        .student-card[data-ecole="bourguiba"] {
-            border-left: 5px solid var(--bourguiba-color);
-        }
-
-        .student-card[data-ecole="mbao"] {
-            border-left: 5px solid var(--mbao-color);
-        }
-
-        .student-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1.5rem;
-        }
-
-        .student-avatar {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--hikmah-green), var(--hikmah-light-green));
+        .admin-avatar {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-weight: 700;
+        }
+
+        .logout-btn {
+            background: rgba(233, 69, 96, 0.8);
             color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .logout-btn:hover {
+            background: var(--highlight);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+        }
+
+        .nav-container {
+            max-width: 1600px;
+            margin: 20px auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .stats-grid {
+            max-width: 1600px;
+            margin: 0 auto 30px;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 25px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .stat-icon {
             font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
             font-weight: 700;
             font-family: 'Montserrat', sans-serif;
         }
 
-        .student-status {
-            padding: 0.4rem 1rem;
+        .stat-label {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .filters-container {
+            max-width: 1600px;
+            margin: 0 auto 20px;
+            padding: 0 2rem;
+        }
+
+        .search-bar {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
             border-radius: 20px;
-            font-size: 0.85rem;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 15px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: white;
+            background: rgba(255,255,255,0.3);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 25px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .filter-btn.active {
+            background: white;
+            color: var(--primary);
+            border-color: white;
             font-weight: 600;
+        }
+
+        .students-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 2rem 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            color: white;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .add-btn {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .add-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .students-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 25px;
+        }
+
+        .student-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .student-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .student-card.status-excluded {
+            border-left: 5px solid var(--danger);
+        }
+
+        .student-card.status-selected {
+            border-left: 5px solid var(--success);
+        }
+
+        .student-card.status-waiting {
+            border-left: 5px solid var(--warning);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .student-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
             font-family: 'Montserrat', sans-serif;
         }
 
-        .status-selected { background-color: rgba(76, 175, 80, 0.1); color: var(--status-selected); }
-        .status-waiting { background-color: rgba(255, 193, 7, 0.1); color: var(--status-waiting); }
-        .status-refused { background-color: rgba(244, 67, 54, 0.1); color: var(--status-refused); }
-        .status-absent { background-color: rgba(158, 158, 158, 0.1); color: var(--status-absent); }
+        .student-avatar.bourguiba {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .student-avatar.mbao {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .status-badge {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-badge.selected {
+            background: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+
+        .status-badge.waiting {
+            background: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+        }
+
+        .status-badge.excluded {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
 
         .student-name {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            color: var(--hikmah-dark);
-            margin-bottom: 0.5rem;
+            color: var(--dark);
+            margin-bottom: 5px;
         }
 
-        .student-classe {
+        .student-class {
+            background: linear-gradient(135deg, #667eea20, #764ba220);
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding: 5px 10px;
+            border-radius: 8px;
             display: inline-block;
-            background-color: rgba(46, 139, 87, 0.1);
-            color: var(--hikmah-green);
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
         }
 
-        .student-info {
-            margin: 1.2rem 0;
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 15px 0;
         }
 
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.8rem;
-            font-size: 0.95rem;
+        .info-item .info-label {
+            color: #7f8c8d;
+            font-size: 0.8rem;
+            margin-bottom: 2px;
         }
 
-        .info-label {
-            color: var(--hikmah-dark);
-            opacity: 0.7;
-            font-weight: 500;
-        }
-
-        .info-value {
-            color: var(--hikmah-dark);
+        .info-item .info-value {
+            color: var(--dark);
             font-weight: 600;
         }
 
-        .points-container {
-            margin: 1.5rem 0;
+        .points-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
         }
 
-        .points-label {
+        .points-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
+            margin-bottom: 10px;
+            font-weight: 600;
         }
 
         .points-bar {
-            height: 10px;
-            background-color: var(--hikmah-border);
-            border-radius: 5px;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
             overflow: hidden;
         }
 
         .points-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--hikmah-light-green), var(--hikmah-green));
-            border-radius: 5px;
+            border-radius: 4px;
             transition: width 0.5s ease;
         }
 
-        .points-warning { background: linear-gradient(90deg, #FFC107, #FF9800); }
-        .points-danger { background: linear-gradient(90deg, #F44336, #D32F2F); }
+        .points-fill.danger { background: var(--danger); }
+        .points-fill.warning { background: var(--warning); }
+        .points-fill.success { background: var(--success); }
 
-        .student-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
+        .exclusion-warning {
+            background: rgba(231, 76, 60, 0.1);
+            border-left: 3px solid var(--danger);
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            color: var(--danger);
+            font-weight: 600;
+            margin-top: 10px;
         }
 
-        .action-btn {
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .card-btn {
             flex: 1;
-            padding: 0.8rem;
+            padding: 10px;
             border: none;
             border-radius: 8px;
-            font-family: 'Montserrat', sans-serif;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            text-align: center;
             font-size: 0.9rem;
+            text-align: center;
         }
 
-        .edit-btn {
-            background-color: var(--hikmah-green);
+        .btn-edit {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             color: white;
         }
 
-        .edit-btn:hover {
-            background-color: var(--hikmah-light-green);
+        .btn-edit:hover {
+            opacity: 0.9;
             transform: translateY(-2px);
         }
 
-        .delete-btn {
-            background-color: transparent;
-            border: 2px solid #F44336;
-            color: #F44336;
+        .btn-delete {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--danger);
+            border: 2px solid var(--danger);
         }
 
-        .delete-btn:hover {
-            background-color: #F44336;
+        .btn-delete:hover {
+            background: var(--danger);
             color: white;
         }
 
-        /* MESSAGE AUCUN RÉSULTAT */
-        .no-results {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--hikmah-dark);
-            opacity: 0.5;
-            font-size: 1.2rem;
-            grid-column: 1 / -1;
-        }
-
-        .no-results i {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            color: var(--hikmah-border);
-        }
-
-        /* MODAL DE MODIFICATION */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 2000;
-            animation: fadeIn 0.3s ease;
         }
 
         .modal {
-            background-color: var(--hikmah-white);
+            background: white;
             border-radius: 20px;
-            padding: 2.5rem;
+            padding: 30px;
             max-width: 500px;
-            width: 90%;
+            width: 95%;
             max-height: 90vh;
             overflow-y: auto;
-            position: relative;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--hikmah-border);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
         }
 
         .modal-title {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.8rem;
-            color: var(--hikmah-green);
+            font-size: 1.5rem;
+            color: var(--primary);
         }
 
         .modal-close {
             background: none;
             border: none;
             font-size: 1.8rem;
-            color: var(--hikmah-dark);
             cursor: pointer;
-            opacity: 0.7;
+            color: #7f8c8d;
             transition: all 0.3s ease;
         }
 
         .modal-close:hover {
-            opacity: 1;
+            color: var(--danger);
             transform: rotate(90deg);
         }
 
-        .security-warning {
-            background-color: rgba(255, 193, 7, 0.1);
-            border-left: 4px solid #FFC107;
-            padding: 1rem;
-            margin-bottom: 2rem;
-            border-radius: 5px;
-        }
-
         .form-group {
-            margin-bottom: 1.8rem;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 8px;
             font-weight: 600;
-            color: var(--hikmah-dark);
+            color: var(--dark);
         }
 
         .form-group input, .form-group select {
             width: 100%;
-            padding: 1rem;
-            border: 2px solid var(--hikmah-border);
+            padding: 12px 15px;
+            border: 2px solid #ddd;
             border-radius: 10px;
             font-family: 'Poppins', sans-serif;
             font-size: 1rem;
@@ -598,30 +581,33 @@
 
         .form-group input:focus, .form-group select:focus {
             outline: none;
-            border-color: var(--hikmah-green);
-            box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.2);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
         }
 
-        .points-controls {
+        .points-editor {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 10px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
         }
 
         .points-btn {
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             border: none;
-            background-color: var(--hikmah-green);
+            background: var(--accent);
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .points-btn:hover {
-            background-color: var(--hikmah-light-green);
+            background: var(--primary);
             transform: scale(1.1);
         }
 
@@ -630,123 +616,89 @@
             text-align: center;
             font-size: 2rem;
             font-weight: 700;
-            color: var(--hikmah-green);
+            color: var(--primary);
             font-family: 'Montserrat', sans-serif;
         }
 
         .modal-actions {
             display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
+            gap: 10px;
+            margin-top: 25px;
         }
 
         .modal-btn {
             flex: 1;
-            padding: 1rem;
+            padding: 12px;
             border: none;
             border-radius: 10px;
-            font-family: 'Montserrat', sans-serif;
             font-weight: 600;
-            font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-size: 1rem;
         }
 
-        .modal-btn.confirm {
-            background-color: var(--hikmah-green);
+        .btn-primary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             color: white;
         }
 
-        .modal-btn.confirm:hover {
-            background-color: var(--hikmah-light-green);
+        .btn-primary:hover {
+            opacity: 0.9;
             transform: translateY(-2px);
         }
 
-        .modal-btn.cancel {
-            background-color: transparent;
-            border: 2px solid var(--hikmah-border);
-            color: var(--hikmah-dark);
+        .btn-cancel {
+            background: #ecf0f1;
+            color: var(--dark);
         }
 
-        .modal-btn.cancel:hover {
-            border-color: var(--hikmah-dark);
+        .btn-cancel:hover {
+            background: #bdc3c7;
         }
 
-        /* MODAL AJOUT ÉLÈVE */
-        .ecole-selector {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .ecole-option {
-            flex: 1;
-            padding: 1rem;
-            border: 2px solid var(--hikmah-border);
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .ecole-option:hover {
-            border-color: var(--hikmah-green);
-        }
-
-        .ecole-option.selected {
-            border-color: var(--hikmah-green);
-            background-color: rgba(46, 139, 87, 0.1);
-        }
-
-        .ecole-option[data-ecole="bourguiba"] {
-            border-color: var(--bourguiba-color);
-        }
-
-        .ecole-option[data-ecole="mbao"] {
-            border-color: var(--mbao-color);
-        }
-
-        /* FOOTER */
-        .dashboard-footer {
-            background-color: var(--hikmah-dark);
-            color: var(--hikmah-white);
-            padding: 2rem;
-            text-align: center;
-            margin-top: 3rem;
-        }
-
-        .dashboard-footer p {
-            opacity: 0.8;
+        .sync-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(46, 204, 113, 0.9);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
             font-size: 0.9rem;
-            margin-top: 0.5rem;
+            backdrop-filter: blur(10px);
+            z-index: 9999;
         }
 
-        /* LOADING INDICATOR */
-        .loading {
-            display: none;
+        .no-results {
+            text-align: center;
+            padding: 50px;
+            color: white;
+            font-size: 1.2rem;
+            grid-column: 1 / -1;
+        }
+
+        .loading-spinner {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 3000;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            background: rgba(255,255,255,0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+            display: none;
         }
 
-        .loading.active {
-            display: block;
-        }
-
-        .loading-spinner {
+        .spinner {
             width: 50px;
             height: 50px;
             border: 5px solid #f3f3f3;
-            border-top: 5px solid var(--hikmah-green);
+            border-top: 5px solid var(--accent);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
+            margin: 0 auto 15px;
         }
 
         @keyframes spin {
@@ -754,263 +706,178 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .dashboard-nav,
-            .school-tabs,
-            .filters-section,
-            .students-container {
-                padding: 1rem;
-            }
-
-            .search-container {
-                flex-direction: column;
-            }
-
-            .search-input {
-                min-width: 100%;
-            }
-
-            .students-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-container {
-                flex-direction: column;
-            }
+            .header-content { flex-direction: column; }
+            .students-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
 <body>
-    <!-- HEADER -->
-    <header class="dashboard-header">
-        <nav class="dashboard-nav">
-            <a href="hikmah-accueil.html" class="dashboard-logo">
-                <i class="fas fa-graduation-cap"></i>
-                <h1>HIKMAH'S <span>CLUB - DASHBOARD</span></h1>
-            </a>
-            <div class="admin-info">
-                <div class="admin-badge" id="adminBadge">
-                    <i class="fas fa-user-shield"></i>
-                    <span id="adminName">Chargement...</span>
+    <header class="glass-header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>HIKMAH'S CLUB</h1>
+                    <span>Dashboard Administration</span>
+                </div>
+            </div>
+            <div class="admin-section">
+                <div class="admin-profile">
+                    <div class="admin-avatar" id="adminInitials">AD</div>
+                    <div>
+                        <div style="font-weight: 600;" id="adminNameDisplay">Admin</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;" id="adminEmailDisplay">admin@hikmah.com</div>
+                    </div>
                 </div>
                 <button class="logout-btn" onclick="logout()">
                     <i class="fas fa-sign-out-alt"></i> Déconnexion
                 </button>
             </div>
-        </nav>
+        </div>
     </header>
 
-    <!-- ONGLETS ÉCOLES -->
-    <div class="school-tabs">
-        <button class="school-tab active" data-school="bourguiba" onclick="switchSchool('bourguiba')">
-            <i class="fas fa-school"></i> BOURGUIBA
+    <div class="nav-container">
+        <button class="nav-tab active" data-school="all" onclick="switchSchool('all')">
+            <i class="fas fa-globe"></i> Tous les Élèves
         </button>
-        <button class="school-tab" data-school="mbao" onclick="switchSchool('mbao')">
-            <i class="fas fa-school"></i> MBAO
+        <button class="nav-tab" data-school="bourguiba" onclick="switchSchool('bourguiba')">
+            <i class="fas fa-school"></i> Bourguiba
         </button>
-        <button class="school-tab" data-school="all" onclick="switchSchool('all')">
-            <i class="fas fa-users"></i> TOUS LES ÉLÈVES
+        <button class="nav-tab" data-school="mbao" onclick="switchSchool('mbao')">
+            <i class="fas fa-school"></i> Mbao
         </button>
     </div>
 
-    <!-- FILTRES ET RECHERCHE -->
-    <section class="filters-section">
-        <div class="search-container">
-            <input type="text" 
-                   class="search-input" 
-                   id="searchInput" 
-                   placeholder="🔍 Rechercher un élève par nom, prénom ou classe..."
-                   onkeyup="filterStudents()">
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-value" id="totalStudents">0</div>
+            <div class="stat-label">Total Élèves</div>
         </div>
-
-        <!-- FILTRES PAR CLASSE -->
-        <div class="class-filters">
-            <button class="class-filter-btn active" data-classe="all" onclick="filterByClass('all')">
-                Toutes les classes
-            </button>
-            <button class="class-filter-btn" data-classe="6éme" onclick="filterByClass('6éme')">
-                6éme
-            </button>
-            <button class="class-filter-btn" data-classe="5éme" onclick="filterByClass('5éme')">
-                5éme
-            </button>
-            <button class="class-filter-btn" data-classe="4éme" onclick="filterByClass('4éme')">
-                4éme
-            </button>
-            <button class="class-filter-btn" data-classe="2nde" onclick="filterByClass('2nde')">
-                2nde
-            </button>
-            <button class="class-filter-btn" data-classe="1ére" onclick="filterByClass('1ére')">
-                1ére
-            </button>
-            <button class="class-filter-btn" data-classe="TL2" onclick="filterByClass('TL2')">
-                TL2
-            </button>
-            <button class="class-filter-btn" data-classe="TS2" onclick="filterByClass('TS2')">
-                TS2
-            </button>
+        <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-value" id="selectedStudents">0</div>
+            <div class="stat-label">Sélectionnés</div>
         </div>
+        <div class="stat-card">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-value" id="waitingStudents">0</div>
+            <div class="stat-label">En Attente</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🚫</div>
+            <div class="stat-value" id="excludedStudents">0</div>
+            <div class="stat-label">Exclus (≤25 pts)</div>
+        </div>
+    </div>
 
-        <!-- STATISTIQUES -->
-        <div class="stats-container">
-            <div class="stat-card">
-                <div class="stat-number" id="totalStudents">0</div>
-                <div class="stat-label">Élèves totaux</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="selectedStudents">0</div>
-                <div class="stat-label">Sélectionnés</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="waitingStudents">0</div>
-                <div class="stat-label">En attente</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="excludedStudents">0</div>
-                <div class="stat-label">Exclus (0 points)</div>
+    <div class="filters-container">
+        <div class="search-bar">
+            <input type="text" class="search-input" id="searchInput" placeholder="🔍 Rechercher par nom, prénom, classe ou club..." oninput="filterStudents()">
+            <div class="filter-group" id="classFilters">
+                <button class="filter-btn active" data-filter="all" onclick="applyFilter('class', 'all', this)">📚 Toutes</button>
+                <button class="filter-btn" data-filter="6éme" onclick="applyFilter('class', '6éme', this)">6éme</button>
+                <button class="filter-btn" data-filter="5éme" onclick="applyFilter('class', '5éme', this)">5éme</button>
+                <button class="filter-btn" data-filter="4éme" onclick="applyFilter('class', '4éme', this)">4éme</button>
+                <button class="filter-btn" data-filter="2nde" onclick="applyFilter('class', '2nde', this)">2nde</button>
+                <button class="filter-btn" data-filter="1ére" onclick="applyFilter('class', '1ére', this)">1ére</button>
+                <button class="filter-btn" data-filter="TL2" onclick="applyFilter('class', 'TL2', this)">TL2</button>
+                <button class="filter-btn" data-filter="TS2" onclick="applyFilter('class', 'TS2', this)">TS2</button>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- SECTION BOURGUIBA -->
-    <section class="students-container">
-        <div class="school-section active" id="bourguibaSection">
-            <div class="school-header" data-school="bourguiba">
-                <h2><i class="fas fa-school"></i> ÉCOLE BOURGUIBA</h2>
-                <button class="add-student-btn" onclick="openAddModal('bourguiba')">
-                    <i class="fas fa-user-plus"></i> Ajouter un élève
-                </button>
-            </div>
-            <div class="students-grid" id="bourguibaGrid">
-                <!-- Cartes Bourguiba générées par JavaScript -->
-            </div>
+    <div class="students-container">
+        <div class="section-header">
+            <h2 class="section-title" id="sectionTitle">👥 Tous les Élèves</h2>
+            <button class="add-btn" onclick="openAddModal()">
+                <i class="fas fa-plus"></i> Ajouter un Élève
+            </button>
         </div>
+        <div class="students-grid" id="studentsGrid"></div>
+    </div>
 
-        <!-- SECTION MBAO -->
-        <div class="school-section" id="mbaoSection">
-            <div class="school-header" data-school="mbao">
-                <h2><i class="fas fa-school"></i> ÉCOLE MBAO</h2>
-                <button class="add-student-btn" onclick="openAddModal('mbao')">
-                    <i class="fas fa-user-plus"></i> Ajouter un élève
-                </button>
-            </div>
-            <div class="students-grid" id="mbaoGrid">
-                <!-- Cartes Mbao générées par JavaScript -->
-            </div>
-        </div>
-
-        <!-- SECTION TOUS -->
-        <div class="school-section" id="allSection">
-            <div class="school-header">
-                <h2><i class="fas fa-users"></i> TOUS LES ÉLÈVES (BOURGUIBA + MBAO)</h2>
-            </div>
-            <div class="students-grid" id="allGrid">
-                <!-- Toutes les cartes générées par JavaScript -->
-            </div>
-        </div>
-    </section>
-
-    <!-- MODAL MODIFICATION POINTS -->
+    <!-- Modal Modification -->
     <div class="modal-overlay" id="editModal">
         <div class="modal">
             <div class="modal-header">
-                <h2 class="modal-title">Modifier les points</h2>
-                <button class="modal-close" onclick="closeEditModal()">&times;</button>
+                <h3 class="modal-title">✏️ Modifier l'Élève</h3>
+                <button class="modal-close" onclick="closeModal('editModal')">&times;</button>
             </div>
-            
-            <div class="security-warning">
-                <i class="fas fa-shield-alt"></i>
-                <strong>Sécurité requise :</strong> Pour modifier les points, vous devez confirmer votre identité d'administrateur.
-            </div>
-            
             <div class="form-group">
-                <label>Élève :</label>
+                <label>Élève</label>
                 <input type="text" id="editStudentName" readonly>
             </div>
-            
             <div class="form-group">
-                <label>École :</label>
-                <input type="text" id="editStudentSchool" readonly>
-            </div>
-            
-            <div class="form-group">
-                <label>Matricule Administrateur :</label>
-                <input type="password" 
-                       id="adminMatricule" 
-                       placeholder="Saisissez votre matricule unique"
-                       onkeyup="checkMatricule()">
-                <div id="matriculeError" style="color: #F44336; font-size: 0.9rem; margin-top: 0.5rem; display: none;">
-                    Matricule incorrect. Seuls les administrateurs peuvent modifier.
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Points actuels :</label>
-                <div class="points-controls">
+                <label>Points Actuels</label>
+                <div class="points-editor">
+                    <button class="points-btn" onclick="changePoints(-10)">-10</button>
                     <button class="points-btn" onclick="changePoints(-5)">-5</button>
                     <button class="points-btn" onclick="changePoints(-1)">-1</button>
-                    <div class="points-display" id="currentPoints">100</div>
+                    <div class="points-display" id="editPoints">0</div>
                     <button class="points-btn" onclick="changePoints(1)">+1</button>
                     <button class="points-btn" onclick="changePoints(5)">+5</button>
-                </div>
-                <div style="text-align: center; margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
-                    Min: 0 | Max: 100
+                    <button class="points-btn" onclick="changePoints(10)">+10</button>
                 </div>
             </div>
-            
             <div class="form-group">
-                <label>Mandat :</label>
-                <input type="text" 
-                       id="editMandat" 
-                       placeholder="Ex: 2024-2025, 1 AN, 2 ANS...">
+                <label>Nombre d'Absences</label>
+                <input type="number" id="editAbsences" value="0" min="0" style="text-align: center; font-size: 1.2rem;">
             </div>
-            
+            <div class="form-group">
+                <label>Statut</label>
+                <select id="editStatus">
+                    <option value="Sélectionné">Sélectionné</option>
+                    <option value="En attente">En attente</option>
+                    <option value="Exclu">Exclu</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Code Administrateur</label>
+                <input type="password" id="editAdminCode" placeholder="Code requis">
+                <div id="codeError" style="color: #e74c3c; font-size: 0.9rem; margin-top: 5px; display: none;">
+                    ⚠️ Code incorrect
+                </div>
+            </div>
             <div class="modal-actions">
-                <button class="modal-btn cancel" onclick="closeEditModal()">Annuler</button>
-                <button class="modal-btn confirm" id="saveBtn" onclick="saveChanges()" disabled>
-                    <i class="fas fa-save"></i> Enregistrer
+                <button class="modal-btn btn-cancel" onclick="closeModal('editModal')">Annuler</button>
+                <button class="modal-btn btn-primary" onclick="saveStudentChanges()">
+                    <i class="fas fa-save"></i> Sauvegarder
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL AJOUT ÉLÈVE -->
+    <!-- Modal Ajout -->
     <div class="modal-overlay" id="addModal">
         <div class="modal">
             <div class="modal-header">
-                <h2 class="modal-title">Ajouter un nouvel élève</h2>
-                <button class="modal-close" onclick="closeAddModal()">&times;</button>
+                <h3 class="modal-title">➕ Nouvel Élève</h3>
+                <button class="modal-close" onclick="closeModal('addModal')">&times;</button>
             </div>
-            
             <div class="form-group">
-                <label>Sélectionner l'école :</label>
-                <div class="ecole-selector">
-                    <div class="ecole-option selected" data-ecole="bourguiba" onclick="selectEcole('bourguiba')">
-                        <i class="fas fa-school"></i><br>
-                        BOURGUIBA
-                    </div>
-                    <div class="ecole-option" data-ecole="mbao" onclick="selectEcole('mbao')">
-                        <i class="fas fa-school"></i><br>
-                        MBAO
-                    </div>
-                </div>
+                <label>École</label>
+                <select id="addSchool">
+                    <option value="bourguiba">Bourguiba</option>
+                    <option value="mbao">Mbao</option>
+                </select>
             </div>
-            
             <div class="form-group">
-                <label>Nom de famille :</label>
-                <input type="text" id="addNom" placeholder="Nom">
+                <label>Nom</label>
+                <input type="text" id="addNom" placeholder="Nom de famille">
             </div>
-            
             <div class="form-group">
-                <label>Prénom :</label>
+                <label>Prénom</label>
                 <input type="text" id="addPrenom" placeholder="Prénom">
             </div>
-            
             <div class="form-group">
-                <label>Classe :</label>
+                <label>Classe</label>
                 <select id="addClasse">
-                    <option value="">Sélectionner une classe</option>
+                    <option value="">Sélectionner</option>
                     <option value="6éme">6éme</option>
                     <option value="5éme">5éme</option>
                     <option value="4éme">4éme</option>
@@ -1020,152 +887,429 @@
                     <option value="TS2">TS2</option>
                 </select>
             </div>
-            
             <div class="form-group">
-                <label>Club :</label>
+                <label>Club</label>
                 <select id="addClub">
-                    <option value="">Sélectionner un club</option>
+                    <option value="">Sélectionner</option>
                     <option value="Informatique-Robotique">Informatique-Robotique</option>
-                    <option value="Sport (Football)">Sport (Football)</option>
-                    <option value="Sport (Basket)">Sport (Basket)</option>
-                    <option value="Sport (Taekwondo)">Sport (Taekwondo)</option>
-                    <option value="Sport (Handball)">Sport (Handball)</option>
                     <option value="Anglais">Anglais</option>
                     <option value="Arabe">Arabe</option>
                     <option value="Physique">Physique</option>
                     <option value="Biochimie">Biochimie</option>
-                    <option value="CLAP">CLAP (Littérature, Arts et Philosophie)</option>
+                    <option value="CLAP">CLAP</option>
+                    <option value="Sport">Sport</option>
                 </select>
             </div>
-            
             <div class="form-group">
-                <label>Statut :</label>
-                <select id="addStatut">
+                <label>Statut</label>
+                <select id="addStatus">
                     <option value="Sélectionné">Sélectionné</option>
                     <option value="En attente">En attente</option>
-                    <option value="Refusé">Refusé</option>
-                    <option value="Absent">Absent</option>
+                    <option value="Exclu">Exclu</option>
                 </select>
             </div>
-            
             <div class="modal-actions">
-                <button class="modal-btn cancel" onclick="closeAddModal()">Annuler</button>
-                <button class="modal-btn confirm" onclick="addNewStudent()">
-                    <i class="fas fa-user-plus"></i> Ajouter l'élève
+                <button class="modal-btn btn-cancel" onclick="closeModal('addModal')">Annuler</button>
+                <button class="modal-btn btn-primary" onclick="addStudent()">
+                    <i class="fas fa-plus"></i> Ajouter
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- LOADING INDICATOR -->
-    <div class="loading" id="loading">
-        <div class="loading-spinner"></div>
-        <p style="text-align: center; font-weight: 600; color: var(--hikmah-green);">Chargement...</p>
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+        <p style="color: #2c3e50; font-weight: 600;">Chargement...</p>
     </div>
 
-    <!-- FOOTER -->
-    <footer class="dashboard-footer">
-        <p>HIKMAH'S CLUB &copy; 2024 - Dashboard Administratif</p>
-      <p>Système de gestion des points et mandats - Version 1.2</p>
-    <p style="font-size: 0.8rem; opacity: 0.5; margin-top: 5px;">
-        <i class="fas fa-keyboard"></i> Raccourci: Ctrl+Shift+A pour AZIMUT
-    </p>
-</footer>
+    <div class="sync-indicator" id="syncStatus">
+        <i class="fas fa-cloud"></i> Synchronisé
+    </div>
 
-<!-- BOUTON ADMIN CLUBS -->
-<div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
-    <button onclick="openClubManagement()" style="
-        background: #2E8B57;
-        color: white;
-        border: none;
-        border-radius: 50px;
-        padding: 12px 20px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(46, 139, 87, 0.3);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    ">
-        <i class="fas fa-users-cog"></i> Gestion des Clubs
-    </button>
-</div>
+    <script>
+        // ============ CONFIGURATION ============
+        const ADMIN_CODE = "194019602026";
+        const EXCLUSION_THRESHOLD = 25;
 
-<script>
-    // ==================== VARIABLES GLOBALES ====================
-    let currentAdmin = null;
-    let allStudents = [];
-    let currentSchool = 'bourguiba';
-    let currentClassFilter = 'all';
-    let currentSearchTerm = '';
-    let currentEditStudent = null;
-    let currentPoints = 100;
-    let selectedEcole = 'bourguiba';
-    let nextStudentId = 1;
+        // ============ ÉTAT GLOBAL ============
+        let allStudents = [];
+        let currentSchool = 'all';
+        let currentClassFilter = 'all';
+        let currentEditStudent = null;
+        let editingPoints = 0;
+        let editingAbsences = 0;
+        let nextId = 1;
 
-    // NOTE: En production, ces données devraient venir d'un backend sécurisé
-    const adminMatricules = [
-        "Birane186@robotic",
-        "Salamaprésidentehc@00", 
-        "Sadiyaviceprésidentehc@01"
-    ];
+        // ============ INITIALISATION ============
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Démarrage Dashboard Hikmah...');
+            showLoading(true);
+            
+            loadAdminInfo();
+            loadStudents();
+            renderAll();
+            updateStats();
+            
+            showLoading(false);
+            updateSyncStatus(true);
+            
+            console.log(`✅ Dashboard prêt - ${allStudents.length} élèves chargés`);
+        });
 
-    // ==================== FONCTIONS UTILITAIRES ====================
-    function normalizeText(text) {
-        if (!text) return '';
-        return text.trim()
-            .toLowerCase()
-            .replace(/[éèêë]/g, 'e')
-            .replace(/[àâä]/g, 'a')
-            .replace(/[îï]/g, 'i')
-            .replace(/[ôö]/g, 'o')
-            .replace(/[ùûü]/g, 'u')
-            .replace(/[ç]/g, 'c');
-    }
+        // ============ GESTION ADMIN ============
+        function loadAdminInfo() {
+            const saved = localStorage.getItem('hikmah_admin');
+            if (!saved) {
+                const email = prompt('Email administrateur:');
+                if (!email) {
+                    alert('Email requis pour accéder au dashboard');
+                    return;
+                }
+                const admin = { email: email, name: email.split('@')[0] };
+                localStorage.setItem('hikmah_admin', JSON.stringify(admin));
+                displayAdminInfo(admin);
+            } else {
+                displayAdminInfo(JSON.parse(saved));
+            }
+        }
 
-    function normalizeStatus(statut) {
-        const statusMap = {
-            'Sélectionné': 'Sélectionné',
-            'Sélectionné': 'Sélectionné',
-            'Sélectionner': 'Sélectionné',
-            'Refusé': 'Refusé',
-            'Refusé': 'Refusé',
-            'En attente': 'En attente',
-            'Absent': 'Absent'
-        };
-        return statusMap[statut] || statut;
-    }
+        function displayAdminInfo(admin) {
+            document.getElementById('adminInitials').textContent = admin.name.substring(0, 2).toUpperCase();
+            document.getElementById('adminNameDisplay').textContent = admin.name;
+            document.getElementById('adminEmailDisplay').textContent = admin.email;
+        }
 
-    function normalizeClasse(classe) {
-        const classeMap = {
-            '6éme': '6éme', '6eme': '6éme', '6émé': '6éme',
-            '5éme': '5éme', '5eme': '5éme', '5émé': '5éme',
-            '4éme': '4éme', '4eme': '4éme', '4émé': '4éme',
-            '2nde': '2nde',
-            '1ére': '1ére', '1ere': '1ére',
-            'TL2': 'TL2',
-            'TS2': 'TS2'
-        };
-        const baseClasse = classe.split(' ')[0];
-        return classeMap[baseClasse] || classe;
-    }
+        function logout() {
+            if (confirm('Se déconnecter ?')) {
+                localStorage.removeItem('hikmah_admin');
+                window.location.reload();
+            }
+        }
 
-    function generateUniqueId() {
-        return nextStudentId++;
-    }
+        // ============ PERSISTANCE DES DONNÉES ============
+        function loadStudents() {
+            const saved = localStorage.getItem('hikmah_students');
+            if (saved) {
+                allStudents = JSON.parse(saved);
+                console.log('💾 Données chargées depuis localStorage');
+            } else {
+                console.log('📦 Initialisation avec données par défaut');
+                allStudents = getDefaultStudents();
+                saveStudents();
+            }
+            
+            if (allStudents.length > 0) {
+                nextId = Math.max(...allStudents.map(s => s.id || 0)) + 1;
+            }
+        }
 
-    function showLoading() {
-        document.getElementById('loading').classList.add('active');
-    }
+        function saveStudents() {
+            localStorage.setItem('hikmah_students', JSON.stringify(allStudents));
+            updateSyncStatus(true);
+            console.log('💾 Données sauvegardées localement');
+        }
 
-    function hideLoading() {
-        document.getElementById('loading').classList.remove('active');
-    }
+        function updateSyncStatus(synced) {
+            const status = document.getElementById('syncStatus');
+            if (synced) {
+                status.innerHTML = '<i class="fas fa-save"></i> Sauvegardé localement';
+                status.style.background = 'rgba(46, 204, 113, 0.9)';
+            }
+        }
 
-    // ==================== DONNÉES DES ÉLÈVES MBAO ====================
-    const mbaoStudentsData = [
-        // 6éme B
+        // ============ RENDU ============
+        function renderAll() {
+            let students = getFilteredStudents();
+            
+            if (students.length === 0) {
+                document.getElementById('studentsGrid').innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                        <h3>Aucun élève trouvé</h3>
+                        <p>Ajustez vos filtres de recherche</p>
+                    </div>
+                `;
+            } else {
+                document.getElementById('studentsGrid').innerHTML = students.map(s => createStudentCard(s)).join('');
+            }
+            
+            updateStats();
+        }
+
+        function createStudentCard(student) {
+            const fullName = `${student.prenom} ${student.nom}`;
+            const initials = fullName.split(' ').map(n => n[0] || '').join('').toUpperCase().substring(0, 2);
+            const isExcluded = student.points <= EXCLUSION_THRESHOLD;
+            const statusClass = isExcluded ? 'status-excluded' : 
+                               student.statut === 'Sélectionné' ? 'status-selected' : 'status-waiting';
+            const statusBadgeClass = isExcluded ? 'excluded' : 
+                                    student.statut === 'Sélectionné' ? 'selected' : 'waiting';
+            const statusText = isExcluded ? 'EXCLU' : student.statut;
+            const pointsColor = student.points <= EXCLUSION_THRESHOLD ? 'danger' : 
+                               student.points <= 50 ? 'warning' : 'success';
+            
+            return `
+                <div class="student-card ${statusClass}">
+                    <div class="card-header">
+                        <div class="student-avatar ${student.ecole}">${initials}</div>
+                        <span class="status-badge ${statusBadgeClass}">${statusText}</span>
+                    </div>
+                    
+                    <h3 class="student-name">${fullName}</h3>
+                    <div class="student-class">📚 ${student.classe}</div>
+                    
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">Club</div>
+                            <div class="info-value">${student.club}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Absences</div>
+                            <div class="info-value">${student.absences || 0} jour(s)</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Mandat</div>
+                            <div class="info-value">${student.mandat || 'Non défini'}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">École</div>
+                            <div class="info-value">${student.ecole === 'bourguiba' ? '🏫 Bourguiba' : '🏫 Mbao'}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="points-section">
+                        <div class="points-header">
+                            <span>Points</span>
+                            <span style="color: ${student.points <= EXCLUSION_THRESHOLD ? '#e74c3c' : '#2ecc71'}">
+                                ${student.points}/100
+                            </span>
+                        </div>
+                        <div class="points-bar">
+                            <div class="points-fill ${pointsColor}" style="width: ${student.points}%"></div>
+                        </div>
+                        ${isExcluded ? 
+                            `<div class="exclusion-warning">
+                                ⚠️ EXCLU - ${student.points} points (seuil: ${EXCLUSION_THRESHOLD})
+                            </div>` : ''
+                        }
+                    </div>
+                    
+                    <div class="card-actions">
+                        <button class="card-btn btn-edit" onclick="openEditModal(${student.id})">
+                            <i class="fas fa-edit"></i> Modifier
+                        </button>
+                        <button class="card-btn btn-delete" onclick="deleteStudent(${student.id})">
+                            <i class="fas fa-trash"></i> Supprimer
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============ FILTRES ============
+        function getFilteredStudents() {
+            let students = [...allStudents];
+            
+            if (currentSchool !== 'all') {
+                students = students.filter(s => s.ecole === currentSchool);
+            }
+            
+            if (currentClassFilter !== 'all') {
+                students = students.filter(s => s.classe && s.classe.toString().includes(currentClassFilter));
+            }
+            
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (searchTerm) {
+                students = students.filter(s => 
+                    (s.nom && s.nom.toLowerCase().includes(searchTerm)) ||
+                    (s.prenom && s.prenom.toLowerCase().includes(searchTerm)) ||
+                    (s.classe && s.classe.toString().toLowerCase().includes(searchTerm)) ||
+                    (s.club && s.club.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            return students;
+        }
+
+        function filterStudents() { renderAll(); }
+
+        function applyFilter(type, value, btn) {
+            if (type === 'class') {
+                currentClassFilter = value;
+                document.querySelectorAll('#classFilters .filter-btn').forEach(b => b.classList.remove('active'));
+                if (btn) btn.classList.add('active');
+            }
+            renderAll();
+        }
+
+        function switchSchool(school) {
+            currentSchool = school;
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.school === school);
+            });
+            
+            const titles = {
+                'all': '👥 Tous les Élèves',
+                'bourguiba': '🏫 École Bourguiba',
+                'mbao': '🏫 École Mbao'
+            };
+            document.getElementById('sectionTitle').textContent = titles[school] || '👥 Tous les Élèves';
+            
+            renderAll();
+        }
+
+        // ============ STATISTIQUES ============
+        function updateStats() {
+            const students = getFilteredStudents();
+            document.getElementById('totalStudents').textContent = students.length;
+            document.getElementById('selectedStudents').textContent = students.filter(s => s.statut === 'Sélectionné' && s.points > EXCLUSION_THRESHOLD).length;
+            document.getElementById('waitingStudents').textContent = students.filter(s => s.statut === 'En attente' && s.points > EXCLUSION_THRESHOLD).length;
+            document.getElementById('excludedStudents').textContent = students.filter(s => s.points <= EXCLUSION_THRESHOLD).length;
+        }
+
+        // ============ MODIFICATION ÉLÈVE ============
+        function openEditModal(studentId) {
+            currentEditStudent = allStudents.find(s => s.id === studentId);
+            if (!currentEditStudent) return;
+            
+            editingPoints = currentEditStudent.points;
+            editingAbsences = currentEditStudent.absences || 0;
+            
+            document.getElementById('editStudentName').value = `${currentEditStudent.prenom} ${currentEditStudent.nom}`;
+            document.getElementById('editPoints').textContent = editingPoints;
+            document.getElementById('editAbsences').value = editingAbsences;
+            document.getElementById('editStatus').value = currentEditStudent.statut;
+            document.getElementById('editAdminCode').value = '';
+            document.getElementById('codeError').style.display = 'none';
+            
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function changePoints(amount) {
+            editingPoints = Math.max(0, Math.min(100, editingPoints + amount));
+            document.getElementById('editPoints').textContent = editingPoints;
+        }
+
+        function saveStudentChanges() {
+            const adminCode = document.getElementById('editAdminCode').value;
+            
+            if (adminCode !== ADMIN_CODE) {
+                document.getElementById('codeError').style.display = 'block';
+                return;
+            }
+            
+            if (!currentEditStudent) return;
+            
+            showLoading(true);
+            
+            editingAbsences = parseInt(document.getElementById('editAbsences').value) || 0;
+            if (editingAbsences < 0) editingAbsences = 0;
+            
+            currentEditStudent.points = editingPoints;
+            currentEditStudent.absences = editingAbsences;
+            currentEditStudent.statut = document.getElementById('editStatus').value;
+            
+            if (editingPoints <= EXCLUSION_THRESHOLD) {
+                currentEditStudent.statut = 'Exclu';
+            }
+            
+            saveStudents();
+            closeModal('editModal');
+            renderAll();
+            showLoading(false);
+            
+            alert(`✅ Élève mis à jour !\nPoints: ${editingPoints}\nAbsences: ${editingAbsences}\nStatut: ${currentEditStudent.statut}`);
+        }
+
+        // ============ AJOUT ÉLÈVE ============
+        function openAddModal() {
+            document.getElementById('addModal').style.display = 'flex';
+        }
+
+        function addStudent() {
+            const school = document.getElementById('addSchool').value;
+            const nom = document.getElementById('addNom').value.trim();
+            const prenom = document.getElementById('addPrenom').value.trim();
+            const classe = document.getElementById('addClasse').value;
+            const club = document.getElementById('addClub').value;
+            const status = document.getElementById('addStatus').value;
+            
+            if (!nom || !prenom || !classe || !club) {
+                alert('Veuillez remplir tous les champs');
+                return;
+            }
+            
+            const newStudent = {
+                id: nextId++,
+                nom,
+                prenom,
+                classe,
+                club,
+                statut: status,
+                points: 100,
+                absences: 0,
+                ecole: school,
+                mandat: '2024-2025'
+            };
+            
+            allStudents.push(newStudent);
+            saveStudents();
+            closeModal('addModal');
+            renderAll();
+            
+            document.getElementById('addNom').value = '';
+            document.getElementById('addPrenom').value = '';
+            document.getElementById('addClasse').value = '';
+            document.getElementById('addClub').value = '';
+            
+            alert('✅ Élève ajouté avec succès !');
+        }
+
+        // ============ SUPPRESSION ÉLÈVE ============
+        function deleteStudent(studentId) {
+            const code = prompt('🔐 Code administrateur pour supprimer:');
+            
+            if (code !== ADMIN_CODE) {
+                alert('❌ Code incorrect.');
+                return;
+            }
+            
+            if (!confirm('⚠️ Supprimer définitivement cet élève ?')) return;
+            
+            showLoading(true);
+            allStudents = allStudents.filter(s => s.id !== studentId);
+            saveStudents();
+            renderAll();
+            showLoading(false);
+            
+            alert('✅ Élève supprimé');
+        }
+
+        // ============ UTILITAIRES ============
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function showLoading(show) {
+            document.getElementById('loadingSpinner').style.display = show ? 'flex' : 'none';
+        }
+
+        window.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
+            }
+        });
+
+        // ============ DONNÉES PAR DÉFAUT - METTEZ TOUS LES 711 ÉLÈVES ICI ============
+        function getDefaultStudents() {
+            return [
+                  // 6éme B
         { nom: "Fall", prenom: "Mouhamed Saliou", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 8, mandat: "" },
         { nom: "Ba", prenom: "Mouhamed Woury", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
         { nom: "Soumaré", prenom: "Mouhamed", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 7, mandat: "" },
@@ -1943,650 +2087,11 @@
         { nom: "Fall", prenom: "Khadijatou", classe: "4éme A", club: "Sport (Handball)", statut: "Absent", totaux: 0, mandat: "" },
         { nom: "Doumbiya", prenom: "Ahmad Abdallah", classe: "2nd S", club: "Informatique-Robotique", statut: "Sélectionner", totaux: 0, mandat: "2024-2025" }
     ];
-
-    // ==================== INITIALISATION ====================
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('🚀 Initialisation du dashboard...');
-        showLoading();
-        
-        setTimeout(() => {
-            loadAdminInfo();
-            loadAllStudents();
-            renderAllStudents();
-            updateStats();
-            setupEventListeners();
-            
-            hideLoading();
-            console.log(`✅ Dashboard initialisé avec ${allStudents.length} élèves`);
-        }, 500);
-    });
-
-    // ==================== CHARGEMENT DES DONNÉES ====================
-    function loadAllStudents() {
-        console.log('📊 Chargement des données des élèves...');
-        
-        allStudents = [];
-        
-        // Normaliser et charger les élèves Mbao
-        mbaoStudentsData.forEach((student) => {
-            const normalizedStudent = normalizeStudentData(student, 'mbao');
-            allStudents.push(normalizedStudent);
-        });
-        
-        // Normaliser et charger les élèves Bourguiba
-        bourguibaStudentsData.forEach((student) => {
-            const normalizedStudent = normalizeStudentData(student, 'bourguiba');
-            allStudents.push(normalizedStudent);
-        });
-        
-        // Trouver le prochain ID disponible
-        const maxId = allStudents.length > 0 ? Math.max(...allStudents.map(s => s.id)) : 0;
-        nextStudentId = maxId + 1;
-        
-        sortStudentsByClass();
-        console.log(`✅ ${allStudents.length} élèves chargés`);
-    }
-
-    function normalizeStudentData(student, ecole) {
-        const points = calculatePointsFromTotaux(student.totaux, student.statut);
-        
-        return {
-            id: generateUniqueId(),
-            nom: student.nom.trim(),
-            prenom: student.prenom.trim(),
-            classe: normalizeClasse(student.classe),
-            club: student.club.trim(),
-            statut: normalizeStatus(student.statut),
-            points: points,
-            mandat: student.mandat || '',
-            ecole: ecole,
-            totaux: student.totaux || 0
-        };
-    }
-
-    function calculatePointsFromTotaux(totaux, statut) {
-        const normalizedStatut = normalizeStatus(statut);
-        if (normalizedStatut === "Sélectionné") {
-            // Convertir les totaux (0-20) en points (0-100)
-            return Math.min(100, Math.max(0, (totaux || 0) * 5));
-        } else {
-            return 0;
-        }
-    }
-
-    function sortStudentsByClass() {
-        const classOrder = ['6éme', '5éme', '4éme', '2nde', '1ére', 'TL2', 'TS2'];
-        allStudents.sort((a, b) => {
-            const classA = a.classe.split(' ')[0];
-            const classB = b.classe.split(' ')[0];
-            
-            const indexA = classOrder.indexOf(classA);
-            const indexB = classOrder.indexOf(classB);
-            
-            if (indexA === -1 && indexB === -1) return 0;
-            if (indexA === -1) return 1;
-            if (indexB === -1) return -1;
-            
-            return indexA - indexB;
-        });
-    }
-
-    // ==================== GESTION ADMIN ====================
-    function loadAdminInfo() {
-        const adminName = localStorage.getItem('hikmah_admin_name');
-        const adminMatricule = localStorage.getItem('hikmah_admin_matricule');
-        
-        if (!adminName || !adminMatricule) {
-            window.location.href = 'hikmah-login.html';
-            return;
-        }
-        
-        currentAdmin = { name: adminName, matricule: adminMatricule };
-        document.getElementById('adminName').textContent = currentAdmin.name;
-        console.log('👤 Admin connecté:', currentAdmin.name);
-    }
-
-    function logout() {
-        if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-            localStorage.removeItem('hikmah_admin_logged_in');
-            localStorage.removeItem('hikmah_admin_name');
-            localStorage.removeItem('hikmah_admin_matricule');
-            localStorage.removeItem('hikmah_admin_email');
-            window.location.href = 'hikmah-login.html';
-        }
-    }
-
-    // ==================== RENDU DES CARTES ====================
-    function renderAllStudents() {
-        console.log('🎨 Rendu des cartes étudiants...');
-        renderSchoolStudents('bourguiba');
-        renderSchoolStudents('mbao');
-        renderAllCombined();
-    }
-
-    function renderSchoolStudents(school, studentsList = null) {
-        const grid = document.getElementById(`${school}Grid`);
-        const students = studentsList || allStudents.filter(s => s.ecole === school);
-        const filtered = filterStudentsList(students);
-        
-        if (filtered.length === 0) {
-            grid.innerHTML = `
-                <div class="no-results">
-                    <i class="fas fa-search"></i>
-                    <h3>Aucun élève trouvé</h3>
-                    <p>Aucun élève ne correspond à votre recherche.</p>
-                </div>
-            `;
-            return;
-        }
-        
-        grid.innerHTML = filtered.map(student => createStudentCard(student)).join('');
-    }
-
-    function renderAllCombined(studentsList = null) {
-        const grid = document.getElementById('allGrid');
-        const filtered = filterStudentsList(studentsList || allStudents);
-        
-        if (filtered.length === 0) {
-            grid.innerHTML = `
-                <div class="no-results">
-                    <i class="fas fa-search"></i>
-                    <h3>Aucun élève trouvé</h3>
-                    <p>Aucun élève ne correspond à votre recherche.</p>
-                </div>
-            `;
-            return;
-        }
-        
-        grid.innerHTML = filtered.map(student => createStudentCard(student)).join('');
-    }
-
-    function createStudentCard(student) {
-        const fullName = `${student.prenom} ${student.nom}`;
-        const initials = `${student.prenom ? student.prenom[0] : ''}${student.nom ? student.nom[0] : ''}`.toUpperCase();
-        const statusClass = `status-${getStatusKey(student.statut)}`;
-        const pointsPercentage = (student.points / 100) * 100;
-        const pointsBarClass = student.points <= 30 ? 'points-danger' : student.points <= 60 ? 'points-warning' : '';
-        
-        return `
-            <div class="student-card" data-ecole="${student.ecole}" data-classe="${student.classe}" data-status="${getStatusKey(student.statut)}">
-                <div class="student-header">
-                    <div class="student-avatar">${initials}</div>
-                    <div class="student-status ${statusClass}">
-                        ${getStatusIcon(student.statut)} ${student.statut}
-                    </div>
-                </div>
+                { id: 1, nom: "EXEMPLE", prenom: "Test", classe: "2nde", club: "Club", statut: "Sélectionné", points: 100, absences: 0, ecole: "bourguiba", mandat: "2024-2025" }
                 
-                <h3 class="student-name">${fullName}</h3>
-                <div class="student-classe">${student.classe}</div>
-                
-                <div class="student-info">
-                    <div class="info-row">
-                        <span class="info-label">Club :</span>
-                        <span class="info-value">${student.club}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Mandat :</span>
-                        <span class="info-value">${student.mandat || 'Non défini'}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">École :</span>
-                        <span class="info-value" style="color: ${student.ecole === 'bourguiba' ? '#2196F3' : '#9C27B0'}">
-                            ${student.ecole === 'bourguiba' ? 'BOURGUIBA' : 'MBAO'}
-                        </span>
-                    </div>
-                    ${student.totaux !== undefined ? `
-                    <div class="info-row">
-                        <span class="info-label">Totaux :</span>
-                        <span class="info-value">${student.totaux}/20</span>
-                    </div>
-                    ` : ''}
-                </div>
-                
-                <div class="points-container">
-                    <div class="points-label">
-                        <span>Points :</span>
-                        <span><strong>${student.points}</strong>/100</span>
-                    </div>
-                    <div class="points-bar">
-                        <div class="points-fill ${pointsBarClass}" style="width: ${pointsPercentage}%"></div>
-                    </div>
-                </div>
-                
-                ${student.points === 0 ? 
-                    `<div style="color: #F44336; font-weight: 600; margin-top: 1rem;">
-                        <i class="fas fa-ban"></i> Élève exclu (0 points)
-                    </div>` : ''
-                }
-                
-                <div class="student-actions">
-                    <button class="action-btn edit-btn" onclick="openEditModal(${student.id}, '${student.ecole}')">
-                        <i class="fas fa-edit"></i> Modifier
-                    </button>
-                    <button class="action-btn delete-btn" onclick="deleteStudent(${student.id}, '${student.ecole}')">
-                        <i class="fas fa-trash"></i> Supprimer
-                    </button>
-                </div>
-            </div>
-        `;
-    }
-
-    function getStatusKey(statut) {
-        const statusMap = {
-            'Sélectionné': 'selected',
-            'En attente': 'waiting',
-            'Refusé': 'refused',
-            'Absent': 'absent'
-        };
-        return statusMap[statut] || 'waiting';
-    }
-
-    function getStatusIcon(statut) {
-        const icons = {
-            'Sélectionné': '✓',
-            'En attente': '⏳',
-            'Refusé': '✗',
-            'Absent': '👤'
-        };
-        return icons[statut] || '⏳';
-    }
-
-    // ==================== FILTRES ET RECHERCHE ====================
-    function filterStudentsList(students) {
-        return students.filter(student => {
-            // Recherche
-            if (currentSearchTerm) {
-                const searchTerm = normalizeText(currentSearchTerm);
-                const fullName = normalizeText(`${student.prenom} ${student.nom}`);
-                const classe = normalizeText(student.classe || '');
-                const club = normalizeText(student.club || '');
-                
-                if (!fullName.includes(searchTerm) && 
-                    !classe.includes(searchTerm) &&
-                    !club.includes(searchTerm)) {
-                    return false;
-                }
-            }
-            
-            // Filtre classe
-            if (currentClassFilter !== 'all') {
-                const normalizedClasse = normalizeText(student.classe || '');
-                const normalizedFilter = normalizeText(currentClassFilter);
-                
-                if (!normalizedClasse.includes(normalizedFilter)) {
-                    return false;
-                }
-            }
-            
-            return true;
-        });
-    }
-
-    function filterStudents() {
-        currentSearchTerm = document.getElementById('searchInput').value;
-        console.log('🔍 Recherche:', currentSearchTerm);
-        updateDisplay();
-    }
-
-    function filterByClass(classe) {
-        currentClassFilter = classe;
-        console.log('🏫 Filtre classe:', classe);
-        
-        document.querySelectorAll('.class-filter-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.classe === classe);
-        });
-        
-        updateDisplay();
-    }
-
-    function updateDisplay() {
-        console.log('🔄 Mise à jour affichage...');
-        
-        // Filtrer les étudiants une seule fois
-        let filteredStudents = allStudents;
-        
-        if (currentSchool !== 'all') {
-            filteredStudents = filteredStudents.filter(s => s.ecole === currentSchool);
+                // ⚠️⚠️⚠️ FIN DE LA ZONE OÙ COLLER LES ÉLÈVES ⚠️⚠️⚠️
+            ];
         }
-        
-        filteredStudents = filterStudentsList(filteredStudents);
-        
-        switch (currentSchool) {
-            case 'bourguiba': 
-                renderSchoolStudents('bourguiba', filteredStudents); 
-                break;
-            case 'mbao': 
-                renderSchoolStudents('mbao', filteredStudents); 
-                break;
-            case 'all': 
-                renderAllCombined(filteredStudents); 
-                break;
-        }
-        
-        updateStats(filteredStudents);
-    }
-
-    // ==================== GESTION ONGLETS ====================
-    function switchSchool(school) {
-        currentSchool = school;
-        console.log('🏫 Changement école:', school);
-        
-        document.querySelectorAll('.school-tab').forEach(tab => {
-            tab.classList.toggle('active', tab.dataset.school === school);
-        });
-        
-        document.querySelectorAll('.school-section').forEach(section => {
-            section.classList.remove('active');
-        });
-        
-        document.getElementById(`${school}Section`).classList.add('active');
-        updateDisplay();
-    }
-
-    // ==================== STATISTIQUES ====================
-    function updateStats(studentsList = null) {
-        let studentsToCount = studentsList || allStudents;
-        
-        if (currentSchool !== 'all') {
-            studentsToCount = studentsToCount.filter(s => s.ecole === currentSchool);
-        }
-        
-        const total = studentsToCount.length;
-        const selected = studentsToCount.filter(s => s.statut === 'Sélectionné').length;
-        const waiting = studentsToCount.filter(s => s.statut === 'En attente').length;
-        const excluded = studentsToCount.filter(s => s.points === 0).length;
-        
-        document.getElementById('totalStudents').textContent = total;
-        document.getElementById('selectedStudents').textContent = selected;
-        document.getElementById('waitingStudents').textContent = waiting;
-        document.getElementById('excludedStudents').textContent = excluded;
-    }
-
-    // ==================== MODAL MODIFICATION ====================
-    function openEditModal(studentId, ecole) {
-        currentEditStudent = allStudents.find(s => s.id === studentId && s.ecole === ecole);
-        if (!currentEditStudent) {
-            console.error('Élève non trouvé:', studentId, ecole);
-            alert('Élève non trouvé.');
-            return;
-        }
-        
-        console.log('✏️ Ouverture modal modification:', currentEditStudent);
-        
-        const modal = document.getElementById('editModal');
-        document.getElementById('editStudentName').value = `${currentEditStudent.prenom} ${currentEditStudent.nom}`;
-        document.getElementById('editStudentSchool').value = currentEditStudent.ecole === 'bourguiba' ? 'BOURGUIBA' : 'MBAO';
-        document.getElementById('currentPoints').textContent = currentEditStudent.points;
-        document.getElementById('editMandat').value = currentEditStudent.mandat || '';
-        
-        currentPoints = currentEditStudent.points;
-        document.getElementById('adminMatricule').value = '';
-        document.getElementById('matriculeError').style.display = 'none';
-        document.getElementById('saveBtn').disabled = true;
-        
-        modal.style.display = 'flex';
-    }
-
-    function closeEditModal() {
-        document.getElementById('editModal').style.display = 'none';
-        currentEditStudent = null;
-    }
-
-    function checkMatricule() {
-        const matricule = document.getElementById('adminMatricule').value;
-        const errorDiv = document.getElementById('matriculeError');
-        const saveBtn = document.getElementById('saveBtn');
-        
-        if (adminMatricules.includes(matricule)) {
-            errorDiv.style.display = 'none';
-            saveBtn.disabled = false;
-            return true;
-        } else {
-            errorDiv.style.display = 'block';
-            saveBtn.disabled = true;
-            return false;
-        }
-    }
-
-    function changePoints(amount) {
-        currentPoints = Math.max(0, Math.min(100, currentPoints + amount));
-        document.getElementById('currentPoints').textContent = currentPoints;
-    }
-
-    function saveChanges() {
-        if (!currentEditStudent || !checkMatricule()) {
-            alert('Veuillez vérifier votre matricule administrateur.');
-            return;
-        }
-        
-        const mandat = document.getElementById('editMandat').value;
-        
-        // Afficher un indicateur de chargement
-        const saveBtn = document.getElementById('saveBtn');
-        const originalText = saveBtn.innerHTML;
-        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
-        saveBtn.disabled = true;
-        
-        showLoading();
-        
-        // Simuler un délai de sauvegarde
-        setTimeout(() => {
-            // Mettre à jour localement
-            currentEditStudent.points = currentPoints;
-            currentEditStudent.mandat = mandat;
-            
-            // Mettre à jour les totaux en conséquence
-            if (currentEditStudent.ecole === 'mbao') {
-                currentEditStudent.totaux = Math.floor(currentPoints / 5);
-            }
-            
-            // Restaurer le bouton
-            saveBtn.innerHTML = originalText;
-            saveBtn.disabled = false;
-            
-            // Mettre à jour l'affichage
-            renderAllStudents();
-            updateDisplay();
-            
-            hideLoading();
-            alert(`✅ Points mis à jour avec succès !`);
-            closeEditModal();
-        }, 800);
-    }
-
-    // ==================== MODAL AJOUT ÉLÈVE ====================
-    function openAddModal(ecole) {
-        selectedEcole = ecole;
-        console.log('➕ Ouverture modal ajout pour:', ecole);
-        
-        document.querySelectorAll('.ecole-option').forEach(option => {
-            option.classList.remove('selected');
-            if (option.dataset.ecole === ecole) option.classList.add('selected');
-        });
-        
-        document.getElementById('addNom').value = '';
-        document.getElementById('addPrenom').value = '';
-        document.getElementById('addClasse').value = '';
-        document.getElementById('addClub').value = '';
-        document.getElementById('addStatut').value = 'Sélectionné';
-        
-        document.getElementById('addModal').style.display = 'flex';
-    }
-
-    function closeAddModal() {
-        document.getElementById('addModal').style.display = 'none';
-    }
-
-    function selectEcole(ecole) {
-        selectedEcole = ecole;
-        document.querySelectorAll('.ecole-option').forEach(option => {
-            option.classList.toggle('selected', option.dataset.ecole === ecole);
-        });
-    }
-
-    function addNewStudent() {
-        const nom = document.getElementById('addNom').value.trim();
-        const prenom = document.getElementById('addPrenom').value.trim();
-        const classe = document.getElementById('addClasse').value;
-        const club = document.getElementById('addClub').value;
-        const statut = document.getElementById('addStatut').value;
-        
-        if (!nom || !prenom || !classe || !club) {
-            alert('Veuillez remplir tous les champs obligatoires.');
-            return;
-        }
-        
-        // Calculer les points selon les règles
-        let points = 0;
-        let totaux = 0;
-        const normalizedStatut = normalizeStatus(statut);
-        
-        if (normalizedStatut === "Sélectionné") {
-            points = 100;
-            totaux = 20;
-        }
-        
-        const mandat = normalizedStatut === 'Sélectionné' ? '2024-2025' : '';
-        
-        const newStudent = {
-            id: nextStudentId++,
-            nom: nom,
-            prenom: prenom,
-            classe: normalizeClasse(classe),
-            club: club,
-            statut: normalizedStatut,
-            points: points,
-            mandat: mandat,
-            ecole: selectedEcole,
-            totaux: totaux
-        };
-        
-        console.log('👤 Nouvel élève à ajouter:', newStudent);
-        
-        // Afficher un indicateur de chargement
-        const addBtn = document.querySelector('#addModal .modal-btn.confirm');
-        const originalText = addBtn.innerHTML;
-        addBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Ajout en cours...';
-        addBtn.disabled = true;
-        
-        showLoading();
-        
-        // Ajouter localement
-        allStudents.push(newStudent);
-        
-        // Simuler un délai
-        setTimeout(() => {
-            // Restaurer le bouton
-            addBtn.innerHTML = originalText;
-            addBtn.disabled = false;
-            
-            // Mettre à jour l'affichage
-            sortStudentsByClass();
-            renderAllStudents();
-            updateDisplay();
-            closeAddModal();
-            
-            hideLoading();
-            alert(`✅ Élève ajouté avec succès !`);
-        }, 800);
-    }
-
-    // ==================== SUPPRESSION ÉLÈVE ====================
-    function deleteStudent(studentId, ecole) {
-        if (!confirm('Êtes-vous sûr de vouloir supprimer cet élève ? Cette action est irréversible.')) return;
-        
-        const matricule = prompt('Pour confirmer, entrez votre matricule administrateur :');
-        if (!adminMatricules.includes(matricule)) {
-            alert('Matricule incorrect. Suppression annulée.');
-            return;
-        }
-        
-        console.log('🗑️ Suppression élève:', studentId, ecole);
-        
-        showLoading();
-        
-        // Simuler un délai
-        setTimeout(() => {
-            // Trouver l'index de l'élève
-            const studentIndex = allStudents.findIndex(s => s.id === studentId && s.ecole === ecole);
-            
-            if (studentIndex !== -1) {
-                // Supprimer l'élève
-                allStudents.splice(studentIndex, 1);
-                
-                // Mettre à jour l'affichage
-                renderAllStudents();
-                updateDisplay();
-                
-                hideLoading();
-                alert('✅ Élève supprimé avec succès.');
-            } else {
-                hideLoading();
-                alert('❌ Élève non trouvé.');
-            }
-        }, 800);
-    }
-
-    // ==================== ÉCOUTEURS D'ÉVÉNEMENTS ====================
-    function setupEventListeners() {
-        // Fermeture des modales au clic extérieur
-        document.getElementById('editModal').addEventListener('click', function(e) {
-            if (e.target === this) closeEditModal();
-        });
-        
-        document.getElementById('addModal').addEventListener('click', function(e) {
-            if (e.target === this) closeAddModal();
-        });
-        
-        // Raccourcis clavier - CORRIGÉ (un seul addEventListener)
-        document.addEventListener('keydown', function(e) {
-            // Échap pour fermer les modales
-            if (e.key === 'Escape') {
-                closeEditModal();
-                closeAddModal();
-            }
-            
-            // RACCOURCI AZIMUT - Ctrl+Shift+A
-            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
-                e.preventDefault();
-                window.open('azimut.html', '_blank');
-                console.log('🔐 AZIMUT ouvert avec Ctrl+Shift+A');
-            }
-        });
-        
-        // Recherche avec debounce (performance)
-        let searchTimeout;
-        document.getElementById('searchInput').addEventListener('input', function() {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                filterStudents();
-            }, 300);
-        });
-        
-        // Message de bienvenue
-               console.log('🎉 Dashboard Hikmah\'s Club prêt !');
-        console.log(`📊 Total élèves: ${allStudents.length}`);
-        console.log(`🏫 MBAO: ${allStudents.filter(s => s.ecole === 'mbao').length} élèves`);
-        console.log(`🏫 BOURGUIBA: ${allStudents.filter(s => s.ecole === 'bourguiba').length} élèves`);
-    }
-
-    // ACCÈS CLUB MANAGEMENT
-    function openClubManagement() {
-        const code = prompt("Code d'accès:");
-        if (code === "200400") {
-            window.open('club-management.html', '_blank');
-        } else if (code !== null) {
-            alert("Code incorrect");
-        }
-    }
-
-    document.addEventListener('keydown', function(e) {
-        if (e.ctrlKey && e.shiftKey && e.key === 'M') {
-            e.preventDefault();
-            openClubManagement();
-        }
-    });
-
-</script>
+    </script>
 </body>
 </html>
