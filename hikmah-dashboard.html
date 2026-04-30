@@ -1330,7 +1330,7 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
         }
 
         // ============ SUPPRESSION ÉLÈVE ============
-        function deleteStudent(studentId) {
+        async function deleteStudent(studentId) {
             const code = prompt('🔐 Code administrateur pour supprimer:');
             
             if (code !== ADMIN_CODE) {
