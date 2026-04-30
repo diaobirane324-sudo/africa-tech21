@@ -1290,7 +1290,7 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
             document.getElementById('addModal').style.display = 'flex';
         }
 
-        function addStudent() {
+        async function addStudent() {
             const school = document.getElementById('addSchool').value;
             const nom = document.getElementById('addNom').value.trim();
             const prenom = document.getElementById('addPrenom').value.trim();
