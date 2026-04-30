@@ -1070,7 +1070,7 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
         console.log('⚠️ Synchronisation cloud échouée, sauvegardé en local');
     }
 }
-       function updateSyncStatus(synced) {
+    function updateSyncStatus(synced) {
     const status = document.getElementById('syncStatus');
     if (synced) {
         status.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Synchronisé Cloud + Local';
