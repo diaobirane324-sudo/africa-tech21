@@ -1277,7 +1277,7 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
                 currentEditStudent.statut = 'Exclu';
             }
             
-            saveStudents();
+            await saveStudents();
             closeModal('editModal');
             renderAll();
             showLoading(false);
@@ -1317,7 +1317,7 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
             };
             
             allStudents.push(newStudent);
-            saveStudents();
+            await saveStudents();
             closeModal('addModal');
             renderAll();
             
@@ -1342,7 +1342,7 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
             
             showLoading(true);
             allStudents = allStudents.filter(s => s.id !== studentId);
-            saveStudents();
+            await saveStudents();
             renderAll();
             showLoading(false);
             
