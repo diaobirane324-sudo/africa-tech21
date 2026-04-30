@@ -1070,13 +1070,16 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
         console.log('⚠️ Synchronisation cloud échouée, sauvegardé en local');
     }
 }
-        function updateSyncStatus(synced) {
-            const status = document.getElementById('syncStatus');
-            if (synced) {
-                status.innerHTML = '<i class="fas fa-save"></i> Sauvegardé localement';
-                status.style.background = 'rgba(46, 204, 113, 0.9)';
-            }
-        }
+       function updateSyncStatus(synced) {
+    const status = document.getElementById('syncStatus');
+    if (synced) {
+        status.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Synchronisé Cloud + Local';
+        status.style.background = 'rgba(46, 204, 113, 0.9)';
+    } else {
+        status.innerHTML = '<i class="fas fa-save"></i> Sauvegardé Local uniquement';
+        status.style.background = 'rgba(243, 156, 18, 0.9)';
+    }
+}
 
         // ============ RENDU ============
         function renderAll() {
