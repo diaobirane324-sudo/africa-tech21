@@ -1025,12 +1025,51 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
         nextId = Math.max(...allStudents.map(s => s.id || 0)) + 1;
     }
 }
-        function saveStudents() {
-            localStorage.setItem('hikmah_students', JSON.stringify(allStudents));
-            updateSyncStatus(true);
-            console.log('💾 Données sauvegardées localement');
+        async function saveStudents() {
+    // Sauvegarde locale
+    localStorage.setItem('hikmah_students', JSON.stringify(allStudents));
+    
+    // Sauvegarde cloud
+    try {
+        let response;
+        if (API_BIN_ID) {
+            // Mettre à jour le bin existant
+            response = await fetch(`https://api.jsonbin.io/v3/b/${API_BIN_ID}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': '$2a$10$YOUR_FREE_API_KEY'
+                },
+                body: JSON.stringify(allStudents)
+            });
+        } else {
+            // Créer un nouveau bin
+            response = await fetch('https://api.jsonbin.io/v3/b', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': '$2a$10$YOUR_FREE_API_KEY'
+                },
+                body: JSON.stringify(allStudents)
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                API_BIN_ID = data.metadata.id;
+                localStorage.setItem('hikmah_bin_id', API_BIN_ID);
+                console.log('🆕 Nouveau bin créé:', API_BIN_ID);
+            }
         }
-
+        
+        if (response.ok) {
+            updateSyncStatus(true);
+            console.log('☁️ Cloud synchronisé');
+        }
+    } catch (error) {
+        updateSyncStatus(false);
+        console.log('⚠️ Synchronisation cloud échouée, sauvegardé en local');
+    }
+}
         function updateSyncStatus(synced) {
             const status = document.getElementById('syncStatus');
             if (synced) {
