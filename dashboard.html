@@ -1514,14 +1514,18 @@
     }
 
     // ==================== AFFICHAGE DES INFOS MEMBRE ====================
-    const memberId = localStorage.getItem('memberId') || 'INCONNU';
-    const memberNom = localStorage.getItem('memberNom') || '';
-    const memberPrenom = localStorage.getItem('memberPrenom') || '';
-    const memberFonction = localStorage.getItem('memberFonction') || '';
+const memberNom = localStorage.getItem('memberNom') || '';
+const memberPrenom = localStorage.getItem('memberPrenom') || '';
+const memberFonction = localStorage.getItem('memberFonction') || '';
 
-    document.getElementById('userEmail').textContent = memberId + ' - ' + memberPrenom + ' ' + memberNom;
-    document.getElementById('userRole').textContent = '🎯 ' + memberFonction;
+// Afficher le nom complet sans l'ID
+if (memberPrenom && memberNom) {
+    document.getElementById('userEmail').textContent = memberPrenom + ' ' + memberNom;
+} else {
+    document.getElementById('userEmail').textContent = 'UTILISATEUR';
+}
 
+document.getElementById('userRole').textContent = '🎯 ' + memberFonction;
     // ==================== PARTICULES ====================
     function createParticles() {
         const particlesContainer = document.getElementById('particles');
