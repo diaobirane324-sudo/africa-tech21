@@ -1507,124 +1507,135 @@
         </div>
     </div>
 
-    <script>
-        // ==================== VÉRIFICATION CONNEXION ====================
-        if (localStorage.getItem('memberLoggedIn') !== 'true') {
-            window.location.href = 'espace-membres.html';
+ <script>
+    // ==================== VÉRIFICATION CONNEXION ====================
+    if (localStorage.getItem('memberLoggedIn') !== 'true') {
+        window.location.href = 'espace-membres.html';
+    }
+
+    // ==================== AFFICHAGE DES INFOS MEMBRE ====================
+    const memberId = localStorage.getItem('memberId') || 'INCONNU';
+    const memberNom = localStorage.getItem('memberNom') || '';
+    const memberPrenom = localStorage.getItem('memberPrenom') || '';
+    const memberFonction = localStorage.getItem('memberFonction') || '';
+
+    document.getElementById('userEmail').textContent = memberId + ' - ' + memberPrenom + ' ' + memberNom;
+    document.getElementById('userRole').textContent = '🎯 ' + memberFonction;
+
+    // ==================== PARTICULES ====================
+    function createParticles() {
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (8 + Math.random() * 12) + 's';
+            particlesContainer.appendChild(particle);
+        }
+    
         }
 
-        document.getElementById('userEmail').textContent = localStorage.getItem('memberEmail') || 'UTILISATEUR';
+      // ==================== FORUM ====================
+function sendMessage() {
+    const messageInput = document.getElementById('newMessage');
+    const message = messageInput.value.trim();
 
-        // ==================== PARTICULES ====================
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + 'vw';
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                particle.style.animationDuration = (8 + Math.random() * 12) + 's';
-                particlesContainer.appendChild(particle);
-            }
-        }
+    if (message) {
+        const forumMessages = document.getElementById('forumMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message';
 
-        // ==================== FORUM ====================
-        function sendMessage() {
-            const messageInput = document.getElementById('newMessage');
-            const message = messageInput.value.trim();
-            
-            if (message) {
-                const forumMessages = document.getElementById('forumMessages');
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'message';
-                
-                const now = new Date();
-                const dateStr = now.toLocaleDateString('fr-FR') + ' - ' + now.toLocaleTimeString('fr-FR');
-                const userEmail = localStorage.getItem('memberEmail');
-                
-                messageDiv.innerHTML = `
-                    <div class="message-header">
-                        <span class="message-user">${userEmail}</span>
-                        <span class="message-time">${dateStr}</span>
-                    </div>
-                    <p class="message-content">${message}</p>
-                `;
-                
-                forumMessages.appendChild(messageDiv);
-                messageInput.value = '';
-                forumMessages.scrollTop = forumMessages.scrollHeight;
-                
-                saveMessageToStorage(message, dateStr);
-            }
-        }
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('fr-FR') + ' - ' + now.toLocaleTimeString('fr-FR');
+        const userEmail = localStorage.getItem('memberEmail');
 
-        function saveMessageToStorage(message, date) {
-            const messages = JSON.parse(localStorage.getItem('forumMessages') || '[]');
-            const userEmail = localStorage.getItem('memberEmail');
-            const newMessage = {
-                email: userEmail,
-                message: message,
-                date: date,
-                timestamp: new Date().toISOString()
-            };
-            messages.push(newMessage);
-            localStorage.setItem('forumMessages', JSON.stringify(messages));
-        }
+        messageDiv.innerHTML = `
+            <div class="message-header">
+                <span class="message-user">${userEmail}</span>
+                <span class="message-time">${dateStr}</span>
+            </div>
+            <p class="message-content">${message}</p>
+        `;
 
-        function loadMessages() {
-            const messages = JSON.parse(localStorage.getItem('forumMessages') || '[]');
-            const forumMessages = document.getElementById('forumMessages');
-            
-            while (forumMessages.children.length > 1) {
-                forumMessages.removeChild(forumMessages.lastChild);
-            }
-            
-            messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-            
-            messages.forEach(msg => {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'message';
-                messageDiv.innerHTML = `
-                    <div class="message-header">
-                        <span class="message-user">${msg.email}</span>
-                        <span class="message-time">${msg.date}</span>
-                    </div>
-                    <p class="message-content">${msg.message}</p>
-                `;
-                forumMessages.appendChild(messageDiv);
-            });
-            
-            forumMessages.scrollTop = forumMessages.scrollHeight;
-        }
+        forumMessages.appendChild(messageDiv);
+        messageInput.value = '';
+        forumMessages.scrollTop = forumMessages.scrollHeight;
 
-        // ==================== LOGOUT ====================
-        function logout() {
-            localStorage.removeItem('memberLoggedIn');
-            localStorage.removeItem('memberEmail');
-            localStorage.removeItem('currentUser');
-            window.location.href = 'index.html';
-        }
+        saveMessageToStorage(message, dateStr);
+    }
+}
 
-        // ==================== ADMIN ====================
-        const ADMIN_PASSWORD = "Birane186@00";
-        const ADMIN_MATRICULE = "N@75199@DELTA@00";
+function saveMessageToStorage(message, date) {
+    const messages = JSON.parse(localStorage.getItem('forumMessages') || '[]');
+    const userEmail = localStorage.getItem('memberEmail');
+    const newMessage = {
+        email: userEmail,
+        message: message,
+        date: date,
+        timestamp: new Date().toISOString()
+    };
+    messages.push(newMessage);
+    localStorage.setItem('forumMessages', JSON.stringify(messages));
+}
 
-        document.getElementById('securityForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const matricule = document.getElementById('adminMatricule').value;
-            const password = document.getElementById('adminPassword').value;
-            
-            if (password === ADMIN_PASSWORD && matricule === ADMIN_MATRICULE) {
-                document.getElementById('candidatesSection').style.display = 'block';
-                loadCandidatesData();
-                loadMemberStats();
-                document.getElementById('candidatesSection').scrollIntoView({ behavior: 'smooth' });
-            } else {
-                alert('❌ Identifiant ou mot de passe administrateur incorrect');
-            }
-        });
+function loadMessages() {
+    const messages = JSON.parse(localStorage.getItem('forumMessages') || '[]');
+    const forumMessages = document.getElementById('forumMessages');
 
+    while (forumMessages.children.length > 1) {
+        forumMessages.removeChild(forumMessages.lastChild);
+    }
+
+    messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+    messages.forEach(msg => {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message';
+        messageDiv.innerHTML = `
+            <div class="message-header">
+                <span class="message-user">${msg.email}</span>
+                <span class="message-time">${msg.date}</span>
+            </div>
+            <p class="message-content">${msg.message}</p>
+        `;
+        forumMessages.appendChild(messageDiv);
+    });
+
+    forumMessages.scrollTop = forumMessages.scrollHeight;
+}
+
+// ==================== LOGOUT ====================
+function logout() {
+    localStorage.removeItem('memberLoggedIn');
+    localStorage.removeItem('memberId');
+    localStorage.removeItem('memberNom');
+    localStorage.removeItem('memberPrenom');
+    localStorage.removeItem('memberFonction');
+    localStorage.removeItem('memberEmail');
+    localStorage.removeItem('currentUser');
+    window.location.href = 'index.html';
+}
+
+// ==================== ADMIN (CONSERVÉ) ====================
+const ADMIN_PASSWORD = "Birane186@00";
+const ADMIN_MATRICULE = "N@75199@DELTA@00";
+
+document.getElementById('securityForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const matricule = document.getElementById('adminMatricule').value;
+    const password = document.getElementById('adminPassword').value;
+
+    if (password === ADMIN_PASSWORD && matricule === ADMIN_MATRICULE) {
+        document.getElementById('candidatesSection').style.display = 'block';
+        loadCandidatesData();
+        loadMemberStats();
+        document.getElementById('candidatesSection').scrollIntoView({ behavior: 'smooth' });
+    } else {
+        alert('❌ Identifiant ou mot de passe administrateur incorrect');
+    }
+});
         // ==================== CANDIDATURES ====================
         async function loadCandidatesData() {
             try {
