@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAGAF | AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Exo 2', 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-purple: #7b2cbf;
+            --neon-green: #00ff88;
+            --neon-pink: #ff00ff;
+            --dark-space: #0a0a12;
+            --deep-space: #050510;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a8c0;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --panel-glow: 0 0 30px rgba(255, 165, 0, 0.2);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .hologram-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(255, 165, 0, 0.02) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(255, 165, 0, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridScan 20s linear infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        @keyframes gridScan {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid #ffa500;
+            border-radius: 10px;
+            color: #ffa500;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 165, 0, 0.2);
+            box-shadow: 0 0 20px rgba(255, 165, 0, 0.3);
+        }
+
+        .page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .project-header {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 4rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            box-shadow: var(--panel-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 165, 0, 0.05) 0%, transparent 60%);
+            animation: rotateGlow 20s linear infinite;
+        }
+
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .project-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            background: linear-gradient(45deg, #ffa500, #ff6348);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 165, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-header .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-header .status-badge {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.5rem 2rem;
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid #ffa500;
+            border-radius: 20px;
+            color: #ffa500;
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--panel-glow);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            color: var(--neon-blue);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title i {
+            color: #ffa500;
+        }
+
+        .section-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .section-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-content strong {
+            color: var(--text-primary);
+        }
+
+        .section-content ul, .section-content ol {
+            padding-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-content li {
+            margin-bottom: 0.8rem;
+        }
+
+        .component-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .component-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border-left: 3px solid #ffa500;
+        }
+
+        .component-item:hover {
+            border-color: #ffa500;
+            background: rgba(255, 165, 0, 0.05);
+        }
+
+        .component-item h4 {
+            color: #ffa500;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .component-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .component-item .tag {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.2rem 0.8rem;
+            background: rgba(255, 165, 0, 0.1);
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: #ffa500;
+        }
+
+        .note-box {
+            background: rgba(0, 240, 255, 0.05);
+            border-left: 4px solid var(--neon-blue);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .note-box strong {
+            color: var(--neon-blue);
+        }
+
+        .warning-box {
+            background: rgba(255, 0, 0, 0.05);
+            border-left: 4px solid #ff0000;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .warning-box strong {
+            color: #ff0000;
+        }
+
+        .step-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .step-card .step-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: #ffa500;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-card h4 {
+            color: var(--neon-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .evolution-box {
+            background: rgba(0, 255, 136, 0.03);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .evolution-box .icon {
+            font-size: 2.5rem;
+            color: var(--neon-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .evolution-box h4 {
+            color: var(--neon-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .evolution-box p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .project-header { padding: 2rem 1.5rem; }
+            .project-header h1 { font-size: 2.5rem; }
+            .section { padding: 1.5rem; }
+            .section-title { font-size: 1.5rem; }
+            .component-list { grid-template-columns: 1fr; }
+            .step-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hologram-grid"></div>
+
+    <div class="page-container">
+        <!-- Bouton retour -->
+        <a href="dashboard.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD
+        </a>
+
+        <!-- En-tête du projet -->
+        <header class="project-header">
+            <h1>SAGAF</h1>
+            <p class="subtitle">Système d'Alerte pour Fuite de Gaz</p>
+            <div class="status-badge">
+                <i class="fas fa-circle"></i> PROTOTYPAGE
+            </div>
+        </header>
+
+        <!-- ==================== PARTIE 1 : DÉFINITION ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-exclamation-triangle"></i> DÉFINITION DU PROJET</h2>
+            <div class="section-content">
+                <p>
+                    <strong>SAGAF</strong> (Système d'Alerte pour Fuite de Gaz) est un projet civil qui vise à lutter contre les fuites de gaz au niveau des foyers. En effet, de par l'imprudence des individus, nous observons souvent des catastrophes liées à des fuites de gaz, créant ainsi des explosions gigantesques ainsi que des dégâts incommensurables. Telle est la nature de notre projet.
+                </p>
+                <p>
+                    Le système est conçu pour être installé dans les cuisines et les espaces où des bouteilles de gaz sont utilisées. Il détecte automatiquement toute fuite et déclenche une alerte sonore et visuelle pour prévenir les occupants et éviter les drames.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==================== PARTIE 2 : CONTEXTE ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-globe-africa"></i> CONTEXTE</h2>
+            <div class="section-content">
+                <p>
+                    Dans une société où les explosions de gaz sont devenues des phénomènes très fréquents, il est important de prendre des mesures pour éviter ce genre de problème au sein des maisons. En d'autres mots, il est très important de proposer quelque chose de très utile pour les familles afin de protéger leur maison et surtout leur vie.
+                </p>
+                <p>
+                    C'est partant de cette optique que suscite le projet <strong>SAGAF</strong>. La communauté <strong>AFRICA.TECH21</strong> a un réel devoir envers la société. Ce projet s'inscrit dans une démarche de protection des foyers et de prévention des risques domestiques.
+                </p>
+                <div class="warning-box">
+                    <p><strong>Urgence :</strong> Les explosions de gaz causent chaque année des centaines de victimes et des dégâts matériels considérables. SAGAF vise à réduire ce risque en détectant les fuites avant qu'elles ne deviennent dangereuses.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PARTIE 3 : FONCTIONNEMENT ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-cogs"></i> COMMENT FONCTIONNE LE SYSTÈME ?</h2>
+            <div class="section-content">
+                <p>
+                    Le système SAGAF fonctionne selon une logique simple mais efficace :
+                </p>
+                <ol>
+                    <li><strong>Détection :</strong> Le capteur MQ-2 (ou MQ-4/MQ-5) détecte la présence de gaz dans l'air. Sa résistance varie en fonction de la concentration de gaz.</li>
+                    <li><strong>Lecture :</strong> La carte ESP32 lit la tension de sortie du capteur via une entrée analogique. Cette tension est convertie en valeur numérique (0-4095).</li>
+                    <li><strong>Analyse :</strong> Le microcontrôleur compare la valeur lue à un seuil prédéfini. Si le seuil est dépassé, cela signifie qu'il y a une fuite de gaz.</li>
+                    <li><strong>Alerte :</strong> Le système déclenche alors l'alarme sonore (buzzer) et les LEDS lumineuses pour alerter les occupants pendant une durée définie.</li>
+                    <li><strong>Réinitialisation :</strong> Une fois la fuite maîtrisée, le système revient en mode surveillance.</li>
+                </ol>
+
+                <div style="text-align: center; padding: 2rem; background: rgba(0,0,0,0.3); border-radius: 15px; margin-top: 2rem;">
+                    <p style="color: var(--text-secondary); font-size: 1.2rem;">
+                        <i class="fas fa-microchip" style="color: #ffa500; font-size: 3rem; display: block; margin-bottom: 1rem;"></i>
+                        <strong>ESP32</strong> (Cerveau du système)
+                    </p>
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; margin-top: 2rem;">
+                        <div style="background: rgba(255, 165, 0, 0.05); padding: 1rem 2rem; border-radius: 10px; border: 1px solid #ffa500;">
+                            <i class="fas fa-microchip" style="color: #ffa500;"></i>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">Capteur MQ-2 (Gaz)</p>
+                        </div>
+                        <div style="background: rgba(255, 165, 0, 0.05); padding: 1rem 2rem; border-radius: 10px; border: 1px solid #ffa500;">
+                            <i class="fas fa-bolt" style="color: #ffa500;"></i>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">Convertisseur ADC</p>
+                        </div>
+                        <div style="background: rgba(255, 165, 0, 0.05); padding: 1rem 2rem; border-radius: 10px; border: 1px solid #ffa500;">
+                            <i class="fas fa-volume-up" style="color: #ffa500;"></i>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">Buzzer (Alarme)</p>
+                        </div>
+                        <div style="background: rgba(255, 165, 0, 0.05); padding: 1rem 2rem; border-radius: 10px; border: 1px solid #ffa500;">
+                            <i class="fas fa-lightbulb" style="color: #ffa500;"></i>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">LEDS (Alarme visuelle)</p>
+                        </div>
+                    </div>
+                    <div style="margin-top: 2rem; padding: 1rem; background: rgba(255, 165, 0, 0.05); border-radius: 10px; border: 1px solid #ffa500;">
+                        <p style="color: #ffa500; font-weight: 700;">Détection → Analyse → Alerte sonore et visuelle</p>
+                    </div>
+                </div>
+
+                <div class="note-box" style="margin-top: 2rem;">
+                    <p><strong>NB :</strong> En dehors de déclencher l'alerte, le système peut être fait aussi avec une nouvelle version qui va lui envoyer un message d'alerte au propriétaire de la maison ou responsable du lieu. Mais cette option dépend des situations : tout le monde ne veut pas que le système fonctionne avec envoi de SMS pour son foyer.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PARTIE 4 : COMPOSANTS ÉLECTRONIQUES ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-microchip"></i> DÉTAILS TECHNIQUES ET COMPOSANTS</h2>
+            <div class="section-content">
+                <p>
+                    <strong>Il est important de bien maîtriser tous les aspects des détails techniques du projet (Équipe technique).</strong>
+                </p>
+
+                <h3 style="color: #ffa500; margin-top: 2rem; margin-bottom: 1rem;">Liste des composants électroniques</h3>
+
+                <div class="component-list">
+                    <div class="component-item">
+                        <h4>ESP32</h4>
+                        <p>Carte mère du système, servant de microcontrôleur. Réputée pour être très dynamique grâce à ses deux modules WiFi et Bluetooth intégrés.</p>
+                        <span class="tag">Carte mère</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Capteur MQ-2</h4>
+                        <p>Capteur de gaz polyvalent détectant le GPL, le propane, le méthane et la fumée. Fonctionne par variation de résistance en présence des gaz cibles, avec sortie analogique pour interface avec les microcontrôleurs.</p>
+                        <span class="tag">Capteur</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Capteur MQ-4 / MQ-5</h4>
+                        <p>Capteurs spécialement construits pour détecter les fuites de gaz comme le butane (C4H10). Offrent une sensibilité accrue pour les gaz domestiques.</p>
+                        <span class="tag">Capteur</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Buzzer</h4>
+                        <p>Alarme sonore permettant d'alerter le propriétaire ou toute personne à côté de la cuisine ou dans l'enceinte de la maison. Reçoit un signal de la carte ESP32 après détection de gaz.</p>
+                        <span class="tag">Actionneur</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>LEDS (2 minimum)</h4>
+                        <p>Lumières bleues pour alerter de manière visuelle. Fournissent un signal lumineux clair en cas de détection de gaz, complétant l'alerte sonore.</p>
+                        <span class="tag">Actionneur</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Platine de soudure</h4>
+                        <p>Rend le circuit fixe et compact, facilitant l'intégration dans un boîtier réduit comme un smartphone.</p>
+                        <span class="tag">Composant passif</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Batterie rechargeable 5V</h4>
+                        <p>Alimentation à longue durée, rechargeable, assurant l'autonomie du système. Permet un fonctionnement continu sans être dépendant du secteur.</p>
+                        <span class="tag">Alimentation</span>
+                    </div>
+                </div>
+
+                <div class="note-box" style="margin-top: 2rem;">
+                    <p><strong>NB :</strong> Tout le système électronique (hardware) va être emboîté et réduit le plus possible dans un format compact, similaire à un smartphone.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PARTIE 5 : ÉVOLUTIONS POSSIBLES ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-rocket"></i> ÉVOLUTIONS ET AMÉLIORATIONS</h2>
+            <div class="section-content">
+                <p>
+                    Le projet SAGAF est conçu pour être évolutif. Voici les améliorations envisagées :
+                </p>
+
+                <div class="evolution-box">
+                    <div class="icon"><i class="fas fa-sms"></i></div>
+                    <h4>Version avec envoi de SMS</h4>
+                    <p>
+                        Une version améliorée du système pourrait envoyer un message d'alerte au propriétaire de la maison ou au responsable du lieu via un module GSM (comme le SIM800L). Cela permettrait d'alerter à distance même si personne n'est sur place.
+                    </p>
+                </div>
+
+                <div class="evolution-box">
+                    <div class="icon"><i class="fas fa-wifi"></i></div>
+                    <h4>Connectivité WiFi et notification mobile</h4>
+                    <p>
+                        Grâce au module WiFi intégré de l'ESP32, le système pourrait envoyer des notifications à un smartphone via une application dédiée ou des services comme Telegram/Blynk.
+                    </p>
+                </div>
+
+                <div class="evolution-box">
+                    <div class="icon"><i class="fas fa-sync-alt"></i></div>
+                    <h4>Fonctionnement autonome</h4>
+                    <p>
+                        Le système pourrait être équipé d'une batterie plus puissante et d'un panneau solaire pour une autonomie totale, idéal pour les zones sans électricité.
+                    </p>
+                </div>
+
+                <div class="note-box">
+                    <p><strong>NB :</strong> Ces options dépendent des besoins du client. Tout le monde ne souhaite pas que le système fonctionne avec envoi de SMS pour son foyer.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 2rem 0; color: var(--text-secondary); font-size: 0.9rem; border-top: 1px solid var(--glass-border);">
+            <p>
+                <i class="fas fa-copyright"></i> AFRICA.TECH21 - Projet SAGAF | Système d'Alerte pour Fuite de Gaz
+            </p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-secondary);">
+                Document technique par la direction • Tous droits réservés
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        // Vérification de connexion
+        if (localStorage.getItem('memberLoggedIn') !== 'true') {
+            window.location.href = 'espace-membres.html';
+        }
+    </script>
+</body>
+</html>
