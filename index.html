@@ -273,6 +273,24 @@ body.has-announcement .cyber-header {
             margin: 0 auto;
         }
 
+        .cyber-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cyber-logo img {
+            height: 45px;
+            width: auto;
+            filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.4));
+            transition: all 0.3s ease;
+        }
+
+        .cyber-logo img:hover {
+            filter: drop-shadow(0 0 20px rgba(0, 243, 255, 0.8));
+            transform: scale(1.05);
+        }
+
         .cyber-logo h1 {
             font-family: 'Orbitron', monospace;
             font-size: 1.8rem;
@@ -284,6 +302,8 @@ body.has-announcement .cyber-header {
             text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
             letter-spacing: 2px;
             animation: glowPulse 2s ease-in-out infinite;
+            margin: 0;
+            display: inline-block;
         }
 
         @keyframes glowPulse {
@@ -925,6 +945,19 @@ body.has-announcement .cyber-header {
                 gap: 1rem;
             }
 
+            .cyber-logo {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .cyber-logo img {
+                height: 35px;
+            }
+
+            .cyber-logo h1 {
+                font-size: 1.4rem;
+            }
+
             .nav-menu {
                 gap: 1rem;
                 flex-wrap: wrap;
@@ -984,6 +1017,8 @@ body.has-announcement .cyber-header {
     <header class="cyber-header">
         <nav class="cyber-nav">
             <div class="cyber-logo">
+                <!-- === LOGO AJOUTÉ ICI === -->
+                <img src="new logo AFRICA.TECH21.jpeg" alt="AFRICA.TECH21">
                 <h1>AFRICA.<span>TECH21</span></h1>
             </div>
             
@@ -991,7 +1026,7 @@ body.has-announcement .cyber-header {
                 <li><a href="#projects">Projets</a></li>
                 <li><a href="#contact">Contact</a></li>
                 <li><a href="#aide">Aide</a></li>
-                <!-- BOUTON HIKMAH'S CLUB AJOUTÉ ICI -->
+                <!-- BOUTON HIKMAH'S CLUB -->
                 <li><a href="hikmah-accueil.html" class="hikmah-btn">
                     <i class="fas fa-graduation-cap"></i> HIKMAH'S CLUB
                 </a></li>
