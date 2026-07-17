@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BINV | AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Exo 2', 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-purple: #7b2cbf;
+            --neon-green: #00ff88;
+            --neon-pink: #ff00ff;
+            --dark-space: #0a0a12;
+            --deep-space: #050510;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a8c0;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --panel-glow: 0 0 30px rgba(138, 43, 226, 0.2);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .hologram-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(138, 43, 226, 0.02) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(138, 43, 226, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridScan 20s linear infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        @keyframes gridScan {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            margin-bottom: 2rem;
+            background: rgba(138, 43, 226, 0.1);
+            border: 1px solid #8a2be2;
+            border-radius: 10px;
+            color: #8a2be2;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(138, 43, 226, 0.2);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+        }
+
+        .page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .project-header {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 4rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            box-shadow: var(--panel-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(138, 43, 226, 0.05) 0%, transparent 60%);
+            animation: rotateGlow 20s linear infinite;
+        }
+
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .project-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            background: linear-gradient(45deg, #8a2be2, #da70d6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-header .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-header .status-badge {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.5rem 2rem;
+            background: rgba(138, 43, 226, 0.1);
+            border: 1px solid #8a2be2;
+            border-radius: 20px;
+            color: #8a2be2;
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--panel-glow);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            color: var(--neon-blue);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title i {
+            color: #8a2be2;
+        }
+
+        .section-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .section-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-content strong {
+            color: var(--text-primary);
+        }
+
+        .section-content ul, .section-content ol {
+            padding-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-content li {
+            margin-bottom: 0.8rem;
+        }
+
+        .component-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .component-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border-left: 3px solid #8a2be2;
+        }
+
+        .component-item:hover {
+            border-color: #8a2be2;
+            background: rgba(138, 43, 226, 0.05);
+        }
+
+        .component-item h4 {
+            color: #da70d6;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .component-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .component-item .tag {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.2rem 0.8rem;
+            background: rgba(138, 43, 226, 0.1);
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: #8a2be2;
+        }
+
+        .note-box {
+            background: rgba(0, 240, 255, 0.05);
+            border-left: 4px solid var(--neon-blue);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .note-box strong {
+            color: var(--neon-blue);
+        }
+
+        .warning-box {
+            background: rgba(255, 0, 0, 0.05);
+            border-left: 4px solid #ff0000;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .warning-box strong {
+            color: #ff0000;
+        }
+
+        .step-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .step-card .step-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: #8a2be2;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-card h4 {
+            color: var(--neon-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .ai-box {
+            background: rgba(138, 43, 226, 0.03);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .ai-box .icon {
+            font-size: 2.5rem;
+            color: #da70d6;
+            margin-bottom: 0.5rem;
+        }
+
+        .ai-box h4 {
+            color: #da70d6;
+            margin-bottom: 0.5rem;
+        }
+
+        .ai-box p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .project-header { padding: 2rem 1.5rem; }
+            .project-header h1 { font-size: 2.5rem; }
+            .section { padding: 1.5rem; }
+            .section-title { font-size: 1.5rem; }
+            .component-list { grid-template-columns: 1fr; }
+            .step-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hologram-grid"></div>
+
+    <div class="page-container">
+        <!-- Bouton retour -->
+        <a href="dashboard.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD
+        </a>
+
+        <!-- En-tête du projet -->
+        <header class="project-header">
+            <h1>BINV</h1>
+            <p class="subtitle">Bâton Intelligent pour les Non-Voyants</p>
+            <div class="status-badge">
+                <i class="fas fa-circle"></i> PROTOTYPAGE
+            </div>
+        </header>
+
+        <!-- ==================== PARTIE 1 : INTRODUCTION ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-eye-slash"></i> INTRODUCTION</h2>
+            <div class="section-content">
+                <p>
+                    Le projet <strong>BINV</strong> (Bâton Intelligent pour les Non-Voyants) version améliorée V360 a pour but de faciliter la vie des aveugles. Il s'agit d'un bâton qui alerte ces derniers contre les obstacles : trous, murs, roches, etc.
+                </p>
+                <p>
+                    Après avoir identifié l'obstacle, une voix est prononcée dans différentes langues (française, wolof, anglaise, etc.) à l'aide d'un écouteur pour mieux interpréter le message.
+                </p>
+                <div class="note-box">
+                    <p><strong>NB :</strong> Pour ce modèle, l'écouteur est avec fil. Les appareils avec Bluetooth ne sont pas compatibles pour cette version, mais cela pourra être envisagé dans les versions futures.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PARTIE 2 : FONCTIONNEMENT ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-cogs"></i> FONCTIONNEMENT DU SYSTÈME</h2>
+            <div class="section-content">
+                <p>
+                    Le fonctionnement du BINV repose sur une chaîne de traitement simple mais efficace :
+                </p>
+                <ol>
+                    <li><strong>Capture d'images :</strong> La caméra intégrée à l'ESP32-CAM capture en temps réel l'environnement devant l'utilisateur.</li>
+                    <li><strong>Analyse IA :</strong> Un algorithme d'intelligence artificielle analyse les images pour détecter les obstacles (murs, trous, roches, etc.).</li>
+                    <li><strong>Décision :</strong> Si un obstacle est identifié, le système prend une décision : alerter l'utilisateur.</li>
+                    <li><strong>Alerte vocale :</strong> Le DFPlayer Mini lit un fichier audio MP3 stocké sur la carte microSD, qui est diffusé via le haut-parleur ou l'écouteur.</li>
+                    <li><strong>Message personnalisé :</strong> L'alerte est adaptée à l'obstacle détecté (ex: "Attention, trou devant", "Obstacle à droite", etc.).</li>
+                </ol>
+
+                <div style="text-align: center; padding: 2rem; background: rgba(0,0,0,0.3); border-radius: 15px; margin-top: 2rem;">
+                    <p style="color: var(--text-secondary); font-size: 1.2rem;">
+                        <i class="fas fa-microchip" style="color: #8a2be2; font-size: 3rem; display: block; margin-bottom: 1rem;"></i>
+                        <strong>ESP32-CAM</strong> (Cerveau du système)
+                    </p>
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; margin-top: 2rem;">
+                        <div style="background: rgba(138, 43, 226, 0.05); padding: 1rem 2rem; border-radius: 10px; border: 1px solid #8a2be2;">
+                            <i class="fas fa-camera" style="color: #8a2be2;"></i>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">ESP32-CAM (Capture)</p>
+                        </div>
+                        <div style="background: rgba(138, 43, 226, 0.05); padding: 1rem 2rem; border-radius: 10px; border: 1px solid #8a2be2;">
+                            <i class="fas fa-brain" style="color: #8a2be2;"></i>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">IA (Analyse)</p>
+                        </div>
+                        <div style="background: rgba(138, 43, 226, 0.05); padding: 1rem 2rem; border-radius: 10px; border: 1px solid #8a2be2;">
+                            <i class="fas fa-microphone-alt" style="color: #8a2be2;"></i>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">DFPlayer Mini (Audio)</p>
+                        </div>
+                        <div style="background: rgba(138, 43, 226, 0.05); padding: 1rem 2rem; border-radius: 10px; border: 1px solid #8a2be2;">
+                            <i class="fas fa-volume-up" style="color: #8a2be2;"></i>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">Haut-parleur / Écouteur</p>
+                        </div>
+                    </div>
+                    <div style="margin-top: 2rem; padding: 1rem; background: rgba(138, 43, 226, 0.05); border-radius: 10px; border: 1px solid #8a2be2;">
+                        <p style="color: #8a2be2; font-weight: 700;">Capture → Analyse → Décision → Alerte vocale</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PARTIE 3 : COMPOSANTS ÉLECTRONIQUES ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-microchip"></i> COMPOSANTS ÉLECTRONIQUES</h2>
+            <div class="section-content">
+                <p>
+                    <strong>Pour l'équipe technique électro :</strong> Voici le rôle de chaque composant au sein du projet BINV.
+                </p>
+
+                <div class="component-list">
+                    <!-- 1 -->
+                    <div class="component-item">
+                        <h4>ESP32-CAM</h4>
+                        <p><strong>Rôle :</strong> C'est le cerveau du système. Il gère la détection des obstacles via la caméra et prend des décisions en temps réel pour envoyer des alertes.</p>
+                        <p><strong>Fonction :</strong> Analyse des images capturées pour détecter des obstacles ou des trous, en utilisant des algorithmes d'IA ou de traitement d'image.</p>
+                        <span class="tag">Carte mère</span>
+                    </div>
+
+                    <!-- 2 -->
+                    <div class="component-item">
+                        <h4>DFPlayer Mini</h4>
+                        <p><strong>Rôle :</strong> Lecteur audio qui permet d'émettre des alertes vocales.</p>
+                        <p><strong>Fonction :</strong> Lorsqu'un obstacle est détecté, il joue des fichiers audio MP3 stockés sur la carte microSD pour avertir l'utilisateur (ex : "Obstacle détecté devant, contourner").</p>
+                        <span class="tag">Actionneur</span>
+                    </div>
+
+                    <!-- 3 -->
+                    <div class="component-item">
+                        <h4>Haut-parleur</h4>
+                        <p><strong>Rôle :</strong> Restituer le son des alertes émises par le DFPlayer Mini.</p>
+                        <p><strong>Fonction :</strong> Reproduit les messages vocaux ou les sons d'alerte qui indiquent à l'utilisateur la présence d'obstacles ou de dangers.</p>
+                        <span class="tag">Actionneur</span>
+                    </div>
+
+                    <!-- 4 -->
+                    <div class="component-item">
+                        <h4>Carte microSD</h4>
+                        <p><strong>Rôle :</strong> Stocke les fichiers audios nécessaires aux alertes vocales.</p>
+                        <p><strong>Fonction :</strong> Permet de charger plusieurs fichiers audios pour différents types d'alertes (obstacles, terrains accidentés, etc.).</p>
+                        <span class="tag">Stockage</span>
+                    </div>
+
+                    <!-- 5 -->
+                    <div class="component-item">
+                        <h4>Batterie Li-ion (7,4V)</h4>
+                        <p><strong>Rôle :</strong> Fournit de l'énergie à l'ensemble du système.</p>
+                        <p><strong>NB :</strong> La tension de la batterie n'est pas fixe et peut être changée avec le temps.</p>
+                        <span class="tag">Alimentation</span>
+                    </div>
+                </div>
+
+                <div class="note-box">
+                    <p><strong>NB :</strong> Ce document est une proposition de la direction AFRICA.TECH21 (équipe technique). Les composants et leur sélection peuvent être adaptés lors des réunions techniques.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PARTIE 4 : RÔLE DE L'IA ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-brain"></i> LE RÔLE DE L'IA AU CŒUR DU BINV</h2>
+            <div class="section-content">
+                <div class="ai-box">
+                    <div class="icon"><i class="fas fa-robot"></i></div>
+                    <h4>Intelligence Artificielle</h4>
+                    <p>
+                        L'IA est au cœur du système BINV. Elle permet de <strong>voir à la place de la personne non voyante</strong>, en utilisant la caméra pour reconnaître les obstacles ou les trous, puis donne un avertissement vocal pour l'aider à éviter le danger.
+                    </p>
+                </div>
+
+                <p><strong>Fonctions de l'IA :</strong></p>
+                <ul>
+                    <li>Analyser en temps réel les images capturées par la caméra de l'ESP32-CAM.</li>
+                    <li>Reconnaître les éléments de l'environnement (obstacles, trous, sol libre).</li>
+                    <li>Prendre une décision automatique : alerter l'utilisateur en cas de danger ou obstacle.</li>
+                    <li>Générer une alerte adaptée (message vocal via DFPlayer Mini).</li>
+                </ul>
+
+                <div class="warning-box">
+                    <p><strong>Exemple concret :</strong> L'IA voit une forme sombre devant → elle la reconnaît comme un trou → elle déclenche l'audio : <strong>"Attention, trou devant"</strong>.</p>
+                </div>
+
+                <div class="note-box">
+                    <p><strong>NB :</strong> L'IA est entraînée pour reconnaître différents types d'obstacles et adapter le message vocal en conséquence.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PARTIE 5 : ÉVOLUTIONS ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-rocket"></i> ÉVOLUTIONS ET AMÉLIORATIONS</h2>
+            <div class="section-content">
+                <p>
+                    Le projet BINV est conçu pour être évolutif. Voici les améliorations envisagées :
+                </p>
+
+                <div class="step-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h4>Version Bluetooth</h4>
+                        <p>Intégration d'un module Bluetooth pour connecter des écouteurs sans fil, offrant plus de liberté à l'utilisateur.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h4>Reconnaissance avancée</h4>
+                        <p>Amélioration de l'IA pour reconnaître des objets spécifiques (escaliers, poteaux, piétons, etc.) et fournir des alertes plus précises.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h4>GPS intégré</h4>
+                        <p>Ajout d'un module GPS pour aider l'utilisateur à se repérer et à naviguer dans des itinéraires connus.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h4>Recharge solaire</h4>
+                        <p>Panneau solaire intégré pour une autonomie prolongée, idéal pour les zones sans électricité.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 2rem 0; color: var(--text-secondary); font-size: 0.9rem; border-top: 1px solid var(--glass-border);">
+            <p>
+                <i class="fas fa-copyright"></i> AFRICA.TECH21 - Projet BINV | Bâton Intelligent pour les Non-Voyants
+            </p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-secondary);">
+                Document technique par la direction • Tous droits réservés • Proposition 1
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        // Vérification de connexion
+        if (localStorage.getItem('memberLoggedIn') !== 'true') {
+            window.location.href = 'espace-membres.html';
+        }
+    </script>
+</body>
+</html>
