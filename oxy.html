@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet OXY | AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Exo 2', 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-purple: #7b2cbf;
+            --neon-green: #00ff88;
+            --neon-pink: #ff00ff;
+            --dark-space: #0a0a12;
+            --deep-space: #050510;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a8c0;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --panel-glow: 0 0 30px rgba(0, 240, 255, 0.2);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .hologram-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridScan 20s linear infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        @keyframes gridScan {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            margin-bottom: 2rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 10px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        .page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .project-header {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 4rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            box-shadow: var(--panel-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(0, 240, 255, 0.05) 0%, transparent 60%);
+            animation: rotateGlow 20s linear infinite;
+        }
+
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .project-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-header .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-header .status-badge {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.5rem 2rem;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--neon-green);
+            border-radius: 20px;
+            color: var(--neon-green);
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--panel-glow);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            color: var(--neon-blue);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title i {
+            color: var(--neon-green);
+        }
+
+        .section-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .section-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-content strong {
+            color: var(--text-primary);
+        }
+
+        .pathology-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .pathology-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .pathology-card:hover {
+            border-color: var(--neon-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .pathology-card h4 {
+            color: var(--neon-green);
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .pathology-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .component-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .component-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border-left: 3px solid var(--neon-blue);
+        }
+
+        .component-item:hover {
+            border-color: var(--neon-blue);
+            background: rgba(0, 240, 255, 0.05);
+        }
+
+        .component-item h4 {
+            color: var(--neon-blue);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .component-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .component-item .tag {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.2rem 0.8rem;
+            background: rgba(0, 240, 255, 0.1);
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: var(--neon-blue);
+        }
+
+        .note-box {
+            background: rgba(0, 240, 255, 0.05);
+            border-left: 4px solid var(--neon-blue);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .note-box strong {
+            color: var(--neon-blue);
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .project-header { padding: 2rem 1.5rem; }
+            .project-header h1 { font-size: 2.5rem; }
+            .section { padding: 1.5rem; }
+            .section-title { font-size: 1.5rem; }
+            .pathology-grid { grid-template-columns: 1fr; }
+            .component-list { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hologram-grid"></div>
+
+    <div class="page-container">
+        <!-- Bouton retour -->
+        <a href="dashboard.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD
+        </a>
+
+        <!-- En-tête du projet -->
+        <header class="project-header">
+            <h1>PROJET OXY</h1>
+            <p class="subtitle">Système d'assistance respiratoire automatique</p>
+            <div class="status-badge">
+                <i class="fas fa-circle"></i> R&D MÉDICALE ACTIVE
+            </div>
+        </header>
+
+        <!-- PARTIE 1 : MÉDICALE -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-heartbeat"></i> PARTIE MÉDICALE</h2>
+            <div class="section-content">
+
+                <h3 style="color: var(--neon-green); margin-bottom: 1rem;">Introduction</h3>
+                <p>
+                    <strong>Projet OXY</strong> est un système qui produit de l'air enrichi en oxygène dans le but d'apporter une assistance respiratoire automatique aux patients qui ne respirent pas ou ont une respiration insuffisante.
+                </p>
+
+                <h3 style="color: var(--neon-green); margin-bottom: 1rem;">Motivations</h3>
+                <p>
+                    De nombreux patients souffrent de problèmes respiratoires : asthmatiques, personnes atteintes de troubles respiratoires, mais aussi d'autres causes graves comme l'insuffisance respiratoire aiguë, les défaillances neurologiques, les traumatismes graves, etc. Le projet OXY vise à couvrir un large spectre de pathologies nécessitant une assistance ventilatoire.
+                </p>
+
+                <h3 style="color: var(--neon-green); margin-bottom: 1rem;">Pathologies prises en charge</h3>
+
+                <div class="pathology-grid">
+                    <!-- 1 -->
+                    <div class="pathology-card">
+                        <h4>Insuffisance Respiratoire Aiguë</h4>
+                        <p><strong>SDRA (Détresse Respiratoire Aiguë) :</strong> Alvéoles remplies de liquide, empêchant l'oxygène d'atteindre le sang. Nécessite une hospitalisation en soins intensifs avec ventilateur.</p>
+                        <p style="margin-top: 0.5rem;"><strong>Œdème pulmonaire cardiogénique :</strong> Accumulation de liquide dans les poumons causée par une défaillance cardiaque.</p>
+                        <p style="margin-top: 0.5rem;"><strong>Exacerbation de BPCO sévère :</strong> Aggravation intense des symptômes respiratoires nécessitant une hospitalisation.</p>
+                        <p style="margin-top: 0.5rem;"><strong>Crise d'asthme sévère :</strong> Obstruction bronchique intense, résistance aux traitements habituels.</p>
+                    </div>
+
+                    <!-- 2 -->
+                    <div class="pathology-card">
+                        <h4>Défaillance Neurologique / Neuromusculaire</h4>
+                        <p><strong>AVC (Accident Vasculaire Cérébral) :</strong> Interruption ou rupture d'un vaisseau sanguin cérébral, entraînant une destruction du tissu cérébral et souvent une dépression respiratoire.</p>
+                        <p style="margin-top: 0.5rem;"><strong>SLA (Sclérose Latérale Amyotrophique) :</strong> Maladie neurodégénérative progressive détruisant les motoneurones, paralysie croissante, décès par insuffisance respiratoire.</p>
+                        <p style="margin-top: 0.5rem;"><strong>Syndrome de Guillain-Barré :</strong> Paralysie ascendante rapide pouvant atteindre les muscles respiratoires.</p>
+                        <p style="margin-top: 0.5rem;"><strong>Myasthénie Grave :</strong> Faiblesse musculaire fluctuante, risque de détresse respiratoire aiguë.</p>
+                    </div>
+
+                    <!-- 3 -->
+                    <div class="pathology-card">
+                        <h4>Chirurgie / Anesthésie</h4>
+                        <p><strong>Ventilation peropératoire :</strong> Réglage du volume courant, de la fréquence respiratoire, de la PEP pendant les interventions chirurgicales.</p>
+                        <p style="margin-top: 0.5rem;"><strong>Réanimation post-opératoire :</strong> Prise en charge intensive et surveillance rapprochée après une chirurgie lourde.</p>
+                        <p style="margin-top: 0.5rem;"><strong>Sédation profonde prolongée :</strong> Endormissement contrôlé en fin de vie pour soulager les souffrances.</p>
+                    </div>
+
+                    <!-- 4 -->
+                    <div class="pathology-card">
+                        <h4>Traumatologie Grave</h4>
+                        <p><strong>Traumatisme crânien sévère :</strong> Lésions cérébrales graves entraînant un coma (Glasgow ≤ 8) et une défaillance respiratoire.</p>
+                        <p style="margin-top: 0.5rem;"><strong>Lésion médullaire haute C1-C4 :</strong> Paralysie complète des membres et des muscles respiratoires, nécessitant une ventilation permanente.</p>
+                        <p style="margin-top: 0.5rem;"><strong>Brûlures graves avec atteinte des voies aériennes :</strong> Inhalation de gaz brûlants, gonflement de la gorge, risque d'étouffement rapide.</p>
+                    </div>
+
+                    <!-- 5 -->
+                    <div class="pathology-card">
+                        <h4>Pathologies Chroniques</h4>
+                        <p><strong>Fibrose Pulmonaire Idiopathique :</strong> Cicatrisation des tissus pulmonaires, réduction progressive de la capacité respiratoire, nécessité d'oxygénothérapie à long terme.</p>
+                        <p style="margin-top: 0.5rem;"><strong>Hypertension Artérielle Pulmonaire :</strong> Augmentation de la pression dans les artères pulmonaires, insuffisance cardiaque progressive.</p>
+                        <p style="margin-top: 0.5rem;"><strong>Mucoviscidose :</strong> Maladie génétique avec obstruction chronique des bronches, infections récidivantes, insuffisance respiratoire progressive.</p>
+                    </div>
+
+                    <!-- 6 -->
+                    <div class="pathology-card">
+                        <h4>Pathologies Pédiatriques</h4>
+                        <p><strong>Apnée du prématuré :</strong> Pauses respiratoires chez les nouveau-nés prématurés, bradycardie et hypoxie.</p>
+                        <p style="margin-top: 0.5rem;"><strong>Bronchiolite sévère :</strong> Infection des bronchioles chez le nourrisson, détresse respiratoire avec tirage intercostal.</p>
+                        <p style="margin-top: 0.5rem;"><strong>Syndrome de Détresse Respiratoire Néonatale :</strong> Manque de surfactant pulmonaire chez le prématuré, collapsus alvéolaire généralisé.</p>
+                    </div>
+
+                    <!-- 7 -->
+                    <div class="pathology-card">
+                        <h4>Pathologies Infectieuses</h4>
+                        <p><strong>Pneumonie sévère / COVID-19 :</strong> Hypoxémie sévère, pneumonie bilatérale, évolution vers le SDRA.</p>
+                        <p style="margin-top: 0.5rem;"><strong>Sepsis avec défaillance respiratoire :</strong> Réponse inflammatoire systémique grave, atteinte pulmonaire sévère, ventilation mécanique souvent nécessaire.</p>
+                    </div>
+                </div>
+
+                <div class="note-box">
+                    <p><strong>NB :</strong> La compréhension de ces pathologies est obligatoire pour la suite du projet. Le projet OXY sera spécifique à ces cas, avec des paramètres configurables (volume courant, fréquence, PEP, profil patient : adulte/enfant/nourrisson) pour couvrir un large spectre de besoins cliniques.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PARTIE 2 : ÉLECTRONIQUE -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-microchip"></i> PARTIE ÉLECTRONIQUE</h2>
+            <div class="section-content">
+
+                <h3 style="color: var(--neon-green); margin-bottom: 1rem;">Système de fonctionnement</h3>
+                <p>
+                    Le projet OXY repose sur un système mécanique automatisé qui compresse un <strong>ballon Ambu (réanimateur manuel)</strong> via un bras motorisé contrôlé par un <strong>moteur pas à pas NEMA23</strong> et son <strong>driver TB6600</strong>. Le système est piloté par un <strong>ESP32</strong> qui interroge une <strong>base de données médicale</strong> stockée sur une <strong>carte MicroSD</strong> pour ajuster automatiquement les paramètres respiratoires (volume courant, fréquence, PEP) en fonction de la maladie sélectionnée par le médecin via un <strong>écran tactile 3.5" ILI9488</strong>. Une redondance mécanique est assurée par des <strong>boutons industriels</strong>, et la sécurité est renforcée par un <strong>E-STOP</strong>, un <strong>watchdog externe TPL5110</strong>, et un <strong>buzzer piezoélectrique</strong> pour les alarmes sonores.
+                </p>
+
+                <h3 style="color: var(--neon-green); margin-bottom: 1rem;">Liste des composants</h3>
+
+                <div class="component-list">
+                    <!-- 1 -->
+                    <div class="component-item">
+                        <h4>NEMA23 (Moteur pas à pas)</h4>
+                        <p>Moteur 57×57 mm, couple 1.0–3.0 Nm, courant 2–4A. Idéal pour la compression directe du ballon Ambu sur des milliers de cycles sans perte de pas.</p>
+                        <span class="tag">Mécanique</span>
+                    </div>
+
+                    <!-- 2 -->
+                    <div class="component-item">
+                        <h4>TB6600 (Driver)</h4>
+                        <p>Driver industriel pilotant le NEMA23, isolation optique, microstepping jusqu'à 1/32 de pas, alimentation 9–42V, protections intégrées contre la surchauffe.</p>
+                        <span class="tag">Contrôle</span>
+                    </div>
+
+                    <!-- 3 -->
+                    <div class="component-item">
+                        <h4>ESP32-WROOM-32</h4>
+                        <p>Cerveau central, dual-core 240 MHz, 34 GPIO. Exécute le système expert, contrôle le moteur, surveille les paramètres vitaux, WiFi intégré pour supervision à distance.</p>
+                        <span class="tag">Microcontrôleur</span>
+                    </div>
+
+                    <!-- 4 -->
+                    <div class="component-item">
+                        <h4>Écran TFT LCD 3.5" ILI9488</h4>
+                        <p>Écran tactile résistif, 480×320px, communication SPI. Compatible avec les gants médicaux, interface graphique du système expert embarqué.</p>
+                        <span class="tag">Interface</span>
+                    </div>
+
+                    <!-- 5 -->
+                    <div class="component-item">
+                        <h4>Boutons industriels IP67 (Pushbutton)</h4>
+                        <p>Système de redondance mécanique, garantit l'accès aux fonctions critiques même en cas de défaillance de l'écran tactile. Tension 3.3–12V.</p>
+                        <span class="tag">Redondance</span>
+                    </div>
+
+                    <!-- 6 -->
+                    <div class="component-item">
+                        <h4>Capteur de pression MPXV7002DP</h4>
+                        <p>Capteur piézorésistif différentiel, plage 0–20 cmH2O. Mesure en temps réel la pression des voies aériennes, détecte surpression, déconnexion ou apnée.</p>
+                        <span class="tag">Capteur</span>
+                    </div>
+
+                    <!-- 7 -->
+                    <div class="component-item">
+                        <h4>Buzzer piezoélectrique actif</h4>
+                        <p>Alarme sonore 80–95 dB, déclenchement matériel indépendant du logiciel. Alerte en cas de surpression, basse pression, apnée, déconnexion.</p>
+                        <span class="tag">Sécurité</span>
+                    </div>
+
+                    <!-- 8 -->
+                    <div class="component-item">
+                        <h4>Capteur SpO2 MAX30102</h4>
+                        <p>Capteur optique mesurant la saturation en oxygène (SpO2) et la fréquence cardiaque. Vérifie en temps réel l'efficacité de la ventilation.</p>
+                        <span class="tag">Monitoring</span>
+                    </div>
+
+                    <!-- 9 -->
+                    <div class="component-item">
+                        <h4>Capteur de débit SFM3000</h4>
+                        <p>Capteur de débit massique, mesure le volume d'air réellement délivré. Permet une boucle de contrôle fermée pour corriger les fuites ou résistances.</p>
+                        <span class="tag">Contrôle</span>
+                    </div>
+
+                    <!-- 10 -->
+                    <div class="component-item">
+                        <h4>Alimentation 12V (Batterie + Secteur)</h4>
+                        <p>Double source : secteur 220V via adaptateur 12V et batterie Li-ion. Basculement automatique, autonomie 4 heures. BMS intégré.</p>
+                        <span class="tag">Alimentation</span>
+                    </div>
+
+                    <!-- 11 -->
+                    <div class="component-item">
+                        <h4>Module Relais 12V</h4>
+                        <p>Gestionnaire d'alimentation, basculement automatique secteur/batterie sans interruption. Isolation optique intégrée pour protéger l'ESP32.</p>
+                        <span class="tag">Alimentation</span>
+                    </div>
+
+                    <!-- 12 -->
+                    <div class="component-item">
+                        <h4>Carte MicroSD</h4>
+                        <p>Stockage externe de la base de données médicale complète (paramètres ventilatoires par maladie, âge, poids). Journalisation des sessions de ventilation.</p>
+                        <span class="tag">Stockage</span>
+                    </div>
+
+                    <!-- 13 -->
+                    <div class="component-item">
+                        <h4>Module RTC DS3231</h4>
+                        <p>Horloge temps réel avec pile CR2032 intégrée, dérive ±2 min/an. Horodatage précis des sessions de ventilation pour traçabilité médicale.</p>
+                        <span class="tag">Horloge</span>
+                    </div>
+
+                    <!-- 14 -->
+                    <div class="component-item">
+                        <h4>Régulateur LM2596</h4>
+                        <p>Convertisseur abaisseur 12V → 3.3V stable pour alimenter ESP32, écran, capteurs. Rendement 92%, protège contre les fluctuations de tension.</p>
+                        <span class="tag">Alimentation</span>
+                    </div>
+
+                    <!-- 15 -->
+                    <div class="component-item">
+                        <h4>Fin de course (Limit Switch)</h4>
+                        <p>Capteur de position aux extrémités du bras moteur. Permet le homing automatique à chaque démarrage pour calibrer la position zéro du bras.</p>
+                        <span class="tag">Mécanique</span>
+                    </div>
+
+                    <!-- 16 -->
+                    <div class="component-item">
+                        <h4>E-STOP (Arrêt d'urgence)</h4>
+                        <p>Bouton rouge à verrouillage mécanique, coupure physique de l'alimentation du moteur. Contact NC, indépendant de tout logiciel.</p>
+                        <span class="tag">Sécurité</span>
+                    </div>
+
+                    <!-- 17 -->
+                    <div class="component-item">
+                        <h4>Watchdog Externe TPL5110</h4>
+                        <p>Circuit de surveillance matériel, réinitialise l'ESP32 si le logiciel se bloque. Envoi périodique d'un signal "prouve que je fonctionne".</p>
+                        <span class="tag">Sécurité</span>
+                    </div>
+
+                    <!-- 18 -->
+                    <div class="component-item">
+                        <h4>Électrovanne PEEP</h4>
+                        <p>Valve électronique contrôlant la Pression Positive de Fin d'Expiration (0–20 cmH2O). Commandée en PWM par l'ESP32, maintient les alvéoles ouvertes.</p>
+                        <span class="tag">Pneumatique</span>
+                    </div>
+
+                    <!-- 19 -->
+                    <div class="component-item">
+                        <h4>Capteur de courant INA219</h4>
+                        <p>Surveillance électrique, détecte les anomalies de consommation du moteur (blocage mécanique). Affiche en temps réel l'autonomie restante de la batterie.</p>
+                        <span class="tag">Monitoring</span>
+                    </div>
+
+                    <!-- 20 -->
+                    <div class="component-item">
+                        <h4>Ventilateur 40 mm 12V</h4>
+                        <p>Refroidissement du TB6600 et du NEMA23. Activation automatique par l'ESP32 en fonction de la température interne (DS18B20).</p>
+                        <span class="tag">Thermique</span>
+                    </div>
+
+                    <!-- 21 -->
+                    <div class="component-item">
+                        <h4>Capteur de température DS18B20</h4>
+                        <p>Capteur numérique 1-Wire, mesure précise à ±0.5°C de la température interne du boîtier. Déclenche le ventilateur et génère des alarmes critiques.</p>
+                        <span class="tag">Thermique</span>
+                    </div>
+
+                    <!-- 22 -->
+                    <div class="component-item">
+                        <h4>Voyants LED industriels</h4>
+                        <p>Signalisation visuelle en façade : Vert (OK), Orange (avertissement), Rouge (alarme critique). Redondance avec le buzzer et l'écran.</p>
+                        <span class="tag">Interface</span>
+                    </div>
+
+                    <!-- 23 -->
+                    <div class="component-item">
+                        <h4>Filtre Bactérien HEPA</h4>
+                        <p>Capte 99.99% des bactéries et virus. Résistance respiratoire < 2 cmH2O. Usage unique, remplacé à chaque patient. Placé entre le ballon Ambu et le patient.</p>
+                        <span class="tag">Médical</span>
+                    </div>
+
+                    <!-- 24 -->
+                    <div class="component-item">
+                        <h4>Boîtier Plexiglas</h4>
+                        <p>Structure transparente permettant la surveillance visuelle du mécanisme sans ouvrir le boîtier. Fabriqué sur mesure par découpe laser, économique et professionnel.</p>
+                        <span class="tag">Mécanique</span>
+                    </div>
+
+                    <!-- 25 -->
+                    <div class="component-item">
+                        <h4>Ballon Ambu (BVM)</h4>
+                        <p>Cœur pneumatique du système. Norme ISO 10651-4, disponible en version adulte et enfant. Facilement remplaçable sur le terrain.</p>
+                        <span class="tag">Pneumatique</span>
+                    </div>
+
+                    <!-- 26 -->
+                    <div class="component-item">
+                        <h4>Circuit Respiratoire Patient</h4>
+                        <p>Lien physique entre OXY et le patient. Connexion standard 22 mm, compatible avec tout le matériel hospitalier existant. Usage unique.</p>
+                        <span class="tag">Médical</span>
+                    </div>
+
+                    <!-- 27 -->
+                    <div class="component-item">
+                        <h4>Expandeur I2C PCF8574</h4>
+                        <p>Ajoute 8 nouveaux GPIO sur le bus I2C sans consommer de ressources supplémentaires. Permet d'ajouter des boutons, LEDs ou capteurs en V1.1.</p>
+                        <span class="tag">Électronique</span>
+                    </div>
+                </div>
+
+                <div class="note-box">
+                    <p><strong>NB :</strong> Ce document est une proposition de la direction. Tous les membres travaillant sur ce projet peuvent apporter des suggestions. L'équipe technique est invitée à consulter ce document en profondeur avant toute intervention.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Partie Mécanique (synthèse) -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-cogs"></i> PARTIE MÉCANIQUE</h2>
+            <div class="section-content">
+                <p>
+                    La partie mécanique consiste à trouver la meilleure disposition pour intégrer tous les composants dans le boîtier en plexiglas, en tenant compte de la taille réelle de chaque élément (capteurs, microcontrôleur, drivers, etc.). L'objectif est de cacher le système tout en permettant une surveillance visuelle du bras moteur et du ballon Ambu à travers la transparence du plexiglas.
+                </p>
+                <p>
+                    <strong>Points clés :</strong>
+                </p>
+                <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <i class="fas fa-check-circle" style="color: var(--neon-green);"></i> Disposition optimale pour éviter tout décrochage du stepper lors de son travail
+                    </li>
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <i class="fas fa-check-circle" style="color: var(--neon-green);"></i> Homing automatique du bras grâce aux fins de course
+                    </li>
+                    <li style="padding: 0.5rem 0;">
+                        <i class="fas fa-check-circle" style="color: var(--neon-green);"></i> Accessibilité pour la maintenance et le remplacement des consommables (ballon Ambu, filtre HEPA)
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 2rem 0; color: var(--text-secondary); font-size: 0.9rem; border-top: 1px solid var(--glass-border);">
+            <p>
+                <i class="fas fa-copyright"></i> AFRICA.TECH21 - Projet OXY | Système d'assistance respiratoire automatique
+            </p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-secondary);">
+                Document technique par la direction • Tous droits réservés
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        // Vérification de connexion
+        if (localStorage.getItem('memberLoggedIn') !== 'true') {
+            window.location.href = 'espace-membres.html';
+        }
+    </script>
+</body>
+</html>
