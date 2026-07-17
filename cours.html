@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COURS AFRICA.TECH21 | Formation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Exo 2', 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-purple: #7b2cbf;
+            --neon-green: #00ff88;
+            --neon-pink: #ff00ff;
+            --dark-space: #0a0a12;
+            --deep-space: #050510;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a8c0;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --panel-glow: 0 0 30px rgba(0, 240, 255, 0.2);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .hologram-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridScan 20s linear infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        @keyframes gridScan {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            margin-bottom: 2rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 10px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        .page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .project-header {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 4rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            box-shadow: var(--panel-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(0, 240, 255, 0.05) 0%, transparent 60%);
+            animation: rotateGlow 20s linear infinite;
+        }
+
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .project-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            background: linear-gradient(45deg, var(--neon-green), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-header .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-header .status-badge {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.5rem 2rem;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--neon-green);
+            border-radius: 20px;
+            color: var(--neon-green);
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--panel-glow);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            color: var(--neon-blue);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title i {
+            color: var(--neon-green);
+        }
+
+        .section-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .section-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-content strong {
+            color: var(--text-primary);
+        }
+
+        .section-content ul, .section-content ol {
+            padding-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-content li {
+            margin-bottom: 0.8rem;
+        }
+
+        .section-content .highlight {
+            color: var(--neon-green);
+            font-weight: 600;
+        }
+
+        .section-content .blue {
+            color: var(--neon-blue);
+            font-weight: 600;
+        }
+
+        .note-box {
+            background: rgba(0, 240, 255, 0.05);
+            border-left: 4px solid var(--neon-blue);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .note-box strong {
+            color: var(--neon-blue);
+        }
+
+        .warning-box {
+            background: rgba(255, 165, 0, 0.05);
+            border-left: 4px solid #ffa500;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .warning-box strong {
+            color: #ffa500;
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .component-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border-left: 3px solid var(--neon-green);
+        }
+
+        .component-card:hover {
+            border-color: var(--neon-blue);
+            background: rgba(0, 240, 255, 0.05);
+        }
+
+        .component-card h4 {
+            color: var(--neon-green);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .component-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .component-card .tag {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.2rem 0.8rem;
+            background: rgba(0, 240, 255, 0.1);
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: var(--neon-blue);
+        }
+
+        .image-placeholder {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px dashed var(--glass-border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: var(--text-secondary);
+        }
+
+        .image-placeholder i {
+            font-size: 3rem;
+            color: var(--neon-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .project-header { padding: 2rem 1.5rem; }
+            .project-header h1 { font-size: 2.5rem; }
+            .section { padding: 1.5rem; }
+            .section-title { font-size: 1.5rem; }
+            .component-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hologram-grid"></div>
+
+    <div class="page-container">
+        <!-- Bouton retour -->
+        <a href="dashboard.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD
+        </a>
+
+        <!-- En-tête -->
+        <header class="project-header">
+            <h1>COURS AFRICA.TECH21</h1>
+            <p class="subtitle">Formation Future Members Africa.tech21 (FFAM) - MAJOR</p>
+            <div class="status-badge">
+                <i class="fas fa-graduation-cap"></i> PROGRAMME OFFICIEL
+            </div>
+        </header>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 1 : INTRODUCTION GENERALE                              -->
+        <!-- ============================================================ -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-info-circle"></i> PRÉSENTATION DE LA FORMATION</h2>
+            <div class="section-content">
+                <p>
+                    La formation des futurs membres de la communauté <strong>AFRICA.TECH21</strong> a pour objectif d'initier ces membres dans les métiers de la technologie et plus précisément la <strong>Robotique</strong>. Pour ce faire, une formation bien spécifique est organisée en leur faveur, l'histoire de les préparer à travailler dans les futurs projets de la communauté.
+                </p>
+                <p>
+                    Cette formation va leur permettre d'accéder à l'<strong>équipe technique d'Africa.tech21</strong> qui exécute les projets d'ordre complexe et très utiles pour la société sénégalaise.
+                </p>
+                <div class="note-box">
+                    <p><strong>Objectif :</strong> Former des membres compétents capables de participer activement aux projets techniques de la communauté.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 2 : PROGRAMME                                         -->
+        <!-- ============================================================ -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-list-ol"></i> PROGRAMME DES COURS</h2>
+            <div class="section-content">
+                <p>Le programme est structuré pour amener les membres du niveau <strong>débutant</strong> au niveau <strong>intermédiaire</strong> en électronique et robotique.</p>
+
+                <ol style="font-size: 1.1rem; line-height: 2;">
+                    <li><strong>Initiation sur les bases de l'électronique</strong></li>
+                    <li><strong>Étude des notions fondamentales</strong> (courant électrique, tension électrique)</li>
+                    <li><strong>Les composants de base</strong> (résistance, condensateur, diode, transistor)</li>
+                    <li><strong>Les moteurs électriques</strong> (CC, CA, stepper, brushless, etc.)</li>
+                    <li><strong>Initiation à la carte Arduino</strong> (Hardware + Software)</li>
+                    <li><strong>Les capteurs</strong> (ultrasoniques, etc.)</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 3 : BASES DE L'ELECTRONIQUE                          -->
+        <!-- ============================================================ -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-bolt"></i> INITIATION SUR LES BASES DE L'ÉLECTRONIQUE</h2>
+            <div class="section-content">
+
+                <h3 style="color: var(--neon-green); margin: 1.5rem 0 1rem 0;">Définition de l'électronique</h3>
+                <p>
+                    <strong>L'électronique</strong> est une partie de la physique qui étudie les électrons.
+                </p>
+
+                <h3 style="color: var(--neon-green); margin: 1.5rem 0 1rem 0;">Exemples d'appareils électroniques</h3>
+                <ul>
+                    <li>Téléphones portables</li>
+                    <li>Machines à laver</li>
+                    <li>Télévision</li>
+                    <li>Ordinateur</li>
+                </ul>
+
+                <h3 style="color: var(--neon-green); margin: 1.5rem 0 1rem 0;">Notions fondamentales en électronique</h3>
+                <p>
+                    <strong>Le courant électrique</strong> et <strong>la tension électrique</strong> sont les deux notions fondamentales.
+                </p>
+
+                <h4 style="color: var(--neon-blue); margin: 1.5rem 0 1rem 0;">Définition du courant électrique</h4>
+                <p>
+                    Le courant électrique n'est rien d'autre que le <strong>déplacement d'électrons</strong> dans un circuit ou conducteur. Nous pouvons le définir aussi en disant que c'est le <strong>flux d'électrons</strong> dans un circuit.
+                </p>
+                <p>
+                    Le courant s'exprime en <strong>Ampère</strong> de symbole <strong>(A)</strong> dans le Système International (SI).
+                </p>
+
+                <h4 style="color: var(--neon-blue); margin: 1.5rem 0 1rem 0;">Les deux types de courant électrique</h4>
+
+                <div style="background: rgba(0, 240, 255, 0.03); padding: 1.5rem; border-radius: 12px; margin: 1rem 0; border: 1px solid rgba(0, 240, 255, 0.1);">
+                    <h4 style="color: var(--neon-blue);">1. Le courant Alternatif (CA/AC)</h4>
+                    <p>
+                        Pour comprendre le courant alternatif, imaginez de l'eau s'écoulant dans un tuyau, sauf que cette eau a la possibilité de faire demi-tour dans ce même tuyau. Tel est le fonctionnement du courant alternatif : à la place de l'eau, ce sont les électrons.
+                    </p>
+                    <p>
+                        En somme, dans le courant alternatif, les électrons font <strong>va et vient</strong> (oscillation).
+                    </p>
+                    <p><strong>Annotation :</strong> CA / AC</p>
+                </div>
+
+                <div style="background: rgba(0, 255, 136, 0.03); padding: 1.5rem; border-radius: 12px; margin: 1rem 0; border: 1px solid rgba(0, 255, 136, 0.1);">
+                    <h4 style="color: var(--neon-green);">2. Le courant continu (CC/DC)</h4>
+                    <p>
+                        C'est le contraire du courant alternatif. C'est-à-dire que l'eau va couler dans une <strong>seule direction</strong>. C'est pareil pour les électrons dans le courant continu.
+                    </p>
+                    <p><strong>Annotation :</strong> CC</p>
+                </div>
+
+                <div class="note-box">
+                    <p><strong>NB 1 :</strong> Le courant alternatif n'a pas de borne, tandis que le courant continu a une tension électrique, c'est-à-dire une différence de potentiel entre deux bornes ou un dipôle.</p>
+                </div>
+
+                <div class="note-box">
+                    <p><strong>NB 2 :</strong> Dans chaque continent, nous avons des plages de tension qui diffèrent en fonction de la fréquence.</p>
+                    <ul>
+                        <li><strong>Afrique :</strong> fréquence de 50 Hz, tension de 220 à 240 V</li>
+                        <li><strong>Amérique :</strong> fréquence de 60 Hz, tension de 110 à 120 V</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 4 : COMPOSANTS DE BASE                               -->
+        <!-- ============================================================ -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-microchip"></i> LES COMPOSANTS DE BASE EN ÉLECTRONIQUE</h2>
+            <div class="section-content">
+                <p>
+                    Les composants de base en électronique sont : <strong>un résistor</strong>, <strong>un condensateur</strong>, <strong>une diode</strong>, <strong>les transistors</strong>.
+                </p>
+
+                <!-- ====== 4.1 RESISTANCE ====== -->
+                <h3 style="color: var(--neon-green); margin: 2rem 0 1rem 0;">1. La résistance</h3>
+                <p>
+                    Un résistor est un composant de base en électronique qui <strong>réduit l'intensité du courant</strong> et s'exprime en <strong>Ohm</strong> (Ω).
+                </p>
+                <p>
+                    <strong>Analogies :</strong> Imaginez un résistor comme un <strong>robinet</strong>. On peut contrôler le débit de l'eau en tournant vers le sens des aiguilles d'une montre ou le contraire.
+                </p>
+
+                <h4 style="color: var(--neon-blue); margin: 1.5rem 0 1rem 0;">La loi d'Ohm</h4>
+                <p>
+                    Pour déterminer quelle résistance utiliser, on utilise la <strong>loi d'Ohm</strong> qui s'énonce comme suit :
+                </p>
+                <div style="background: rgba(0, 0, 0, 0.3); padding: 1.5rem; border-radius: 12px; text-align: center; margin: 1rem 0; border: 1px solid var(--neon-blue);">
+                    <p style="font-size: 1.5rem; color: var(--neon-blue); font-weight: 700;">U = R × I</p>
+                    <p style="color: var(--text-secondary);">
+                        <strong>U</strong> = Tension (Volt) &nbsp;|&nbsp;
+                        <strong>R</strong> = Résistance (Ohm) &nbsp;|&nbsp;
+                        <strong>I</strong> = Intensité du courant (Ampère)
+                    </p>
+                </div>
+
+                <!-- ====== 4.2 CONDENSATEUR ====== -->
+                <h3 style="color: var(--neon-green); margin: 2rem 0 1rem 0;">2. Un condensateur</h3>
+                <p>
+                    Un condensateur est un composant de base électronique qui a beaucoup de fonctions :
+                </p>
+                <ul>
+                    <li>
+                        <strong>Stockage d'énergie :</strong> Il peut agir comme une batterie, mais la différence est qu'il libère l'énergie de manière beaucoup plus rapide que la batterie. C'est comme lorsque vous allumez et éteignez la flash de votre téléphone portable.
+                    </li>
+                    <li>
+                        <strong>Lisser la tension :</strong> Il va supprimer les interférences, les bruits qui peuvent être très problématiques.
+                    </li>
+                </ul>
+                <p>
+                    <strong>Analogies :</strong> Imaginez-vous en train de discuter avec votre ami à l'aide de tokywoky, mais que ce n'est pas clair à cause du bruit. Dans notre cas, le bruit ce sont les interférences.
+                </p>
+                <p>
+                    Le condensateur de lissage est très utilisé au niveau de la sortie d'un <strong>redresseur</strong> dans le but de supprimer les pics pour obtenir un CC très propre.
+                </p>
+
+                <h4 style="color: var(--neon-blue); margin: 1.5rem 0 1rem 0;">Un Redresseur</h4>
+                <p>
+                    Un redresseur est un ensemble de composants montés ensemble (un circuit imprimé) qui a pour but de <strong>transformer le CA en CC</strong>.
+                </p>
+                <p>
+                    Par exemple, nous avons nos adaptateurs de téléphones portables, ordinateurs, etc. dans nos foyers.
+                </p>
+
+                <div class="note-box">
+                    <p><strong>NB 1 :</strong> Les diodes sont des composants idéaux pour agir comme un redresseur. On l'appelle un <strong>pont de diode</strong> ou <strong>pont en H</strong>.</p>
+                </div>
+
+                <div class="note-box">
+                    <p><strong>NB 2 :</strong> Nous distinguons plusieurs types de condensateurs :</p>
+                    <ul>
+                        <li><strong>Les céramiques :</strong> utilisés pour filtrer les bruits (interférences).</li>
+                        <li><strong>Les électrochimiques (électrolytiques) :</strong> les plus utilisés dans les cartes électroniques, reconnaissables par leur forme cylindrique. Utilisés pour le stockage d'énergie.</li>
+                    </ul>
+                </div>
+
+                <!-- ====== 4.3 DIODE ====== -->
+                <h3 style="color: var(--neon-green); margin: 2rem 0 1rem 0;">3. Une diode</h3>
+                <p>
+                    Les diodes font partie des composants les plus utilisés en électronique du fait de leur polyvalence. Elles peuvent agir comme un <strong>stop pour le courant</strong>. C'est-à-dire qu'elles peuvent conduire le courant dans <strong>une seule direction</strong>.
+                </p>
+                <p>
+                    <strong>Exemple :</strong> Si nous avons une batterie 9V qui a évidemment une borne positive et une borne négative, et que nous voudrions que le courant passe de la borne positive à la borne négative, nous pouvons placer l'<strong>anode</strong> de la diode au niveau de la +9V de la batterie et la <strong>cathode</strong> vers l'appareil que l'on veut alimenter.
+                </p>
+                <p>
+                    Nous avons plusieurs types de diodes : les diodes zener, les diodes schottky, etc.
+                </p>
+                <div class="note-box">
+                    <p><strong>NB :</strong> Une diode a donc une <strong>cathode</strong> (+) et une <strong>anode</strong> (-).</p>
+                </div>
+
+                <!-- ====== 4.4 TRANSISTOR ====== -->
+                <h3 style="color: var(--neon-green); margin: 2rem 0 1rem 0;">4. Les Transistors</h3>
+                <p>
+                    Les transistors sont des composants très utilisés, comme les condensateurs. Ils se présentent sous deux types :
+                </p>
+                <ul>
+                    <li><strong>Les transistors à effet de champ (MOSFET)</strong></li>
+                    <li><strong>Les transistors à jonction bipolaire (BJT)</strong></li>
+                </ul>
+
+                <h4 style="color: var(--neon-blue); margin: 1.5rem 0 1rem 0;">Les deux fonctions des transistors</h4>
+                <p>
+                    De manière générale, les transistors ont deux fonctions :
+                </p>
+                <ol>
+                    <li>
+                        <strong>Interrupteur ou commutateur automatique :</strong> Nous pouvons automatiser un circuit rien qu'en utilisant un transistor. Par exemple, allumer et éteindre une lampe de manière automatique.
+                    </li>
+                    <li>
+                        <strong>Amplificateur de signaux :</strong> On peut rendre un signal beaucoup plus grand. Par exemple, dans les haut-parleurs ou la radio, la possibilité d'augmenter le volume sonore est possible grâce à un transistor et un potentiomètre pour varier le niveau sonore.
+                    </li>
+                </ol>
+
+                <div class="note-box">
+                    <p><strong>NB :</strong> Nous distinguons deux types de transistors : le <strong>NPN</strong> et le <strong>PNP</strong>. On les appelle aussi transistor à <strong>canal N</strong> ou <strong>canal P</strong>.</p>
+                </div>
+
+                <div class="note-box">
+                    <p><strong>NB :</strong> Les transistors ont des <strong>seuils de tension</strong> pour qu'ils puissent entrer en fonction. Si cette plage n'est pas atteinte, ils ne pourront pas fonctionner.</p>
+                </div>
+
+                <div class="warning-box">
+                    <p><strong>Particularité du MOSFET :</strong> Il a derrière lui une plaque de dissipation de chaleur (plaque thermique) car il libère parfois de l'énergie indésirable. Le transistor BJT est fait de résine et n'a pas de plaque thermique ; il est moins polyvalent que le MOSFET.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 5 : MOTEURS ÉLECTRIQUES                               -->
+        <!-- ============================================================ -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-cogs"></i> LES MOTEURS ÉLECTRIQUES (CA et CC)</h2>
+            <div class="section-content">
+
+                <!-- ====== 5.1 MOTEURS CC ====== -->
+                <h3 style="color: var(--neon-green); margin: 2rem 0 1rem 0;">Les moteurs CC</h3>
+                <p>
+                    Un <strong>moteur à courant continu</strong> est un appareil qui convertit l'énergie électrique en énergie mécanique. Il utilise un courant qui circule dans une seule direction (courant continu). Un moteur à courant continu utilise des <strong>balais</strong> (pôles) pour alimenter le moteur.
+                </p>
+                <div class="note-box">
+                    <p><strong>NB 1 :</strong> Le moteur à courant continu tourne vite, donc on ne peut pas l'utiliser pour des tâches qui nécessitent de la précision (ex : imprimantes 3D). Par contre, on peut bien l'utiliser dans les voitures télécommandées ou certains mini mixeurs.</p>
+                </div>
+                <p>
+                    <strong>Alimentation :</strong> Pour alimenter un moteur à courant continu, nous avons plusieurs choix : batterie électrique, adaptateur capable de délivrer un courant continu, panneaux photovoltaïques, etc.
+                </p>
+
+                <!-- ====== 5.2 MOTEURS À ENGRENAGES ====== -->
+                <h3 style="color: var(--neon-green); margin: 2rem 0 1rem 0;">Les moteurs à engrenages</h3>
+                <p>
+                    Un <strong>moteur à engrenage</strong> est un moteur qui transforme l'énergie électrique en énergie mécanique avec des engrenages ou pignons. La particularité de ce moteur s'explique par la présence des engrenages dans l'arbre du moteur, <strong>réduisant ainsi la vitesse</strong> du moteur.
+                </p>
+                <p>
+                    <strong>Avantage :</strong> Nous pouvons contrôler le moteur et nous avons <strong>plus de force</strong>.
+                </p>
+                <p>
+                    <strong>Utilisation :</strong> Robots suiveurs de ligne, robots qui évitent les obstacles, etc.
+                </p>
+                <div class="image-placeholder">
+                    <i class="fas fa-image"></i>
+                    <p>Image moteur à engrenage</p>
+                </div>
+
+                <!-- ====== 5.3 MOTEURS STEPPER ====== -->
+                <h3 style="color: var(--neon-green); margin: 2rem 0 1rem 0;">Les moteurs Stepper (pas à pas)</h3>
+                <p>
+                    Les <strong>moteurs stepper</strong> (moteurs pas à pas) sont réputés <strong>très lents mais très précis</strong>. Nous les utilisons pour leur précision dans les appareils comme :
+                </p>
+                <ul>
+                    <li>Imprimantes 3D</li>
+                    <li>Bras robotisés (où la précision est plus importante que la vitesse)</li>
+                </ul>
+
+                <div class="note-box">
+                    <p><strong>NB :</strong> Nous avons aussi des moteurs pas à pas qui fonctionnent avec du <strong>courant alternatif</strong> et qui ne sont pas très précis mais plus rapides. Utilisés dans les ventilateurs (rotation) et les couveuses (système de retournement des œufs).</p>
+                </div>
+
+                <div class="image-placeholder">
+                    <i class="fas fa-image"></i>
+                    <p>Image moteur pas à pas CC 5V</p>
+                </div>
+                <div class="image-placeholder">
+                    <i class="fas fa-image"></i>
+                    <p>Image moteur pas à pas CA 220 à 240 AC</p>
+                </div>
+                <div class="note-box">
+                    <p><strong>NB :</strong> Sur le moteur, il est mentionné <strong>"2.5/3 r/min"</strong>, ce qui signifie que le moteur peut faire <strong>maximum 3 tours par minute</strong>.</p>
+                </div>
+
+                <!-- ====== 5.4 MOTEURS BRUSHLESS ====== -->
+                <h3 style="color: var(--neon-green); margin: 2rem 0 1rem 0;">Les moteurs Brushless (sans balais)</h3>
+                <p>
+                    Nous utilisons ce genre de moteurs dans les <strong>drones</strong> ou les <strong>voitures RC à grande vitesse</strong>. Les moteurs sans balais sont réputés <strong>très rapides et très résistants</strong> par rapport aux moteurs CC à balais.
+                </p>
+                <p>
+                    Deux types de moteurs Brushless :
+                </p>
+                <ul>
+                    <li>
+                        <strong>INRUNNER :</strong> Le rotor tourne à l'intérieur. Souvent utilisés dans les voitures RC de compétition.
+                    </li>
+                    <li>
+                        <strong>OUTRUNNER :</strong> Le rotor tourne à l'extérieur. Souvent utilisés dans les drones et autres usages similaires.
+                    </li>
+                </ul>
+                <div class="note-box">
+                    <p><strong>NB :</strong> Le <strong>rotor</strong> est la partie mobile du moteur, c'est-à-dire la partie qui tourne dans un moteur électrique.</p>
+                </div>
+                <div class="image-placeholder">
+                    <i class="fas fa-image"></i>
+                    <p>Image moteur INRUNNER</p>
+                </div>
+                <div class="image-placeholder">
+                    <i class="fas fa-image"></i>
+                    <p>Image moteur OUTRUNNER</p>
+                </div>
+
+                <!-- ====== 5.5 MOTEURS CA ====== -->
+                <h3 style="color: var(--neon-green); margin: 2rem 0 1rem 0;">Les moteurs CA / AC</h3>
+
+                <h4 style="color: var(--neon-blue); margin: 1.5rem 0 1rem 0;">Les moteurs asynchrones</h4>
+                <p>
+                    Nous avons plusieurs types de moteurs asynchrones :
+                </p>
+                <ul>
+                    <li>
+                        <strong>Moteurs à cage d'écureuil :</strong> Le rotor est constitué de barres conductrices en court-circuit.
+                    </li>
+                    <li>
+                        <strong>Moteurs à rotor bobinés (à bagues) :</strong> Le rotor comporte des enroulements reliés à des bagues collectrices.
+                    </li>
+                </ul>
+                <div class="image-placeholder">
+                    <i class="fas fa-image"></i>
+                    <p>Image moteur asynchrone (général)</p>
+                </div>
+                <div class="image-placeholder">
+                    <i class="fas fa-image"></i>
+                    <p>Image moteur à cage d'écureuil</p>
+                </div>
+                <div class="image-placeholder">
+                    <i class="fas fa-image"></i>
+                    <p>Image moteur à rotor bobinés</p>
+                </div>
+
+                <h4 style="color: var(--neon-blue); margin: 1.5rem 0 1rem 0;">Systèmes d'alimentation</h4>
+                <p>
+                    Deux systèmes d'alimentation pour ces moteurs :
+                </p>
+                <ul>
+                    <li>
+                        <strong>Triphasé :</strong> Utilisé pour des fins industrielles : pompes électriques, ventilateurs, convoyeurs, etc.
+                    </li>
+                    <li>
+                        <strong>Monophasé :</strong> Utilisé pour les petits appareils (électroménager) car la puissance est limitée.
+                    </li>
+                </ul>
+                <div class="note-box">
+                    <p><strong>NB :</strong> Si on dit "moteur à induction", cela veut dire aussi "moteur asynchrone". Les deux termes sont valables.</p>
+                </div>
+                <p>
+                    Nous avons aussi les <strong>moteurs synchrones</strong>, mais nous allons juste voir les plus connus et utilisés dans le marché.
+                </p>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 6 : INITIATION À LA CARTE ARDUINO                    -->
+        <!-- ============================================================ -->
+        <section class="section">
+            <h2 class="section-title"><i class="fab fa-arduino"></i> INITIATION À LA CARTE ARDUINO</h2>
+            <div class="section-content">
+
+                <h3 style="color: var(--neon-green); margin: 2rem 0 1rem 0;">HARDWARE (Matériel)</h3>
+                <p>
+                    La carte Arduino est une carte électronique programmable <strong>open-source</strong> conçue pour créer des systèmes électroniques interactifs. Cela signifie que nous pouvons faire énormément de choses avec la carte Arduino : contrôler des capteurs, des moteurs, des actionneurs, des circuits basiques et même complexes avec un peu d'ingéniosité.
+                </p>
+
+                <h4 style="color: var(--neon-blue); margin: 1.5rem 0 1rem 0;">Les parties de la carte Arduino</h4>
+                <p>De manière générale, nous en avons trois (3) :</p>
+
+                <div class="component-grid">
+                    <div class="component-card">
+                        <h4>1. Bouton poussoir de reset</h4>
+                        <p>Permet de redémarrer la carte Arduino ainsi que le programme.</p>
+                        <span class="tag">Hardware</span>
+                    </div>
+                    <div class="component-card">
+                        <h4>2. Interface USB</h4>
+                        <p>Permet de téléverser le code (le programme) sur la carte.</p>
+                        <span class="tag">Hardware</span>
+                    </div>
+                    <div class="component-card">
+                        <h4>3. Horloge ou Quartz</h4>
+                        <p>Composant qui permet de faire des <strong>delay</strong> (durée bien déterminée).</p>
+                        <span class="tag">Hardware</span>
+                    </div>
+                    <div class="component-card">
+                        <h4>4. Bloc d'alimentation</h4>
+                        <p>Permet d'alimenter la carte avec une tension maximale de <strong>9V</strong> pour un minimum de <strong>5V</strong>.</p>
+                        <span class="tag">Hardware</span>
+                    </div>
+                    <div class="component-card">
+                        <h4>5. Broches d'entrées/sorties (digitales)</h4>
+                        <p>Appelées aussi <strong>broches numériques</strong>, permettent de communiquer avec le monde extérieur.</p>
+                        <p>Elles fonctionnent avec deux états logiques :</p>
+                        <ul style="font-size: 0.95rem;">
+                            <li><strong>HAUT (HIGH)</strong> : tension de 5V ou 3,3V</li>
+                            <li><strong>BAS (LOW)</strong> : tension de 0V</li>
+                        </ul>
+                        <span class="tag">Hardware</span>
+                    </div>
+                    <div class="component-card">
+                        <h4>6. Broches d'entrée analogiques (Input)</h4>
+                        <p>Notées <strong>A0, A1, etc.</strong> Permettent de lire des tensions électriques variables, contrairement aux broches numériques qui ne détectent que deux états (vrai ou faux).</p>
+                        <span class="tag">Hardware</span>
+                    </div>
+                    <div class="component-card">
+                        <h4>7. Microcontrôleur</h4>
+                        <p>C'est le <strong>cerveau</strong> de la carte. Il va traiter les informations, exécuter les instructions et les calculs pour ainsi distribuer aux composants concernés.</p>
+                        <p><strong>Sans lui, la carte ne peut servir que comme source d'alimentation.</strong></p>
+                        <span class="tag">Hardware</span>
+                    </div>
+                </div>
+
+                <div class="image-placeholder">
+                    <i class="fas fa-image"></i>
+                    <p>Image de la carte Arduino</p>
+                </div>
+
+                <!-- ====== SOFTWARE ====== -->
+                <h3 style="color: var(--neon-green); margin: 2rem 0 1rem 0;">SOFTWARE (Logiciel)</h3>
+                <p>
+                    La partie <strong>software</strong> est indispensable pour pouvoir utiliser la carte. Après avoir fait le câblage pour un projet ou des expériences, il est important de lui donner la vie.
+                </p>
+                <p>
+                    Pour ce faire, nous allons <strong>programmer</strong> la carte avec le langage <strong>C</strong>. Ce programme va se faire dans l'<strong>IDE de l'Arduino</strong>, un logiciel open-source mis à disposition des utilisateurs par Arduino.
+                </p>
+                <p>
+                    De là, nous pouvons commencer à contrôler des composants électroniques pour aboutir à des projets très intéressants.
+                </p>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 7 : CAPTEURS                                         -->
+        <!-- ============================================================ -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-eye"></i> LES CAPTEURS</h2>
+            <div class="section-content">
+                <p>
+                    On peut dire que les capteurs sont les <strong>yeux et les oreilles</strong> du robot. C'est eux qui permettent aux robots de savoir ce qui se passe à l'intérieur du robot comme à l'extérieur.
+                </p>
+
+                <h3 style="color: var(--neon-green); margin: 2rem 0 1rem 0;">1. Capteurs ultrasoniques (HC-SR04)</h3>
+                <p>
+                    Le capteur ultrasonique de type <strong>HC-SR04</strong> permet de détecter des obstacles en diffusant des ondes ultrasoniques. Lorsque ces ondes rencontrent des obstacles, elles retournent près du capteur, et ce dernier peut exprimer la <strong>distance</strong> entre lui et l'obstacle.
+                </p>
+                <p>
+                    Cela signifie que le capteur peut être utilisé pour savoir la distance entre lui et un objet.
+                </p>
+
+                <h4 style="color: var(--neon-blue); margin: 1.5rem 0 1rem 0;">Configuration du capteur HC-SR04</h4>
+                <p>Nous avons 4 pins :</p>
+                <ul>
+                    <li>
+                        <strong>VCC :</strong> Borne positive du capteur. Peut recevoir <strong>5V</strong> comme tension maximale.
+                    </li>
+                    <li>
+                        <strong>GND :</strong> Borne négative du capteur. Doit être connecté à une borne négative d'une source.
+                    </li>
+                    <li>
+                        <strong>TRIG :</strong> Pin permettant de recevoir un signal de déclenchement.
+                    </li>
+                    <li>
+                        <strong>ECHO :</strong> Pin permettant de renvoyer le signal après réflexion.
+                    </li>
+                </ul>
+
+                <div class="image-placeholder">
+                    <i class="fas fa-image"></i>
+                    <p>Image du capteur ultrasonique HC-SR04</p>
+                </div>
+
+                <div class="note-box">
+                    <p><strong>NB :</strong> Les capteurs ultrasoniques sont très utilisés dans les robots pour éviter les obstacles.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 8 : SIGNATURE                                        -->
+        <!-- ============================================================ -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-signature"></i> SIGNATURE</h2>
+            <div class="section-content">
+                <div style="text-align: center; padding: 2rem; background: rgba(0, 0, 0, 0.3); border-radius: 15px;">
+                    <p style="font-size: 1.2rem; color: var(--neon-green);">
+                        <i class="fas fa-crown"></i> Par le <strong>MAJOR</strong>
+                    </p>
+                    <p style="color: var(--text-secondary); margin-top: 1rem;">
+                        Direction AFRICA.TECH21
+                    </p>
+                    <p style="color: var(--text-secondary); font-style: italic; margin-top: 0.5rem;">
+                        Programme officiel de la formation Future Members Africa.tech21 (FFAM)
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 2rem 0; color: var(--text-secondary); font-size: 0.9rem; border-top: 1px solid var(--glass-border);">
+            <p>
+                <i class="fas fa-copyright"></i> AFRICA.TECH21 - Cours de formation
+            </p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-secondary);">
+                Programme Niveau Débutant + Intermédiaire
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        // Vérification de connexion
+        if (localStorage.getItem('memberLoggedIn') !== 'true') {
+            window.location.href = 'espace-membres.html';
+        }
+    </script>
+</body>
+</html>
