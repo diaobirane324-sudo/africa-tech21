@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRRITECH | AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Exo 2', 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-purple: #7b2cbf;
+            --neon-green: #00ff88;
+            --neon-pink: #ff00ff;
+            --dark-space: #0a0a12;
+            --deep-space: #050510;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a8c0;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --panel-glow: 0 0 30px rgba(0, 240, 255, 0.2);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .hologram-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridScan 20s linear infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        @keyframes gridScan {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            margin-bottom: 2rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 10px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        .page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .project-header {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 4rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            box-shadow: var(--panel-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(0, 240, 255, 0.05) 0%, transparent 60%);
+            animation: rotateGlow 20s linear infinite;
+        }
+
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .project-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            background: linear-gradient(45deg, var(--neon-green), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-header .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-header .status-badge {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.5rem 2rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 20px;
+            color: var(--neon-blue);
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--panel-glow);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            color: var(--neon-blue);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title i {
+            color: var(--neon-green);
+        }
+
+        .section-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .section-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-content strong {
+            color: var(--text-primary);
+        }
+
+        .section-content ul, .section-content ol {
+            padding-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-content li {
+            margin-bottom: 0.8rem;
+        }
+
+        .component-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .component-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border-left: 3px solid var(--neon-green);
+        }
+
+        .component-item:hover {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .component-item h4 {
+            color: var(--neon-green);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .component-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .component-item .tag {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.2rem 0.8rem;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: var(--neon-green);
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: var(--neon-green);
+            line-height: 1.6;
+        }
+
+        .code-block .comment {
+            color: var(--text-secondary);
+        }
+
+        .code-block .keyword {
+            color: var(--neon-blue);
+        }
+
+        .code-block .string {
+            color: #ffa500;
+        }
+
+        .note-box {
+            background: rgba(0, 240, 255, 0.05);
+            border-left: 4px solid var(--neon-blue);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .note-box strong {
+            color: var(--neon-blue);
+        }
+
+        .warning-box {
+            background: rgba(255, 165, 0, 0.05);
+            border-left: 4px solid #ffa500;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .warning-box strong {
+            color: #ffa500;
+        }
+
+        .step-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .step-card .step-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--neon-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-card h4 {
+            color: var(--neon-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .project-header { padding: 2rem 1.5rem; }
+            .project-header h1 { font-size: 2.5rem; }
+            .section { padding: 1.5rem; }
+            .section-title { font-size: 1.5rem; }
+            .component-list { grid-template-columns: 1fr; }
+            .step-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hologram-grid"></div>
+
+    <div class="page-container">
+        <!-- Bouton retour -->
+        <a href="dashboard.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD
+        </a>
+
+        <!-- En-tête du projet -->
+        <header class="project-header">
+            <h1>IRRITECH</h1>
+            <p class="subtitle">Système d'arrosage automatique intelligent</p>
+            <div class="status-badge">
+                <i class="fas fa-circle"></i> PROTOTYPAGE
+            </div>
+        </header>
+
+        <!-- ==================== PARTIE 1 : INTRODUCTION ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-seedling"></i> INTRODUCTION</h2>
+            <div class="section-content">
+                <p>
+                    <strong>IRRITECH</strong> est un système d'arrosage automatique qui va arroser les plantes de manière autonome. Si la plante a besoin d'eau, le système le saura et procédera à l'arrosage. C'est un projet de grande envergure destiné à être installé dans les villages et les champs.
+                </p>
+                <p>
+                    Une version plus petite a déjà été conçue par l'équipe AFRICA.TECH21, mais cette nouvelle version doit être adaptée aux grandes surfaces agricoles.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==================== PARTIE 2 : ÉTUDE DU TERRAIN ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-map-marked-alt"></i> ÉTUDE DU TERRAIN / CLIMAT</h2>
+            <div class="section-content">
+                <p>
+                    Pour que le système fonctionne dans de bonnes conditions, plusieurs points doivent être respectés :
+                </p>
+                <ul>
+                    <li><strong>Protection contre les enfants</strong> : L'appareil ne doit pas être à la portée des enfants ou des personnes non qualifiées.</li>
+                    <li><strong>Zone non humide</strong> : Les composants électroniques ne doivent pas être dans une zone humide.</li>
+                    <li><strong>Terrain stable</strong> : Le terrain ne doit pas être très accidenté, sinon risque de perturber le système.</li>
+                    <li><strong>Protection contre les éléments</strong> : Les composants internes doivent être protégés contre la poussière, la saleté, le sable, l'humidité, les températures extrêmes.</li>
+                    <li><strong>Fertilité du sol</strong> : Il faut tester la fertilité du sol.</li>
+                </ul>
+                <div class="note-box">
+                    <p><strong>NB :</strong> Il n'est pas obligatoire de faire des études sur le rendement du sol, car cette action est déjà faite par les agriculteurs. Nous installons le système en tenant compte des conditions obligatoires pour le bon fonctionnement d'IRRITECH.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PARTIE 3 : ÉTUDE DES PLANTES ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-leaf"></i> ÉTUDE DES PLANTES</h2>
+            <div class="section-content">
+                <p>
+                    Cette étape est délicate et demande une attention profonde. Voici ce qui doit être fait :
+                </p>
+                <ul>
+                    <li><strong>Étude systématique de chaque variété</strong> : carottes, pomme de terre, oignon, salade, tomates, etc.</li>
+                    <li><strong>Tolérance en eau</strong> : voir la tolérance en eau de chaque plante, ainsi que le seuil de température (climat).</li>
+                    <li><strong>Durée d'évolution</strong> : la durée d'évolution de chaque espèce.</li>
+                    <li><strong>Qualité des semences</strong> : la qualité des semences.</li>
+                </ul>
+                <p>
+                    Après avoir recueilli toutes les informations nécessaires, elles seront converties en une suite d'instructions (algorithmes) et interprétées par des capteurs et actionneurs.
+                </p>
+                <div class="warning-box">
+                    <p><strong>Attention :</strong> Les conditions climatiques doivent être favorables pour la bonne germination des plantes. Dans le cas contraire, il faudra recourir à des méthodes comme les "serres" ou adapter le système, ce qui n'est pas évident.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PARTIE 4 : COMPOSANTS ÉLECTRONIQUES ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-microchip"></i> COMPOSANTS ÉLECTRONIQUES</h2>
+            <div class="section-content">
+                <p>
+                    <strong>Objectif :</strong> Une carte mère très performante contrôle tous les composants du projet :
+                </p>
+                <ul>
+                    <li><strong>Capteurs</strong> : sondes, lecteurs, etc.</li>
+                    <li><strong>Actionneurs</strong> : pompes submersibles, électrovannes, valves.</li>
+                    <li><strong>Relais</strong> : pour fournir une alimentation indépendante aux actionneurs, évitant d'encombrer le microcontrôleur. Le choix des relais dépend de la tension et du courant des actionneurs.</li>
+                </ul>
+
+                <h3 style="color: var(--neon-green); margin-top: 2rem; margin-bottom: 1rem;">Choix de la carte mère</h3>
+                <p>
+                    Deux options sont envisagées : <strong>ESP32</strong> ou <strong>Raspberry Pi mini</strong> pour des performances élevées.
+                </p>
+
+                <h3 style="color: var(--neon-green); margin-top: 2rem; margin-bottom: 1rem;">Capteurs d'humidité du sol (Soil Moisture V1.2)</h3>
+                <p>
+                    Le capteur d'humidité du sol Soil Moisture V1.2, fabriqué par ESP32, est un appareil fiable conçu pour mesurer la teneur en eau volumétrique du sol. Il fournit des données précises pour la gestion de l'irrigation.
+                </p>
+                <ul>
+                    <li><strong>Protection</strong> : Équipé d'un revêtement de résine isolant le circuit de détection. Les composants électroniques doivent être isolés à l'aide de gaine électrique ou de résine époxy.</li>
+                    <li><strong>Complémentarité</strong> : Le DHT22 peut être utilisé pour détecter la température et l'humidité en parfaite complémentarité avec le V1.2.</li>
+                    <li><strong>Installation</strong> : Les capteurs sont répartis en blocs de 4 capteurs sur un rectangle de longueur 1,70 m et de largeur 1,20 m. Le nombre de blocs dépend de la surface du jardin.</li>
+                </ul>
+
+                <h3 style="color: var(--neon-green); margin-top: 2rem; margin-bottom: 1rem;">Carte ESP32</h3>
+                <p>
+                    La carte ESP32 dispose de 15 à 18 entrées analogiques (ADC), réparties sur deux convertisseurs (ADC1 et ADC2), offrant une résolution de 12 bits (0-4095). Elle permet de contrôler jusqu'à 4 blocs IRRITECH.
+                </p>
+                <div class="warning-box">
+                    <p><strong>Problème des ADC :</strong> Les ADC sont réputées pour avoir des fluctuations ou du bruit, ce qui peut causer des lectures fausses. Pour corriger ce défaut, on peut ajouter un condensateur à la sortie et utiliser du suréchantillonnage.</p>
+                </div>
+                <p>
+                    <strong>Condensateur :</strong> Un condensateur céramique d'une capacité de 100 nF (0,1 µF) est recommandé pour lisser les pics.
+                </p>
+
+                <h3 style="color: var(--neon-green); margin-top: 2rem; margin-bottom: 1rem;">Pompe électrique</h3>
+                <p>
+                    La pompe électrique doit fournir une pression ou un débit assez élevé pour assurer l'arrosage. La puissance recommandée est de <strong>12 VDC minimum à 24 VDC maximum</strong> en courant continu.
+                </p>
+
+                <h3 style="color: var(--neon-green); margin-top: 2rem; margin-bottom: 1rem;">Liste des composants électroniques</h3>
+
+                <div class="component-list">
+                    <div class="component-item">
+                        <h4>ESP32</h4>
+                        <p>Microcontrôleur principal, 15-18 ADC, résolution 12 bits. Contrôle jusqu'à 4 blocs IRRITECH.</p>
+                        <span class="tag">Carte mère</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Soil Moisture V1.2</h4>
+                        <p>Capteur d'humidité du sol. Revêtement en résine, isolation renforcée par gaine électrique.</p>
+                        <span class="tag">Capteur</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>DHT22</h4>
+                        <p>Capteur de température et d'humidité, utilisé en complément du Soil Moisture V1.2.</p>
+                        <span class="tag">Capteur</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Module Relais</h4>
+                        <p>Alimentation indépendante des actionneurs. Choix dépendant de la tension et du courant.</p>
+                        <span class="tag">Actionneur</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Pompe submersible 12-24V DC</h4>
+                        <p>Assure le débit et la pression nécessaires à l'arrosage.</p>
+                        <span class="tag">Actionneur</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Condensateur céramique 100 nF</h4>
+                        <p>Lissage des pics de l'ADC pour des lectures stables.</p>
+                        <span class="tag">Composant passif</span>
+                    </div>
+                </div>
+
+                <div class="note-box">
+                    <p><strong>NB :</strong> Tous les détails techniques de la partie électronique ne sont pas définitifs. Ils seront évoqués lors des réunions techniques pour valider le choix des composants.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PARTIE 5 : SOFTWARE ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-code"></i> PARTIE SOFTWARE</h2>
+            <div class="section-content">
+                <p>
+                    La partie software donne vie au projet. Sans un programme bien défini et prêt à être téléversé, le hardware ne sert à rien.
+                </p>
+
+                <h3 style="color: var(--neon-green); margin-top: 1.5rem; margin-bottom: 1rem;">Langage de programmation : Python</h3>
+                <p>
+                    La communication avec la carte ESP32 se fait via le langage <strong>Python</strong> (MicroPython), populaire et doté d'une forte communauté.
+                </p>
+
+                <h3 style="color: var(--neon-green); margin-top: 1.5rem; margin-bottom: 1rem;">IDE : Thonny</h3>
+                <p>
+                    <strong>Thonny</strong> est un environnement de développement intégré (IDE) libre et open-source, spécifiquement conçu pour simplifier l'apprentissage et l'usage de Python et MicroPython. Il est devenu la référence pour le prototypage rapide sur microcontrôleurs comme l'ESP32 ou le Raspberry Pi Pico.
+                </p>
+                <p>
+                    Contrairement à l'IDE Arduino, Thonny permet de contrôler beaucoup de composants électroniques sans avoir à installer de bibliothèques.
+                </p>
+
+                <h3 style="color: var(--neon-green); margin-top: 1.5rem; margin-bottom: 1rem;">MicroPython</h3>
+                <p>
+                    MicroPython est une implémentation optimisée du langage Python 3, conçue pour s'exécuter sur des microcontrôleurs comme l'ESP32. Il permet de piloter du matériel avec une syntaxe simple, sans gérer la complexité du C ou C++.
+                </p>
+
+                <h3 style="color: var(--neon-green); margin-top: 1.5rem; margin-bottom: 1rem;">Prompt du programme</h3>
+                <p>
+                    Le programme doit gérer 4 capteurs V1.2 connectés respectivement aux GPIO 32, 33, 34, 35 de l'ESP32.
+                </p>
+
+                <h4 style="color: var(--neon-blue); margin: 1rem 0;">Configuration des pins (extrait de code)</h4>
+                <div class="code-block">
+                    <span class="keyword">from</span> machine <span class="keyword">import</span> ADC, Pin<br>
+                    <span class="keyword">import</span> time<br><br>
+                    <span class="comment"># Configuration des 4 capteurs sur ADC1 (GPIO 32, 33, 34, 35)</span><br>
+                    c1 = ADC(Pin(32))<br>
+                    c2 = ADC(Pin(33))<br>
+                    c3 = ADC(Pin(34))<br>
+                    c4 = ADC(Pin(35))
+                </div>
+
+                <p>
+                    <strong>Explications :</strong>
+                </p>
+                <ul>
+                    <li><strong>from machine import ADC, Pin</strong> : Importe le module qui permet de contrôler le hardware (processeur).</li>
+                    <li><strong>ADC</strong> : Convertisseur Analogique-Digital. Transforme la tension du capteur (0 V à 3.3V) en un nombre (0 à 4095).</li>
+                    <li><strong>Pin</strong> : Permet de désigner physiquement les broches de l'ESP32.</li>
+                    <li><strong>c1, c2, c3, c4</strong> : Objets associés aux capteurs sur les broches GPIO 32, 33, 34, 35.</li>
+                    <li><strong>import time</strong> : Sert à régler le temps (comme delay en C++).</li>
+                </ul>
+
+                <h4 style="color: var(--neon-blue); margin: 1rem 0;">Calcul de la moyenne pondérée</h4>
+                <p>
+                    Les 4 capteurs donnent des informations de leur côté. Pour éviter qu'une seule zone plus sèche déclenche l'arrosage inutilement, on fait la moyenne des 4 lectures pour obtenir une image globale de la parcelle.
+                </p>
+                <div class="code-block">
+                    <span class="keyword">def</span> obtenir_moyenne():<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># On lit chaque capteur</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;v1 = c1.read()<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;v2 = c2.read()<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;v3 = c3.read()<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;v4 = c4.read()<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;moyenne = (v1 + v2 + v3 + v4) / 4<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> moyenne
+                </div>
+
+                <h4 style="color: var(--neon-blue); margin: 1rem 0;">Condition d'arrosage</h4>
+                <div class="code-block">
+                    <span class="keyword">while</span> True:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;humidite_globale = obtenir_moyenne()<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;print(<span class="string">"Niveau moyen d'humidité :"</span>, humidite_globale)<br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> humidite_globale &lt; 1500: <span class="comment"># Seuil à calibrer</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(<span class="string">"Alerte : Sol sec ! Activation de l'arrosage."</span>)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Code pour activer la pompe</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;time.sleep(60) <span class="comment"># Attendre 1 minute entre chaque lecture</span>
+                </div>
+
+                <div class="note-box">
+                    <p><strong>NB :</strong> Le reste du code ne sera pas communiqué dans ce document mais lors des réunions à venir (équipe informatique uniquement) pour établir le code fonctionnel.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PARTIE 6 : DIAGRAMME ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-project-diagram"></i> DIAGRAMME DU SYSTÈME</h2>
+            <div class="section-content">
+                <div style="text-align: center; padding: 2rem; background: rgba(0,0,0,0.3); border-radius: 15px;">
+                    <p style="color: var(--text-secondary); font-size: 1.2rem;">
+                        <i class="fas fa-robot" style="color: var(--neon-blue); font-size: 3rem; display: block; margin-bottom: 1rem;"></i>
+                        <strong>ESP32</strong> (Cerveau du système)
+                    </p>
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; margin-top: 2rem;">
+                        <div style="background: rgba(0, 240, 255, 0.05); padding: 1rem 2rem; border-radius: 10px; border: 1px solid var(--neon-blue);">
+                            <i class="fas fa-tint" style="color: var(--neon-blue);"></i>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">Capteurs Soil Moisture V1.2</p>
+                        </div>
+                        <div style="background: rgba(0, 240, 255, 0.05); padding: 1rem 2rem; border-radius: 10px; border: 1px solid var(--neon-blue);">
+                            <i class="fas fa-microchip" style="color: var(--neon-blue);"></i>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">ADC (Convertisseur)</p>
+                        </div>
+                        <div style="background: rgba(0, 240, 255, 0.05); padding: 1rem 2rem; border-radius: 10px; border: 1px solid var(--neon-blue);">
+                            <i class="fas fa-cogs" style="color: var(--neon-blue);"></i>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">Relais / Pompe</p>
+                        </div>
+                    </div>
+                    <div style="margin-top: 2rem; padding: 1rem; background: rgba(0, 255, 136, 0.05); border-radius: 10px; border: 1px solid var(--neon-green);">
+                        <p style="color: var(--neon-green); font-weight: 700;">Arrosage automatique déclenché selon seuil d'humidité</p>
+                    </div>
+                </div>
+                <div class="note-box" style="margin-top: 2rem;">
+                    <p><strong>NB :</strong> Il s'agit d'un diagramme non validé pour le moment.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PARTIE 7 : ÉTAPES DU PROJET ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-tasks"></i> ORGANISATION DU PROJET</h2>
+            <div class="section-content">
+                <div class="step-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h4>Étude du terrain / climat</h4>
+                        <p>Voir les conditions d'installation, protection contre les intempéries, test de fertilité du sol.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h4>Étude des plantes</h4>
+                        <p>Connaître les besoins en eau et température de chaque variété cultivée.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h4>Étude des composants électroniques</h4>
+                        <p>Choisir les capteurs, actionneurs, carte mère et relais adaptés.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h4>Étude des composants mécaniques</h4>
+                        <p>Concevoir la structure physique pour installer les composants.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">5</div>
+                        <h4>Installation des programmes</h4>
+                        <p>Écrire et téléverser le code sur l'ESP32 avec Thonny.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">6</div>
+                        <h4>Mise en pratique & commercialisation</h4>
+                        <p>Déploiement sur le terrain et commercialisation du projet.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 2rem 0; color: var(--text-secondary); font-size: 0.9rem; border-top: 1px solid var(--glass-border);">
+            <p>
+                <i class="fas fa-copyright"></i> AFRICA.TECH21 - Projet IRRITECH | Système d'arrosage automatique intelligent
+            </p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-secondary);">
+                Document technique par la direction • Tous droits réservés
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        // Vérification de connexion
+        if (localStorage.getItem('memberLoggedIn') !== 'true') {
+            window.location.href = 'espace-membres.html';
+        }
+    </script>
+</body>
+</html>
