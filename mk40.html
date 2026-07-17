@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MK-40 | AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Exo 2', 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-purple: #7b2cbf;
+            --neon-green: #00ff88;
+            --neon-pink: #ff00ff;
+            --dark-space: #0a0a12;
+            --deep-space: #050510;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a8c0;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --panel-glow: 0 0 30px rgba(0, 240, 255, 0.2);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .hologram-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridScan 20s linear infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        @keyframes gridScan {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            margin-bottom: 2rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 10px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        .page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .project-header {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 4rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            box-shadow: var(--panel-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 165, 0, 0.05) 0%, transparent 60%);
+            animation: rotateGlow 20s linear infinite;
+        }
+
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .project-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            background: linear-gradient(45deg, #ffa500, #ff6348);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 165, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-header .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-header .status-badge {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.5rem 2rem;
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid #ffa500;
+            border-radius: 20px;
+            color: #ffa500;
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--panel-glow);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            color: var(--neon-blue);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title i {
+            color: #ffa500;
+        }
+
+        .section-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .section-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-content strong {
+            color: var(--text-primary);
+        }
+
+        .section-content ul, .section-content ol {
+            padding-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-content li {
+            margin-bottom: 0.8rem;
+        }
+
+        .component-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .component-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border-left: 3px solid #ffa500;
+        }
+
+        .component-item:hover {
+            border-color: #ffa500;
+            background: rgba(255, 165, 0, 0.05);
+        }
+
+        .component-item h4 {
+            color: #ffa500;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .component-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .component-item .tag {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.2rem 0.8rem;
+            background: rgba(255, 165, 0, 0.1);
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: #ffa500;
+        }
+
+        .note-box {
+            background: rgba(0, 240, 255, 0.05);
+            border-left: 4px solid var(--neon-blue);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .note-box strong {
+            color: var(--neon-blue);
+        }
+
+        .improvement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .improvement-item {
+            background: rgba(0, 255, 136, 0.03);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .improvement-item .icon {
+            font-size: 2.5rem;
+            color: var(--neon-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .improvement-item h4 {
+            color: var(--neon-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .improvement-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .project-header { padding: 2rem 1.5rem; }
+            .project-header h1 { font-size: 2.5rem; }
+            .section { padding: 1.5rem; }
+            .section-title { font-size: 1.5rem; }
+            .component-list { grid-template-columns: 1fr; }
+            .improvement-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hologram-grid"></div>
+
+    <div class="page-container">
+        <!-- Bouton retour -->
+        <a href="dashboard.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD
+        </a>
+
+        <!-- En-tête du projet -->
+        <header class="project-header">
+            <h1>MK-40</h1>
+            <p class="subtitle">Couveuse automatique intelligente</p>
+            <div class="status-badge">
+                <i class="fas fa-circle"></i> DÉVELOPPEMENT AVANCÉ
+            </div>
+        </header>
+
+        <!-- ==================== PARTIE 1 : INTRODUCTION ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-egg"></i> INTRODUCTION</h2>
+            <div class="section-content">
+                <p>
+                    <strong>MK-40</strong> est une couveuse automatique intelligente, successeur amélioré de la MK08. Elle permet de faire éclore des œufs de volaille : poules, cailles, canards, oies, etc.
+                </p>
+                <p>
+                    Le principe est de recréer les conditions de couvaison naturelle (température, humidité, retournement) dans un appareil automatisé. La MK-40 apporte des améliorations significatives par rapport à la MK08 : plus de précision, double lecture des données, gestion optimisée de l'humidité.
+                </p>
+                <div class="note-box">
+                    <p><strong>NB :</strong> La rentabilité d'une couveuse ne dépend pas uniquement de la machine, mais surtout du choix des œufs (fécondité).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PARTIE 2 : COMPOSANTS ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-microchip"></i> COMPOSANTS ÉLECTRONIQUES</h2>
+            <div class="section-content">
+                <p>
+                    La MK-40 est équipée des composants suivants pour assurer un contrôle précis de la température, de l'humidité et du retournement des œufs.
+                </p>
+
+                <h3 style="color: #ffa500; margin-top: 2rem; margin-bottom: 1rem;">Liste complète des composants</h3>
+
+                <div class="component-list">
+                    <div class="component-item">
+                        <h4>Minuterie T 3230</h4>
+                        <p>Contrôleur numérique de temps et de température. Double affichage LED (rouge/bleu). Permet de programmer précisément les cycles de marche/arrêt du chauffage, refroidissement, ventilation. Dans MK-40, elle contrôle le moteur de retournement (stepper).</p>
+                        <span class="tag">Contrôle</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Thermostat avec sonde</h4>
+                        <p>Régulateur de température permettant de régler une température précise en fonction du type d'œufs. Pour des œufs de poule : 37°C à 37,5°C. La sonde doit être placée à l'intérieur de la couveuse.</p>
+                        <span class="tag">Régulation</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Lampe chauffante / Résistance 12V</h4>
+                        <p>Émetteur de chaleur assurant le maintien de la température interne. Version 12V pour une alimentation sécurisée et une meilleure efficacité énergétique.</p>
+                        <span class="tag">Chauffage</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Ventilateur 220V</h4>
+                        <p>Assure la répartition homogène de la chaleur dans toute la couveuse. Contribue également à l'augmentation de l'humidité, essentielle au processus de couvaison.</p>
+                        <span class="tag">Circulation</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Capteur DHT22</h4>
+                        <p>Capteur numérique mesurant avec précision la température (-40°C à 80°C) et l'humidité relative (0 à 100%). Plus précis que son petit frère le DHT11. Communique via un protocole à un fil.</p>
+                        <span class="tag">Capteur</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Écran LCD 16x2 I2C</h4>
+                        <p>Affichage des données du capteur DHT22 (température et humidité) en temps réel. Communication I2C simplifiant le câblage.</p>
+                        <span class="tag">Affichage</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Carte ARDUINO UNO</h4>
+                        <p>Carte mère du système, simple à manipuler et à programmer. Gère l'ensemble des composants : lecture des capteurs, affichage, contrôle du moteur, etc.</p>
+                        <span class="tag">Carte mère</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Moteur pas à pas (Stepper)</h4>
+                        <p>Moteur lent mais puissant, idéal pour le retournement automatique des œufs. Assure un retournement régulier (3 à 5 fois par jour) du 3ème au 18ème/19ème jour d'incubation.</p>
+                        <span class="tag">Mécanique</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Alimentation principale (220V / 12V)</h4>
+                        <p>Alimentation principale de la couveuse. Le thermostat peut fonctionner en 220V ou 12V. La version 12V est privilégiée pour la sécurité.</p>
+                        <span class="tag">Alimentation</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Alimentation carte (7,4V 2S)</h4>
+                        <p>Alimentation séparée pour la carte ARDUINO UNO, garantissant une stabilité électrique indépendante du système de chauffage.</p>
+                        <span class="tag">Alimentation</span>
+                    </div>
+
+                    <div class="component-item">
+                        <h4>Alvéoles de retournement 56 œufs</h4>
+                        <p>Support de 56 alvéoles pour œufs de poule, assurant un maintien stable et un retournement uniforme.</p>
+                        <span class="tag">Mécanique</span>
+                    </div>
+                </div>
+
+                <div class="note-box">
+                    <p><strong>NB :</strong> Un incubateur n'est pas seulement une machine que l'on conçoit, mais un espace où réside une nouvelle vie.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PARTIE 3 : SCHÉMA DE FONCTIONNEMENT ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-project-diagram"></i> SCHÉMA DE FONCTIONNEMENT</h2>
+            <div class="section-content">
+                <div style="text-align: center; padding: 2rem; background: rgba(0,0,0,0.3); border-radius: 15px;">
+                    <p style="color: var(--text-secondary); font-size: 1.2rem;">
+                        <i class="fas fa-microchip" style="color: #ffa500; font-size: 3rem; display: block; margin-bottom: 1rem;"></i>
+                        <strong>ARDUINO UNO</strong> (Cerveau du système)
+                    </p>
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; margin-top: 2rem;">
+                        <div style="background: rgba(255, 165, 0, 0.05); padding: 1rem 2rem; border-radius: 10px; border: 1px solid #ffa500;">
+                            <i class="fas fa-thermometer-half" style="color: #ffa500;"></i>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">DHT22 (Température / Humidité)</p>
+                        </div>
+                        <div style="background: rgba(255, 165, 0, 0.05); padding: 1rem 2rem; border-radius: 10px; border: 1px solid #ffa500;">
+                            <i class="fas fa-lightbulb" style="color: #ffa500;"></i>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">Lampe chauffante / Résistance</p>
+                        </div>
+                        <div style="background: rgba(255, 165, 0, 0.05); padding: 1rem 2rem; border-radius: 10px; border: 1px solid #ffa500;">
+                            <i class="fas fa-fan" style="color: #ffa500;"></i>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">Ventilateur</p>
+                        </div>
+                        <div style="background: rgba(255, 165, 0, 0.05); padding: 1rem 2rem; border-radius: 10px; border: 1px solid #ffa500;">
+                            <i class="fas fa-cogs" style="color: #ffa500;"></i>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">Moteur pas à pas (Retournement)</p>
+                        </div>
+                        <div style="background: rgba(255, 165, 0, 0.05); padding: 1rem 2rem; border-radius: 10px; border: 1px solid #ffa500;">
+                            <i class="fas fa-clock" style="color: #ffa500;"></i>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">Minuterie T3230</p>
+                        </div>
+                        <div style="background: rgba(255, 165, 0, 0.05); padding: 1rem 2rem; border-radius: 10px; border: 1px solid #ffa500;">
+                            <i class="fas fa-tachometer-alt" style="color: #ffa500;"></i>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">LCD 16x2 I2C (Affichage)</p>
+                        </div>
+                    </div>
+                    <div style="margin-top: 2rem; padding: 1rem; background: rgba(255, 165, 0, 0.05); border-radius: 10px; border: 1px solid #ffa500;">
+                        <p style="color: #ffa500; font-weight: 700;">Contrôle automatisé : Température → Humidité → Retournement</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PARTIE 4 : AMÉLIORATIONS ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-rocket"></i> AMÉLIORATIONS PAR RAPPORT À LA MK08</h2>
+            <div class="section-content">
+                <p>
+                    La MK-40 corrige les lacunes de l'ancienne couveuse MK08. Voici les principales améliorations :
+                </p>
+
+                <div class="improvement-grid">
+                    <div class="improvement-item">
+                        <div class="icon"><i class="fas fa-thermometer-half"></i></div>
+                        <h4>Double lecture de la température</h4>
+                        <p>Le thermostat et le DHT22 fournissent des mesures redondantes, éliminant les fluctuations et les données erronées.</p>
+                    </div>
+
+                    <div class="improvement-item">
+                        <div class="icon"><i class="fas fa-water"></i></div>
+                        <h4>Gestion optimisée de l'humidité</h4>
+                        <p>Le DHT22 permet une mesure précise de l'humidité, contrairement à l'ancien système où cette gestion était imprécise.</p>
+                    </div>
+
+                    <div class="improvement-item">
+                        <div class="icon"><i class="fas fa-check-double"></i></div>
+                        <h4>Fiabilité accrue</h4>
+                        <p>La double lecture des données (thermostat + DHT22) garantit une fiabilité supérieure et réduit les risques de perte d'œufs.</p>
+                    </div>
+
+                    <div class="improvement-item">
+                        <div class="icon"><i class="fas fa-egg"></i></div>
+                        <h4>Alvéoles 56 œufs</h4>
+                        <p>Capacité augmentée par rapport à la MK08, permettant une production plus importante.</p>
+                    </div>
+                </div>
+
+                <div class="note-box" style="margin-top: 2rem;">
+                    <p><strong>NB :</strong> La rentabilité d'une couveuse ne dépend pas uniquement de la machine, mais surtout du choix des œufs, c'est-à-dire de bien veiller à la fécondité des œufs.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PARTIE 5 : PLAN DE LA COUVEUSE ==================== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-drafting-compass"></i> PLAN DE LA COUVEUSE</h2>
+            <div class="section-content">
+                <div style="text-align: center; padding: 2rem; background: rgba(0,0,0,0.3); border-radius: 15px;">
+                    <p style="color: var(--text-secondary); font-size: 1.1rem;">
+                        <i class="fas fa-egg" style="color: #ffa500; font-size: 3rem; display: block; margin-bottom: 1rem;"></i>
+                        <strong>Disposition des composants :</strong>
+                    </p>
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; margin-top: 1.5rem;">
+                        <span style="background: rgba(255, 165, 0, 0.1); padding: 0.5rem 1.5rem; border-radius: 20px; border: 1px solid #ffa500; color: #ffa500;">Thermostat + sonde</span>
+                        <span style="background: rgba(255, 165, 0, 0.1); padding: 0.5rem 1.5rem; border-radius: 20px; border: 1px solid #ffa500; color: #ffa500;">DHT22</span>
+                        <span style="background: rgba(255, 165, 0, 0.1); padding: 0.5rem 1.5rem; border-radius: 20px; border: 1px solid #ffa500; color: #ffa500;">Lampe chauffante</span>
+                        <span style="background: rgba(255, 165, 0, 0.1); padding: 0.5rem 1.5rem; border-radius: 20px; border: 1px solid #ffa500; color: #ffa500;">Ventilateur</span>
+                        <span style="background: rgba(255, 165, 0, 0.1); padding: 0.5rem 1.5rem; border-radius: 20px; border: 1px solid #ffa500; color: #ffa500;">Moteur pas à pas</span>
+                        <span style="background: rgba(255, 165, 0, 0.1); padding: 0.5rem 1.5rem; border-radius: 20px; border: 1px solid #ffa500; color: #ffa500;">LCD 16x2 I2C</span>
+                        <span style="background: rgba(255, 165, 0, 0.1); padding: 0.5rem 1.5rem; border-radius: 20px; border: 1px solid #ffa500; color: #ffa500;">ARDUINO UNO</span>
+                        <span style="background: rgba(255, 165, 0, 0.1); padding: 0.5rem 1.5rem; border-radius: 20px; border: 1px solid #ffa500; color: #ffa500;">Alvéoles 56 œufs</span>
+                    </div>
+                    <p style="color: var(--text-secondary); margin-top: 2rem; font-style: italic;">
+                        Plan conçu par le <strong>MAJOR DIAO</strong>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 2rem 0; color: var(--text-secondary); font-size: 0.9rem; border-top: 1px solid var(--glass-border);">
+            <p>
+                <i class="fas fa-copyright"></i> AFRICA.TECH21 - Projet MK-40 | Couveuse automatique intelligente
+            </p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-secondary);">
+                Document technique par la direction • Tous droits réservés
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        // Vérification de connexion
+        if (localStorage.getItem('memberLoggedIn') !== 'true') {
+            window.location.href = 'espace-membres.html';
+        }
+    </script>
+</body>
+</html>
