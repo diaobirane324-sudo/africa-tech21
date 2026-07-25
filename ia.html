@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IA AFRICA.TECH21</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, sans-serif; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, sans-serif;
+        }
         body {
             background: #0b0b1a;
             color: white;
@@ -45,7 +50,9 @@
             min-height: 100px;
             outline: none;
         }
-        textarea:focus { border-color: #00ccff; }
+        textarea:focus {
+            border-color: #00ccff;
+        }
         button {
             margin-top: 15px;
             width: 100%;
@@ -59,8 +66,14 @@
             cursor: pointer;
             transition: 0.3s;
         }
-        button:hover { transform: scale(1.01); opacity: 0.9; }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        button:hover {
+            transform: scale(1.01);
+            opacity: 0.9;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
         #reponse {
             margin-top: 25px;
             padding: 20px;
@@ -72,66 +85,175 @@
             min-height: 60px;
             color: #ddd;
         }
-        .loader { display: none; text-align: center; margin-top: 15px; color: #aaa; font-size: 0.95rem; }
-        .loader.active { display: block; }
+        .loader {
+            display: none;
+            text-align: center;
+            margin-top: 15px;
+            color: #aaa;
+            font-size: 0.95rem;
+        }
+        .loader.active {
+            display: block;
+        }
+        .access-box {
+            background: #1a1a35;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #333366;
+        }
+        .access-box label {
+            display: block;
+            margin-bottom: 8px;
+            color: #aaa;
+            font-weight: 600;
+        }
+        .access-box input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            background: #0b0b1a;
+            border: 1px solid #333366;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+        }
+        .access-box input:focus {
+            border-color: #00ccff;
+        }
+        .access-error {
+            color: #ff6b6b;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            display: none;
+        }
+        .access-error.show {
+            display: block;
+        }
+        #iaContent {
+            display: none;
+        }
+        #iaContent.active {
+            display: block;
+        }
+        .lock-icon {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
-<div class="container">
+<div class="container" id="app">
     <h1>🧠 IA · AFRICA.TECH21</h1>
-    <textarea id="question" placeholder="Pose ta question technique ici..."></textarea>
-    <button id="sendBtn">Envoyer</button>
-    <div class="loader" id="loader">⏳ L'IA réfléchit...</div>
-    <div id="reponse">⚡ La réponse apparaîtra ici.</div>
+
+    <!-- === ZONE DE VÉRIFICATION === -->
+    <div id="accessPanel">
+        <div class="lock-icon">🔐</div>
+        <div class="access-box">
+            <label for="accessCode">Entrez votre code d'accès</label>
+            <input type="text" id="accessCode" placeholder="Ex: AT21_0062027001" autofocus>
+            <div class="access-error" id="accessError">❌ Code incorrect. Vérifiez votre ID + 2027001</div>
+            <button id="verifyBtn" style="margin-top: 15px;">Vérifier</button>
+        </div>
+    </div>
+
+    <!-- === CONTENU IA (caché par défaut) === -->
+    <div id="iaContent">
+        <textarea id="question" placeholder="Pose ta question technique ici..."></textarea>
+        <button id="sendBtn">Envoyer</button>
+        <div class="loader" id="loader">⏳ L'IA réfléchit...</div>
+        <div id="reponse">⚡ La réponse apparaîtra ici.</div>
+    </div>
 </div>
 
 <script>
-const API_KEY = 'sk-0c271def911a484eab813109dbe8a43a';
-const URL = 'https://api.deepseek.com/v1/chat/completions';
+    const API_KEY = 'sk-0c271def911a484eab813109dbe8a43a';
+    const URL = 'https://api.deepseek.com/v1/chat/completions';
 
-const question = document.getElementById('question');
-const reponseDiv = document.getElementById('reponse');
-const sendBtn = document.getElementById('sendBtn');
-const loader = document.getElementById('loader');
+    // Récupération de l'ID du membre connecté
+    const memberId = localStorage.getItem('memberId') || '';
 
-sendBtn.addEventListener('click', async () => {
-    const msg = question.value.trim();
-    if (!msg) return alert('Écris une question.');
+    const accessPanel = document.getElementById('accessPanel');
+    const iaContent = document.getElementById('iaContent');
+    const accessCodeInput = document.getElementById('accessCode');
+    const verifyBtn = document.getElementById('verifyBtn');
+    const accessError = document.getElementById('accessError');
 
-    sendBtn.disabled = true;
-    loader.classList.add('active');
-    reponseDiv.textContent = '...';
+    const question = document.getElementById('question');
+    const reponseDiv = document.getElementById('reponse');
+    const sendBtn = document.getElementById('sendBtn');
+    const loader = document.getElementById('loader');
 
-    try {
-        const res = await fetch(URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${API_KEY}`
-            },
-            body: JSON.stringify({
-                model: 'deepseek-chat',
-                messages: [{ role: 'user', content: msg }],
-                max_tokens: 800
-            })
-        });
-
-        if (!res.ok) {
-            const err = await res.json();
-            reponseDiv.textContent = '❌ Erreur API : ' + (err.error?.message || res.status);
-            return;
-        }
-
-        const data = await res.json();
-        reponseDiv.textContent = data.choices[0].message.content;
-
-    } catch (e) {
-        reponseDiv.textContent = '❌ Problème réseau : ' + e.message;
-    } finally {
-        sendBtn.disabled = false;
-        loader.classList.remove('active');
+    // === VÉRIFICATION DU CODE ===
+    function checkAccess(code) {
+        const expected = memberId + '2027001';
+        return code.trim() === expected;
     }
-});
+
+    verifyBtn.addEventListener('click', () => {
+        const code = accessCodeInput.value.trim();
+        if (checkAccess(code)) {
+            accessPanel.style.display = 'none';
+            iaContent.classList.add('active');
+        } else {
+            accessError.classList.add('show');
+            accessCodeInput.value = '';
+            accessCodeInput.focus();
+        }
+    });
+
+    // Appui sur Entrée dans le champ code
+    accessCodeInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            verifyBtn.click();
+        }
+    });
+
+    // === ENVOI VERS DEEPSEEK ===
+    sendBtn.addEventListener('click', async () => {
+        const msg = question.value.trim();
+        if (!msg) return alert('Écris une question.');
+
+        sendBtn.disabled = true;
+        loader.classList.add('active');
+        reponseDiv.textContent = '...';
+
+        try {
+            const res = await fetch(URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: 'deepseek-chat',
+                    messages: [{ role: 'user', content: msg }],
+                    max_tokens: 800
+                })
+            });
+
+            if (!res.ok) {
+                const err = await res.json();
+                reponseDiv.textContent = '❌ Erreur API : ' + (err.error?.message || res.status);
+                return;
+            }
+
+            const data = await res.json();
+            reponseDiv.textContent = data.choices[0].message.content;
+
+        } catch (e) {
+            reponseDiv.textContent = '❌ Problème réseau : ' + e.message;
+        } finally {
+            sendBtn.disabled = false;
+            loader.classList.remove('active');
+        }
+    });
+
+    // === PRÉ-REMPLIR LE CHAMP CODE AVEC L'ID DU MEMBRE ===
+    if (memberId) {
+        accessCodeInput.placeholder = `Ex: ${memberId}2027001`;
+    }
 </script>
 </body>
 </html>
