@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA AFRICA.TECH21</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, sans-serif; }
+        body {
+            background: #0b0b1a;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: #14142b;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 0 40px rgba(0, 180, 255, 0.15);
+            border: 1px solid rgba(0, 180, 255, 0.2);
+        }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 25px;
+            background: linear-gradient(90deg, #00ccff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            background: #1e1e3a;
+            border: 1px solid #333366;
+            color: white;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            outline: none;
+        }
+        textarea:focus { border-color: #00ccff; }
+        button {
+            margin-top: 15px;
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, #00ccff, #a855f7);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover { transform: scale(1.01); opacity: 0.9; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        #reponse {
+            margin-top: 25px;
+            padding: 20px;
+            background: #1a1a35;
+            border-radius: 12px;
+            border-left: 4px solid #00ccff;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            min-height: 60px;
+            color: #ddd;
+        }
+        .loader { display: none; text-align: center; margin-top: 15px; color: #aaa; font-size: 0.95rem; }
+        .loader.active { display: block; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🧠 IA · AFRICA.TECH21</h1>
+    <textarea id="question" placeholder="Pose ta question technique ici..."></textarea>
+    <button id="sendBtn">Envoyer</button>
+    <div class="loader" id="loader">⏳ L'IA réfléchit...</div>
+    <div id="reponse">⚡ La réponse apparaîtra ici.</div>
+</div>
+
+<script>
+const API_KEY = 'sk-0c271def911a484eab813109dbe8a43a';
+const URL = 'https://api.deepseek.com/v1/chat/completions';
+
+const question = document.getElementById('question');
+const reponseDiv = document.getElementById('reponse');
+const sendBtn = document.getElementById('sendBtn');
+const loader = document.getElementById('loader');
+
+sendBtn.addEventListener('click', async () => {
+    const msg = question.value.trim();
+    if (!msg) return alert('Écris une question.');
+
+    sendBtn.disabled = true;
+    loader.classList.add('active');
+    reponseDiv.textContent = '...';
+
+    try {
+        const res = await fetch(URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${API_KEY}`
+            },
+            body: JSON.stringify({
+                model: 'deepseek-chat',
+                messages: [{ role: 'user', content: msg }],
+                max_tokens: 800
+            })
+        });
+
+        if (!res.ok) {
+            const err = await res.json();
+            reponseDiv.textContent = '❌ Erreur API : ' + (err.error?.message || res.status);
+            return;
+        }
+
+        const data = await res.json();
+        reponseDiv.textContent = data.choices[0].message.content;
+
+    } catch (e) {
+        reponseDiv.textContent = '❌ Problème réseau : ' + e.message;
+    } finally {
+        sendBtn.disabled = false;
+        loader.classList.remove('active');
+    }
+});
+</script>
+</body>
+</html>
