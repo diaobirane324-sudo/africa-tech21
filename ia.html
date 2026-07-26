@@ -74,6 +74,17 @@
             opacity: 0.5;
             cursor: not-allowed;
         }
+
+        /* Bouton Recherche Approfondie */
+        .btn-deep {
+            background: linear-gradient(90deg, #a855f7, #00ccff);
+            margin-top: 10px;
+        }
+        .btn-deep:hover {
+            transform: scale(1.01);
+            opacity: 0.9;
+        }
+
         #reponse {
             margin-top: 25px;
             padding: 20px;
@@ -162,6 +173,13 @@
     <div id="iaContent">
         <textarea id="question" placeholder="Pose ta question technique..."></textarea>
         <button id="sendBtn">Envoyer</button>
+
+        <!-- BOUTON RECHERCHE APPROFONDIE -->
+        <button onclick="window.open('http://localhost:3000', '_blank')" 
+                class="btn-deep">
+            🔬 Recherche Approfondie
+        </button>
+
         <div class="loader" id="loader">⏳ L'IA réfléchit...</div>
         <div id="reponse">⚡ La réponse apparaîtra ici.</div>
     </div>
