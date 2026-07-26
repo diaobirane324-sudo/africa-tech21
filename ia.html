@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IA AFRICA.TECH21</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, sans-serif; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, sans-serif;
+        }
         body {
             background: #0b0b1a;
             color: white;
@@ -45,7 +50,9 @@
             min-height: 100px;
             outline: none;
         }
-        textarea:focus { border-color: #00ccff; }
+        textarea:focus {
+            border-color: #00ccff;
+        }
         button {
             margin-top: 15px;
             width: 100%;
@@ -59,8 +66,14 @@
             cursor: pointer;
             transition: 0.3s;
         }
-        button:hover { transform: scale(1.01); opacity: 0.9; }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        button:hover {
+            transform: scale(1.01);
+            opacity: 0.9;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
         #reponse {
             margin-top: 25px;
             padding: 20px;
@@ -72,8 +85,16 @@
             min-height: 60px;
             color: #ddd;
         }
-        .loader { display: none; text-align: center; margin-top: 15px; color: #aaa; font-size: 0.95rem; }
-        .loader.active { display: block; }
+        .loader {
+            display: none;
+            text-align: center;
+            margin-top: 15px;
+            color: #aaa;
+            font-size: 0.95rem;
+        }
+        .loader.active {
+            display: block;
+        }
         .access-box {
             background: #1a1a35;
             padding: 20px;
@@ -97,17 +118,29 @@
             font-size: 1rem;
             outline: none;
         }
-        .access-box input:focus { border-color: #00ccff; }
+        .access-box input:focus {
+            border-color: #00ccff;
+        }
         .access-error {
             color: #ff6b6b;
             font-size: 0.9rem;
             margin-top: 8px;
             display: none;
         }
-        .access-error.show { display: block; }
-        #iaContent { display: none; }
-        #iaContent.active { display: block; }
-        .lock-icon { text-align: center; font-size: 3rem; margin-bottom: 10px; }
+        .access-error.show {
+            display: block;
+        }
+        #iaContent {
+            display: none;
+        }
+        #iaContent.active {
+            display: block;
+        }
+        .lock-icon {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -119,7 +152,7 @@
         <div class="lock-icon">🔐</div>
         <div class="access-box">
             <label for="accessCode">Code d'accès</label>
-            <input type="text" id="accessCode" placeholder="Ex: ID + MATRICULE" autofocus>
+            <input type="text" id="accessCode" placeholder="" autofocus>
             <div class="access-error" id="accessError">❌ Code incorrect</div>
             <button id="verifyBtn">Vérifier</button>
         </div>
@@ -139,6 +172,7 @@
     const API_KEY = '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';
     const URL = 'https://api.groq.com/openai/v1/chat/completions';
 
+    // Récupération de l'ID du membre connecté
     const memberId = localStorage.getItem('memberId') || '';
 
     const accessPanel = document.getElementById('accessPanel');
@@ -154,7 +188,7 @@
 
     // === VÉRIFICATION CODE ===
     function checkAccess(code) {
-        return code.trim() === memberId + 'Matricule';
+        return code.trim() === memberId + '27001';
     }
 
     verifyBtn.addEventListener('click', () => {
@@ -173,9 +207,8 @@
         if (e.key === 'Enter') verifyBtn.click();
     });
 
-    if (memberId) {
-        accessCodeInput.placeholder = `Ex: ${memberId}Matricule`;
-    }
+    // Placeholder vide (aucune indication du code)
+    accessCodeInput.placeholder = '';
 
     // === ENVOI VERS GROQ ===
     sendBtn.addEventListener('click', async () => {
