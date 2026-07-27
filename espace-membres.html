@@ -211,64 +211,75 @@
     </div>
 
     <script>
-        // ==================== BASE DE DONNÉES DES MEMBRES ====================
-        const MEMBRES = {
-            "AT21-001": {
-                id: "AT21-001",
-                nom: "DIAKHATE",
-                prenom: "ABDOU",
-                fonction: "VICE PRÉSIDENT"
-            },
-            "AT21_0011": {
-                id: "AT21_0011",
-                nom: "MOUHAMED",
-                prenom: "DIALLO",
-                fonction: "RESPONSABLE DES PROJETS"
-            },
-            "AT21_0016": {
-                id: "AT21_0016",
-                nom: "DRAMÉ",
-                prenom: "AICHA",
-                fonction: "SECRÉTAIRE GÉNÉRAL"
-            },
-            "AT21_0021": {
-                id: "AT21_0021",
-                nom: "DIOP",
-                prenom: "SALAMATA",
-                fonction: "ADJOINTE SECRÉTAIRE"
-            },
-            "AT21_0026": {
-                id: "AT21_0026",
-                nom: "TOURÉ",
-                prenom: "SOKHNA BINTOU",
-                fonction: "ADJOINTE FINANCE"
-            },
-            "AT21_0031": {
-                id: "AT21_0031",
-                nom: "WADE",
-                prenom: "ADJA FAMA",
-                fonction: "RESPONSABLE FINANCE"
-            },
-            "AT21_0036": {
-                id: "AT21_0036",
-                nom: "NDIAYE",
-                prenom: "MARIE ANGÉLIQUE DABA",
-                fonction: "RESPONSABLE COMMUNICATION"
-            },
-            "AT21_0046": {
-                id: "AT21_0049",
-                nom: "DIALLO",
-                prenom: "MOUHAMED",
-                fonction: "CRÉATEUR DE CONTENU"
-            },
-            "AT21_006": {
-                id: "AT21_006",
-                nom: "BIRANE",
-                prenom: "DIAO",
-                fonction: "PRÉSIDENT DE LA COMMUNAUTÉ"
-            }
-        };
-
+      // ==================== BASE DE DONNÉES DES MEMBRES ====================
+const MEMBRES = {
+    "AT21-001": {
+        id: "AT21-001",
+        nom: "DIAKHATE",
+        prenom: "ABDOU",
+        fonction: "VICE PRÉSIDENT"
+    },
+    "AT21_0011": {
+        id: "AT21_0011",
+        nom: "MOUHAMED",
+        prenom: "DIALLO",
+        fonction: "RESPONSABLE DES PROJETS"
+    },
+    "AT21_0016": {
+        id: "AT21_0016",
+        nom: "DRAMÉ",
+        prenom: "AICHA",
+        fonction: "SECRÉTAIRE GÉNÉRAL"
+    },
+    "AT21_0021": {
+        id: "AT21_0021",
+        nom: "DIOP",
+        prenom: "SALAMATA",
+        fonction: "ADJOINTE SECRÉTAIRE"
+    },
+    "AT21_0026": {
+        id: "AT21_0026",
+        nom: "TOURÉ",
+        prenom: "SOKHNA BINTOU",
+        fonction: "ADJOINTE FINANCE"
+    },
+    "AT21_0031": {
+        id: "AT21_0031",
+        nom: "WADE",
+        prenom: "ADJA FAMA",
+        fonction: "RESPONSABLE FINANCE"
+    },
+    "AT21_0036": {
+        id: "AT21_0036",
+        nom: "NDIAYE",
+        prenom: "MARIE ANGÉLIQUE DABA",
+        fonction: "RESPONSABLE COMMUNICATION"
+    },
+    "AT21_0046": {
+        id: "AT21_0046",   // ✅ corrigé
+        nom: "DIALLO",
+        prenom: "MOUHAMED",
+        fonction: "CRÉATEUR DE CONTENU"
+    },
+    "AT21_006": {
+        id: "AT21_006",
+        nom: "BIRANE",
+        prenom: "DIAO",
+        fonction: "PRÉSIDENT DE LA COMMUNAUTÉ"
+    },
+    "AT21_0052": {
+        id: "AT21_0052",
+        nom: "SALL",
+        prenom: "ABDOURAKHMANE",
+        fonction: "CRÉATEUR DE CONTENU OFFICIEL"
+    },
+    "AT21_0057": {
+        id: "AT21_0057",
+        nom: "SY",
+        prenom: "MOUHAMED",
+        fonction: "ÉQUIPE TECHNIQUE"
+    }
+};
         // ==================== GESTION DU FORMULAIRE ====================
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
