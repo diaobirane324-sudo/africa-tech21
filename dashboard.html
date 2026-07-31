@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ===== TOUT LE CSS RESTE IDENTIQUE À L'ORIGINAL ===== */
+        /* ===== CSS COMPLET ===== */
         * {
             margin: 0;
             padding: 0;
@@ -115,6 +115,7 @@
             100% { transform: translateY(-100px) translateX(100px) rotate(360deg); opacity: 0; }
         }
 
+        /* ===== HEADER ===== */
         .neuro-header {
             background: rgba(20, 20, 35, 0.8);
             backdrop-filter: blur(20px);
@@ -241,6 +242,72 @@
             margin: 0 auto;
         }
 
+        /* ===== BANDEAU D'INFORMATION ===== */
+        .info-banner {
+            background: linear-gradient(90deg, #00f0ff, #7b2cbf, #ff00ff, #00f0ff);
+            background-size: 300%;
+            padding: 1.2rem 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(0, 240, 255, 0.8);
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.3);
+            animation: clignoter 1.5s infinite, bgMove 4s linear infinite;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes clignoter {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(1.01); }
+        }
+
+        @keyframes bgMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+
+        .info-banner::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+            animation: rotateGlow 4s linear infinite;
+        }
+
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .info-banner .icon {
+            margin-right: 1rem;
+            font-size: 1.8rem;
+            animation: pulseIcon 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulseIcon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .info-banner .message-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .info-banner .message-text i {
+            margin-right: 0.8rem;
+        }
+
+        /* ===== HERO ===== */
         .hero-section {
             background: var(--glass);
             backdrop-filter: blur(15px);
@@ -287,6 +354,7 @@
             line-height: 1.6;
         }
 
+        /* ===== GRILLE ===== */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
@@ -364,6 +432,7 @@
             text-shadow: var(--accent-glow);
         }
 
+        /* ===== FORUM ===== */
         .forum-section {
             background: var(--glass);
             backdrop-filter: blur(15px);
@@ -513,44 +582,42 @@
             .neuro-header {
                 padding: 1rem 1.5rem;
             }
-
             .header-content {
                 flex-direction: column;
                 gap: 1rem;
             }
-
             .user-panel {
                 flex-direction: column;
                 gap: 1rem;
             }
-
             .dashboard-container {
                 padding: 1.5rem;
             }
-
             .hero-section {
                 padding: 2rem 1.5rem;
             }
-
             .hero-title {
                 font-size: 2.5rem;
             }
-
             .features-grid {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
             }
-
             .feature-card {
                 padding: 2rem 1.5rem;
             }
-
             .input-group {
                 flex-direction: column;
             }
-
             .send-btn {
                 width: 100%;
+            }
+            .info-banner {
+                font-size: 1rem;
+                padding: 0.8rem 1rem;
+            }
+            .info-banner .icon {
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -593,15 +660,20 @@
         </div>
     </header>
 
-    <!-- ===== CONTENU PRINCIPAL ===== -->
-    <main class="dashboard-container">
-        <!-- Hero -->
+    <!-- ===== BANDEAU D'INFORMATION ===== -->
+    <div class="dashboard-container">
+        <div class="info-banner" id="infoBanner">
+            <span class="icon"><i class="fas fa-bullhorn"></i></span>
+            <span class="message-text" id="infoMessage"><i class="fas fa-spinner fa-spin"></i> Chargement de l'information...</span>
+        </div>
+
+        <!-- ===== HERO ===== -->
         <section class="hero-section">
             <h1 class="hero-title">TABLEAU DE BORD PRINCIPAL</h1>
             <p class="hero-subtitle">Interface de collaboration avancée pour les membres d'AFRICA.TECH21. Accédez aux projets confidentiels, communiquez avec l'équipe et gérez les développements techniques.</p>
         </section>
 
-        <!-- === GRILLE DES PROJETS === -->
+        <!-- ===== GRILLE DES PROJETS ===== -->
         <div class="features-grid">
             <!-- RSMA (VERROUILLÉ) -->
             <div class="feature-card" onclick="verifierAcces('rsma.html')">
@@ -615,12 +687,7 @@
             <div class="feature-card" onclick="verifierAcces('oxy.html')">
                 <div class="feature-icon"><i class="fas fa-wind"></i></div>
                 <h3 class="feature-title">PROJET OXY</h3>
-                <p class="feature-description">
-                    Système d'assistance respiratoire automatique pour patients avec insuffisance respiratoire. 
-                    Prise en charge des pathologies : SDRA, œdème pulmonaire, BPCO, asthme sévère, SLA, AVC, 
-                    traumatismes crâniens, lésions médullaires, brûlures graves des voies aériennes. 
-                    Interface tactile avec base de données médicale et système de redondance physique.
-                </p>
+                <p class="feature-description">Système d'assistance respiratoire automatique pour patients avec insuffisance respiratoire. Prise en charge des pathologies : SDRA, œdème pulmonaire, BPCO, asthme sévère, SLA, AVC, traumatismes crâniens, lésions médullaires, brûlures graves des voies aériennes. Interface tactile avec base de données médicale et système de redondance physique.</p>
                 <div class="feature-status status-active">🔒 ACCÈS: CODE REQUIS</div>
             </div>
             
@@ -632,7 +699,7 @@
                 <div class="feature-status status-active">🔒 ACCÈS: CODE REQUIS</div>
             </div>
 
-            <!-- Profil (libre) -->
+            <!-- PROFIL (libre) -->
             <div class="feature-card" onclick="window.location.href='profile.html'">
                 <div class="feature-icon"><i class="fas fa-user-cog"></i></div>
                 <h3 class="feature-title">PROFIL TECHNIQUE</h3>
@@ -640,7 +707,7 @@
                 <div class="feature-status status-active">ACCÈS: AUTORISÉ</div>
             </div>
 
-            <!-- Réseau collaboratif (libre) -->
+            <!-- RÉSEAU COLLABORATIF (libre) -->
             <div class="feature-card" onclick="window.location.href='collaboratif.html'">
                 <div class="feature-icon"><i class="fas fa-users-cog"></i></div>
                 <h3 class="feature-title">RÉSEAU COLLABORATIF</h3>
@@ -666,66 +733,42 @@
 
             <!-- SAGAF (libre) -->
             <div class="feature-card" onclick="window.location.href='sagaf.html'">
-                <div class="feature-icon">
-                    <i class="fas fa-exclamation-triangle"></i>
-                </div>
+                <div class="feature-icon"><i class="fas fa-exclamation-triangle"></i></div>
                 <h3 class="feature-title">SAGAF</h3>
-                <p class="feature-description">
-                    Système d'Alerte pour Fuite de Gaz. Détection automatique des fuites de gaz domestiques (butane, propane, méthane) avec alarme sonore et visuelle pour protéger les foyers.
-                </p>
+                <p class="feature-description">Système d'Alerte pour Fuite de Gaz. Détection automatique des fuites de gaz domestiques (butane, propane, méthane) avec alarme sonore et visuelle pour protéger les foyers.</p>
                 <div class="feature-status status-active">STATUS: PROTOTYPAGE</div>
             </div>
 
             <!-- BINV (libre) -->
             <div class="feature-card" onclick="window.location.href='binv.html'">
-                <div class="feature-icon">
-                    <i class="fas fa-eye-slash"></i>
-                </div>
+                <div class="feature-icon"><i class="fas fa-eye-slash"></i></div>
                 <h3 class="feature-title">BINV</h3>
-                <p class="feature-description">
-                    Bâton Intelligent pour les Non-Voyants. Détection des obstacles (trous, murs, roches) par caméra et IA, avec alertes vocales en plusieurs langues.
-                </p>
+                <p class="feature-description">Bâton Intelligent pour les Non-Voyants. Détection des obstacles (trous, murs, roches) par caméra et IA, avec alertes vocales en plusieurs langues.</p>
                 <div class="feature-status status-active">STATUS: PROTOTYPAGE</div>
             </div>
 
             <!-- COURS AFRICA.TECH21 (VERROUILLÉ) -->
             <div class="feature-card" onclick="verifierAcces('cours.html')">
-                <div class="feature-icon">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
+                <div class="feature-icon"><i class="fas fa-graduation-cap"></i></div>
                 <h3 class="feature-title">COURS AFRICA.TECH21</h3>
-                <p class="feature-description">
-                    Formation Future Members Africa.tech21 (FFAM). Programme complet d'électronique niveau débutant à intermédiaire pour intégrer l'équipe technique.
-                </p>
+                <p class="feature-description">Formation Future Members Africa.tech21 (FFAM). Programme complet d'électronique niveau débutant à intermédiaire pour intégrer l'équipe technique.</p>
                 <div class="feature-status status-active">🔒 ACCÈS: CODE REQUIS</div>
             </div>
 
             <!-- SECRÉTARIAT (restreint) -->
             <div class="feature-card" onclick="window.location.href='secretariat.html'">
-                <div class="feature-icon">
-                    <i class="fas fa-pen-fancy"></i>
-                </div>
+                <div class="feature-icon"><i class="fas fa-pen-fancy"></i></div>
                 <h3 class="feature-title">SECRÉTARIAT</h3>
-                <p class="feature-description">
-                    Espace dédié à la Secrétaire Générale et au Président. Rédaction et archivage des comptes rendus de réunions, rapports d'activités et notes internes.
-                </p>
-                <div class="feature-status status-active">
-                    <i class="fas fa-lock"></i> ACCÈS: RESTREINT
-                </div>
+                <p class="feature-description">Espace dédié à la Secrétaire Générale et au Président. Rédaction et archivage des comptes rendus de réunions, rapports d'activités et notes internes.</p>
+                <div class="feature-status status-active"><i class="fas fa-lock"></i> ACCÈS: RESTREINT</div>
             </div>
 
             <!-- IA (libre) -->
             <div class="feature-card" onclick="window.location.href='ia.html'">
-                <div class="feature-icon">
-                    <i class="fas fa-brain"></i>
-                </div>
+                <div class="feature-icon"><i class="fas fa-brain"></i></div>
                 <h3 class="feature-title">IA AFRICA.TECH21</h3>
-                <p class="feature-description">
-                    Assistant IA intégré (Groq). Posez vos questions techniques et obtenez des réponses précises en temps réel. Accès réservé aux membres.
-                </p>
-                <div class="feature-status status-active">
-                    <i class="fas fa-lock"></i> ACCÈS: CODE REQUIS
-                </div>
+                <p class="feature-description">Assistant IA intégré (Groq). Posez vos questions techniques et obtenez des réponses précises en temps réel. Accès réservé aux membres.</p>
+                <div class="feature-status status-active"><i class="fas fa-lock"></i> ACCÈS: CODE REQUIS</div>
             </div>
 
             <!-- ESPACE MAJOR -->
@@ -737,7 +780,7 @@
             </div>
         </div>
 
-        <!-- === FORUM === -->
+        <!-- ===== FORUM ===== -->
         <section class="forum-section">
             <h2 class="section-title">CANAL DE COMMUNICATION</h2>
             <div class="messages-container" id="forumMessages">
@@ -754,9 +797,12 @@
                 <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i> TRANSMETTRE</button>
             </div>
         </section>
-    </main>
+    </div>
 
     <script>
+        // ==================== CONFIGURATION ====================
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyV86rnSYPMRVIyZ-sE62lQXoVRDvhfKPOppMW7Z2IACqM8s2pGbpXC0BcKUNydBs/exec';
+
         // ==================== VÉRIFICATION CONNEXION ====================
         if (localStorage.getItem('memberLoggedIn') !== 'true') {
             window.location.href = 'espace-membres.html';
@@ -844,6 +890,23 @@
             container.scrollTop = container.scrollHeight;
         }
 
+        // ==================== BANDEAU D'INFORMATION ====================
+        async function chargerInfoJour() {
+            try {
+                const response = await fetch(SCRIPT_URL + '?action=getInfoJour');
+                const data = await response.json();
+
+                if (data.success && data.message) {
+                    document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> ' + data.message;
+                } else {
+                    document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> Bienvenue sur AFRICA.TECH21 !';
+                }
+            } catch (error) {
+                console.error('Erreur chargement info:', error);
+                document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> 🚀 AFRICA.TECH21 - Innovation en mouvement !';
+            }
+        }
+
         // ==================== VÉRIFICATION D'ACCÈS ====================
         function verifierAcces(page) {
             const memberId = localStorage.getItem('memberId') || '';
@@ -883,6 +946,7 @@
         window.addEventListener('load', () => {
             createParticles();
             loadMessages();
+            chargerInfoJour();
         });
     </script>
 </body>
