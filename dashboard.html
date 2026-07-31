@@ -585,8 +585,8 @@
                     <a href="sagaf.html" class="nav-btn"><i class="fas fa-exclamation-triangle"></i> SAGAF</a>
                     <a href="binv.html" class="nav-btn"><i class="fas fa-eye-slash"></i> BINV</a>
                     <a href="cours.html" class="nav-btn"><i class="fas fa-graduation-cap"></i> COURS</a>
-                   
-            
+                    <a href="ia.html" class="nav-btn"><i class="fas fa-brain"></i> IA</a>
+                    <a href="secretariat.html" class="nav-btn"><i class="fas fa-pen-fancy"></i> SECRÉTARIAT</a>
                 </div>
                 <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> DÉCONNEXION</button>
             </div>
@@ -603,16 +603,16 @@
 
         <!-- === GRILLE DES PROJETS === -->
         <div class="features-grid">
-            <!-- RSMA -->
-            <div class="feature-card" onclick="window.location.href='rsma.html'">
+            <!-- RSMA (VERROUILLÉ) -->
+            <div class="feature-card" onclick="verifierAcces('rsma.html')">
                 <div class="feature-icon"><i class="fas fa-water"></i></div>
                 <h3 class="feature-title">RSMA V1.0</h3>
                 <p class="feature-description">Système de robot sous-marin autonome pour l'exploration marine. Accès aux spécifications techniques complètes et données de développement.</p>
-                <div class="feature-status status-active">STATUS: DÉVELOPPEMENT ACTIF</div>
+                <div class="feature-status status-active">🔒 ACCÈS: CODE REQUIS</div>
             </div>
 
-            <!-- OXY (mise à jour avec détails médicaux) -->
-            <div class="feature-card" onclick="window.location.href='oxy.html'">
+            <!-- OXY (VERROUILLÉ) -->
+            <div class="feature-card" onclick="verifierAcces('oxy.html')">
                 <div class="feature-icon"><i class="fas fa-wind"></i></div>
                 <h3 class="feature-title">PROJET OXY</h3>
                 <p class="feature-description">
@@ -621,18 +621,18 @@
                     traumatismes crâniens, lésions médullaires, brûlures graves des voies aériennes. 
                     Interface tactile avec base de données médicale et système de redondance physique.
                 </p>
-                <div class="feature-status status-active">STATUS: R&D MÉDICALE ACTIVE</div>
+                <div class="feature-status status-active">🔒 ACCÈS: CODE REQUIS</div>
             </div>
             
-            <!-- RGA -->
-            <div class="feature-card" onclick="window.location.href='rga.html'">
+            <!-- RGA (VERROUILLÉ) -->
+            <div class="feature-card" onclick="verifierAcces('rga.html')">
                 <div class="feature-icon"><i class="fas fa-robot"></i></div>
                 <h3 class="feature-title">ROBOT DE GUIDE (RGA)</h3>
                 <p class="feature-description">Robot intelligent autonome pour l'accueil et l'assistance dans les infrastructures publiques avec reconnaissance faciale et navigation autonome.</p>
-                <div class="feature-status status-active">STATUS: DÉVELOPPEMENT ACTIF</div>
+                <div class="feature-status status-active">🔒 ACCÈS: CODE REQUIS</div>
             </div>
 
-            <!-- Profil -->
+            <!-- Profil (libre) -->
             <div class="feature-card" onclick="window.location.href='profile.html'">
                 <div class="feature-icon"><i class="fas fa-user-cog"></i></div>
                 <h3 class="feature-title">PROFIL TECHNIQUE</h3>
@@ -640,7 +640,7 @@
                 <div class="feature-status status-active">ACCÈS: AUTORISÉ</div>
             </div>
 
-            <!-- Réseau collaboratif -->
+            <!-- Réseau collaboratif (libre) -->
             <div class="feature-card" onclick="window.location.href='collaboratif.html'">
                 <div class="feature-icon"><i class="fas fa-users-cog"></i></div>
                 <h3 class="feature-title">RÉSEAU COLLABORATIF</h3>
@@ -648,15 +648,15 @@
                 <div class="feature-status status-active">ACCÈS: DISPONIBLE</div>
             </div>
             
-            <!-- IRRITECH (nouveau) -->
-            <div class="feature-card" onclick="window.location.href='irritech.html'">
+            <!-- IRRITECH (VERROUILLÉ) -->
+            <div class="feature-card" onclick="verifierAcces('irritech.html')">
                 <div class="feature-icon"><i class="fas fa-tint"></i></div>
                 <h3 class="feature-title">IRRITECH V1.0</h3>
                 <p class="feature-description">Système d'arrosage automatique intelligent pour plantes. Gestion optimisée de l'hydratation avec capteurs d'humidité du sol, programmation personnalisée et contrôle à distance.</p>
-                <div class="feature-status status-active">STATUS: PROTOTYPAGE</div>
+                <div class="feature-status status-active">🔒 ACCÈS: CODE REQUIS</div>
             </div>
 
-            <!-- MK-40 (nouveau) -->
+            <!-- MK-40 (libre) -->
             <div class="feature-card" onclick="window.location.href='mk40.html'">
                 <div class="feature-icon"><i class="fas fa-egg"></i></div>
                 <h3 class="feature-title">MK-40</h3>
@@ -664,55 +664,69 @@
                 <div class="feature-status status-active">STATUS: DÉVELOPPEMENT AVANCÉ</div>
             </div>
 
-            <!-- SAGAF -->
-<div class="feature-card" onclick="window.location.href='sagaf.html'">
-    <div class="feature-icon">
-        <i class="fas fa-exclamation-triangle"></i>
-    </div>
-    <h3 class="feature-title">SAGAF</h3>
-    <p class="feature-description">
-        Système d'Alerte pour Fuite de Gaz. Détection automatique des fuites de gaz domestiques (butane, propane, méthane) avec alarme sonore et visuelle pour protéger les foyers.
-    </p>
-    <div class="feature-status status-active">STATUS: PROTOTYPAGE</div>
-</div>
+            <!-- SAGAF (libre) -->
+            <div class="feature-card" onclick="window.location.href='sagaf.html'">
+                <div class="feature-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3 class="feature-title">SAGAF</h3>
+                <p class="feature-description">
+                    Système d'Alerte pour Fuite de Gaz. Détection automatique des fuites de gaz domestiques (butane, propane, méthane) avec alarme sonore et visuelle pour protéger les foyers.
+                </p>
+                <div class="feature-status status-active">STATUS: PROTOTYPAGE</div>
+            </div>
 
-            <!-- BINV -->
-<div class="feature-card" onclick="window.location.href='binv.html'">
-    <div class="feature-icon">
-        <i class="fas fa-eye-slash"></i>
-    </div>
-    <h3 class="feature-title">BINV</h3>
-    <p class="feature-description">
-        Bâton Intelligent pour les Non-Voyants. Détection des obstacles (trous, murs, roches) par caméra et IA, avec alertes vocales en plusieurs langues.
-    </p>
-    <div class="feature-status status-active">STATUS: PROTOTYPAGE</div>
-</div>
+            <!-- BINV (libre) -->
+            <div class="feature-card" onclick="window.location.href='binv.html'">
+                <div class="feature-icon">
+                    <i class="fas fa-eye-slash"></i>
+                </div>
+                <h3 class="feature-title">BINV</h3>
+                <p class="feature-description">
+                    Bâton Intelligent pour les Non-Voyants. Détection des obstacles (trous, murs, roches) par caméra et IA, avec alertes vocales en plusieurs langues.
+                </p>
+                <div class="feature-status status-active">STATUS: PROTOTYPAGE</div>
+            </div>
 
-            <!-- COURS AFRICA.TECH21 -->
-<div class="feature-card" onclick="window.location.href='cours.html'">
-    <div class="feature-icon">
-        <i class="fas fa-graduation-cap"></i>
-    </div>
-    <h3 class="feature-title">COURS AFRICA.TECH21</h3>
-    <p class="feature-description">
-        Formation Future Members Africa.tech21 (FFAM). Programme complet d'électronique niveau débutant à intermédiaire pour intégrer l'équipe technique.
-    </p>
-    <div class="feature-status status-active">ACCÈS: DISPONIBLE</div>
-</div>
+            <!-- COURS AFRICA.TECH21 (VERROUILLÉ) -->
+            <div class="feature-card" onclick="verifierAcces('cours.html')">
+                <div class="feature-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3 class="feature-title">COURS AFRICA.TECH21</h3>
+                <p class="feature-description">
+                    Formation Future Members Africa.tech21 (FFAM). Programme complet d'électronique niveau débutant à intermédiaire pour intégrer l'équipe technique.
+                </p>
+                <div class="feature-status status-active">🔒 ACCÈS: CODE REQUIS</div>
+            </div>
 
-            <!-- SECRÉTARIAT -->
-<div class="feature-card" onclick="window.location.href='secretariat.html'">
-    <div class="feature-icon">
-        <i class="fas fa-pen-fancy"></i>
-    </div>
-    <h3 class="feature-title">SECRÉTARIAT</h3>
-    <p class="feature-description">
-        Espace dédié à la Secrétaire Générale et au Président. Rédaction et archivage des comptes rendus de réunions, rapports d'activités et notes internes.
-    </p>
-    <div class="feature-status status-active">
-        <i class="fas fa-lock"></i> ACCÈS: RESTREINT
-    </div>
-</div>
+            <!-- SECRÉTARIAT (restreint) -->
+            <div class="feature-card" onclick="window.location.href='secretariat.html'">
+                <div class="feature-icon">
+                    <i class="fas fa-pen-fancy"></i>
+                </div>
+                <h3 class="feature-title">SECRÉTARIAT</h3>
+                <p class="feature-description">
+                    Espace dédié à la Secrétaire Générale et au Président. Rédaction et archivage des comptes rendus de réunions, rapports d'activités et notes internes.
+                </p>
+                <div class="feature-status status-active">
+                    <i class="fas fa-lock"></i> ACCÈS: RESTREINT
+                </div>
+            </div>
+
+            <!-- IA (libre) -->
+            <div class="feature-card" onclick="window.location.href='ia.html'">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3 class="feature-title">IA AFRICA.TECH21</h3>
+                <p class="feature-description">
+                    Assistant IA intégré (Groq). Posez vos questions techniques et obtenez des réponses précises en temps réel. Accès réservé aux membres.
+                </p>
+                <div class="feature-status status-active">
+                    <i class="fas fa-lock"></i> ACCÈS: CODE REQUIS
+                </div>
+            </div>
 
             <!-- ESPACE MAJOR -->
             <div class="feature-card" onclick="accederEspaceMajor()">
@@ -722,20 +736,6 @@
                 <div class="feature-status status-active"><i class="fas fa-shield-alt"></i> NIVEAU MAXIMUM</div>
             </div>
         </div>
-
-        <!-- CARTE IA -->
-<div class="feature-card" onclick="window.location.href='ia.html'">
-    <div class="feature-icon">
-        <i class="fas fa-brain"></i>
-    </div>
-    <h3 class="feature-title">IA AFRICA.TECH21</h3>
-    <p class="feature-description">
-        Assistant IA intégré (DeepSeek). Posez vos questions techniques et obtenez des réponses précises en temps réel. Accès réservé aux membres.
-    </p>
-    <div class="feature-status status-active">
-        <i class="fas fa-lock"></i> ACCÈS: CODE REQUIS
-    </div>
-</div>
 
         <!-- === FORUM === -->
         <section class="forum-section">
@@ -842,6 +842,19 @@
                 container.appendChild(div);
             });
             container.scrollTop = container.scrollHeight;
+        }
+
+        // ==================== VÉRIFICATION D'ACCÈS ====================
+        function verifierAcces(page) {
+            const memberId = localStorage.getItem('memberId') || '';
+            const codeAttendu = memberId + '2050';
+            const codeSaisi = prompt("🔒 Entrez le code d'accès :");
+
+            if (codeSaisi === codeAttendu) {
+                window.location.href = page;
+            } else {
+                alert("❌ Code incorrect. Accès refusé.");
+            }
         }
 
         // ==================== LOGOUT ====================
