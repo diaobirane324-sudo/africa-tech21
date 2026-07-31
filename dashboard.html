@@ -801,8 +801,8 @@
 
     <script>
         // ==================== CONFIGURATION ====================
-        const SCRIPT_URL ='https://script.google.com/macros/s/AKfycbwESkPKPu4svg_ZDnCj-LSTZWlCE_GRLNAP00F_GQXqTBKhqxcmsRjHGk7aXBn5GbfF/exec';
-
+     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyV86rnSYPMRVIyZ-sE62lQXoVRDvhfKPOppMW7Z2IACqM8s2pGbpXC0BcKUNydBs/exec';
+const INFO_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwESkPKPu4svg_ZDnCj-LSTZWlCE_GRLNAP00F_GQXqTBKhqxcmsRjHGk7aXBn5GbfF/exec';
         // ==================== VÉRIFICATION CONNEXION ====================
         if (localStorage.getItem('memberLoggedIn') !== 'true') {
             window.location.href = 'espace-membres.html';
@@ -890,22 +890,22 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        // ==================== BANDEAU D'INFORMATION ====================
-        async function chargerInfoJour() {
-            try {
-                const response = await fetch(SCRIPT_URL + '?action=getInfoJour');
-                const data = await response.json();
+     // ==================== BANDEAU D'INFORMATION ====================
+async function chargerInfoJour() {
+    try {
+        const response = await fetch(INFO_SCRIPT_URL + '?action=getInfo');
+        const data = await response.json();
 
-                if (data.success && data.message) {
-                    document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> ' + data.message;
-                } else {
-                    document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> Bienvenue sur AFRICA.TECH21 !';
-                }
-            } catch (error) {
-                console.error('Erreur chargement info:', error);
-                document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> 🚀 AFRICA.TECH21 - Innovation en mouvement !';
-            }
+        if (data.success && data.message) {
+            document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> ' + data.message;
+        } else {
+            document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> Bienvenue sur AFRICA.TECH21 !';
         }
+    } catch (error) {
+        console.error('Erreur chargement info:', error);
+        document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> 🚀 AFRICA.TECH21 - Innovation en mouvement !';
+    }
+}
 
         // ==================== VÉRIFICATION D'ACCÈS ====================
         function verifierAcces(page) {
