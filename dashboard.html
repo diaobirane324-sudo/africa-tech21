@@ -664,7 +664,7 @@
     <div class="dashboard-container">
         <div class="info-banner" id="infoBanner">
             <span class="icon"><i class="fas fa-bullhorn"></i></span>
-            <span class="message-text" id="infoMessage"><i class="fas fa-spinner fa-spin"></i>PROJET PRINCIPAL "OXY"</span>
+            <span class="message-text" id="infoMessage"><i class="fas fa-spinner fa-spin"></i>Bienvenue sur AFRICA.TECH21 !</span>
         </div>
 
         <!-- ===== HERO ===== -->
@@ -899,7 +899,7 @@ async function chargerInfoJour() {
         if (data.success && data.message) {
             document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> ' + data.message;
         } else {
-            document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> Bienvenue sur AFRICA.TECH21 !';
+            document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i>Projet OXY en développement actif !';
         }
     } catch (error) {
         console.error('Erreur chargement info:', error);
