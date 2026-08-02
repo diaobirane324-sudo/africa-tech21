@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz | AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== STYLES (identiques à la version précédente, légèrement ajustés) ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Exo 2', 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-purple: #7b2cbf;
+            --neon-green: #00ff88;
+            --neon-pink: #ff00ff;
+            --dark-space: #0a0a12;
+            --deep-space: #050510;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a8c0;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --panel-glow: 0 0 30px rgba(0, 240, 255, 0.2);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .hologram-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridScan 20s linear infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        @keyframes gridScan {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            margin-bottom: 2rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 10px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        .page-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: var(--panel-glow);
+        }
+
+        .page-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header .subtitle {
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .quiz-box {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 2.5rem;
+            box-shadow: var(--panel-glow);
+            min-height: 450px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+        }
+
+        .quiz-header .errors {
+            color: #ff4757;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .quiz-header .score {
+            color: var(--neon-green);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .question-number {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .option-btn {
+            padding: 1.2rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .option-btn:hover:not(.disabled) {
+            border-color: var(--neon-blue);
+            background: rgba(0, 240, 255, 0.05);
+            transform: translateX(5px);
+        }
+
+        .option-btn.correct {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--neon-green);
+        }
+
+        .option-btn.wrong {
+            border-color: #ff4757;
+            background: rgba(255, 71, 87, 0.1);
+            color: #ff4757;
+        }
+
+        .option-btn.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .result-screen {
+            text-align: center;
+        }
+
+        .result-screen .big-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-screen .result-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-screen .result-title.success {
+            color: var(--neon-green);
+        }
+
+        .result-screen .result-title.fail {
+            color: #ff4757;
+        }
+
+        .result-screen .result-score {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--neon-blue);
+            margin: 1rem 0;
+        }
+
+        .result-screen .result-detail {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-restart {
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
+        }
+
+        .btn-restart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(123, 44, 191, 0.6);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-green));
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .loading-text {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 2rem;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--glass-border);
+            border-top: 3px solid var(--neon-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .page-header h1 { font-size: 1.8rem; }
+            .quiz-box { padding: 1.5rem; }
+            .question-text { font-size: 1.2rem; }
+            .option-btn { padding: 1rem; font-size: 1rem; }
+            .result-screen .result-title { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hologram-grid"></div>
+
+    <div class="page-container">
+        <a href="dashboard.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD
+        </a>
+
+        <header class="page-header">
+            <h1><i class="fas fa-brain"></i> QUIZ AFRICA.TECH21</h1>
+            <p class="subtitle">100 questions sur l'électronique et la robotique. 5 erreurs max.</p>
+        </header>
+
+        <div class="quiz-box" id="quizBox">
+            <div id="quizContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== BASE DE 100 QUESTIONS ====================
+        const QUESTIONS = [
+            // --- ÉLECTRONIQUE GÉNÉRALE (1-25) ---
+            { question: "Qu'est-ce que le courant électrique ?", options: ["Le déplacement d'électrons", "La tension", "La résistance", "La puissance"], answer: "Le déplacement d'électrons" },
+            { question: "Dans quel sens circule le courant dans une diode ?", options: ["Dans les deux sens", "Du cathode vers l'anode", "De l'anode vers la cathode", "Aucun sens"], answer: "De l'anode vers la cathode" },
+            { question: "Quelle est l'unité de la tension électrique ?", options: ["Ampère", "Ohm", "Volt", "Watt"], answer: "Volt" },
+            { question: "Quelle est l'unité de la résistance ?", options: ["Ampère", "Ohm", "Volt", "Watt"], answer: "Ohm" },
+            { question: "Quelle est l'unité de l'intensité du courant ?", options: ["Ampère", "Ohm", "Volt", "Watt"], answer: "Ampère" },
+            { question: "Que signifie l'acronyme LED ?", options: ["Light Emitting Diode", "Light Emitting Device", "Laser Emitting Diode", "Low Energy Diode"], answer: "Light Emitting Diode" },
+            { question: "Un condensateur sert principalement à :", options: ["Stocker de l'énergie", "Amplifier un signal", "Réduire le courant", "Commuter des circuits"], answer: "Stocker de l'énergie" },
+            { question: "Un transistor peut agir comme :", options: ["Interrupteur ou amplificateur", "Résistance", "Condensateur", "Batterie"], answer: "Interrupteur ou amplificateur" },
+            { question: "Quelle est la tension standard en Afrique ?", options: ["110V / 60Hz", "220-240V / 50Hz", "12V / 60Hz", "5V / 50Hz"], answer: "220-240V / 50Hz" },
+            { question: "Qu'est-ce qu'un redresseur ?", options: ["Un composant qui transforme AC en DC", "Un composant qui amplifie le courant", "Un composant qui stocke l'énergie", "Un composant qui filtre les bruits"], answer: "Un composant qui transforme AC en DC" },
+            { question: "Quelle est la fonction d'une résistance ?", options: ["Réduire l'intensité du courant", "Augmenter la tension", "Stocker l'énergie", "Filtrer les interférences"], answer: "Réduire l'intensité du courant" },
+            { question: "Quel composant est utilisé pour le lissage de tension ?", options: ["Condensateur", "Résistance", "Diode", "Transistor"], answer: "Condensateur" },
+            { question: "Le MOSFET est un type de :", options: ["Transistor", "Diode", "Condensateur", "Résistance"], answer: "Transistor" },
+            { question: "Que signifie l'acronyme BJT ?", options: ["Bipolar Junction Transistor", "Bipolar Junction Transformer", "Basic Junction Transistor", "Bipolar Joint Transistor"], answer: "Bipolar Junction Transistor" },
+            { question: "Quel composant permet d'obtenir une tension stable ?", options: ["Régulateur de tension", "Résistance", "Condensateur", "Diode"], answer: "Régulateur de tension" },
+            { question: "Un oscillateur est utilisé pour :", options: ["Générer un signal périodique", "Stocker de l'énergie", "Amplifier un signal", "Filtrer un signal"], answer: "Générer un signal périodique" },
+            { question: "Qu'est-ce que le bruit électrique ?", options: ["Des interférences indésirables", "Un son audible", "Une tension élevée", "Un courant alternatif"], answer: "Des interférences indésirables" },
+            { question: "Un filtre passe-bas est utilisé pour :", options: ["Laisser passer les basses fréquences", "Laisser passer les hautes fréquences", "Couper toutes les fréquences", "Amplifier les signaux"], answer: "Laisser passer les basses fréquences" },
+            { question: "Quelle est la fonction d'un relais ?", options: ["Commutateur électromécanique", "Stocker de l'énergie", "Amplifier un signal", "Réduire la tension"], answer: "Commutateur électromécanique" },
+            { question: "Un transformateur sert à :", options: ["Modifier la tension", "Stocker de l'énergie", "Amplifier le courant", "Filtrer les interférences"], answer: "Modifier la tension" },
+            { question: "Qu'est-ce que la loi d'Ohm ?", options: ["U = R × I", "U = I / R", "R = U × I", "I = U × R"], answer: "U = R × I" },
+            { question: "Un pont de diode est utilisé pour :", options: ["Redresser le courant", "Amplifier le courant", "Stocker l'énergie", "Filtrer les interférences"], answer: "Redresser le courant" },
+            { question: "Un potentiomètre est :", options: ["Une résistance variable", "Un condensateur variable", "Un interrupteur", "Une diode"], answer: "Une résistance variable" },
+            { question: "Quel type de courant est délivré par une batterie ?", options: ["Courant continu", "Courant alternatif", "Courant pulsé", "Courant variable"], answer: "Courant continu" },
+            { question: "Un amplificateur opérationnel sert à :", options: ["Amplifier des signaux analogiques", "Stocker de l'énergie", "Filtrer les interférences", "Réduire la tension"], answer: "Amplifier des signaux analogiques" },
+
+            // --- CAPTEURS ET ACTIONNEURS (26-45) ---
+            { question: "Que mesure un capteur ultrasonique ?", options: ["La distance", "La température", "L'humidité", "La pression"], answer: "La distance" },
+            { question: "Le capteur HC-SR04 est utilisé pour :", options: ["Mesurer la distance", "Mesurer la température", "Mesurer l'humidité", "Détecter la lumière"], answer: "Mesurer la distance" },
+            { question: "Un capteur DHT22 mesure :", options: ["Température et humidité", "Pression et température", "Distance et température", "Luminosité et humidité"], answer: "Température et humidité" },
+            { question: "Le capteur MQ-2 détecte :", options: ["Les gaz", "La température", "La distance", "L'humidité"], answer: "Les gaz" },
+            { question: "Un capteur infrarouge est utilisé pour :", options: ["Détecter la présence", "Mesurer la distance", "Mesurer la température", "Toutes ces réponses"], answer: "Toutes ces réponses" },
+            { question: "Qu'est-ce qu'un actionneur ?", options: ["Un composant qui produit un mouvement", "Un composant qui mesure une grandeur", "Un composant qui stocke l'énergie", "Un composant qui amplifie un signal"], answer: "Un composant qui produit un mouvement" },
+            { question: "Un servomoteur est utilisé pour :", options: ["Un contrôle précis de position", "Un mouvement rapide", "Un couple élevé", "Une rotation continue"], answer: "Un contrôle précis de position" },
+            { question: "Un moteur pas à pas est caractérisé par :", options: ["Sa précision", "Sa rapidité", "Son couple élevé", "Sa faible consommation"], answer: "Sa précision" },
+            { question: "Un moteur brushless est :", options: ["Sans balais", "Avec balais", "Très lent", "Peu puissant"], answer: "Sans balais" },
+            { question: "Un capteur de force est utilisé pour :", options: ["Mesurer une force ou un poids", "Mesurer la température", "Mesurer la distance", "Mesurer l'humidité"], answer: "Mesurer une force ou un poids" },
+            { question: "Un capteur de courant (INA219) mesure :", options: ["Le courant et la tension", "La température", "La distance", "La pression"], answer: "Le courant et la tension" },
+            { question: "Un capteur de pression MPXV7002DP mesure :", options: ["La pression", "La température", "Le courant", "La distance"], answer: "La pression" },
+            { question: "Un capteur MAX30102 est utilisé pour :", options: ["Mesurer la saturation en oxygène", "Mesurer la distance", "Mesurer la température", "Mesurer l'humidité"], answer: "Mesurer la saturation en oxygène" },
+            { question: "Un capteur de lumière (LDR) mesure :", options: ["La luminosité", "La température", "L'humidité", "La distance"], answer: "La luminosité" },
+            { question: "Un capteur de champ magnétique est :", options: ["Un capteur Hall", "Un capteur infrarouge", "Un capteur ultrasonique", "Un capteur de température"], answer: "Un capteur Hall" },
+            { question: "Un module GPS permet de :", options: ["Déterminer une position géographique", "Mesurer la vitesse", "Mesurer l'altitude", "Toutes ces réponses"], answer: "Toutes ces réponses" },
+            { question: "Un capteur de gaz MQ-5 détecte :", options: ["Le gaz de ville", "Le méthane", "Le propane", "Tous ces gaz"], answer: "Tous ces gaz" },
+            { question: "Un capteur de température DS18B20 est :", options: ["Numérique", "Analogique", "Sans fil", "Optique"], answer: "Numérique" },
+            { question: "Un capteur de distance laser fonctionne avec :", options: ["Un faisceau lumineux", "Des ultrasons", "Des infrarouges", "Un champ magnétique"], answer: "Un faisceau lumineux" },
+            { question: "Un gyroscope mesure :", options: ["La rotation", "L'accélération", "La température", "La pression"], answer: "La rotation" },
+
+            // --- ROBOTIQUE (46-65) ---
+            { question: "Qu'est-ce qu'un robot autonome ?", options: ["Un robot qui agit sans intervention humaine", "Un robot télécommandé", "Un robot programmable", "Un robot industriel"], answer: "Un robot qui agit sans intervention humaine" },
+            { question: "Quel est le cerveau d'un robot ?", options: ["Le microcontrôleur", "Le moteur", "Le capteur", "L'actionneur"], answer: "Le microcontrôleur" },
+            { question: "Un robot suiveur de ligne utilise :", options: ["Des capteurs infrarouges", "Des capteurs ultrasoniques", "Des capteurs de couleur", "Des capteurs de force"], answer: "Des capteurs infrarouges" },
+            { question: "Qu'est-ce que l'odométrie en robotique ?", options: ["La mesure du déplacement", "La détection d'obstacles", "La localisation par GPS", "La reconnaissance faciale"], answer: "La mesure du déplacement" },
+            { question: "Un robot doit pouvoir :", options: ["Percevoir, décider, agir", "Parler, écouter, chanter", "Lire, écrire, compter", "Voler, nager, courir"], answer: "Percevoir, décider, agir" },
+            { question: "Qu'est-ce qu'un actionneur en robotique ?", options: ["Un élément qui produit un mouvement", "Un élément qui mesure une grandeur", "Un élément qui stocke l'énergie", "Un élément qui amplifie un signal"], answer: "Un élément qui produit un mouvement" },
+            { question: "Un bras robotique est souvent composé de :", options: ["Des servomoteurs", "Des moteurs CC", "Des moteurs pas à pas", "Tous ces moteurs"], answer: "Tous ces moteurs" },
+            { question: "Un robot est considéré comme intelligent s'il :", options: ["Peut apprendre de son environnement", "Peut parler", "Peut danser", "Peut changer de couleur"], answer: "Peut apprendre de son environnement" },
+            { question: "Le terme 'robotique' a été inventé par :", options: ["Isaac Asimov", "Karel Čapek", "Nikola Tesla", "Alan Turing"], answer: "Isaac Asimov" },
+            { question: "Un robot sous-marin est appelé :", options: ["Un ROV", "Un drone", "Un rover", "Un automate"], answer: "Un ROV" },
+            { question: "Qu'est-ce qu'un rover ?", options: ["Un robot mobile pour l'exploration", "Un robot sous-marin", "Un robot volant", "Un robot industriel"], answer: "Un robot mobile pour l'exploration" },
+            { question: "Un drone est un type de :", options: ["Robot volant", "Robot sous-marin", "Robot terrestre", "Robot industriel"], answer: "Robot volant" },
+            { question: "Quelle est la loi d'Asimov la plus connue ?", options: ["Un robot ne peut pas nuire à un humain", "Un robot doit obéir aux ordres", "Un robot doit se protéger", "Toutes ces lois"], answer: "Un robot ne peut pas nuire à un humain" },
+            { question: "Un robot industriel est souvent utilisé pour :", options: ["L'assemblage", "La peinture", "La soudure", "Toutes ces tâches"], answer: "Toutes ces tâches" },
+            { question: "Qu'est-ce que la robotique collaborative ?", options: ["Des robots qui travaillent avec des humains", "Des robots qui travaillent entre eux", "Des robots qui copient les humains", "Des robots qui remplacent les humains"], answer: "Des robots qui travaillent avec des humains" },
+            { question: "Un système de vision par ordinateur permet :", options: ["De reconnaître des objets", "De mesurer la distance", "De lire des codes-barres", "Toutes ces réponses"], answer: "Toutes ces réponses" },
+            { question: "La navigation autonome utilise :", options: ["Des capteurs et des algorithmes", "Une télécommande", "Un GPS uniquement", "Des caméras uniquement"], answer: "Des capteurs et des algorithmes" },
+            { question: "Un robot éducatif est conçu pour :", options: ["Apprendre la programmation", "Apprendre la robotique", "Apprendre l'électronique", "Tous ces apprentissages"], answer: "Tous ces apprentissages" },
+            { question: "Quel robot a été le premier à explorer Mars ?", options: ["Sojourner", "Spirit", "Opportunity", "Curiosity"], answer: "Sojourner" },
+            { question: "Un robot humanoïde ressemble à :", options: ["Un humain", "Un animal", "Un véhicule", "Un outil"], answer: "Un humain" },
+
+            // --- ARDUINO ET PROGRAMMATION (66-85) ---
+            { question: "Qu'est-ce qu'Arduino ?", options: ["Une plateforme de prototypage électronique", "Un langage de programmation", "Un capteur", "Un moteur"], answer: "Une plateforme de prototypage électronique" },
+            { question: "Le langage Arduino est basé sur :", options: ["C / C++", "Python", "Java", "JavaScript"], answer: "C / C++" },
+            { question: "Qu'est-ce que l'IDE Arduino ?", options: ["L'environnement de développement", "Un capteur", "Un moteur", "Une carte"], answer: "L'environnement de développement" },
+            { question: "Une broche numérique sur Arduino peut être :", options: ["Entrée ou sortie", "Uniquement sortie", "Uniquement entrée", "Ni entrée ni sortie"], answer: "Entrée ou sortie" },
+            { question: "Une broche analogique sur Arduino :", options: ["Lit des valeurs 0-1023", "Lit des valeurs 0-255", "Lit des valeurs 0-4095", "Lit des valeurs 0-100"], answer: "Lit des valeurs 0-1023" },
+            { question: "La fonction `digitalWrite()` sert à :", options: ["Écrire sur une broche numérique", "Lire une broche numérique", "Écrire sur une broche analogique", "Lire une broche analogique"], answer: "Écrire sur une broche numérique" },
+            { question: "La fonction `analogRead()` sert à :", options: ["Lire une broche analogique", "Écrire sur une broche analogique", "Lire une broche numérique", "Écrire sur une broche numérique"], answer: "Lire une broche analogique" },
+            { question: "`delay(1000)` signifie :", options: ["Attendre 1 seconde", "Attendre 1000 secondes", "Attendre 1 milliseconde", "Attendre 0.1 seconde"], answer: "Attendre 1 seconde" },
+            { question: "Un programme Arduino commence par :", options: ["`setup()` et `loop()`", "`start()` et `end()`", "`init()` et `main()`", "`begin()` et `repeat()`"], answer: "`setup()` et `loop()`" },
+            { question: "La fonction `loop()` s'exécute :", options: ["En continu", "Une seule fois", "Quand on appuie sur un bouton", "Au démarrage"], answer: "En continu" },
+            { question: "Une résistance de pull-up est utilisée pour :", options: ["Maintenir une broche à HIGH", "Maintenir une broche à LOW", "Augmenter le courant", "Filtrer les interférences"], answer: "Maintenir une broche à HIGH" },
+            { question: "Le protocole I2C permet :", options: ["De communiquer avec plusieurs composants", "De contrôler un moteur", "De mesurer la température", "D'envoyer un email"], answer: "De communiquer avec plusieurs composants" },
+            { question: "Le protocole SPI est :", options: ["Un protocole de communication série", "Un protocole de communication parallèle", "Un protocole sans fil", "Un protocole audio"], answer: "Un protocole de communication série" },
+            { question: "La carte ESP32 est :", options: ["Plus puissante qu'Arduino UNO", "Moins puissante qu'Arduino UNO", "Identique à Arduino UNO", "Une carte sans WiFi"], answer: "Plus puissante qu'Arduino UNO" },
+            { question: "MicroPython est utilisé sur :", options: ["ESP32", "Arduino UNO", "Raspberry Pi Pico", "ESP32 et Raspberry Pi Pico"], answer: "ESP32 et Raspberry Pi Pico" },
+            { question: "Une bibliothèque Arduino est :", options: ["Un ensemble de fonctions prêtes à l'emploi", "Un composant électronique", "Un langage de programmation", "Un capteur"], answer: "Un ensemble de fonctions prêtes à l'emploi" },
+            { question: "Le moniteur série permet :", options: ["D'afficher des données", "De contrôler les moteurs", "De lire les capteurs", "D'envoyer des emails"], answer: "D'afficher des données" },
+            { question: "`Serial.begin(9600)` initialise :", options: ["La communication série à 9600 bauds", "La communication I2C", "La communication SPI", "La communication Bluetooth"], answer: "La communication série à 9600 bauds" },
+            { question: "Un programme Arduino est compilé en :", options: ["Code machine", "Code source", "Code assembleur", "Code binaire"], answer: "Code machine" },
+            { question: "La carte Arduino UNO utilise un microcontrôleur :", options: ["ATmega328P", "ESP32", "Raspberry Pi", "STM32"], answer: "ATmega328P" },
+
+            // --- PROJETS AFRICA.TECH21 (86-100) ---
+            { question: "Le projet OXY a pour but de :", options: ["Produire de l'oxygène", "Arroser les plantes", "Détecter les gaz", "Contrôler un robot"], answer: "Produire de l'oxygène" },
+            { question: "Le projet RSMA est un :", options: ["Robot sous-marin", "Robot terrestre", "Robot volant", "Robot industriel"], answer: "Robot sous-marin" },
+            { question: "Le projet IRRITECH est un système :", options: ["D'arrosage automatique", "D'alerte gaz", "De production d'oxygène", "D'assistance respiratoire"], answer: "D'arrosage automatique" },
+            { question: "Le projet MK-40 est une :", options: ["Couveuse automatique", "Imprimante 3D", "Machine à café", "Station météo"], answer: "Couveuse automatique" },
+            { question: "Le projet SAGAF est un système :", options: ["D'alerte gaz", "D'arrosage", "De production d'oxygène", "De robotique"], answer: "D'alerte gaz" },
+            { question: "Le projet BINV est un :", options: ["Bâton intelligent pour non-voyants", "Robot sous-marin", "Système d'arrosage", "Détecteur de gaz"], answer: "Bâton intelligent pour non-voyants" },
+            { question: "Le projet RGA est un :", options: ["Robot de guide", "Robot sous-marin", "Système d'alarme", "Capteur de gaz"], answer: "Robot de guide" },
+            { question: "Le moteur NEMA23 est utilisé dans :", options: ["Le projet OXY", "Le projet IRRITECH", "Le projet MK-40", "Le projet SAGAF"], answer: "Le projet OXY" },
+            { question: "Le capteur DHT22 est utilisé dans :", options: ["Le projet MK-40", "Le projet OXY", "Le projet IRRITECH", "Le projet SAGAF"], answer: "Le projet MK-40" },
+            { question: "L'ESP32 est utilisé dans :", options: ["Le projet IRRITECH", "Le projet OXY", "Le projet MK-40", "Tous ces projets"], answer: "Tous ces projets" },
+            { question: "Le projet OXY utilise un :", options: ["Ballon Ambu", "Capteur d'humidité", "Servomoteur", "Ventilateur"], answer: "Ballon Ambu" },
+            { question: "Le projet IRRITECH utilise des :", options: ["Capteurs d'humidité du sol", "Capteurs de gaz", "Capteurs de distance", "Capteurs de température"], answer: "Capteurs d'humidité du sol" },
+            { question: "Le projet MK-40 utilise un :", options: ["Moteur pas à pas", "Moteur CC", "Servomoteur", "Moteur brushless"], answer: "Moteur pas à pas" },
+            { question: "Le projet SAGAF utilise un capteur :", options: ["MQ-2", "DHT22", "HC-SR04", "INA219"], answer: "MQ-2" },
+            { question: "Le projet BINV utilise :", options: ["Une caméra ESP32-CAM", "Un capteur ultrasonique", "Un capteur de gaz", "Un capteur de température"], answer: "Une caméra ESP32-CAM" }
+        ];
+
+        // ==================== ÉTAT DU JEU ====================
+        let questions = [];
+        let currentIndex = 0;
+        let score = 0;
+        let errors = 0;
+        const MAX_ERRORS = 5;
+        let isAnswered = false;
+        const quizContent = document.getElementById('quizContent');
+
+        // ==================== FONCTIONS ====================
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startQuiz() {
+            questions = shuffleArray([...QUESTIONS]);
+            currentIndex = 0;
+            score = 0;
+            errors = 0;
+            isAnswered = false;
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            if (currentIndex >= questions.length) {
+                showResult(true);
+                return;
+            }
+
+            const q = questions[currentIndex];
+            const progress = (currentIndex / questions.length) * 100;
+            const shuffledOptions = shuffleArray([...q.options]);
+
+            let optionsHtml = shuffledOptions.map(opt => `
+                <button class="option-btn" onclick="selectOption(this, '${opt.replace(/'/g, "\\'")}', '${q.answer.replace(/'/g, "\\'")}')">
+                    ${opt}
+                </button>
+            `).join('');
+
+            quizContent.innerHTML = `
+                <div class="quiz-header">
+                    <span class="score">🏆 ${score}</span>
+                    <span class="errors">❌ ${errors} / ${MAX_ERRORS}</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="fill" style="width: ${progress}%;"></div>
+                </div>
+                <div class="question-number">Question ${currentIndex + 1} / ${questions.length}</div>
+                <div class="question-text">${q.question}</div>
+                <div class="options">${optionsHtml}</div>
+            `;
+
+            isAnswered = false;
+        }
+
+        function selectOption(btn, selected, correct) {
+            if (isAnswered || btn.classList.contains('disabled')) return;
+            isAnswered = true;
+
+            const allBtns = document.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.classList.add('disabled'));
+
+            if (selected === correct) {
+                btn.classList.add('correct');
+                score++;
+            } else {
+                btn.classList.add('wrong');
+                errors++;
+                allBtns.forEach(b => {
+                    if (b.textContent === correct) b.classList.add('correct');
+                });
+            }
+
+            document.querySelector('.score').textContent = `🏆 ${score}`;
+            document.querySelector('.errors').textContent = `❌ ${errors} / ${MAX_ERRORS}`;
+
+            if (errors >= MAX_ERRORS) {
+                setTimeout(() => showResult(false), 800);
+                return;
+            }
+
+            setTimeout(() => {
+                currentIndex++;
+                renderQuestion();
+            }, 1200);
+        }
+
+        function showResult(success) {
+            const total = questions.length;
+            if (success) {
+                quizContent.innerHTML = `
+                    <div class="result-screen">
+                        <div class="big-icon">🏆</div>
+                        <div class="result-title success">BRAVO !</div>
+                        <div class="result-score">${score} / ${total}</div>
+                        <div class="result-detail">Tu as répondu à toutes les questions sans atteindre 5 erreurs !</div>
+                        <button class="btn-restart" onclick="startQuiz()"><i class="fas fa-redo"></i> Recommencer</button>
+                    </div>
+                `;
+            } else {
+                quizContent.innerHTML = `
+                    <div class="result-screen">
+                        <div class="big-icon">😵</div>
+                        <div class="result-title fail">GAME OVER</div>
+                        <div class="result-score">${score} / ${total}</div>
+                        <div class="result-detail">Tu as fait ${MAX_ERRORS} erreurs. Réessaie pour t'améliorer !</div>
+                        <button class="btn-restart" onclick="startQuiz()"><i class="fas fa-redo"></i> Réessayer</button>
+                    </div>
+                `;
+            }
+        }
+
+        // ==================== LANCER LE JEU ====================
+        startQuiz();
+    </script>
+</body>
+</html>
