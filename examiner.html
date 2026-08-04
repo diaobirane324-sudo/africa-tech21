@@ -6,14 +6,16 @@
     <title>Examiner mon travail | AFRICA.TECH21</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- pdf.js pour extraire le texte du PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
+        /* ===== Même style que l'étape 2 ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Exo 2', 'Segoe UI', sans-serif;
         }
-
         :root {
             --neon-blue: #00f0ff;
             --neon-purple: #7b2cbf;
@@ -27,14 +29,12 @@
             --glass-border: rgba(255, 255, 255, 0.1);
             --panel-glow: 0 0 30px rgba(0, 240, 255, 0.2);
         }
-
         body {
             background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
             color: var(--text-primary);
             min-height: 100vh;
             padding: 2rem;
         }
-
         .hologram-grid {
             position: fixed;
             top: 0;
@@ -49,12 +49,10 @@
             pointer-events: none;
             z-index: -2;
         }
-
         @keyframes gridScan {
             0% { transform: translate(0, 0); }
             100% { transform: translate(50px, 50px); }
         }
-
         .back-btn {
             display: inline-block;
             padding: 0.8rem 2rem;
@@ -67,17 +65,14 @@
             font-weight: 600;
             transition: all 0.3s ease;
         }
-
         .back-btn:hover {
             background: rgba(0, 240, 255, 0.2);
             box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
         }
-
         .page-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
-
         .page-header {
             background: var(--glass);
             backdrop-filter: blur(15px);
@@ -88,7 +83,6 @@
             text-align: center;
             box-shadow: var(--panel-glow);
         }
-
         .page-header h1 {
             font-family: 'Orbitron', sans-serif;
             font-size: 2.5rem;
@@ -97,140 +91,188 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
         .page-header .subtitle {
             color: var(--text-secondary);
             margin-top: 0.5rem;
             font-size: 1.1rem;
         }
-
-        .upload-box {
+        .form-section {
             background: var(--glass);
             backdrop-filter: blur(15px);
-            border: 2px dashed var(--glass-border);
+            border: 1px solid var(--glass-border);
             border-radius: 25px;
             padding: 2.5rem;
-            text-align: center;
             box-shadow: var(--panel-glow);
-            transition: all 0.3s ease;
-            cursor: pointer;
         }
-
-        .upload-box:hover {
-            border-color: var(--neon-blue);
-            background: rgba(0, 240, 255, 0.05);
-        }
-
-        .upload-box .icon {
-            font-size: 4rem;
-            color: var(--neon-blue);
-            margin-bottom: 1rem;
-        }
-
-        .upload-box .text {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-
-        .upload-box .file-name {
-            color: var(--neon-green);
-            font-weight: 600;
-            margin-top: 0.5rem;
-            font-size: 1rem;
-        }
-
-        #fileInput {
-            display: none;
-        }
-
         .form-group {
-            margin-top: 1.5rem;
-            text-align: left;
+            margin-bottom: 1.5rem;
         }
-
         .form-group label {
             display: block;
             color: var(--neon-blue);
             font-weight: 600;
             margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: 1.1rem;
         }
-
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px dashed var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .form-group input[type="file"]:hover {
+            border-color: var(--neon-blue);
+            background: rgba(0, 240, 255, 0.05);
+        }
+        .form-group input[type="file"]::file-selector-button {
+            padding: 0.6rem 1.5rem;
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 1rem;
+        }
+        .form-group input[type="file"]::file-selector-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
         .form-group textarea {
             width: 100%;
-            padding: 1rem;
+            padding: 1rem 1.5rem;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--glass-border);
             border-radius: 12px;
             color: var(--text-primary);
             font-size: 1rem;
             resize: vertical;
-            min-height: 100px;
+            min-height: 80px;
             outline: none;
             transition: all 0.3s ease;
-            font-family: 'Exo 2', sans-serif;
         }
-
         .form-group textarea:focus {
             border-color: var(--neon-blue);
             box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
         }
-
+        .form-group .file-info {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
         .btn-submit {
             width: 100%;
-            padding: 1.2rem;
-            margin-top: 1.5rem;
+            padding: 1rem;
             background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
             border: none;
             border-radius: 12px;
             color: white;
             font-weight: 700;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+            font-size: 1.2rem;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
         }
-
         .btn-submit:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 25px rgba(123, 44, 191, 0.6);
         }
-
         .btn-submit:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
-
         .result-box {
             margin-top: 2rem;
             padding: 2rem;
-            background: rgba(0, 255, 136, 0.05);
-            border: 1px solid var(--neon-green);
+            background: rgba(0, 0, 0, 0.4);
             border-radius: 15px;
+            border-left: 4px solid var(--neon-blue);
             display: none;
+            max-height: 600px;
+            overflow-y: auto;
         }
-
+        .result-box.active {
+            display: block;
+        }
         .result-box .label {
             color: var(--neon-green);
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
         }
-
         .result-box .content {
             color: var(--text-primary);
-            margin-top: 1rem;
-            line-height: 1.8;
             white-space: pre-wrap;
+            line-height: 1.7;
+            font-size: 1rem;
         }
-
+        .result-box .note {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--neon-blue);
+            margin: 1rem 0;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 240, 255, 0.1);
+            border-radius: 10px;
+            display: inline-block;
+        }
+        .loading-text {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 2rem;
+            display: none;
+        }
+        .loading-text.active {
+            display: block;
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--glass-border);
+            border-top: 4px solid var(--neon-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 1rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .toast-message {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 71, 87, 0.95);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            z-index: 9999;
+            box-shadow: 0 4px 20px rgba(255, 71, 87, 0.4);
+            animation: fadeInUp 0.3s ease;
+            max-width: 90%;
+            text-align: center;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
         @media (max-width: 768px) {
             body { padding: 1rem; }
-            .page-header h1 { font-size: 1.8rem; }
-            .upload-box { padding: 1.5rem; }
+            .page-header h1 { font-size: 2rem; }
+            .form-section { padding: 1.5rem; }
         }
     </style>
 </head>
@@ -244,90 +286,201 @@
 
         <header class="page-header">
             <h1><i class="fas fa-file-pdf"></i> EXAMINER MON TRAVAIL</h1>
-            <p class="subtitle">Soumettez votre PDF. L’IA examinera votre travail avec une rigueur absolue.</p>
+            <p class="subtitle">Déposez votre travail (PDF) pour une évaluation ultra-rigoureuse par l'IA.</p>
         </header>
 
-        <div class="upload-box" id="uploadBox">
-            <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-            <div class="text">Cliquez pour sélectionner votre fichier PDF</div>
-            <div class="file-name" id="fileName"></div>
-        </div>
+        <div class="form-section">
+            <form id="examForm">
+                <div class="form-group">
+                    <label for="fileInput"><i class="fas fa-upload"></i> Fichier PDF</label>
+                    <input type="file" id="fileInput" accept=".pdf" required>
+                    <div class="file-info" id="fileInfo">Aucun fichier sélectionné</div>
+                </div>
 
-        <input type="file" id="fileInput" accept=".pdf">
+                <div class="form-group">
+                    <label for="commentInput"><i class="fas fa-comment"></i> Commentaire (optionnel)</label>
+                    <textarea id="commentInput" placeholder="Ajoutez des précisions sur votre travail..."></textarea>
+                </div>
 
-        <div class="form-group">
-            <label for="comment">Commentaire (optionnel)</label>
-            <textarea id="comment" placeholder="Ajoutez des précisions sur votre travail..."></textarea>
-        </div>
+                <button type="submit" class="btn-submit" id="submitBtn">
+                    <i class="fas fa-paper-plane"></i> ENVOYER POUR EXAMEN
+                </button>
+            </form>
 
-        <button class="btn-submit" id="submitBtn">Soumettre à l’examen</button>
+            <!-- Zone de chargement -->
+            <div class="loading-text" id="loadingArea">
+                <div class="loading-spinner"></div>
+                <p>L'IA examine votre travail...</p>
+                <p style="font-size:0.9rem; color:var(--text-secondary);">L'examen est très rigoureux, cela peut prendre quelques secondes.</p>
+            </div>
 
-        <div class="result-box" id="resultBox">
-            <div class="label">📋 RAPPORT D’EXAMEN</div>
-            <div class="content" id="resultContent">En attente de votre soumission...</div>
+            <!-- Zone des résultats -->
+            <div class="result-box" id="resultBox">
+                <div class="label">📋 RAPPORT D'EXAMEN</div>
+                <div class="content" id="resultContent"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        // ==================== ÉLÉMENTS ====================
-        const uploadBox = document.getElementById('uploadBox');
+        // ==================== VÉRIFICATION CONNEXION ====================
+        if (localStorage.getItem('memberLoggedIn') !== 'true') {
+            window.location.href = 'espace-membres.html';
+        }
+
+        // ==================== CONFIGURATION GROQ ====================
+        const GROQ_API_KEY = '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';
+        const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+
+        // ==================== RÉFÉRENCES DOM ====================
+        const form = document.getElementById('examForm');
         const fileInput = document.getElementById('fileInput');
-        const fileName = document.getElementById('fileName');
+        const fileInfo = document.getElementById('fileInfo');
+        const commentInput = document.getElementById('commentInput');
         const submitBtn = document.getElementById('submitBtn');
-        const comment = document.getElementById('comment');
+        const loadingArea = document.getElementById('loadingArea');
         const resultBox = document.getElementById('resultBox');
         const resultContent = document.getElementById('resultContent');
 
-        let selectedFile = null;
-
-        // ==================== OUVRIRE LE SÉLECTEUR DE FICHIER ====================
-        uploadBox.addEventListener('click', () => {
-            fileInput.click();
-        });
-
-        // ==================== FICHIER SÉLECTIONNÉ ====================
-        fileInput.addEventListener('change', (e) => {
+        // ==================== AFFICHAGE NOM DU FICHIER ====================
+        fileInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
-                selectedFile = file;
-                fileName.textContent = `📄 ${file.name}`;
-                fileName.style.color = 'var(--neon-green)';
+                fileInfo.textContent = `📄 ${file.name} (${(file.size / 1024).toFixed(0)} Ko)`;
             } else {
-                selectedFile = null;
-                fileName.textContent = '';
+                fileInfo.textContent = 'Aucun fichier sélectionné';
             }
         });
 
-        // ==================== SOUMISSION (POUR L'INSTANT) ====================
-        submitBtn.addEventListener('click', async () => {
-            if (!selectedFile) {
-                alert('Veuillez sélectionner un fichier PDF.');
+        // ==================== FONCTION POUR EXTRAIRE LE TEXTE D'UN PDF ====================
+        async function extraireTextePDF(file) {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            let texteComplet = '';
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const content = await page.getTextContent();
+                const strings = content.items.map(item => item.str);
+                texteComplet += strings.join(' ') + '\n';
+            }
+            return texteComplet.trim();
+        }
+
+        // ==================== AFFICHER UN MESSAGE TEMPORAIRE ====================
+        function showToast(message) {
+            const old = document.querySelector('.toast-message');
+            if (old) old.remove();
+            const toast = document.createElement('div');
+            toast.className = 'toast-message';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.5s';
+                setTimeout(() => toast.remove(), 500);
+            }, 4000);
+        }
+
+        // ==================== SOUMISSION DU FORMULAIRE ====================
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const file = fileInput.files[0];
+            if (!file) {
+                showToast('⚠️ Veuillez sélectionner un fichier PDF.');
                 return;
             }
 
-            // Vérifier que c'est bien un PDF
-            if (selectedFile.type !== 'application/pdf') {
-                alert('Le fichier doit être au format PDF.');
-                return;
-            }
-
-            // Désactiver le bouton le temps du traitement
+            // Désactiver le bouton et afficher le chargement
             submitBtn.disabled = true;
-            submitBtn.textContent = '⏳ Examen en cours...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> EXAMEN EN COURS...';
+            loadingArea.classList.add('active');
+            resultBox.classList.remove('active');
+            resultContent.textContent = '';
 
-            // Simuler un délai (remplacé plus tard par l'appel IA)
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            try {
+                // 1. Extraire le texte du PDF
+                let textePDF = '';
+                try {
+                    textePDF = await extraireTextePDF(file);
+                } catch (err) {
+                    showToast('❌ Impossible de lire le PDF. Vérifiez qu\'il n\'est pas corrompu.');
+                    throw err;
+                }
 
-            // Afficher un message temporaire
-            resultBox.style.display = 'block';
-            resultContent.innerHTML = `
-                <strong style="color: var(--neon-blue);">✅ Fichier reçu :</strong> ${selectedFile.name}<br>
-                <strong style="color: var(--neon-blue);">📝 Commentaire :</strong> ${comment.value || 'Aucun'}<br><br>
-                <em style="color: var(--text-secondary);">L’examen IA sera intégré à la prochaine étape.</em>
-            `;
+                if (textePDF.length < 10) {
+                    showToast('⚠️ Le PDF semble vide ou contient peu de texte. Assurez-vous qu\'il est lisible.');
+                    throw new Error('PDF vide');
+                }
 
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Soumettre à l’examen';
+                // 2. Construire le message pour l'IA
+                const commentaire = commentInput.value.trim() || 'Aucun commentaire fourni.';
+                const membre = localStorage.getItem('memberPrenom') + ' ' + localStorage.getItem('memberNom') || 'Membre';
+
+                // 3. Prompt système ultra-rigoureux
+                const systemPrompt = `Tu es un examinateur technique extrêmement rigoureux, plus sévère que le MAJOR lui-même. 
+Tu évalues des travaux techniques (robotique, électronique, programmation, projets d'ingénierie). 
+Tu identifies les failles, les incohérences, les approximations, les oublis, les raisonnements erronés. 
+Tu notes sur 20 et tu donnes un avis structuré comme suit :
+
+📌 NOTE : X/20
+📌 MENTION : [Excellent / Très Bien / Bien / Passable / Insuffisant]
+📌 POINTS FORTS : (liste)
+📌 POINTS FAIBLES : (liste précise, impitoyable)
+📌 SUGGESTIONS D'AMÉLIORATION : (concrètes)
+📌 CONCLUSION GÉNÉRALE : (un paragraphe clair)
+
+Tu ne laisses rien passer. Tu es impitoyable sur la rigueur. Si le travail est médiocre, tu le dis. Si c'est excellent, tu le reconnais mais sans complaisance.`;
+
+                const userMessage = `
+Membre : ${membre}
+Commentaire du membre : ${commentaire}
+
+Contenu du travail (extrait du PDF) :
+---
+${textePDF.substring(0, 12000)}  // Limite pour éviter de dépasser les tokens
+---
+`;
+
+                // 4. Appel à l'API Groq
+                const response = await fetch(GROQ_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${GROQ_API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: 'llama-3.3-70b-versatile',
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: userMessage }
+                        ],
+                        temperature: 0.2,  // Très bas pour une évaluation cohérente
+                        max_tokens: 1500
+                    })
+                });
+
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.error?.message || 'Erreur API');
+                }
+
+                const data = await response.json();
+                const reponseIA = data.choices[0].message.content;
+
+                // 5. Afficher le résultat
+                resultContent.innerHTML = reponseIA.replace(/\n/g, '<br>');
+                resultBox.classList.add('active');
+
+            } catch (error) {
+                showToast('❌ Erreur : ' + error.message);
+                resultContent.textContent = 'Une erreur est survenue. Veuillez réessayer.';
+                resultBox.classList.add('active');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> ENVOYER POUR EXAMEN';
+                loadingArea.classList.remove('active');
+            }
         });
     </script>
 </body>
