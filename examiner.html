@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examiner mon travail | AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Exo 2', 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-purple: #7b2cbf;
+            --neon-green: #00ff88;
+            --neon-pink: #ff00ff;
+            --dark-space: #0a0a12;
+            --deep-space: #050510;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a8c0;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --panel-glow: 0 0 30px rgba(0, 240, 255, 0.2);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .hologram-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridScan 20s linear infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        @keyframes gridScan {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            margin-bottom: 2rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 10px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        .page-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: var(--panel-glow);
+        }
+
+        .page-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header .subtitle {
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .upload-box {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 2px dashed var(--glass-border);
+            border-radius: 25px;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: var(--panel-glow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-box:hover {
+            border-color: var(--neon-blue);
+            background: rgba(0, 240, 255, 0.05);
+        }
+
+        .upload-box .icon {
+            font-size: 4rem;
+            color: var(--neon-blue);
+            margin-bottom: 1rem;
+        }
+
+        .upload-box .text {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .upload-box .file-name {
+            color: var(--neon-green);
+            font-weight: 600;
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .form-group {
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--neon-blue);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: 'Exo 2', sans-serif;
+        }
+
+        .form-group textarea:focus {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1.2rem;
+            margin-top: 1.5rem;
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(123, 44, 191, 0.6);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .result-box {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid var(--neon-green);
+            border-radius: 15px;
+            display: none;
+        }
+
+        .result-box .label {
+            color: var(--neon-green);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .result-box .content {
+            color: var(--text-primary);
+            margin-top: 1rem;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .page-header h1 { font-size: 1.8rem; }
+            .upload-box { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hologram-grid"></div>
+
+    <div class="page-container">
+        <a href="dashboard.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD
+        </a>
+
+        <header class="page-header">
+            <h1><i class="fas fa-file-pdf"></i> EXAMINER MON TRAVAIL</h1>
+            <p class="subtitle">Soumettez votre PDF. L’IA examinera votre travail avec une rigueur absolue.</p>
+        </header>
+
+        <div class="upload-box" id="uploadBox">
+            <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <div class="text">Cliquez pour sélectionner votre fichier PDF</div>
+            <div class="file-name" id="fileName"></div>
+        </div>
+
+        <input type="file" id="fileInput" accept=".pdf">
+
+        <div class="form-group">
+            <label for="comment">Commentaire (optionnel)</label>
+            <textarea id="comment" placeholder="Ajoutez des précisions sur votre travail..."></textarea>
+        </div>
+
+        <button class="btn-submit" id="submitBtn">Soumettre à l’examen</button>
+
+        <div class="result-box" id="resultBox">
+            <div class="label">📋 RAPPORT D’EXAMEN</div>
+            <div class="content" id="resultContent">En attente de votre soumission...</div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== ÉLÉMENTS ====================
+        const uploadBox = document.getElementById('uploadBox');
+        const fileInput = document.getElementById('fileInput');
+        const fileName = document.getElementById('fileName');
+        const submitBtn = document.getElementById('submitBtn');
+        const comment = document.getElementById('comment');
+        const resultBox = document.getElementById('resultBox');
+        const resultContent = document.getElementById('resultContent');
+
+        let selectedFile = null;
+
+        // ==================== OUVRIRE LE SÉLECTEUR DE FICHIER ====================
+        uploadBox.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // ==================== FICHIER SÉLECTIONNÉ ====================
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                selectedFile = file;
+                fileName.textContent = `📄 ${file.name}`;
+                fileName.style.color = 'var(--neon-green)';
+            } else {
+                selectedFile = null;
+                fileName.textContent = '';
+            }
+        });
+
+        // ==================== SOUMISSION (POUR L'INSTANT) ====================
+        submitBtn.addEventListener('click', async () => {
+            if (!selectedFile) {
+                alert('Veuillez sélectionner un fichier PDF.');
+                return;
+            }
+
+            // Vérifier que c'est bien un PDF
+            if (selectedFile.type !== 'application/pdf') {
+                alert('Le fichier doit être au format PDF.');
+                return;
+            }
+
+            // Désactiver le bouton le temps du traitement
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Examen en cours...';
+
+            // Simuler un délai (remplacé plus tard par l'appel IA)
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            // Afficher un message temporaire
+            resultBox.style.display = 'block';
+            resultContent.innerHTML = `
+                <strong style="color: var(--neon-blue);">✅ Fichier reçu :</strong> ${selectedFile.name}<br>
+                <strong style="color: var(--neon-blue);">📝 Commentaire :</strong> ${comment.value || 'Aucun'}<br><br>
+                <em style="color: var(--text-secondary);">L’examen IA sera intégré à la prochaine étape.</em>
+            `;
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Soumettre à l’examen';
+        });
+    </script>
+</body>
+</html>
