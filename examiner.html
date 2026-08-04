@@ -6,10 +6,8 @@
     <title>Examiner mon travail | AFRICA.TECH21</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- pdf.js pour extraire le texte du PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
-        /* ===== Même style que l'étape 2 ===== */
         * {
             margin: 0;
             padding: 0;
@@ -307,14 +305,12 @@
                 </button>
             </form>
 
-            <!-- Zone de chargement -->
             <div class="loading-text" id="loadingArea">
                 <div class="loading-spinner"></div>
                 <p>L'IA examine votre travail...</p>
                 <p style="font-size:0.9rem; color:var(--text-secondary);">L'examen est très rigoureux, cela peut prendre quelques secondes.</p>
             </div>
 
-            <!-- Zone des résultats -->
             <div class="result-box" id="resultBox">
                 <div class="label">📋 RAPPORT D'EXAMEN</div>
                 <div class="content" id="resultContent"></div>
@@ -328,9 +324,10 @@
             window.location.href = 'espace-membres.html';
         }
 
-        // ==================== CONFIGURATION GROQ ====================
+        // ==================== CONFIGURATION ====================
         const GROQ_API_KEY = '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';
         const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+        const SCRIPT_URL_EVAL = 'https://script.google.com/macros/s/AKfycbwuzAsRuuu1XYJrdlGm79Hq1sHJpN8IhQuV3_v9AYCel-rhLAyhMt_7Xrg75W2_rIc/exec';
 
         // ==================== RÉFÉRENCES DOM ====================
         const form = document.getElementById('examForm');
@@ -381,6 +378,34 @@
             }, 4000);
         }
 
+        // ==================== SAUVEGARDER DANS GOOGLE SHEETS ====================
+        async function sauvegarderEvaluation(membre, fichier, commentaire, note, mention, rapport) {
+            try {
+                const date = new Date().toLocaleString('fr-FR');
+                const response = await fetch(SCRIPT_URL_EVAL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        membre: membre,
+                        fichier: fichier,
+                        commentaire: commentaire,
+                        note: note,
+                        mention: mention,
+                        rapport: rapport,
+                        date: date
+                    })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    console.log('✅ Évaluation sauvegardée dans Google Sheets');
+                } else {
+                    console.warn('⚠️ Erreur sauvegarde:', result.error);
+                }
+            } catch (error) {
+                console.warn('⚠️ Erreur réseau (sauvegarde):', error);
+            }
+        }
+
         // ==================== SOUMISSION DU FORMULAIRE ====================
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -391,7 +416,6 @@
                 return;
             }
 
-            // Désactiver le bouton et afficher le chargement
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> EXAMEN EN COURS...';
             loadingArea.classList.add('active');
@@ -399,7 +423,6 @@
             resultContent.textContent = '';
 
             try {
-                // 1. Extraire le texte du PDF
                 let textePDF = '';
                 try {
                     textePDF = await extraireTextePDF(file);
@@ -409,15 +432,13 @@
                 }
 
                 if (textePDF.length < 10) {
-                    showToast('⚠️ Le PDF semble vide ou contient peu de texte. Assurez-vous qu\'il est lisible.');
+                    showToast('⚠️ Le PDF semble vide ou contient peu de texte.');
                     throw new Error('PDF vide');
                 }
 
-                // 2. Construire le message pour l'IA
                 const commentaire = commentInput.value.trim() || 'Aucun commentaire fourni.';
-                const membre = localStorage.getItem('memberPrenom') + ' ' + localStorage.getItem('memberNom') || 'Membre';
+                const membre = localStorage.getItem('memberPrenom') + ' ' + localStorage.getItem('memberNom') || 'Membre inconnu';
 
-                // 3. Prompt système ultra-rigoureux
                 const systemPrompt = `Tu es un examinateur technique extrêmement rigoureux, plus sévère que le MAJOR lui-même. 
 Tu évalues des travaux techniques (robotique, électronique, programmation, projets d'ingénierie). 
 Tu identifies les failles, les incohérences, les approximations, les oublis, les raisonnements erronés. 
@@ -438,11 +459,10 @@ Commentaire du membre : ${commentaire}
 
 Contenu du travail (extrait du PDF) :
 ---
-${textePDF.substring(0, 12000)}  // Limite pour éviter de dépasser les tokens
+${textePDF.substring(0, 12000)}
 ---
 `;
 
-                // 4. Appel à l'API Groq
                 const response = await fetch(GROQ_URL, {
                     method: 'POST',
                     headers: {
@@ -455,7 +475,7 @@ ${textePDF.substring(0, 12000)}  // Limite pour éviter de dépasser les tokens
                             { role: 'system', content: systemPrompt },
                             { role: 'user', content: userMessage }
                         ],
-                        temperature: 0.2,  // Très bas pour une évaluation cohérente
+                        temperature: 0.2,
                         max_tokens: 1500
                     })
                 });
@@ -468,7 +488,17 @@ ${textePDF.substring(0, 12000)}  // Limite pour éviter de dépasser les tokens
                 const data = await response.json();
                 const reponseIA = data.choices[0].message.content;
 
-                // 5. Afficher le résultat
+                // Extraire la note et la mention
+                const noteMatch = reponseIA.match(/NOTE\s*:\s*(\d+)\/20/);
+                const mentionMatch = reponseIA.match(/MENTION\s*:\s*([^\n]+)/);
+                const note = noteMatch ? noteMatch[1] : 'Non spécifiée';
+                const mention = mentionMatch ? mentionMatch[1].trim() : 'Non spécifiée';
+
+                // Sauvegarder dans Google Sheets
+                const fichierNom = file.name;
+                await sauvegarderEvaluation(membre, fichierNom, commentaire, note, mention, reponseIA);
+
+                // Afficher le résultat
                 resultContent.innerHTML = reponseIA.replace(/\n/g, '<br>');
                 resultBox.classList.add('active');
 
