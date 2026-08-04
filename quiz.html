@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ===== STYLES (identiques à la version précédente, légèrement ajustés) ===== */
+        /* ===== STYLES DE BASE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -20,6 +20,7 @@
             --neon-purple: #7b2cbf;
             --neon-green: #00ff88;
             --neon-pink: #ff00ff;
+            --gold: #ffd700;
             --dark-space: #0a0a12;
             --deep-space: #050510;
             --text-primary: #ffffff;
@@ -34,6 +35,43 @@
             color: var(--text-primary);
             min-height: 100vh;
             padding: 2rem;
+            transition: all 0.5s ease;
+        }
+
+        body.expert-mode {
+            background: linear-gradient(135deg, #0a0000 0%, #1a0a00 30%, #0f0a1a 70%, #000000 100%);
+        }
+
+        body.expert-mode .quiz-box {
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.3), 0 0 120px rgba(255, 215, 0, 0.1);
+            background: rgba(20, 10, 5, 0.95);
+        }
+
+        body.expert-mode .page-header h1 {
+            background: linear-gradient(45deg, var(--gold), #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        body.expert-mode .option-btn:hover:not(.disabled) {
+            border-color: var(--gold);
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        body.expert-mode .option-btn.correct {
+            border-color: var(--gold);
+            background: rgba(255, 215, 0, 0.15);
+            color: var(--gold);
+        }
+
+        body.expert-mode .progress-bar .fill {
+            background: linear-gradient(90deg, var(--gold), #ff8c00);
+        }
+
+        body.expert-mode .quiz-header .score {
+            color: var(--gold);
         }
 
         .hologram-grid {
@@ -74,6 +112,16 @@
             box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
         }
 
+        body.expert-mode .back-btn {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        body.expert-mode .back-btn:hover {
+            background: rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
         .page-container {
             max-width: 800px;
             margin: 0 auto;
@@ -88,6 +136,7 @@
             margin-bottom: 2rem;
             text-align: center;
             box-shadow: var(--panel-glow);
+            transition: all 0.5s ease;
         }
 
         .page-header h1 {
@@ -97,6 +146,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            transition: all 0.5s ease;
         }
 
         .page-header .subtitle {
@@ -116,6 +166,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            transition: all 0.5s ease;
         }
 
         .quiz-header {
@@ -137,6 +188,10 @@
             color: var(--neon-green);
             font-weight: 700;
             font-size: 1.2rem;
+        }
+
+        body.expert-mode .quiz-header .errors {
+            color: #ff6b6b;
         }
 
         .question-number {
@@ -214,6 +269,10 @@
             color: var(--neon-green);
         }
 
+        body.expert-mode .result-screen .result-title.success {
+            color: var(--gold);
+        }
+
         .result-screen .result-title.fail {
             color: #ff4757;
         }
@@ -223,6 +282,10 @@
             font-weight: 900;
             color: var(--neon-blue);
             margin: 1rem 0;
+        }
+
+        body.expert-mode .result-screen .result-score {
+            color: var(--gold);
         }
 
         .result-screen .result-detail {
@@ -249,6 +312,11 @@
             box-shadow: 0 6px 25px rgba(123, 44, 191, 0.6);
         }
 
+        body.expert-mode .btn-restart {
+            background: linear-gradient(135deg, #ff8c00, var(--gold));
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+
         .progress-bar {
             width: 100%;
             height: 6px;
@@ -263,6 +331,38 @@
             background: linear-gradient(90deg, var(--neon-blue), var(--neon-green));
             border-radius: 3px;
             transition: width 0.3s ease;
+        }
+
+        /* ===== TOAST MESSAGE ===== */
+        .toast-message {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 71, 87, 0.95);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            z-index: 9999;
+            box-shadow: 0 4px 20px rgba(255, 71, 87, 0.4);
+            animation: fadeInUp 0.3s ease;
+            max-width: 90%;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.expert-mode .toast-message {
+            background: rgba(255, 215, 0, 0.95);
+            color: #1a0a00;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
+            border-color: var(--gold);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
         .loading-text {
@@ -287,6 +387,29 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* ===== MODE EXPERT - BADGE ===== */
+        .expert-badge {
+            display: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            background: linear-gradient(45deg, var(--gold), #ff8c00);
+            color: #1a0a00;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            animation: pulseBadge 1.5s ease-in-out infinite;
+        }
+
+        .expert-badge.active {
+            display: inline-block;
+        }
+
+        @keyframes pulseBadge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
         @media (max-width: 768px) {
             body { padding: 1rem; }
             .page-header h1 { font-size: 1.8rem; }
@@ -307,7 +430,8 @@
 
         <header class="page-header">
             <h1><i class="fas fa-brain"></i> QUIZ AFRICA.TECH21</h1>
-            <p class="subtitle">100 questions sur l'électronique et la robotique. 5 erreurs max.</p>
+            <p class="subtitle" id="subtitle">100 questions sur l'électronique et la robotique. 5 erreurs max.</p>
+            <span class="expert-badge" id="expertBadge">👑 MODE EXPERT</span>
         </header>
 
         <div class="quiz-box" id="quizBox">
@@ -317,7 +441,7 @@
 
     <script>
         // ==================== BASE DE 100 QUESTIONS ====================
-        const QUESTIONS = [
+        const QUESTIONS_BASE = [
             // --- ÉLECTRONIQUE GÉNÉRALE (1-25) ---
             { question: "Qu'est-ce que le courant électrique ?", options: ["Le déplacement d'électrons", "La tension", "La résistance", "La puissance"], answer: "Le déplacement d'électrons" },
             { question: "Dans quel sens circule le courant dans une diode ?", options: ["Dans les deux sens", "Du cathode vers l'anode", "De l'anode vers la cathode", "Aucun sens"], answer: "De l'anode vers la cathode" },
@@ -429,6 +553,60 @@
             { question: "Le projet BINV utilise :", options: ["Une caméra ESP32-CAM", "Un capteur ultrasonique", "Un capteur de gaz", "Un capteur de température"], answer: "Une caméra ESP32-CAM" }
         ];
 
+        // ==================== 50 QUESTIONS EXPERT ====================
+        const QUESTIONS_EXPERT = [
+            { question: "Quelle est la constante de Planck ?", options: ["6.626 × 10⁻³⁴ J·s", "1.602 × 10⁻¹⁹ C", "8.314 J/mol·K", "3.0 × 10⁸ m/s"], answer: "6.626 × 10⁻³⁴ J·s" },
+            { question: "Qu'est-ce que l'effet tunnel quantique ?", options: ["Un phénomène où une particule traverse une barrière", "Un phénomène de réfraction", "Un effet de diffraction", "Un effet de polarisation"], answer: "Un phénomène où une particule traverse une barrière" },
+            { question: "Qu'est-ce qu'un algorithme de contrôle PID ?", options: ["Proportionnel-Intégral-Dérivé", "Programmation Industrielle Digitale", "Processus Intégré Dynamique", "Protocole d'Identification Digital"], answer: "Proportionnel-Intégral-Dérivé" },
+            { question: "Qu'est-ce que le théorème de Nyquist-Shannon ?", options: ["La fréquence d'échantillonnage doit être ≥ 2× la fréquence max", "La fréquence d'échantillonnage doit être ≤ 2× la fréquence max", "L'échantillonnage doit être périodique", "Le signal doit être analogique"], answer: "La fréquence d'échantillonnage doit être ≥ 2× la fréquence max" },
+            { question: "Quelle est la fonction du réseau RNN en IA ?", options: ["Traiter des séquences avec mémoire", "Classer des images", "Générer du texte", "Reconnaître des visages"], answer: "Traiter des séquences avec mémoire" },
+            { question: "Un FPGA est :", options: ["Un circuit intégré programmable", "Un capteur", "Un microcontrôleur", "Un processeur fixe"], answer: "Un circuit intégré programmable" },
+            { question: "Qu'est-ce que le bus CAN ?", options: ["Un protocole de communication pour véhicules", "Un bus informatique", "Un câble réseau", "Un connecteur audio"], answer: "Un protocole de communication pour véhicules" },
+            { question: "La modulation PWM est utilisée pour :", options: ["Contrôler la puissance", "Transmettre des données", "Amplifier un signal", "Filtrer les bruits"], answer: "Contrôler la puissance" },
+            { question: "Un capteur ToF mesure :", options: ["Le temps de vol d'un signal lumineux", "La température", "La pression", "L'humidité"], answer: "Le temps de vol d'un signal lumineux" },
+            { question: "Qu'est-ce que la loi de Moore ?", options: ["Le nombre de transistors double tous les 2 ans", "La vitesse des processeurs double", "Le prix des ordinateurs baisse", "La mémoire augmente"], answer: "Le nombre de transistors double tous les 2 ans" },
+            { question: "Un robot à 6 axes est :", options: ["Un bras robotique avec 6 degrés de liberté", "Un robot avec 6 roues", "Un robot avec 6 capteurs", "Un robot avec 6 moteurs"], answer: "Un bras robotique avec 6 degrés de liberté" },
+            { question: "L'architecture ARM est :", options: ["Un processeur RISC", "Un processeur CISC", "Un microcontrôleur", "Un FPGA"], answer: "Un processeur RISC" },
+            { question: "La photolithographie est utilisée pour :", options: ["Fabriquer des circuits intégrés", "Imprimer des photos", "Graver des métaux", "Mesurer des distances"], answer: "Fabriquer des circuits intégrés" },
+            { question: "Un capteur CMOS est :", options: ["Un capteur d'image", "Un capteur de température", "Un capteur de pression", "Un capteur de lumière"], answer: "Un capteur d'image" },
+            { question: "Un algorithme génétique s'inspire de :", options: ["L'évolution biologique", "La physique quantique", "Les mathématiques", "La chimie"], answer: "L'évolution biologique" },
+            { question: "Qu'est-ce que la réalité augmentée ?", options: ["Superposition d'éléments virtuels sur le réel", "Immersion totale dans un monde virtuel", "Un jeu vidéo", "Une simulation"], answer: "Superposition d'éléments virtuels sur le réel" },
+            { question: "Un robot souple (soft robot) utilise :", options: ["Des matériaux flexibles", "Des moteurs électriques", "Des hydrauliques", "Des pneumatiques"], answer: "Des matériaux flexibles" },
+            { question: "La transformée de Fourier est utilisée pour :", options: ["Analyser les fréquences d'un signal", "Amplifier un signal", "Filtrer un signal", "Compresser un signal"], answer: "Analyser les fréquences d'un signal" },
+            { question: "Un Qubit est :", options: ["L'unité de base de l'information quantique", "Un bit classique", "Un processeur quantique", "Un capteur quantique"], answer: "L'unité de base de l'information quantique" },
+            { question: "L'effet photovoltaïque permet de :", options: ["Transformer la lumière en électricité", "Transformer l'électricité en lumière", "Stocker de l'énergie", "Amplifier un signal"], answer: "Transformer la lumière en électricité" },
+            { question: "Un capteur LiDAR utilise :", options: ["Un laser pour mesurer la distance", "Des ultrasons", "Des infrarouges", "Une caméra"], answer: "Un laser pour mesurer la distance" },
+            { question: "Qu'est-ce que la gravure ionique réactive ?", options: ["Une technique de microfabrication", "Une technique de soudage", "Une technique de mesure", "Une technique de nettoyage"], answer: "Une technique de microfabrication" },
+            { question: "Un robot mécatronique combine :", options: ["Mécanique, électronique et informatique", "Mécanique et électronique", "Informatique et mécanique", "Électronique et informatique"], answer: "Mécanique, électronique et informatique" },
+            { question: "L'effet Hall est utilisé pour :", options: ["Mesurer les champs magnétiques", "Mesurer la température", "Mesurer la pression", "Mesurer la lumière"], answer: "Mesurer les champs magnétiques" },
+            { question: "Un circuit intégré est fabriqué sur :", options: ["Du silicium", "Du cuivre", "De l'aluminium", "Du plastique"], answer: "Du silicium" },
+            { question: "Un algorithme de SLAM permet :", options: ["La localisation et la cartographie simultanées", "La reconnaissance vocale", "La détection d'obstacles", "La navigation GPS"], answer: "La localisation et la cartographie simultanées" },
+            { question: "La mémoire Flash est :", options: ["Non volatile", "Volatile", "Statique", "Dynamique"], answer: "Non volatile" },
+            { question: "Un filtre de Kalman est utilisé pour :", options: ["Filtrer les données bruitées en temps réel", "Filtrer les fréquences", "Compresser les données", "Amplifier les signaux"], answer: "Filtrer les données bruitées en temps réel" },
+            { question: "L'électromyographie mesure :", options: ["L'activité électrique des muscles", "L'activité cérébrale", "Le rythme cardiaque", "La respiration"], answer: "L'activité électrique des muscles" },
+            { question: "Un capteur MEMS est :", options: ["Un micro-système électromécanique", "Un capteur optique", "Un capteur chimique", "Un capteur biologique"], answer: "Un micro-système électromécanique" },
+            { question: "La loi de Beer-Lambert est utilisée en :", options: ["Spectroscopie", "Mécanique", "Thermodynamique", "Électromagnétisme"], answer: "Spectroscopie" },
+            { question: "Un robot à parallélisme est :", options: ["Un robot avec plusieurs bras", "Un robot qui copie les mouvements", "Un robot rapide", "Un robot précis"], answer: "Un robot avec plusieurs bras" },
+            { question: "La commande vectorielle est utilisée pour :", options: ["Contrôler les moteurs à courant alternatif", "Contrôler les moteurs pas à pas", "Contrôler les servomoteurs", "Contrôler les moteurs CC"], answer: "Contrôler les moteurs à courant alternatif" },
+            { question: "Un convertisseur DC-DC permet de :", options: ["Changer la tension continue", "Changer la fréquence", "Changer le courant", "Changer la phase"], answer: "Changer la tension continue" },
+            { question: "L'impédance est :", options: ["Une résistance complexe en AC", "Une résistance en DC", "Une inductance", "Une capacité"], answer: "Une résistance complexe en AC" },
+            { question: "Un réseau de neurones convolutionnel est utilisé pour :", options: ["Le traitement d'images", "Le traitement du texte", "Le traitement audio", "Le traitement vidéo"], answer: "Le traitement d'images" },
+            { question: "Un résonateur est utilisé pour :", options: ["Osciller à une fréquence précise", "Stocker de l'énergie", "Amplifier un signal", "Filtrer un signal"], answer: "Osciller à une fréquence précise" },
+            { question: "La loi de Lenz stipule que :", options: ["Le courant induit s'oppose à la variation du flux", "Le courant induit suit la variation du flux", "Le flux est constant", "La force est proportionnelle au courant"], answer: "Le courant induit s'oppose à la variation du flux" },
+            { question: "Un capteur de couple mesure :", options: ["La force de rotation", "La force linéaire", "La pression", "La température"], answer: "La force de rotation" },
+            { question: "Un robot de service est conçu pour :", options: ["Aider les humains au quotidien", "Travailler en usine", "Explorer l'espace", "Effectuer des tâches militaires"], answer: "Aider les humains au quotidien" },
+            { question: "Un accéléromètre mesure :", options: ["L'accélération", "La vitesse", "La position", "La rotation"], answer: "L'accélération" },
+            { question: "La spectrométrie de masse est utilisée pour :", options: ["Identifier des molécules", "Mesurer la température", "Mesurer la pression", "Mesurer la distance"], answer: "Identifier des molécules" },
+            { question: "Un robot de soudage est :", options: ["Un robot industriel", "Un robot domestique", "Un robot éducatif", "Un robot de service"], answer: "Un robot industriel" },
+            { question: "Le système ROS est :", options: ["Un framework pour la robotique", "Un système d'exploitation", "Un langage de programmation", "Un protocole"], answer: "Un framework pour la robotique" },
+            { question: "Un encodeur rotatif mesure :", options: ["La position angulaire", "La température", "La pression", "L'humidité"], answer: "La position angulaire" },
+            { question: "L'effet Seebeck est utilisé pour :", options: ["Mesurer la température", "Générer de l'électricité", "Refroidir", "Chauffer"], answer: "Mesurer la température" },
+            { question: "Un robot humanoïde a :", options: ["Une apparence humaine", "Une apparence animale", "Une apparence industrielle", "Une apparence simple"], answer: "Une apparence humaine" },
+            { question: "Un capteur de monoxyde de carbone est :", options: ["Un capteur de gaz", "Un capteur de température", "Un capteur de pression", "Un capteur de lumière"], answer: "Un capteur de gaz" },
+            { question: "Un robot à commande numérique est :", options: ["Un robot contrôlé par un programme", "Un robot contrôlé par télécommande", "Un robot contrôlé par le mouvement", "Un robot contrôlé par la voix"], answer: "Un robot contrôlé par un programme" },
+            { question: "L'effet de la force centrifuge est :", options: ["Une force apparente", "Une force réelle", "Une force magnétique", "Une force électrique"], answer: "Une force apparente" }
+        ];
+
         // ==================== ÉTAT DU JEU ====================
         let questions = [];
         let currentIndex = 0;
@@ -436,7 +614,11 @@
         let errors = 0;
         const MAX_ERRORS = 5;
         let isAnswered = false;
+        let expertMode = false;
+        let totalQuestions = 0;
         const quizContent = document.getElementById('quizContent');
+        const subtitle = document.getElementById('subtitle');
+        const expertBadge = document.getElementById('expertBadge');
 
         // ==================== FONCTIONS ====================
         function shuffleArray(array) {
@@ -448,11 +630,29 @@
         }
 
         function startQuiz() {
-            questions = shuffleArray([...QUESTIONS]);
+            // Mélanger les questions de base
+            const baseShuffled = shuffleArray([...QUESTIONS_BASE]);
+            // Prendre les 100 premières (ou toutes)
+            const selectedBase = baseShuffled.slice(0, 100);
+            
+            // Mélanger les questions expert
+            const expertShuffled = shuffleArray([...QUESTIONS_EXPERT]);
+            
+            // Combiner : base + expert (total 150 questions)
+            questions = [...selectedBase, ...expertShuffled];
+            totalQuestions = questions.length;
+            
             currentIndex = 0;
             score = 0;
             errors = 0;
+            expertMode = false;
             isAnswered = false;
+            
+            // Enlever le mode expert
+            document.body.classList.remove('expert-mode');
+            expertBadge.classList.remove('active');
+            subtitle.textContent = `${totalQuestions} questions sur l'électronique, la robotique et l'expertise technique. 5 erreurs max.`;
+            
             renderQuestion();
         }
 
@@ -462,8 +662,22 @@
                 return;
             }
 
+            // Vérifier si on atteint le mode expert (après 100 questions)
+            if (currentIndex >= 100 && !expertMode) {
+                expertMode = true;
+                document.body.classList.add('expert-mode');
+                expertBadge.classList.add('active');
+                subtitle.textContent = '👑 MODE EXPERT - Questions avancées !';
+                // Ajouter une petite animation de transition
+                const box = document.querySelector('.quiz-box');
+                box.style.animation = 'none';
+                setTimeout(() => {
+                    box.style.animation = 'pulse 0.5s ease';
+                }, 10);
+            }
+
             const q = questions[currentIndex];
-            const progress = (currentIndex / questions.length) * 100;
+            const progress = (currentIndex / totalQuestions) * 100;
             const shuffledOptions = shuffleArray([...q.options]);
 
             let optionsHtml = shuffledOptions.map(opt => `
@@ -472,20 +686,39 @@
                 </button>
             `).join('');
 
+            const isExpert = currentIndex >= 100;
+
             quizContent.innerHTML = `
                 <div class="quiz-header">
                     <span class="score">🏆 ${score}</span>
                     <span class="errors">❌ ${errors} / ${MAX_ERRORS}</span>
+                    ${isExpert ? '<span style="color: #ffd700; font-weight: 700; font-size: 0.9rem;">👑 EXPERT</span>' : ''}
                 </div>
                 <div class="progress-bar">
                     <div class="fill" style="width: ${progress}%;"></div>
                 </div>
-                <div class="question-number">Question ${currentIndex + 1} / ${questions.length}</div>
+                <div class="question-number">Question ${currentIndex + 1} / ${totalQuestions}</div>
                 <div class="question-text">${q.question}</div>
                 <div class="options">${optionsHtml}</div>
             `;
 
             isAnswered = false;
+        }
+
+        function showToastMessage(message) {
+            const oldToast = document.querySelector('.toast-message');
+            if (oldToast) oldToast.remove();
+
+            const toast = document.createElement('div');
+            toast.className = 'toast-message';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.5s';
+                setTimeout(() => toast.remove(), 500);
+            }, 2500);
         }
 
         function selectOption(btn, selected, correct) {
@@ -504,31 +737,41 @@
                 allBtns.forEach(b => {
                     if (b.textContent === correct) b.classList.add('correct');
                 });
+                showToastMessage(`❌ Mauvaise réponse ! La bonne réponse était : "${correct}"`);
             }
 
             document.querySelector('.score').textContent = `🏆 ${score}`;
             document.querySelector('.errors').textContent = `❌ ${errors} / ${MAX_ERRORS}`;
 
             if (errors >= MAX_ERRORS) {
-                setTimeout(() => showResult(false), 800);
+                setTimeout(() => showResult(false), 1000);
                 return;
             }
 
             setTimeout(() => {
                 currentIndex++;
                 renderQuestion();
-            }, 1200);
+            }, 1500);
         }
 
         function showResult(success) {
             const total = questions.length;
+            const isExpertMode = document.body.classList.contains('expert-mode');
+            
             if (success) {
+                const icon = isExpertMode ? '👑' : '🏆';
+                const titleClass = isExpertMode ? 'success' : 'success';
+                const titleText = isExpertMode ? 'MAÎTRE TECHNOLOGUE !' : 'BRAVO !';
+                const detailText = isExpertMode 
+                    ? `Tu as terminé les ${total} questions, y compris le mode expert ! Une performance exceptionnelle.`
+                    : `Tu as répondu à toutes les questions sans atteindre 5 erreurs !`;
+                    
                 quizContent.innerHTML = `
                     <div class="result-screen">
-                        <div class="big-icon">🏆</div>
-                        <div class="result-title success">BRAVO !</div>
+                        <div class="big-icon">${icon}</div>
+                        <div class="result-title success">${titleText}</div>
                         <div class="result-score">${score} / ${total}</div>
-                        <div class="result-detail">Tu as répondu à toutes les questions sans atteindre 5 erreurs !</div>
+                        <div class="result-detail">${detailText}</div>
                         <button class="btn-restart" onclick="startQuiz()"><i class="fas fa-redo"></i> Recommencer</button>
                     </div>
                 `;
