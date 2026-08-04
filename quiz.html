@@ -663,7 +663,7 @@
             }
 
             // Vérifier si on atteint le mode expert (après 100 questions)
-            if (currentIndex >= 100 && !expertMode) {
+            if (currentIndex >= 50 && !expertMode) {
                 expertMode = true;
                 document.body.classList.add('expert-mode');
                 expertBadge.classList.add('active');
