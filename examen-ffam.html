@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen FFAM | AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Exo 2', 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-purple: #7b2cbf;
+            --neon-green: #00ff88;
+            --neon-pink: #ff00ff;
+            --dark-space: #0a0a12;
+            --deep-space: #050510;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a8c0;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --panel-glow: 0 0 30px rgba(0, 240, 255, 0.2);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+            transition: all 0.5s ease;
+        }
+
+        .hologram-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridScan 20s linear infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        @keyframes gridScan {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            margin-bottom: 2rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 10px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        .page-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: var(--panel-glow);
+        }
+
+        .page-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header .subtitle {
+            color: var(--text-secondary);
+            margin-top: 0.3rem;
+            font-size: 1rem;
+        }
+
+        .exam-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+        }
+
+        .exam-info .timer {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            color: var(--neon-blue);
+        }
+        .exam-info .timer.danger {
+            color: #ff4757;
+            animation: blink 0.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .exam-info .candidate {
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        .exam-box {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 2rem;
+            box-shadow: var(--panel-glow);
+            min-height: 400px;
+        }
+
+        .question-block {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .question-block:last-child {
+            border-bottom: none;
+        }
+
+        .question-title {
+            font-weight: 600;
+            font-size: 1.15rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
+        }
+
+        .question-title .qnum {
+            color: var(--neon-blue);
+            margin-right: 0.5rem;
+        }
+
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .options-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: 0.3s;
+            padding: 0.3rem 0;
+        }
+
+        .options-group label:hover {
+            color: var(--text-primary);
+        }
+
+        .options-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--neon-blue);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .redaction-area {
+            margin-top: 1.5rem;
+        }
+
+        .redaction-area textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            resize: vertical;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .redaction-area textarea:focus {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+        }
+
+        .btn-submit-exam {
+            width: 100%;
+            padding: 1rem;
+            margin-top: 2rem;
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
+        }
+
+        .btn-submit-exam:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(123, 44, 191, 0.6);
+        }
+
+        .btn-submit-exam:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-box {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            border-left: 4px solid var(--neon-green);
+            display: none;
+        }
+
+        .result-box.active {
+            display: block;
+        }
+
+        .result-box .note-finale {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--neon-blue);
+        }
+
+        .result-box .mention {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+
+        .result-box .mention.reussite {
+            color: var(--neon-green);
+        }
+        .result-box .mention.echec {
+            color: #ff4757;
+        }
+
+        .loading-text {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 2rem;
+            display: none;
+        }
+        .loading-text.active {
+            display: block;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--glass-border);
+            border-top: 4px solid var(--neon-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .toast-message {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 71, 87, 0.95);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            z-index: 9999;
+            box-shadow: 0 4px 20px rgba(255, 71, 87, 0.4);
+            animation: fadeInUp 0.3s ease;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .toast-message.success {
+            background: rgba(0, 255, 136, 0.9);
+            color: #050510;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .page-header h1 { font-size: 1.8rem; }
+            .exam-info { flex-direction: column; align-items: stretch; text-align: center; }
+            .exam-info .timer { font-size: 1.5rem; }
+            .question-title { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hologram-grid"></div>
+
+    <div class="page-container">
+        <a href="dashboard.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD
+        </a>
+
+        <header class="page-header">
+            <h1><i class="fas fa-graduation-cap"></i> EXAMEN FFAM</h1>
+            <p class="subtitle">Formation Future Members – Évaluation technique</p>
+            <div class="exam-info">
+                <span class="candidate" id="candidateName">👤 Chargement...</span>
+                <span class="timer" id="timerDisplay">⏱️ 30:00</span>
+                <span id="questionCounter">📝 Question 1 / 30</span>
+            </div>
+        </header>
+
+        <div class="exam-box" id="examBox">
+            <div id="examContent"></div>
+            <button class="btn-submit-exam" id="submitExamBtn" style="display:none;">
+                📤 SOUMETTRE L'EXAMEN
+            </button>
+        </div>
+
+        <div class="loading-text" id="loadingArea">
+            <div class="loading-spinner"></div>
+            <p>L'IA corrige votre rédaction...</p>
+            <p style="font-size:0.9rem; color:var(--text-secondary);">Cela peut prendre quelques secondes.</p>
+        </div>
+
+        <div class="result-box" id="resultBox">
+            <h2>📋 RÉSULTAT DE L'EXAMEN</h2>
+            <div id="resultContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== CONFIGURATION ====================
+        const GROQ_API_KEY = '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';
+        const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+        const SCRIPT_URL_EVAL = 'https://script.google.com/macros/s/AKfycbwuzAsRuuu1XYJrdlGm79Hq1sHJpN8IhQuV3_v9AYCel-rhLAyhMt_7Xrg75W2_rIc/exec';
+
+        const IDS_AUTORISES = ['AT21_0041', 'AT21_0062', 'AT21_006'];
+
+        // ==================== VÉRIFICATION ACCÈS ====================
+        if (localStorage.getItem('memberLoggedIn') !== 'true') {
+            window.location.href = 'espace-membres.html';
+        }
+
+        const memberId = localStorage.getItem('memberId') || '';
+        if (!IDS_AUTORISES.includes(memberId)) {
+            document.body.innerHTML = `
+                <div style="display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; gap:1rem; text-align:center; padding:2rem;">
+                    <i class="fas fa-lock" style="font-size:4rem; color:#ff4757;"></i>
+                    <h1 style="color:#ff4757;">ACCÈS REFUSÉ</h1>
+                    <p style="color:var(--text-secondary);">Vous n'êtes pas autorisé à passer cet examen.</p>
+                    <a href="dashboard.html" style="color:var(--neon-blue); text-decoration:underline;">Retour au Dashboard</a>
+                </div>
+            `;
+            throw new Error('Accès refusé');
+        }
+
+        const memberNom = localStorage.getItem('memberNom') || '';
+        const memberPrenom = localStorage.getItem('memberPrenom') || '';
+        document.getElementById('candidateName').textContent = `👤 ${memberPrenom} ${memberNom} (${memberId})`;
+
+        // ==================== BASE DE QUESTIONS (30) ====================
+        const QUESTIONS = [
+            // ÉLECTRONIQUE GÉNÉRALE
+            { q: "Qu'est-ce que le courant électrique ?", opts: ["Le déplacement d'électrons", "La tension électrique", "La résistance", "La puissance"], correct: [0] },
+            { q: "Quelle est l'unité de la résistance ?", opts: ["Ampère", "Ohm", "Volt", "Watt"], correct: [1] },
+            { q: "Quelle est la tension standard en Afrique ?", opts: ["110V / 60Hz", "220-240V / 50Hz", "12V / 60Hz", "5V / 50Hz"], correct: [1] },
+            { q: "Un condensateur sert principalement à :", opts: ["Stocker de l'énergie", "Amplifier un signal", "Réduire le courant", "Commuter des circuits"], correct: [0] },
+            { q: "Un transistor peut agir comme :", opts: ["Interrupteur ou amplificateur", "Résistance", "Condensateur", "Batterie"], correct: [0] },
+            { q: "La loi d'Ohm s'écrit :", opts: ["U = R × I", "U = I / R", "R = U × I", "I = U × R"], correct: [0] },
+            { q: "Une diode laisse passer le courant :", opts: ["Dans les deux sens", "Du cathode vers l'anode", "De l'anode vers la cathode", "Aucun sens"], correct: [2] },
+            { q: "Quel composant est utilisé pour le lissage de tension ?", opts: ["Condensateur", "Résistance", "Diode", "Transistor"], correct: [0] },
+            { q: "Que signifie l'acronyme LED ?", opts: ["Light Emitting Diode", "Light Emitting Device", "Laser Emitting Diode", "Low Energy Diode"], correct: [0] },
+            { q: "Le MOSFET est un type de :", opts: ["Transistor", "Diode", "Condensateur", "Résistance"], correct: [0] },
+
+            // MOTEURS
+            { q: "Un moteur à courant continu (CC) utilise :", opts: ["Des balais", "Des engrenages", "Des aimants permanents", "Un rotor bobiné"], correct: [0] },
+            { q: "Un moteur pas à pas est caractérisé par :", opts: ["Sa précision", "Sa rapidité", "Son couple élevé", "Sa faible consommation"], correct: [0] },
+            { q: "Un moteur brushless est :", opts: ["Sans balais", "Avec balais", "Très lent", "Peu puissant"], correct: [0] },
+            { q: "Un moteur asynchrone est aussi appelé :", opts: ["Moteur à induction", "Moteur synchrone", "Moteur CC", "Moteur pas à pas"], correct: [0] },
+            { q: "Un moteur à engrenages permet :", opts: ["Réduire la vitesse et augmenter la force", "Augmenter la vitesse", "Réduire la force", "Améliorer la précision"], correct: [0] },
+            { q: "Les moteurs Inrunner sont utilisés dans :", opts: ["Les voitures RC", "Les drones", "Les imprimantes 3D", "Les ventilateurs"], correct: [0] },
+
+            // ARDUINO
+            { q: "Le langage Arduino est basé sur :", opts: ["C / C++", "Python", "Java", "JavaScript"], correct: [0] },
+            { q: "Une broche numérique sur Arduino peut être :", opts: ["Entrée ou sortie", "Uniquement sortie", "Uniquement entrée", "Ni entrée ni sortie"], correct: [0] },
+            { q: "La fonction `digitalWrite()` sert à :", opts: ["Écrire sur une broche numérique", "Lire une broche numérique", "Écrire sur une broche analogique", "Lire une broche analogique"], correct: [0] },
+            { q: "Le microcontrôleur est :", opts: ["Le cerveau de la carte", "L'alimentation", "L'horloge", "La mémoire"], correct: [0] },
+            { q: "Un programme Arduino commence par :", opts: ["`setup()` et `loop()`", "`start()` et `end()`", "`init()` et `main()`", "`begin()` et `repeat()`"], correct: [0] },
+
+            // CAPTEURS
+            { q: "Le capteur HC-SR04 est utilisé pour :", opts: ["Mesurer la distance", "Mesurer la température", "Mesurer l'humidité", "Détecter la lumière"], correct: [0] },
+            { q: "Un capteur DHT22 mesure :", opts: ["Température et humidité", "Pression et température", "Distance et température", "Luminosité et humidité"], correct: [0] },
+            { q: "Un capteur infrarouge a une portée :", opts: ["Plus courte que l'ultrasonique", "Plus longue que l'ultrasonique", "Identique", "Variable"], correct: [0] },
+            { q: "Le capteur de niveau d'eau permet de :", opts: ["Connaître le niveau d'eau", "Mesurer la température", "Détecter les obstacles", "Suivre une ligne"], correct: [0] },
+            { q: "Le capteur suiveur de ligne est utilisé pour :", opts: ["Suivre des lignes", "Mesurer la distance", "Détecter les gaz", "Mesurer l'humidité"], correct: [0] },
+
+            // PROJETS
+            { q: "Le projet OXY a pour but de :", opts: ["Produire de l'oxygène", "Arroser les plantes", "Détecter les gaz", "Contrôler un robot"], correct: [0] },
+            { q: "Le projet IRRITECH est un système :", opts: ["D'arrosage automatique", "D'alerte gaz", "De production d'oxygène", "D'assistance respiratoire"], correct: [0] },
+            { q: "Le projet MK-40 est une :", opts: ["Couveuse automatique", "Imprimante 3D", "Machine à café", "Station météo"], correct: [0] },
+            { q: "Le projet SAGAF est un système :", opts: ["D'alerte gaz", "D'arrosage", "De production d'oxygène", "De robotique"], correct: [0] },
+            { q: "Le projet BINV est un :", opts: ["Bâton intelligent pour non-voyants", "Robot sous-marin", "Système d'arrosage", "Détecteur de gaz"], correct: [0] }
+        ];
+
+        // ==================== ÉTAT DE L'EXAMEN ====================
+        let examQuestions = [];
+        let reponses = {};
+        let tempsRestant = 1800; // 30 minutes en secondes
+        let examenTermine = false;
+        let timerInterval = null;
+        let redaction = '';
+
+        // ==================== RÉFÉRENCES DOM ====================
+        const examContent = document.getElementById('examContent');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const questionCounter = document.getElementById('questionCounter');
+        const submitBtn = document.getElementById('submitExamBtn');
+        const loadingArea = document.getElementById('loadingArea');
+        const resultBox = document.getElementById('resultBox');
+        const resultContent = document.getElementById('resultContent');
+
+        // ==================== BLOCAGE COPIER-COLLER ====================
+        document.addEventListener('copy', (e) => {
+            e.preventDefault();
+            showToast('⚠️ Copier-coller est interdit pendant l\'examen.');
+        });
+
+        document.addEventListener('paste', (e) => {
+            e.preventDefault();
+            showToast('⚠️ Copier-coller est interdit pendant l\'examen.');
+        });
+
+        // ==================== BLOCAGE SORTIE DE PAGE ====================
+        window.addEventListener('beforeunload', (e) => {
+            if (!examenTermine) {
+                e.preventDefault();
+                e.returnValue = '⚠️ Si vous quittez maintenant, l\'examen sera terminé. Voulez-vous continuer ?';
+            }
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && !examenTermine) {
+                examenTermine = true;
+                clearInterval(timerInterval);
+                showToast('❌ Vous avez quitté la page. L\'examen est terminé.');
+                submitBtn.style.display = 'none';
+                showResult('abandon');
+            }
+        });
+
+        // ==================== TOAST ====================
+        function showToast(message, type = '') {
+            const old = document.querySelector('.toast-message');
+            if (old) old.remove();
+            const toast = document.createElement('div');
+            toast.className = 'toast-message ' + type;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.5s';
+                setTimeout(() => toast.remove(), 500);
+            }, 4000);
+        }
+
+        // ==================== MÉLANGE DES QUESTIONS ====================
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // ==================== AFFICHAGE DE L'EXAMEN ====================
+        function afficherExamen() {
+            const shuffled = shuffleArray([...QUESTIONS]);
+            examQuestions = shuffled.slice(0, 30);
+
+            let html = '';
+            examQuestions.forEach((q, idx) => {
+                const num = idx + 1;
+                html += `<div class="question-block">`;
+                html += `<div class="question-title"><span class="qnum">${num}.</span> ${q.q}</div>`;
+                html += `<div class="options-group">`;
+                q.opts.forEach((opt, oi) => {
+                    const id = `q${num}_${oi}`;
+                    html += `
+                        <label>
+                            <input type="checkbox" id="${id}" name="q${num}" value="${oi}" onchange="enregistrerReponse(${idx}, ${oi}, this.checked)">
+                            ${opt}
+                        </label>
+                    `;
+                });
+                html += `</div></div>`;
+            });
+
+            // Rédaction
+            html += `
+                <div class="question-block redaction-area">
+                    <div class="question-title"><span class="qnum">31.</span> Rédaction : Comment faire pour allumer une LED avec une carte ARDUINO et la faire clignoter ?</div>
+                    <textarea id="redactionInput" placeholder="Écrivez votre réponse ici..." oninput="enregistrerRedaction(this.value)"></textarea>
+                </div>
+            `;
+
+            examContent.innerHTML = html;
+            submitBtn.style.display = 'block';
+            questionCounter.textContent = `📝 Question 1 / 30`;
+        }
+
+        // ==================== ENREGISTRER LES RÉPONSES ====================
+        function enregistrerReponse(qIndex, optIndex, checked) {
+            if (examenTermine) return;
+            if (!reponses[qIndex]) reponses[qIndex] = [];
+            if (checked) {
+                if (!reponses[qIndex].includes(optIndex)) {
+                    reponses[qIndex].push(optIndex);
+                }
+            } else {
+                reponses[qIndex] = reponses[qIndex].filter(v => v !== optIndex);
+            }
+        }
+
+        function enregistrerRedaction(value) {
+            if (examenTermine) return;
+            redaction = value;
+        }
+
+        // ==================== CHRONOMÈTRE ====================
+        function demarrerChronometre() {
+            timerInterval = setInterval(() => {
+                tempsRestant--;
+                if (tempsRestant <= 0) {
+                    clearInterval(timerInterval);
+                    examenTermine = true;
+                    showToast('⏰ Temps écoulé ! L\'examen est terminé.');
+                    submitExam('timeout');
+                    return;
+                }
+                const mins = Math.floor(tempsRestant / 60);
+                const secs = tempsRestant % 60;
+                timerDisplay.textContent = `⏱️ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                if (tempsRestant < 300) {
+                    timerDisplay.classList.add('danger');
+                }
+            }, 1000);
+        }
+
+        // ==================== SOUMISSION ====================
+        async function submitExam(reason = 'normal') {
+            if (examenTermine && reason !== 'timeout') return;
+            examenTermine = true;
+            clearInterval(timerInterval);
+            submitBtn.disabled = true;
+            submitBtn.style.display = 'none';
+
+            // Désactiver tous les champs
+            document.querySelectorAll('input, textarea').forEach(el => el.disabled = true);
+
+            loadingArea.classList.add('active');
+
+            // Corriger les QCM
+            let scoreQCM = 0;
+            const totalQCM = examQuestions.length;
+            examQuestions.forEach((q, idx) => {
+                const rep = reponses[idx] || [];
+                const correct = q.correct.slice().sort();
+                const sortedRep = rep.slice().sort();
+                if (JSON.stringify(sortedRep) === JSON.stringify(correct)) {
+                    scoreQCM++;
+                }
+            });
+
+            // Évaluer la rédaction avec Groq
+            let noteRedaction = 0;
+            let commentaireRedaction = '';
+
+            if (redaction.trim().length < 20) {
+                noteRedaction = 0;
+                commentaireRedaction = 'Rédaction trop courte ou vide.';
+            } else {
+                try {
+                    const sysPrompt = `Tu es un examinateur technique strict. Évalue la réponse du candidat sur 10 points.
+                    Critères : rigueur technique (4 pts), clarté (3 pts), exhaustivité (3 pts).
+                    Retourne uniquement : "NOTE: X/10" suivi d'un court commentaire.`;
+                    const response = await fetch(GROQ_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_API_KEY}` },
+                        body: JSON.stringify({
+                            model: 'llama-3.3-70b-versatile',
+                            messages: [
+                                { role: 'system', content: sysPrompt },
+                                { role: 'user', content: `Rédaction : ${redaction}` }
+                            ],
+                            temperature: 0.2,
+                            max_tokens: 300
+                        })
+                    });
+                    const data = await response.json();
+                    const reponseIA = data.choices[0].message.content;
+                    const noteMatch = reponseIA.match(/NOTE:\s*(\d+)\/10/);
+                    noteRedaction = noteMatch ? parseInt(noteMatch[1]) : 5;
+                    commentaireRedaction = reponseIA.replace(/NOTE:\s*\d+\/10\s*/, '').trim();
+                } catch (error) {
+                    noteRedaction = 5;
+                    commentaireRedaction = 'Erreur de correction IA. Note moyenne attribuée.';
+                }
+            }
+
+            loadingArea.classList.remove('active');
+
+            const totalPoints = scoreQCM + noteRedaction;
+            const noteFinale = (totalPoints / 40) * 20;
+            const noteArrondie = Math.round(noteFinale * 10) / 10;
+            const reussite = noteArrondie >= 12;
+            const mention = reussite ? '✅ Réussi' : '❌ Échec';
+
+            // Sauvegarder dans Google Sheets
+            try {
+                await fetch(SCRIPT_URL_EVAL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        membre: `${memberPrenom} ${memberNom} (${memberId})`,
+                        fichier: `Examen FFAM - ${new Date().toLocaleDateString()}`,
+                        commentaire: `QCM: ${scoreQCM}/30, Rédaction: ${noteRedaction}/10`,
+                        note: noteArrondie,
+                        mention: mention,
+                        rapport: `QCM: ${scoreQCM}/30 | Rédaction: ${noteRedaction}/10 | Note: ${noteArrondie}/20`,
+                        date: new Date().toLocaleString('fr-FR')
+                    })
+                });
+            } catch (e) {
+                console.warn('Erreur sauvegarde:', e);
+            }
+
+            // Afficher les résultats
+            showResult('termine', { note: noteArrondie, mention, scoreQCM, noteRedaction, commentaireRedaction });
+        }
+
+        // ==================== AFFICHER LES RÉSULTATS ====================
+        function showResult(type, data = null) {
+            if (type === 'abandon') {
+                resultContent.innerHTML = `
+                    <p style="color:#ff4757; font-size:1.5rem;">❌ EXAMEN ABANDONNÉ</p>
+                    <p>Vous avez quitté la page. L'examen est terminé.</p>
+                    <p>Veuillez contacter le MAJOR pour une nouvelle tentative.</p>
+                `;
+                resultBox.classList.add('active');
+                return;
+            }
+
+            if (type === 'timeout') {
+                resultContent.innerHTML = `
+                    <p style="color:#ff4757; font-size:1.5rem;">⏰ TEMPS ÉCOULÉ</p>
+                    <p>Le temps imparti est écoulé. L'examen est terminé.</p>
+                `;
+                resultBox.classList.add('active');
+                return;
+            }
+
+            if (data) {
+                const mentionClass = data.mention === '✅ Réussi' ? 'reussite' : 'echec';
+                resultContent.innerHTML = `
+                    <div style="text-align:center; padding:1rem;">
+                        <div class="note-finale">${data.note} / 20</div>
+                        <div class="mention ${mentionClass}">${data.mention}</div>
+                        <div style="margin:1rem 0; color:var(--text-secondary);">
+                            <p>QCM : ${data.scoreQCM} / 30</p>
+                            <p>Rédaction : ${data.noteRedaction} / 10</p>
+                            <p style="margin-top:0.5rem; font-style:italic;">${data.commentaireRedaction}</p>
+                        </div>
+                    </div>
+                `;
+                resultBox.classList.add('active');
+            }
+        }
+
+        // ==================== INITIALISATION ====================
+        afficherExamen();
+        demarrerChronometre();
+
+        // Bouton de soumission
+        document.getElementById('submitExamBtn').addEventListener('click', () => {
+            if (confirm('⚠️ Êtes-vous sûr de vouloir soumettre l\'examen ? Vous ne pourrez plus modifier vos réponses.')) {
+                submitExam('normal');
+            }
+        });
+    </script>
+</body>
+</html>
