@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ===== STYLES IDENTIQUES À LA VERSION PRÉCÉDENTE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -356,7 +357,7 @@
             <div class="exam-info">
                 <span class="candidate" id="candidateName">👤 Chargement...</span>
                 <span class="timer" id="timerDisplay">⏱️ 30:00</span>
-                <span id="questionCounter">📝 Question 1 / 30</span>
+                <span id="questionCounter">📝 Question 1 / 50</span>
             </div>
         </header>
 
@@ -409,48 +410,69 @@
         const memberPrenom = localStorage.getItem('memberPrenom') || '';
         document.getElementById('candidateName').textContent = `👤 ${memberPrenom} ${memberNom} (${memberId})`;
 
-        // ==================== BASE DE QUESTIONS (30) ====================
+        // ==================== BASE DE 50 QUESTIONS AVEC PIÈGES ET RÉPONSES MULTIPLES ====================
         const QUESTIONS = [
-            // ÉLECTRONIQUE GÉNÉRALE
-            { q: "Qu'est-ce que le courant électrique ?", opts: ["Le déplacement d'électrons", "La tension électrique", "La résistance", "La puissance"], correct: [0] },
-            { q: "Quelle est l'unité de la résistance ?", opts: ["Ampère", "Ohm", "Volt", "Watt"], correct: [1] },
-            { q: "Quelle est la tension standard en Afrique ?", opts: ["110V / 60Hz", "220-240V / 50Hz", "12V / 60Hz", "5V / 50Hz"], correct: [1] },
-            { q: "Un condensateur sert principalement à :", opts: ["Stocker de l'énergie", "Amplifier un signal", "Réduire le courant", "Commuter des circuits"], correct: [0] },
-            { q: "Un transistor peut agir comme :", opts: ["Interrupteur ou amplificateur", "Résistance", "Condensateur", "Batterie"], correct: [0] },
-            { q: "La loi d'Ohm s'écrit :", opts: ["U = R × I", "U = I / R", "R = U × I", "I = U × R"], correct: [0] },
-            { q: "Une diode laisse passer le courant :", opts: ["Dans les deux sens", "Du cathode vers l'anode", "De l'anode vers la cathode", "Aucun sens"], correct: [2] },
-            { q: "Quel composant est utilisé pour le lissage de tension ?", opts: ["Condensateur", "Résistance", "Diode", "Transistor"], correct: [0] },
+            // --- ÉLECTRONIQUE GÉNÉRALE (1-12) ---
+            { q: "Le courant électrique est défini comme :", opts: ["Un flux d'électrons", "Une différence de potentiel", "Une résistance au passage du courant", "Une puissance dissipée"], correct: [0] },
+            { q: "L'unité de mesure de la résistance est :", opts: ["L'ohm (Ω)", "Le volt (V)", "L'ampère (A)", "Le watt (W)"], correct: [0] },
+            { q: "En Afrique, la tension standard du secteur est :", opts: ["110 V / 60 Hz", "220-240 V / 50 Hz", "12 V / 60 Hz", "5 V / 50 Hz"], correct: [1] },
+            { q: "Un condensateur permet de :", opts: ["Stocker de l'énergie électrique", "Amplifier un signal", "Réduire le courant", "Commuter un circuit"], correct: [0] },
+            { q: "Un transistor peut fonctionner comme :", opts: ["Un interrupteur commandé", "Un amplificateur de signal", "Une résistance variable", "Un condensateur"], correct: [0,1] },
+            { q: "La loi d'Ohm s'exprime par la relation :", opts: ["U = R × I", "R = U × I", "I = U × R", "U = I / R"], correct: [0] },
+            { q: "Une diode idéale conduit le courant :", opts: ["Dans les deux sens", "Uniquement de l'anode vers la cathode", "Uniquement de la cathode vers l'anode", "Jamais"], correct: [1] },
+            { q: "Quel composant est utilisé pour lisser une tension redressée ?", opts: ["Un condensateur", "Une résistance", "Une diode", "Un transistor"], correct: [0] },
             { q: "Que signifie l'acronyme LED ?", opts: ["Light Emitting Diode", "Light Emitting Device", "Laser Emitting Diode", "Low Energy Diode"], correct: [0] },
-            { q: "Le MOSFET est un type de :", opts: ["Transistor", "Diode", "Condensateur", "Résistance"], correct: [0] },
+            { q: "Un MOSFET est un type de :", opts: ["Transistor à effet de champ", "Diode", "Condensateur", "Résistance"], correct: [0] },
+            { q: "La fréquence du courant alternatif en Afrique est de :", opts: ["50 Hz", "60 Hz", "100 Hz", "200 Hz"], correct: [0] },
+            { q: "Le rôle d'un redresseur est de :", opts: ["Transformer le courant alternatif en courant continu", "Transformer le courant continu en alternatif", "Stocker l'énergie", "Amplifier la tension"], correct: [0] },
 
-            // MOTEURS
-            { q: "Un moteur à courant continu (CC) utilise :", opts: ["Des balais", "Des engrenages", "Des aimants permanents", "Un rotor bobiné"], correct: [0] },
-            { q: "Un moteur pas à pas est caractérisé par :", opts: ["Sa précision", "Sa rapidité", "Son couple élevé", "Sa faible consommation"], correct: [0] },
-            { q: "Un moteur brushless est :", opts: ["Sans balais", "Avec balais", "Très lent", "Peu puissant"], correct: [0] },
-            { q: "Un moteur asynchrone est aussi appelé :", opts: ["Moteur à induction", "Moteur synchrone", "Moteur CC", "Moteur pas à pas"], correct: [0] },
-            { q: "Un moteur à engrenages permet :", opts: ["Réduire la vitesse et augmenter la force", "Augmenter la vitesse", "Réduire la force", "Améliorer la précision"], correct: [0] },
-            { q: "Les moteurs Inrunner sont utilisés dans :", opts: ["Les voitures RC", "Les drones", "Les imprimantes 3D", "Les ventilateurs"], correct: [0] },
+            // --- COMPOSANTS ÉLECTRONIQUES (13-20) ---
+            { q: "Un condensateur électrochimique se caractérise par :", opts: ["Une forme cylindrique", "Une capacité élevée", "Une faible tension de claquage", "Une résistance interne nulle"], correct: [0,1] },
+            { q: "Les diodes Zener sont utilisées pour :", opts: ["Réguler la tension", "Détecter la lumière", "Stocker l'énergie", "Amplifier le signal"], correct: [0] },
+            { q: "Un transistor bipolaire (BJT) possède :", opts: ["Trois bornes", "Deux jonctions PN", "Une plaque thermique", "Une tension de seuil"], correct: [0,1] },
+            { q: "La résistance d'un potentiomètre est :", opts: ["Variable", "Fixe", "Négative", "Infinie"], correct: [0] },
+            { q: "Un transformateur permet de :", opts: ["Modifier la tension alternative", "Modifier la fréquence", "Redresser le courant", "Stocker l'énergie"], correct: [0] },
+            { q: "Un pont de diodes sert à :", opts: ["Redresser le courant", "Amplifier la tension", "Filtrer les interférences", "Stocker l'énergie"], correct: [0] },
+            { q: "Le MOSFET est généralement utilisé pour :", opts: ["La commutation rapide", "L'amplification de puissance", "La régulation de tension", "Le filtrage"], correct: [0,1] },
+            { q: "Un relais est un :", opts: ["Commutateur électromécanique", "Composant semiconducteur", "Capteur", "Actionneur"], correct: [0] },
 
-            // ARDUINO
-            { q: "Le langage Arduino est basé sur :", opts: ["C / C++", "Python", "Java", "JavaScript"], correct: [0] },
-            { q: "Une broche numérique sur Arduino peut être :", opts: ["Entrée ou sortie", "Uniquement sortie", "Uniquement entrée", "Ni entrée ni sortie"], correct: [0] },
-            { q: "La fonction `digitalWrite()` sert à :", opts: ["Écrire sur une broche numérique", "Lire une broche numérique", "Écrire sur une broche analogique", "Lire une broche analogique"], correct: [0] },
-            { q: "Le microcontrôleur est :", opts: ["Le cerveau de la carte", "L'alimentation", "L'horloge", "La mémoire"], correct: [0] },
-            { q: "Un programme Arduino commence par :", opts: ["`setup()` et `loop()`", "`start()` et `end()`", "`init()` et `main()`", "`begin()` et `repeat()`"], correct: [0] },
+            // --- MOTEURS (21-28) ---
+            { q: "Un moteur à courant continu (CC) utilise :", opts: ["Des balais en graphite", "Un collecteur", "Des aimants permanents", "Un rotor bobiné"], correct: [0,1] },
+            { q: "Un moteur pas à pas est privilégié pour :", opts: ["Sa précision de positionnement", "Sa vitesse élevée", "Son couple important", "Sa faible consommation"], correct: [0] },
+            { q: "Un moteur brushless se distingue par :", opts: ["L'absence de balais", "Une grande vitesse", "Un rendement élevé", "Un entretien facile"], correct: [0,1,2] },
+            { q: "Un moteur asynchrone est également appelé :", opts: ["Moteur à induction", "Moteur synchrone", "Moteur CC", "Moteur pas à pas"], correct: [0] },
+            { q: "Un moteur à engrenages permet de :", opts: ["Réduire la vitesse et augmenter le couple", "Augmenter la vitesse", "Réduire le couple", "Améliorer la précision"], correct: [0] },
+            { q: "Les moteurs Inrunner sont utilisés dans :", opts: ["Les voitures télécommandées", "Les drones", "Les imprimantes 3D", "Les ventilateurs"], correct: [0] },
+            { q: "Un moteur pas à pas peut fonctionner :", opts: ["En courant continu", "En courant alternatif", "Avec une tension stabilisée", "Avec une tension variable"], correct: [0,1] },
+            { q: "La principale caractéristique d'un moteur synchrone est :", opts: ["Sa vitesse de rotation est fixée par la fréquence du réseau", "Son rotor tourne plus vite que le stator", "Il nécessite un démarrage assisté", "Il est toujours triphasé"], correct: [0,2] },
 
-            // CAPTEURS
-            { q: "Le capteur HC-SR04 est utilisé pour :", opts: ["Mesurer la distance", "Mesurer la température", "Mesurer l'humidité", "Détecter la lumière"], correct: [0] },
-            { q: "Un capteur DHT22 mesure :", opts: ["Température et humidité", "Pression et température", "Distance et température", "Luminosité et humidité"], correct: [0] },
-            { q: "Un capteur infrarouge a une portée :", opts: ["Plus courte que l'ultrasonique", "Plus longue que l'ultrasonique", "Identique", "Variable"], correct: [0] },
-            { q: "Le capteur de niveau d'eau permet de :", opts: ["Connaître le niveau d'eau", "Mesurer la température", "Détecter les obstacles", "Suivre une ligne"], correct: [0] },
-            { q: "Le capteur suiveur de ligne est utilisé pour :", opts: ["Suivre des lignes", "Mesurer la distance", "Détecter les gaz", "Mesurer l'humidité"], correct: [0] },
+            // --- ARDUINO (29-36) ---
+            { q: "Le langage de programmation d'Arduino est basé sur :", opts: ["C / C++", "Python", "Java", "JavaScript"], correct: [0] },
+            { q: "Une broche numérique d'Arduino peut être configurée comme :", opts: ["Entrée ou sortie", "Uniquement sortie", "Uniquement entrée", "Pas configurable"], correct: [0] },
+            { q: "La fonction `digitalWrite()` permet de :", opts: ["Écrire une valeur sur une broche numérique", "Lire une valeur sur une broche numérique", "Écrire sur une broche analogique", "Lire sur une broche analogique"], correct: [0] },
+            { q: "Le microcontrôleur de l'Arduino Uno est :", opts: ["Le cerveau de la carte", "L'alimentation", "L'horloge", "La mémoire"], correct: [0] },
+            { q: "Un programme Arduino commence par :", opts: ["La fonction `setup()`", "La fonction `loop()`", "La fonction `main()`", "La fonction `begin()`"], correct: [0,1] },
+            { q: "La fonction `analogRead()` retourne une valeur :", opts: ["Comprise entre 0 et 1023", "Comprise entre 0 et 255", "Comprise entre 0 et 4095", "Binaire (0 ou 1)"], correct: [0] },
+            { q: "L'IDE Arduino est :", opts: ["Un environnement de développement intégré", "Un compilateur", "Un débogueur", "Un simulateur"], correct: [0] },
+            { q: "Une résistance de pull-up sert à :", opts: ["Maintenir une broche à l'état HIGH par défaut", "Maintenir une broche à LOW", "Protéger la broche", "Augmenter le courant"], correct: [0] },
 
-            // PROJETS
-            { q: "Le projet OXY a pour but de :", opts: ["Produire de l'oxygène", "Arroser les plantes", "Détecter les gaz", "Contrôler un robot"], correct: [0] },
-            { q: "Le projet IRRITECH est un système :", opts: ["D'arrosage automatique", "D'alerte gaz", "De production d'oxygène", "D'assistance respiratoire"], correct: [0] },
+            // --- CAPTEURS (37-44) ---
+            { q: "Le capteur HC-SR04 mesure :", opts: ["La distance", "La température", "L'humidité", "La lumière"], correct: [0] },
+            { q: "Un capteur DHT22 permet de mesurer :", opts: ["La température et l'humidité", "La pression", "La distance", "La lumière"], correct: [0] },
+            { q: "Le capteur infrarouge a une portée :", opts: ["Plus courte que l'ultrasonique", "Plus longue que l'ultrasonique", "Identique", "Variable"], correct: [0] },
+            { q: "Un capteur de niveau d'eau permet :", opts: ["De connaître le niveau d'eau", "De mesurer la température", "De détecter des obstacles", "De suivre une ligne"], correct: [0] },
+            { q: "Le capteur suiveur de ligne est utilisé pour :", opts: ["Suivre un marquage au sol", "Mesurer la distance", "Détecter les gaz", "Mesurer l'humidité"], correct: [0] },
+            { q: "Un module PIR détecte :", opts: ["Les mouvements", "La température", "L'humidité", "La lumière"], correct: [0] },
+            { q: "Le capteur ultrasonique possède 4 broches :", opts: ["VCC, GND, TRIG, ECHO", "VCC, GND, OUT, DATA", "VCC, GND, SDA, SCL", "VCC, GND, RX, TX"], correct: [0] },
+            { q: "Un capteur de lumière LDR est :", opts: ["Une résistance variable avec la lumière", "Une diode", "Un condensateur", "Un transistor"], correct: [0] },
+
+            // --- PROJETS AFRICA.TECH21 (45-50) ---
+            { q: "Le projet OXY vise à :", opts: ["Produire de l'oxygène", "Arroser les plantes", "Détecter les gaz", "Contrôler un robot"], correct: [0] },
+            { q: "Le projet IRRITECH est un système d' :", opts: ["Arrosage automatique", "Alerte au gaz", "Production d'oxygène", "Assistance respiratoire"], correct: [0] },
             { q: "Le projet MK-40 est une :", opts: ["Couveuse automatique", "Imprimante 3D", "Machine à café", "Station météo"], correct: [0] },
-            { q: "Le projet SAGAF est un système :", opts: ["D'alerte gaz", "D'arrosage", "De production d'oxygène", "De robotique"], correct: [0] },
-            { q: "Le projet BINV est un :", opts: ["Bâton intelligent pour non-voyants", "Robot sous-marin", "Système d'arrosage", "Détecteur de gaz"], correct: [0] }
+            { q: "Le projet SAGAF est un système d' :", opts: ["Alerte au gaz", "Arrosage", "Production d'oxygène", "Robotique"], correct: [0] },
+            { q: "Le projet BINV est un :", opts: ["Bâton intelligent pour non-voyants", "Robot sous-marin", "Système d'arrosage", "Détecteur de gaz"], correct: [0] },
+            { q: "Le projet RGA est un :", opts: ["Robot de guide", "Robot sous-marin", "Système d'alarme", "Capteur de gaz"], correct: [0] }
         ];
 
         // ==================== ÉTAT DE L'EXAMEN ====================
@@ -525,8 +547,9 @@
 
         // ==================== AFFICHAGE DE L'EXAMEN ====================
         function afficherExamen() {
+            // Mélanger les 50 questions pour chaque candidat
             const shuffled = shuffleArray([...QUESTIONS]);
-            examQuestions = shuffled.slice(0, 30);
+            examQuestions = shuffled; // Toutes les 50 questions
 
             let html = '';
             examQuestions.forEach((q, idx) => {
@@ -549,14 +572,14 @@
             // Rédaction
             html += `
                 <div class="question-block redaction-area">
-                    <div class="question-title"><span class="qnum">31.</span> Rédaction : Comment faire pour allumer une LED avec une carte ARDUINO et la faire clignoter ?</div>
+                    <div class="question-title"><span class="qnum">51.</span> Rédaction : Comment faire pour allumer une LED avec une carte ARDUINO et la faire clignoter ?</div>
                     <textarea id="redactionInput" placeholder="Écrivez votre réponse ici..." oninput="enregistrerRedaction(this.value)"></textarea>
                 </div>
             `;
 
             examContent.innerHTML = html;
             submitBtn.style.display = 'block';
-            questionCounter.textContent = `📝 Question 1 / 30`;
+            questionCounter.textContent = `📝 Question 1 / 50`;
         }
 
         // ==================== ENREGISTRER LES RÉPONSES ====================
@@ -610,7 +633,7 @@
 
             loadingArea.classList.add('active');
 
-            // Corriger les QCM
+            // Corriger les QCM (50 questions)
             let scoreQCM = 0;
             const totalQCM = examQuestions.length;
             examQuestions.forEach((q, idx) => {
@@ -661,7 +684,8 @@
             loadingArea.classList.remove('active');
 
             const totalPoints = scoreQCM + noteRedaction;
-            const noteFinale = (totalPoints / 40) * 20;
+            // 50 questions + 10 points rédaction = 60 points max, ramené sur 20
+            const noteFinale = (totalPoints / 60) * 20;
             const noteArrondie = Math.round(noteFinale * 10) / 10;
             const reussite = noteArrondie >= 12;
             const mention = reussite ? '✅ Réussi' : '❌ Échec';
@@ -674,10 +698,10 @@
                     body: JSON.stringify({
                         membre: `${memberPrenom} ${memberNom} (${memberId})`,
                         fichier: `Examen FFAM - ${new Date().toLocaleDateString()}`,
-                        commentaire: `QCM: ${scoreQCM}/30, Rédaction: ${noteRedaction}/10`,
+                        commentaire: `QCM: ${scoreQCM}/50, Rédaction: ${noteRedaction}/10`,
                         note: noteArrondie,
                         mention: mention,
-                        rapport: `QCM: ${scoreQCM}/30 | Rédaction: ${noteRedaction}/10 | Note: ${noteArrondie}/20`,
+                        rapport: `QCM: ${scoreQCM}/50 | Rédaction: ${noteRedaction}/10 | Note: ${noteArrondie}/20`,
                         date: new Date().toLocaleString('fr-FR')
                     })
                 });
@@ -717,7 +741,7 @@
                         <div class="note-finale">${data.note} / 20</div>
                         <div class="mention ${mentionClass}">${data.mention}</div>
                         <div style="margin:1rem 0; color:var(--text-secondary);">
-                            <p>QCM : ${data.scoreQCM} / 30</p>
+                            <p>QCM : ${data.scoreQCM} / 50</p>
                             <p>Rédaction : ${data.noteRedaction} / 10</p>
                             <p style="margin-top:0.5rem; font-style:italic;">${data.commentaireRedaction}</p>
                         </div>
