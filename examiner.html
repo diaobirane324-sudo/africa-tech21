@@ -325,10 +325,9 @@
             window.location.href = 'espace-membres.html';
         }
 
-        // ==================== CONFIGURATION ====================
-        // ⚠️ REMPLACEZ CETTE CLÉ PAR VOTRE NOUVELLE CLÉ GROQ
-        const GROQ_API_KEY = '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';
-        const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+        // ==================== CONFIGURATION (DEEPSEEK) ====================
+        const DEEPSEEK_API_KEY = 'sk-0c271def911a484eab813109dbe8a43a';
+        const DEEPSEEK_URL = 'https://api.deepseek.com/v1/chat/completions';
         const SCRIPT_URL_EVAL = 'https://script.google.com/macros/s/AKfycbyxQWZROVApKsdltsj5Ys-gTnDnFonuu7ZoOuzv6SYcULYPaItvvsrfA8igS3USsdP9/exec';
 
         // ==================== RÉFÉRENCES DOM ====================
@@ -461,14 +460,14 @@ ${textePDF.substring(0, 12000)}
 ---
 `;
 
-                const response = await fetch(GROQ_URL, {
+                const response = await fetch(DEEPSEEK_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${GROQ_API_KEY}`
+                        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
                     },
                     body: JSON.stringify({
-                        model: 'llama-3.3-70b-versatile',
+                        model: 'deepseek-chat',
                         messages: [
                             { role: 'system', content: systemPrompt },
                             { role: 'user', content: userMessage }
