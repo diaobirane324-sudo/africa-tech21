@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
+        /* ===== STYLES IDENTIQUES ===== */
         * {
             margin: 0;
             padding: 0;
@@ -325,7 +326,8 @@
         }
 
         // ==================== CONFIGURATION ====================
-        const GROQ_API_KEY = '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';
+        // ⚠️ REMPLACEZ CETTE CLÉ PAR VOTRE NOUVELLE CLÉ GROQ
+        const GROQ_API_KEY = 'gsk_TA_NOUVELLE_CLE_ICI';
         const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
         const SCRIPT_URL_EVAL = 'https://script.google.com/macros/s/AKfycbyxQWZROVApKsdltsj5Ys-gTnDnFonuu7ZoOuzv6SYcULYPaItvvsrfA8igS3USsdP9/exec';
 
@@ -379,31 +381,29 @@
         }
 
         // ==================== SAUVEGARDER DANS GOOGLE SHEETS ====================
-      async function sauvegarderEvaluation(membre, fichier, commentaire, note, mention, rapport) {
-    try {
-        const date = new Date().toLocaleString('fr-FR');
-        // Utiliser no-cors pour contourner CORS
-        await fetch(SCRIPT_URL_EVAL, {
-            method: 'POST',
-            mode: 'no-cors',  // ← LA CLÉ
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                membre: membre,
-                fichier: fichier,
-                commentaire: commentaire,
-                note: note,
-                mention: mention,
-                rapport: rapport,
-                date: date
-            })
-        });
-        // En mode no-cors, on ne peut pas lire la réponse, mais la requête part
-        console.log('✅ Évaluation envoyée (sauvegarde en arrière-plan)');
-    } catch (error) {
-        // Ignorer les erreurs réseau car no-cors ne permet pas de les détecter
-        console.warn('⚠️ La sauvegarde a été envoyée, impossible de vérifier la réponse');
-    }
-}
+        async function sauvegarderEvaluation(membre, fichier, commentaire, note, mention, rapport) {
+            try {
+                const date = new Date().toLocaleString('fr-FR');
+                await fetch(SCRIPT_URL_EVAL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        membre: membre,
+                        fichier: fichier,
+                        commentaire: commentaire,
+                        note: note,
+                        mention: mention,
+                        rapport: rapport,
+                        date: date
+                    })
+                });
+                console.log('✅ Évaluation envoyée (sauvegarde en arrière-plan)');
+            } catch (error) {
+                console.warn('⚠️ La sauvegarde a été envoyée, impossible de vérifier la réponse');
+            }
+        }
+
         // ==================== SOUMISSION DU FORMULAIRE ====================
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
