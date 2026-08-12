@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Examens | AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Exo 2', 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-purple: #7b2cbf;
+            --neon-green: #00ff88;
+            --dark-space: #0a0a12;
+            --deep-space: #050510;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a8c0;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --panel-glow: 0 0 30px rgba(0, 240, 255, 0.2);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .hologram-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridScan 20s linear infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        @keyframes gridScan {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            margin-bottom: 2rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 10px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: var(--panel-glow);
+        }
+
+        .page-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header .subtitle {
+            color: var(--text-secondary);
+            margin-top: 0.3rem;
+            font-size: 1rem;
+        }
+
+        .section {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 2rem;
+            box-shadow: var(--panel-glow);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            text-align: left;
+            padding: 0.8rem 0.5rem;
+            color: var(--neon-blue);
+            border-bottom: 2px solid var(--glass-border);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.8rem 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: middle;
+        }
+
+        td .rapport-preview {
+            max-width: 200px;
+            max-height: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .status-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .status-badge.done { background: rgba(0, 255, 136, 0.2); color: var(--neon-green); }
+        .status-badge.pending { background: rgba(255, 165, 0, 0.2); color: #ffa500; }
+
+        .admin-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 0.4rem 0.6rem;
+            color: var(--text-primary);
+            width: 70px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .admin-input:focus {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+        }
+
+        .admin-input.comment {
+            width: 150px;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+            border: none;
+            border-radius: 6px;
+            color: white;
+            padding: 0.4rem 1rem;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+
+        .btn-save:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        .loading-text {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 3rem;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--glass-border);
+            border-top: 3px solid var(--neon-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 3rem;
+        }
+
+        .toast-message {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 255, 136, 0.95);
+            color: #050510;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            z-index: 9999;
+            animation: fadeInUp 0.3s ease;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .toast-message.error {
+            background: rgba(255, 71, 87, 0.95);
+            color: white;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .page-header h1 { font-size: 1.8rem; }
+            .section { padding: 1rem; }
+            td, th { padding: 0.4rem 0.3rem; font-size: 0.8rem; }
+            .admin-input { width: 50px; }
+            .admin-input.comment { width: 80px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hologram-grid"></div>
+
+    <div class="page-container">
+        <a href="dashboard.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD
+        </a>
+
+        <header class="page-header">
+            <h1><i class="fas fa-user-cog"></i> ADMIN EXAMENS</h1>
+            <p class="subtitle">Gestion manuelle des soumissions – Note et commentaire</p>
+        </header>
+
+        <div class="section">
+            <div id="adminContent">
+                <div class="loading-text">
+                    <div class="loading-spinner"></div>
+                    <p>Chargement des soumissions...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== CONFIGURATION ====================
+        const SCRIPT_URL_EVAL = 'https://script.google.com/macros/s/AKfycbwuzAsRuuu1XYJrdlGm79Hq1sHJpN8IhQuV3_v9AYCel-rhLAyhMt_7Xrg75W2_rIc/exec';
+
+        // Admins autorisés : MAJOR + Responsable projets
+        const ADMIN_IDS = ['AT21_006', 'AT21_0011'];
+
+        // ==================== VÉRIFICATION ACCÈS ====================
+        if (localStorage.getItem('memberLoggedIn') !== 'true') {
+            window.location.href = 'espace-membres.html';
+        }
+
+        const memberId = localStorage.getItem('memberId') || '';
+        if (!ADMIN_IDS.includes(memberId)) {
+            document.body.innerHTML = `
+                <div style="display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; gap:1rem; text-align:center; padding:2rem;">
+                    <i class="fas fa-lock" style="font-size:4rem; color:#ff4757;"></i>
+                    <h1 style="color:#ff4757;">ACCÈS REFUSÉ</h1>
+                    <p style="color:var(--text-secondary);">Cette page est réservée au MAJOR et au Responsable des projets.</p>
+                    <a href="dashboard.html" style="color:var(--neon-blue); text-decoration:underline;">Retour au Dashboard</a>
+                </div>
+            `;
+            throw new Error('Accès refusé');
+        }
+
+        // ==================== TOAST ====================
+        function showToast(message, type = '') {
+            const old = document.querySelector('.toast-message');
+            if (old) old.remove();
+            const toast = document.createElement('div');
+            toast.className = 'toast-message ' + type;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.5s';
+                setTimeout(() => toast.remove(), 500);
+            }, 4000);
+        }
+
+        // ==================== CHARGER LES SOUMISSIONS ====================
+        async function loadSubmissions() {
+            const container = document.getElementById('adminContent');
+            container.innerHTML = `
+                <div class="loading-text">
+                    <div class="loading-spinner"></div>
+                    <p>Chargement des soumissions...</p>
+                </div>
+            `;
+
+            try {
+                const response = await fetch(SCRIPT_URL_EVAL + '?action=getAll');
+                const result = await response.json();
+
+                if (!result.success) {
+                    container.innerHTML = `<div class="empty-state">❌ Erreur : ${result.error}</div>`;
+                    return;
+                }
+
+                const data = result.data;
+
+                if (!data || data.length <= 1) {
+                    container.innerHTML = `<div class="empty-state">📭 Aucune soumission pour le moment.</div>`;
+                    return;
+                }
+
+                const headers = data[0]; // Date, Membre, Fichier, Commentaire, Note, Mention, Rapport, Admin Note, Admin Commentaire
+                const rows = data.slice(1);
+
+                let html = `
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Membre</th>
+                                    <th>Fichier</th>
+                                    <th>Rapport</th>
+                                    <th>Note IA</th>
+                                    <th>Admin Note</th>
+                                    <th>Admin Commentaire</th>
+                                    <th>Statut</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                rows.forEach((row, index) => {
+                    const rowIndex = index + 2; // +2 car ligne 1 = en-tête, et JavaScript 0-based
+                    const date = row[0] || '';
+                    const membre = row[1] || 'Inconnu';
+                    const fichier = row[2] || '—';
+                    const noteIA = row[4] || '—';
+                    const adminNote = row[7] || '';
+                    const adminComment = row[8] || '';
+
+                    // Rapport (colonne 6)
+                    const rapport = row[6] || '';
+                    const rapportPreview = rapport.substring(0, 80) + (rapport.length > 80 ? '...' : '');
+
+                    const estNote = adminNote.trim() !== '';
+                    const statusClass = estNote ? 'done' : 'pending';
+                    const statusText = estNote ? '✅ Noté' : '⏳ En attente';
+
+                    html += `
+                        <tr>
+                            <td style="font-size:0.8rem;">${date}</td>
+                            <td><strong>${membre}</strong></td>
+                            <td>${fichier}</td>
+                            <td><div class="rapport-preview" title="${rapport.replace(/"/g, '&quot;')}">${rapportPreview}</div></td>
+                            <td>${noteIA}</td>
+                            <td>
+                                <input type="number" id="note_${rowIndex}" class="admin-input" value="${adminNote}" step="0.5" min="0" max="20" placeholder="...">
+                            </td>
+                            <td>
+                                <input type="text" id="comment_${rowIndex}" class="admin-input comment" value="${adminComment}" placeholder="Commentaire...">
+                            </td>
+                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                            <td>
+                                <button class="btn-save" onclick="updateSubmission(${rowIndex})">
+                                    <i class="fas fa-save"></i> Sauvegarder
+                                </button>
+                                <span id="status_${rowIndex}" style="font-size:0.7rem; margin-left:0.3rem; color:var(--text-secondary);"></span>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                    <p style="margin-top:1rem; color:var(--text-secondary); font-size:0.9rem;">
+                        <i class="fas fa-info-circle"></i> Les notes et commentaires sauvegardés apparaissent dans les colonnes Admin Note et Admin Commentaire.
+                    </p>
+                `;
+
+                container.innerHTML = html;
+
+            } catch (error) {
+                container.innerHTML = `<div class="empty-state">❌ Erreur réseau : ${error.message}</div>`;
+            }
+        }
+
+        // ==================== METTRE À JOUR UNE SOUMISSION ====================
+        async function updateSubmission(rowIndex) {
+            const noteInput = document.getElementById(`note_${rowIndex}`);
+            const commentInput = document.getElementById(`comment_${rowIndex}`);
+            const statusSpan = document.getElementById(`status_${rowIndex}`);
+
+            const adminNote = noteInput.value.trim();
+            const adminComment = commentInput.value.trim();
+
+            if (!adminNote) {
+                showToast('⚠️ Veuillez saisir une note avant de sauvegarder.', 'error');
+                return;
+            }
+
+            statusSpan.textContent = '⏳...';
+            statusSpan.style.color = '#ffa500';
+
+            try {
+                const response = await fetch(SCRIPT_URL_EVAL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'update',
+                        rowIndex: rowIndex,
+                        adminNote: adminNote,
+                        adminComment: adminComment
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    statusSpan.textContent = '✅';
+                    statusSpan.style.color = '#00ff88';
+                    showToast('✅ Sauvegardé avec succès !', '');
+                    // Recharger la page pour mettre à jour les statuts
+                    setTimeout(() => loadSubmissions(), 500);
+                } else {
+                    statusSpan.textContent = '❌';
+                    statusSpan.style.color = '#ff4757';
+                    showToast('❌ Erreur : ' + result.error, 'error');
+                }
+            } catch (error) {
+                statusSpan.textContent = '❌';
+                statusSpan.style.color = '#ff4757';
+                showToast('❌ Erreur réseau : ' + error.message, 'error');
+            }
+        }
+
+        // ==================== INIT ====================
+        loadSubmissions();
+    </script>
+</body>
+</html>
