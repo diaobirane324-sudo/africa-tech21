@@ -1,4 +1,4 @@
-f<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -279,6 +279,65 @@ f<!DOCTYPE html>
             color: #00FF00;
             text-transform: uppercase;
             letter-spacing: 2px;
+        }
+
+        /* === BOUTONS DE NAVIGATION HEADER === */
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-left: 2rem;
+        }
+
+        .nav-btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn-dashboard {
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--major-blue);
+            color: var(--major-blue);
+        }
+
+        .nav-btn-dashboard:hover {
+            background: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn-cours-major {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid var(--major-gold);
+            color: var(--major-gold);
+        }
+
+        .nav-btn-cours-major:hover {
+            background: rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn-fermer {
+            background: rgba(255, 0, 60, 0.1);
+            border: 1px solid var(--major-red);
+            color: var(--major-red);
+        }
+
+        .nav-btn-fermer:hover {
+            background: rgba(255, 0, 60, 0.2);
+            box-shadow: 0 0 30px rgba(255, 0, 60, 0.2);
+            transform: translateY(-2px);
         }
 
         /* === CONTENU PRINCIPAL === */
@@ -622,6 +681,22 @@ f<!DOCTYPE html>
                 padding: 1rem;
             }
 
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .system-status {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-buttons {
+                margin-left: 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
             .title-container h1 {
                 font-size: 2rem;
             }
@@ -668,7 +743,7 @@ f<!DOCTYPE html>
     </div>
     <div class="power-particles" id="powerParticles"></div>
 
-       <!-- === HEADER COMMAND CENTER === -->
+    <!-- === HEADER COMMAND CENTER === -->
     <header class="command-header">
         <div class="header-content">
             <div class="major-logo">
@@ -688,38 +763,17 @@ f<!DOCTYPE html>
                 </div>
                 
                 <!-- BOUTONS DE NAVIGATION -->
-                <div class="nav-buttons" style="display: flex; gap: 1rem; margin-left: 2rem;">
-                    <button onclick="retourDashboard()" 
-                            style="
-                                background: rgba(0, 240, 255, 0.1);
-                                border: 1px solid var(--major-blue);
-                                color: var(--major-blue);
-                                padding: 0.8rem 1.5rem;
-                                border-radius: 10px;
-                                cursor: pointer;
-                                font-family: 'Orbitron', sans-serif;
-                                font-size: 0.9rem;
-                                text-transform: uppercase;
-                                letter-spacing: 1px;
-                                transition: all 0.3s ease;
-                            ">
+                <div class="nav-buttons">
+                    <button onclick="retourDashboard()" class="nav-btn nav-btn-dashboard">
                         <i class="fas fa-arrow-left"></i> DASHBOARD
                     </button>
                     
-                    <button onclick="fermerEspace()" 
-                            style="
-                                background: rgba(255, 0, 60, 0.1);
-                                border: 1px solid var(--major-red);
-                                color: var(--major-red);
-                                padding: 0.8rem 1.5rem;
-                                border-radius: 10px;
-                                cursor: pointer;
-                                font-family: 'Orbitron', sans-serif;
-                                font-size: 0.9rem;
-                                text-transform: uppercase;
-                                letter-spacing: 1px;
-                                transition: all 0.3s ease;
-                            ">
+                    <!-- NOUVEAU BOUTON COURS.MAJOR -->
+                    <a href="cours-major.html" class="nav-btn nav-btn-cours-major">
+                        <i class="fas fa-crown"></i> COURS.MAJOR
+                    </a>
+                    
+                    <button onclick="fermerEspace()" class="nav-btn nav-btn-fermer">
                         <i class="fas fa-power-off"></i> FERMER
                     </button>
                 </div>
@@ -909,7 +963,7 @@ function projetRSMA() {
             }
         }
 
-               function afficherFichiers() {
+        function afficherFichiers() {
             const filesList = document.getElementById('filesList');
             filesList.innerHTML = '';
             
@@ -947,7 +1001,7 @@ function projetRSMA() {
             });
         }
 
-                function creerNouveauFichier() {
+        function creerNouveauFichier() {
             // ÉTAPE 1 : Demander le nom
             const nomFichier = prompt("Nom du nouveau projet :", `projet_${fichiersMajor.length + 1}`);
             
@@ -1088,22 +1142,19 @@ DESCRIPTION: Projet technique confidentiel développé dans l'ESPACE MAJOR
             }
         `;
         document.head.appendChild(style);
+
         // === FONCTIONS DE NAVIGATION ===
         function retourDashboard() {
-            // Demander confirmation
             if (confirm("Retourner au Dashboard Principal ?\nVos modifications sont sauvegardées.")) {
                 window.location.href = 'dashboard.html';
             }
         }
         
         function fermerEspace() {
-            // Demander confirmation
             if (confirm("Fermer l'Espace MAJOR ?\nVous serez déconnecté de l'interface.")) {
-                // Si tu veux vraiment fermer l'onglet/navigateur
                 if (window.opener) {
-                    window.close(); // Ferme si ouvert par JavaScript
+                    window.close();
                 } else {
-                    // Retour au dashboard
                     window.location.href = 'dashboard.html';
                 }
             }
@@ -1115,11 +1166,11 @@ DESCRIPTION: Projet technique confidentiel développé dans l'ESPACE MAJOR
                 sauvegarderFichier();
             }
         });
+
         // === ÉTAPE 5 : INITIALISATION ===
         window.addEventListener('load', () => {
             createPowerParticles();
             
-            // Focus automatique sur le champ de code
             setTimeout(() => {
                 document.getElementById('accessCode').focus();
             }, 500);
