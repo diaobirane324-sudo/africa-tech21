@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COURS.MAJOR | AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Exo 2', 'Segoe UI', sans-serif; }
+        :root {
+            --gold: #ffd700;
+            --dark-bg: #0a0505;
+            --text-primary: #ffffff;
+            --text-secondary: #b0a8a0;
+            --glass: rgba(255, 215, 0, 0.05);
+            --glass-border: rgba(255, 215, 0, 0.15);
+            --panel-glow: 0 0 60px rgba(255, 215, 0, 0.1);
+        }
+        body {
+            background: radial-gradient(ellipse at center, #1a0f00 0%, #0a0505 70%, #000000 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .particles-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .particle-gold {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--gold);
+            animation: floatParticle 12s infinite linear;
+            opacity: 0.3;
+        }
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100px) translateX(100px) scale(1); opacity: 0; }
+        }
+        .overlay-block {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 2rem;
+            backdrop-filter: blur(10px);
+        }
+        .overlay-block.active { display: flex; }
+        .overlay-block h1 { font-family: 'Orbitron', sans-serif; color: var(--gold); font-size: 3rem; text-shadow: 0 0 40px rgba(255,215,0,0.5); }
+        .overlay-block p { color: var(--text-secondary); font-size: 1.2rem; }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 2.5rem;
+            box-shadow: var(--panel-glow);
+            position: relative;
+            z-index: 1;
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--gold), #ff8c00, var(--gold));
+            background-size: 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: goldShine 3s linear infinite;
+            text-shadow: none;
+        }
+        @keyframes goldShine { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
+        .header .sub { color: var(--text-secondary); font-size: 1rem; letter-spacing: 2px; margin-top: 0.3rem; }
+        .timer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,215,0,0.05);
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255,215,0,0.1);
+        }
+        .timer { font-family: 'Orbitron', monospace; font-size: 2rem; color: var(--gold); }
+        .timer.danger { color: #ff4757; animation: blink 0.5s infinite; }
+        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .progress { color: var(--text-secondary); font-size: 0.9rem; }
+        .question-block { margin-bottom: 2rem; }
+        .q-text {
+            font-size: 1.25rem;
+            font-weight: 500;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: #f0e8e0;
+            padding-left: 0.5rem;
+            border-left: 3px solid var(--gold);
+            padding-left: 1rem;
+        }
+        .options { display: flex; flex-direction: column; gap: 0.8rem; }
+        .opt-label {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem 1.2rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,215,0,0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            color: var(--text-secondary);
+        }
+        .opt-label:hover { background: rgba(255,215,0,0.05); border-color: var(--gold); }
+        .opt-label input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--gold); cursor: pointer; flex-shrink: 0; }
+        .opt-label .opt-letter { color: var(--gold); font-weight: 700; width: 24px; }
+        .feedback-box {
+            margin-top: 1.5rem;
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            display: none;
+            font-weight: 600;
+            border-left: 4px solid;
+        }
+        .feedback-box.correct { display: block; background: rgba(0,255,136,0.1); border-color: #00ff88; color: #00ff88; }
+        .feedback-box.wrong { display: block; background: rgba(255,71,87,0.1); border-color: #ff4757; color: #ff4757; }
+        .btn-next {
+            width: 100%;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            background: linear-gradient(45deg, #ff8c00, var(--gold));
+            border: none;
+            border-radius: 12px;
+            color: #0a0505;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            display: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-next:hover { transform: scale(1.02); box-shadow: 0 0 30px rgba(255,215,0,0.3); }
+        .result-screen {
+            text-align: center;
+            padding: 2rem 0;
+        }
+        .result-screen .icon { font-size: 5rem; margin-bottom: 1rem; }
+        .result-screen .title { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; color: var(--gold); }
+        .result-screen .detail { color: var(--text-secondary); font-size: 1.1rem; margin: 1rem 0; }
+        .btn-restart {
+            padding: 1rem 3rem;
+            background: linear-gradient(45deg, var(--gold), #ff8c00);
+            border: none;
+            border-radius: 12px;
+            color: #0a0505;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-restart:hover { transform: scale(1.05); box-shadow: 0 0 40px rgba(255,215,0,0.4); }
+        @media (max-width:768px) {
+            .container { padding: 1.5rem; }
+            .header h1 { font-size: 1.8rem; }
+            .timer { font-size: 1.5rem; }
+            .q-text { font-size: 1.05rem; }
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(255,215,0,0.05); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- PARTICULES -->
+    <div class="particles-bg" id="particlesBg"></div>
+
+    <!-- OVERLAY DE BLOCAGE -->
+    <div class="overlay-block" id="overlayBlock">
+        <h1>🔒 ZONE VERROUILLÉE</h1>
+        <p>Vous ne pouvez pas quitter cette page avant la fin du quiz.</p>
+        <p style="font-size:0.9rem; color:#ff8c00;">⏳ Temps restant : <span id="overlayTimer">5:00</span></p>
+    </div>
+
+    <div class="container" id="mainContainer">
+        <div class="header">
+            <h1>⚜ COURS.MAJOR</h1>
+            <div class="sub">ÉVALUATION SUPÉRIEURE · ROBOTIQUE AVANCÉE</div>
+        </div>
+
+        <div class="timer-bar">
+            <span class="timer" id="timerDisplay">⏱ 05:00</span>
+            <span class="progress" id="progressDisplay">Question 1 / 50</span>
+        </div>
+
+        <div id="quizContent"></div>
+    </div>
+
+    <script>
+        // ===== PARTICULES =====
+        (function createParticles() {
+            const container = document.getElementById('particlesBg');
+            for (let i = 0; i < 60; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle-gold';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 12 + 's';
+                p.style.animationDuration = (8 + Math.random() * 8) + 's';
+                p.style.width = (2 + Math.random() * 4) + 'px';
+                p.style.height = p.style.width;
+                container.appendChild(p);
+            }
+        })();
+
+        // ===== QUESTIONS (50 issues des 2 documents) =====
+        const QUESTIONS = [
+            // 1-5 : Anatomie / DOF
+            { q: "Un robot humanoïde complet typique possède entre 20 et 40 degrés de liberté (DOF). Parmi les propositions suivantes, lesquelles décrivent correctement la répartition standard des DOF ?", opts: ["Tête : 2-3 DOF", "Bras : 7 DOF chacun", "Mains : 1-20 DOF chacune", "Jambes : 6 DOF chacune"], correct: [0,1,2,3] },
+            { q: "Quelle est la fonction principale d'un servo-moteur dans un humanoïde ?", opts: ["Convertir l'énergie électrique en mouvement angulaire précis", "Mesurer la température ambiante", "Stocker de l'énergie", "Amplifier un signal"], correct: [0] },
+            { q: "Le couple d'un servo MG996R est d'environ :", opts: ["9.4 kg.cm sous 4.8V", "15 kg.cm sous 6V", "25 kg.cm sous 7.4V", "5 kg.cm sous 5V"], correct: [0] },
+            { q: "Quel type d'actionneur est utilisé dans le robot Atlas de Boston Dynamics ?", opts: ["Hydraulique", "Pneumatique", "Servo standard", "Brushless + encodeur"], correct: [0] },
+            { q: "Quel est l'avantage principal d'un moteur brushless par rapport à un servo standard ?", opts: ["Couple plus élevé et meilleure efficacité énergétique", "Prix moins cher", "Contrôle plus simple", "Poids plus léger"], correct: [0] },
+            // 6-10 : Matériaux / Structure
+            { q: "Parmi les matériaux suivants, lequel offre le meilleur rapport poids/résistance pour un châssis d'humanoïde ?", opts: ["Aluminium", "PLA", "ABS", "Acier"], correct: [0] },
+            { q: "Pourquoi utilise-t-on des roulements dans les articulations ?", opts: ["Pour réduire les frottements et permettre un mouvement fluide", "Pour augmenter le couple", "Pour stocker de l'énergie", "Pour mesurer la position"], correct: [0] },
+            { q: "Le centre de gravité (CoG) d'un humanoïde doit être :", opts: ["Le plus bas possible pour la stabilité", "Le plus haut possible", "Au niveau de la tête", "Indifférent"], correct: [0] },
+            { q: "Quelle technique de fabrication est la plus adaptée pour prototyper rapidement des pièces de robot ?", opts: ["Impression 3D FDM", "Usinage CNC", "Moulage par injection", "Découpe laser"], correct: [0] },
+            { q: "Le facteur de sécurité pour le calcul de couple d'une articulation est généralement compris entre :", opts: ["2 et 3", "1 et 1.5", "5 et 10", "0.5 et 1"], correct: [0] },
+            // 11-15 : Électronique
+            { q: "Quel microcontrôleur est recommandé pour gérer la vision et l'IA embarquée dans un humanoïde ?", opts: ["Raspberry Pi 4", "Arduino Mega", "ESP32", "Teensy"], correct: [0] },
+            { q: "Le module PCA9685 est utilisé pour :", opts: ["Contrôler jusqu'à 16 servos via I2C", "Alimenter la carte Arduino", "Mesurer la température", "Gérer la communication WiFi"], correct: [0] },
+            { q: "Quelle est la tension de sortie recommandée pour alimenter des servos MG996R ?", opts: ["5-6V", "3.3V", "12V", "24V"], correct: [0] },
+            { q: "Un régulateur Buck est utilisé pour :", opts: ["Abaisseur de tension avec rendement élevé", "Augmenter la tension", "Stocker de l'énergie", "Filtrer le bruit"], correct: [0] },
+            { q: "La consommation typique d'un servo MG996R en mouvement est de :", opts: ["500-2500mA", "10-50mA", "1-2A", "5-10A"], correct: [0] },
+            // 16-20 : Cinématique
+            { q: "La cinématique directe (FK) permet de :", opts: ["Calculer la position finale à partir des angles articulaires", "Calculer les angles à partir d'une position", "Contrôler la vitesse des moteurs", "Filtrer les données des capteurs"], correct: [0] },
+            { q: "La cinématique inverse (IK) est :", opts: ["Plus difficile que la FK, souvent résolue itérativement", "Plus simple que la FK", "Identique à la FK", "Inutile en robotique"], correct: [0] },
+            { q: "La convention Denavit-Hartenberg (DH) est utilisée pour :", opts: ["Décrire la chaîne cinématique d'un robot", "Calculer le couple moteur", "Mesurer la pression", "Filtrer les signaux"], correct: [0] },
+            { q: "Dans la méthode IK géométrique pour un bras 2 DOF, l'angle du coude est calculé par :", opts: ["La loi des cosinus", "La loi des sinus", "Le théorème de Pythagore", "La transformée de Fourier"], correct: [0] },
+            { q: "Le Jacobien est une matrice utilisée en IK pour :", opts: ["Relier les vitesses articulaires aux vitesses cartésiennes", "Calculer les angles", "Stocker les paramètres DH", "Amplifier le signal"], correct: [0] },
+            // 21-25 : PID
+            { q: "Que signifie l'acronyme PID ?", opts: ["Proportionnel-Intégral-Dérivé", "Proportionnel-Impulsion-Dérivé", "Programmable-Intégral-Différentiel", "Proportionnel-Intégral-Différentiel"], correct: [0] },
+            { q: "Le terme intégral (I) d'un PID permet :", opts: ["Éliminer l'erreur statique", "Accélérer la réponse", "Amortir les oscillations", "Filtrer le bruit"], correct: [0] },
+            { q: "Un gain Kp trop élevé dans un PID provoque :", opts: ["Des oscillations", "Une réponse lente", "Une erreur statique", "Aucun effet"], correct: [0] },
+            { q: "La méthode de Ziegler-Nichols est utilisée pour :", opts: ["Régler les gains d'un PID", "Calculer la cinématique inverse", "Concevoir un robot", "Mesurer la pression"], correct: [0] },
+            { q: "L'anti-windup est une technique pour :", opts: ["Limiter l'intégrale du PID pour éviter les dépassements", "Augmenter la vitesse du PID", "Filtrer le signal", "Améliorer la précision"], correct: [0] },
+            // 26-30 : Capteurs
+            { q: "Un capteur IMU (Inertial Measurement Unit) combine généralement :", opts: ["Accéléromètre + gyroscope", "Gyroscope + magnétomètre", "Accéléromètre + GPS", "Gyroscope + baromètre"], correct: [0] },
+            { q: "Le capteur BNO055 offre une fusion de capteurs intégrée, ce qui permet :", opts: ["D'obtenir directement des angles Euler ou quaternions", "De mesurer la distance", "De détecter les gaz", "De mesurer le courant"], correct: [0] },
+            { q: "Un capteur ToF (Time-of-Flight) mesure la distance par :", opts: ["Temps de vol d'un signal lumineux", "Réflexion d'ondes ultrasoniques", "Variation de résistance", "Effet Hall"], correct: [0] },
+            { q: "Les capteurs FSR (Force Sensing Resistor) sont placés sous les pieds d'un humanoïde pour :", opts: ["Détecter le contact au sol et répartir le poids", "Mesurer la température", "Détecter les obstacles", "Mesurer la vitesse"], correct: [0] },
+            { q: "Le capteur VL53L0X est un capteur :", opts: ["ToF laser", "Ultrasonique", "Infrarouge passif", "Magnétique"], correct: [0] },
+            // 31-35 : Locomotion
+            { q: "Le ZMP (Zero Moment Point) est le point au sol où :", opts: ["Le moment de basculement est nul", "La pression est maximale", "Le robot est le plus stable", "Le centre de gravité se projette"], correct: [0] },
+            { q: "Dans un cycle de marche bipède, la phase d'oscillation correspond à :", opts: ["La jambe en l'air, non en contact avec le sol", "La jambe en appui complet", "Le talon touchant le sol", "La propulsion avant décollage"], correct: [0] },
+            { q: "La stabilité dynamique d'un robot bipède permet :", opts: ["De marcher plus vite en acceptant un CoM hors du polygone de sustentation", "De rester immobile plus longtemps", "De soulever des charges lourdes", "De tourner plus lentement"], correct: [0] },
+            { q: "La marche statique est caractérisée par :", opts: ["Un CoM toujours au-dessus du polygone de sustentation", "Une grande vitesse", "Des mouvements complexes", "Une consommation énergétique élevée"], correct: [0] },
+            { q: "L'IMU est utilisée dans la locomotion pour :", opts: ["Détecter l'inclinaison et corriger l'équilibre", "Mesurer la distance parcourue", "Détecter les obstacles", "Planifier le chemin"], correct: [0] },
+            // 36-40 : Manipulation
+            { q: "Une main anthropomorphe peut avoir jusqu'à :", opts: ["20 DOF", "5 DOF", "10 DOF", "50 DOF"], correct: [0] },
+            { q: "La saisie de précision (precision grasp) utilise principalement :", opts: ["Le pouce et l'index", "Tous les doigts", "Le majeur et l'annulaire", "La paume"], correct: [0] },
+            { q: "Pour détecter la saisie d'un objet, on utilise généralement :", opts: ["Des capteurs de force dans les doigts", "Des capteurs de distance", "Des caméras", "Des encodeurs"], correct: [0] },
+            // 41-45 : Navigation / SLAM
+            { q: "Le SLAM (Simultaneous Localization And Mapping) permet à un robot de :", opts: ["Se localiser tout en cartographiant son environnement", "Éviter les obstacles", "Planifier un chemin", "Communiquer à distance"], correct: [0] },
+            { q: "Quel capteur est couramment utilisé pour le SLAM ?", opts: ["LIDAR", "Ultrason", "FSR", "IMU"], correct: [0] },
+            { q: "L'algorithme A* est utilisé pour :", opts: ["Trouver le chemin optimal dans une grille", "Fusionner des données de capteurs", "Commander les moteurs", "Reconnaître des visages"], correct: [0] },
+            { q: "Le filtre de Kalman étendu (EKF) est utilisé en robotique pour :", opts: ["Fusionner des données bruitées et estimer l'état du système", "Filtrer les hautes fréquences", "Amplifier les signaux", "Compresser les données"], correct: [0] },
+            // 46-50 : IA / ROS / Sigles
+            { q: "Le sigle ROS signifie :", opts: ["Robot Operating System", "Real-time Operating System", "Robotic Object System", "Remote Operating System"], correct: [0] },
+            { q: "Un réseau de neurones convolutionnel (CNN) est spécialisé dans :", opts: ["Le traitement d'images", "Le traitement du texte", "La reconnaissance vocale", "La planification"], correct: [0] },
+            { q: "L'apprentissage par renforcement (RL) en robotique consiste à :", opts: ["Apprendre par essai-erreur avec des récompenses", "Apprendre à partir de données étiquetées", "Copier des mouvements humains", "Simuler des comportements"], correct: [0] },
+            { q: "Le sigle PWM signifie :", opts: ["Pulse Width Modulation", "Programmable Wave Module", "Power Wide Modulation", "Parallel Wiring Method"], correct: [0] },
+            { q: "Qu'est-ce que le gimbal lock ?", opts: ["Un problème mathématique avec les angles d'Euler", "Un verrouillage mécanique", "Un type de moteur", "Un capteur de position"], correct: [0] }
+        ];
+
+        // ===== ÉTAT =====
+        let shuffledQuestions = [];
+        let currentIndex = 0;
+        let totalQuestions = 0;
+        let timerSeconds = 300;
+        let timerInterval = null;
+        let quizEnded = false;
+        let isBlocked = false;
+        const container = document.getElementById('mainContainer');
+        const quizContent = document.getElementById('quizContent');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const progressDisplay = document.getElementById('progressDisplay');
+        const overlayBlock = document.getElementById('overlayBlock');
+        const overlayTimer = document.getElementById('overlayTimer');
+
+        // ===== BLOCAGE SORTIE =====
+        function blockExit() {
+            if (quizEnded) return;
+            document.addEventListener('visibilitychange', handleVisibility);
+            window.addEventListener('beforeunload', handleBeforeUnload);
+            document.addEventListener('keydown', handleKeyDown);
+            isBlocked = true;
+        }
+
+        function handleVisibility() {
+            if (document.hidden && !quizEnded) {
+                showOverlay();
+            } else {
+                hideOverlay();
+            }
+        }
+
+        function handleBeforeUnload(e) {
+            if (!quizEnded) {
+                e.preventDefault();
+                e.returnValue = '⚠️ Le quiz n\'est pas terminé. Voulez-vous vraiment quitter ?';
+                return e.returnValue;
+            }
+        }
+
+        function handleKeyDown(e) {
+            // Bloquer Ctrl+W, Ctrl+R, F5, Alt+F4, etc.
+            if (!quizEnded) {
+                if (e.key === 'F5' || (e.ctrlKey && e.key === 'r') || (e.ctrlKey && e.key === 'w') || (e.altKey && e.key === 'F4')) {
+                    e.preventDefault();
+                    showOverlay();
+                }
+            }
+        }
+
+        function showOverlay() {
+            overlayBlock.classList.add('active');
+            updateOverlayTimer();
+        }
+
+        function hideOverlay() {
+            overlayBlock.classList.remove('active');
+        }
+
+        function updateOverlayTimer() {
+            const mins = Math.floor(timerSeconds / 60);
+            const secs = timerSeconds % 60;
+            overlayTimer.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+        }
+
+        // ===== CHRONOMÈTRE =====
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                updateTimerDisplay();
+                updateOverlayTimer();
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    endQuiz('timeout');
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(timerSeconds / 60);
+            const secs = timerSeconds % 60;
+            timerDisplay.textContent = `⏱ ${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+            if (timerSeconds < 60) timerDisplay.classList.add('danger');
+        }
+
+        // ===== MÉLANGE =====
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // ===== INIT =====
+        function initQuiz() {
+            shuffledQuestions = shuffleArray([...QUESTIONS]);
+            totalQuestions = shuffledQuestions.length;
+            currentIndex = 0;
+            quizEnded = false;
+            hideOverlay();
+            blockExit();
+            startTimer();
+            renderQuestion();
+        }
+
+        // ===== AFFICHER QUESTION =====
+        function renderQuestion() {
+            if (currentIndex >= totalQuestions) {
+                endQuiz('complete');
+                return;
+            }
+
+            const q = shuffledQuestions[currentIndex];
+            const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+            const shuffledOpts = shuffleArray([...q.opts]);
+
+            let html = `<div class="question-block">`;
+            html += `<div class="q-text">${q.q}</div>`;
+            html += `<div class="options" id="optionsContainer">`;
+            shuffledOpts.forEach((opt, idx) => {
+                html += `
+                    <label class="opt-label">
+                        <input type="checkbox" value="${idx}" data-opt="${opt.replace(/"/g,'&quot;')}">
+                        <span class="opt-letter">${letters[idx]}.</span>
+                        <span>${opt}</span>
+                    </label>
+                `;
+            });
+            html += `</div>`;
+            html += `<div class="feedback-box" id="feedbackBox"></div>`;
+            html += `<button class="btn-next" id="btnNext" onclick="nextQuestion()">Question suivante ➜</button>`;
+            html += `</div>`;
+
+            quizContent.innerHTML = html;
+            progressDisplay.textContent = `Question ${currentIndex + 1} / ${totalQuestions}`;
+
+            // Écouter les clics sur les cases
+            document.querySelectorAll('.opt-label input[type="checkbox"]').forEach(cb => {
+                cb.addEventListener('change', () => validateQuestion());
+            });
+        }
+
+        // ===== VALIDER =====
+        function validateQuestion() {
+            const q = shuffledQuestions[currentIndex];
+            const checks = document.querySelectorAll('.opt-label input[type="checkbox"]');
+            const feedback = document.getElementById('feedbackBox');
+            const btnNext = document.getElementById('btnNext');
+
+            // Récupérer les sélections
+            const selected = [];
+            checks.forEach((cb, idx) => {
+                if (cb.checked) selected.push(idx);
+            });
+
+            // Comparer avec la bonne réponse (triées)
+            const correctSorted = [...q.correct].sort();
+            const selectedSorted = [...selected].sort();
+            const isCorrect = JSON.stringify(selectedSorted) === JSON.stringify(correctSorted);
+
+            // Marquer les bonnes réponses
+            const labels = document.querySelectorAll('.opt-label');
+            labels.forEach((label, idx) => {
+                const cb = label.querySelector('input[type="checkbox"]');
+                cb.disabled = true;
+                if (q.correct.includes(idx)) {
+                    label.style.borderColor = '#00ff88';
+                    label.style.background = 'rgba(0,255,136,0.05)';
+                } else if (cb.checked && !q.correct.includes(idx)) {
+                    label.style.borderColor = '#ff4757';
+                    label.style.background = 'rgba(255,71,87,0.05)';
+                }
+            });
+
+            // Feedback
+            feedback.className = 'feedback-box ' + (isCorrect ? 'correct' : 'wrong');
+            if (isCorrect) {
+                feedback.innerHTML = '✅ Correct.';
+            } else {
+                const correctTexts = q.correct.map(idx => q.opts[idx]).join('; ');
+                feedback.innerHTML = `❌ Mauvaise réponse. La bonne réponse était : <strong>${correctTexts}</strong>`;
+            }
+
+            btnNext.style.display = 'block';
+        }
+
+        // ===== QUESTION SUIVANTE =====
+        function nextQuestion() {
+            currentIndex++;
+            renderQuestion();
+        }
+
+        // ===== FIN DU QUIZ =====
+        function endQuiz(reason) {
+            if (quizEnded) return;
+            quizEnded = true;
+            clearInterval(timerInterval);
+            isBlocked = false;
+
+            // Retirer les écouteurs de blocage
+            document.removeEventListener('visibilitychange', handleVisibility);
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            document.removeEventListener('keydown', handleKeyDown);
+            overlayBlock.classList.remove('active');
+
+            let icon, title, detail;
+            if (reason === 'complete') {
+                icon = '👑';
+                title = 'Quiz terminé avec succès !';
+                detail = 'Vous avez parcouru l\'intégralité du cours MAJOR.';
+            } else {
+                icon = '⏰';
+                title = 'Temps écoulé.';
+                detail = 'Le quiz est terminé. Vous pouvez le recommencer.';
+            }
+
+            quizContent.innerHTML = `
+                <div class="result-screen">
+                    <div class="icon">${icon}</div>
+                    <div class="title">${title}</div>
+                    <div class="detail">${detail}</div>
+                    <button class="btn-restart" onclick="resetQuiz()">🔄 Recommencer</button>
+                </div>
+            `;
+            progressDisplay.textContent = `Terminé`;
+            timerDisplay.textContent = '⏱ 00:00';
+        }
+
+        // ===== RECOMMENCER =====
+        function resetQuiz() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerSeconds = 300;
+            timerDisplay.classList.remove('danger');
+            initQuiz();
+        }
+
+        // ===== LANCER =====
+        initQuiz();
+    </script>
+</body>
+</html>
