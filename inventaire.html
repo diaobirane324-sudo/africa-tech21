@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Stocks | AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Exo 2', 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-green: #00ff88;
+            --neon-purple: #7b2cbf;
+            --dark-space: #0a0a12;
+            --deep-space: #050510;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a8c0;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --panel-glow: 0 0 30px rgba(0, 240, 255, 0.2);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .hologram-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridScan 20s linear infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        @keyframes gridScan {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            margin-bottom: 2rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 10px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        .page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: var(--panel-glow);
+        }
+
+        .page-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header .subtitle {
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.8rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+        }
+
+        .btn-primary {
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(123, 44, 191, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--neon-green), #00b894);
+            color: #050510;
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 6px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff4757, #c0392b);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 6px 25px rgba(255, 71, 87, 0.4);
+        }
+
+        .table-container {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 1.5rem;
+            box-shadow: var(--panel-glow);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem 0.8rem;
+            color: var(--neon-blue);
+            border-bottom: 2px solid rgba(0, 240, 255, 0.2);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: middle;
+        }
+
+        td .dispo-oui {
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        td .dispo-non {
+            color: #ff4757;
+            font-weight: 700;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            transition: 0.3s;
+            font-size: 1rem;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .action-btn.edit:hover {
+            color: var(--neon-blue);
+        }
+
+        .action-btn.delete:hover {
+            color: #ff4757;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 3rem;
+        }
+
+        .loading-text {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 3rem;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--glass-border);
+            border-top: 3px solid var(--neon-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #0a0a12 0%, #050510 100%);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2.5rem;
+            box-shadow: 0 0 60px rgba(123, 44, 191, 0.3);
+        }
+
+        .modal-content h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-content .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .modal-content .form-group label {
+            display: block;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .modal-content .form-group input,
+        .modal-content .form-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .modal-content .form-group input:focus,
+        .modal-content .form-group select:focus {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+        }
+
+        .modal-content .form-group select option {
+            background: var(--dark-space);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .modal-actions button {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .modal-actions .btn-cancel {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+        }
+
+        .modal-actions .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-actions .btn-confirm {
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+            color: white;
+        }
+
+        .modal-actions .btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(123, 44, 191, 0.4);
+        }
+
+        .toast-message {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 255, 136, 0.95);
+            color: #050510;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            z-index: 9999;
+            animation: fadeInUp 0.3s ease;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .toast-message.error {
+            background: rgba(255, 71, 87, 0.95);
+            color: white;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .page-header h1 { font-size: 2rem; }
+            .controls { flex-direction: column; }
+            .search-input { min-width: 100%; }
+            .modal-content { padding: 1.5rem; }
+            .modal-actions { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hologram-grid"></div>
+
+    <div class="page-container">
+        <a href="dashboard.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD
+        </a>
+
+        <header class="page-header">
+            <h1><i class="fas fa-boxes"></i> GESTION DES STOCKS</h1>
+            <p class="subtitle">Inventaire des composants électroniques – AFRICA.TECH21</p>
+        </header>
+
+        <div class="controls">
+            <input type="text" id="searchInput" class="search-input" placeholder="🔍 Rechercher un composant (nom, fonction, modèle...)">
+            <button class="btn-primary" onclick="openAddModal()">
+                <i class="fas fa-plus"></i> AJOUTER UN COMPOSANT
+            </button>
+        </div>
+
+        <div class="table-container">
+            <div id="tableContent">
+                <div class="loading-text">
+                    <div class="loading-spinner"></div>
+                    <p>Chargement de l'inventaire...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <h2 id="modalTitle">Ajouter un composant</h2>
+            <form id="modalForm">
+                <input type="hidden" id="editId" value="">
+                
+                <div class="form-group">
+                    <label for="modalNom">Nom du composant *</label>
+                    <input type="text" id="modalNom" placeholder="Ex: Capteur ultrasonique HC-SR04" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="modalFonction">Fonction *</label>
+                    <input type="text" id="modalFonction" placeholder="Ex: Mesure de distance par ultrasons" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="modalDispo">Disponible</label>
+                    <select id="modalDispo">
+                        <option value="Oui">✅ Oui</option>
+                        <option value="Non">❌ Non</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="modalPrix">Prix unitaire (FCFA)</label>
+                    <input type="number" id="modalPrix" placeholder="Ex: 2500" step="1" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="modalQuantite">Quantité</label>
+                    <input type="number" id="modalQuantite" placeholder="Ex: 5" step="1" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="modalModele">Modèle / Référence</label>
+                    <input type="text" id="modalModele" placeholder="Ex: HC-SR04">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeModal()">ANNULER</button>
+                    <button type="submit" class="btn-confirm" id="modalSubmitBtn">AJOUTER</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ==================== CONFIGURATION ====================
+        // 🔧 REMPLACE CETTE URL PAR CELLE DE TON SCRIPT DÉPLOYÉ
+        const SCRIPT_URL = 'https://script.google.com/macros/s/TA_NOUVELLE_URL_ICI/exec';
+
+        // ==================== ACCÈS RESTREINT ====================
+        const ALLOWED_IDS = ['AT21_006', 'AT21_0026'];
+
+        if (localStorage.getItem('memberLoggedIn') !== 'true') {
+            window.location.href = 'espace-membres.html';
+        }
+
+        const memberId = localStorage.getItem('memberId') || '';
+        if (!ALLOWED_IDS.includes(memberId)) {
+            document.body.innerHTML = `
+                <div style="display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; gap:1rem; text-align:center; padding:2rem;">
+                    <i class="fas fa-lock" style="font-size:4rem; color:#ff4757;"></i>
+                    <h1 style="color:#ff4757;">ACCÈS REFUSÉ</h1>
+                    <p style="color:var(--text-secondary);">Cette page est réservée au Président et à la Gestionnaire.</p>
+                    <a href="dashboard.html" style="color:var(--neon-blue); text-decoration:underline;">Retour au Dashboard</a>
+                </div>
+            `;
+            throw new Error('Accès refusé');
+        }
+
+        // ==================== ÉTAT ====================
+        let inventaireData = [];
+        let filteredData = [];
+
+        // ==================== TOAST ====================
+        function showToast(message, type = '') {
+            const old = document.querySelector('.toast-message');
+            if (old) old.remove();
+            const toast = document.createElement('div');
+            toast.className = 'toast-message ' + type;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.5s';
+                setTimeout(() => toast.remove(), 500);
+            }, 4000);
+        }
+
+        // ==================== CHARGER ====================
+        async function loadInventory() {
+            const container = document.getElementById('tableContent');
+            container.innerHTML = `
+                <div class="loading-text">
+                    <div class="loading-spinner"></div>
+                    <p>Chargement de l'inventaire...</p>
+                </div>
+            `;
+
+            try {
+                const response = await fetch(SCRIPT_URL + '?action=getInventory');
+                const result = await response.json();
+
+                if (!result.success) {
+                    container.innerHTML = `<div class="empty-state">❌ Erreur : ${result.error}</div>`;
+                    return;
+                }
+
+                inventaireData = result.data || [];
+                filteredData = [...inventaireData];
+                renderTable();
+
+            } catch (error) {
+                container.innerHTML = `<div class="empty-state">❌ Erreur réseau : ${error.message}</div>`;
+            }
+        }
+
+        // ==================== RECHERCHE ====================
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().trim();
+            if (!term) {
+                filteredData = [...inventaireData];
+            } else {
+                filteredData = inventaireData.filter(item =>
+                    (item.nom || '').toLowerCase().includes(term) ||
+                    (item.fonction || '').toLowerCase().includes(term) ||
+                    (item.modele || '').toLowerCase().includes(term)
+                );
+            }
+            renderTable();
+        });
+
+        // ==================== AFFICHER TABLEAU ====================
+        function renderTable() {
+            const container = document.getElementById('tableContent');
+
+            if (filteredData.length === 0) {
+                container.innerHTML = `<div class="empty-state">📭 Aucun composant trouvé.</div>`;
+                return;
+            }
+
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Fonction</th>
+                            <th>Disponible</th>
+                            <th>Prix (FCFA)</th>
+                            <th>Quantité</th>
+                            <th>Modèle</th>
+                            <th style="text-align:center;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            filteredData.forEach(item => {
+                const dispoClass = (item.dispo || '').toLowerCase() === 'oui' ? 'dispo-oui' : 'dispo-non';
+                const dispoText = (item.dispo || '').toUpperCase();
+                html += `
+                    <tr>
+                        <td><strong>${item.nom || ''}</strong></td>
+                        <td>${item.fonction || ''}</td>
+                        <td><span class="${dispoClass}">${dispoText}</span></td>
+                        <td>${item.prix ? parseInt(item.prix).toLocaleString('fr-FR') : ''}</td>
+                        <td>${item.quantite || 0}</td>
+                        <td>${item.modele || ''}</td>
+                        <td style="text-align:center; white-space:nowrap;">
+                            <button class="action-btn edit" onclick="openEditModal('${item.id}')" title="Modifier">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete" onclick="deleteComponent('${item.id}')" title="Supprimer">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table>`;
+            html += `<p style="margin-top:1rem; color:var(--text-secondary); font-size:0.9rem;">
+                <i class="fas fa-info-circle"></i> ${filteredData.length} composant(s) affiché(s)
+            </p>`;
+
+            container.innerHTML = html;
+        }
+
+        // ==================== MODAL ====================
+        function openModal(title, data = null) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('editId').value = data?.id || '';
+            document.getElementById('modalNom').value = data?.nom || '';
+            document.getElementById('modalFonction').value = data?.fonction || '';
+            document.getElementById('modalDispo').value = data?.dispo || 'Oui';
+            document.getElementById('modalPrix').value = data?.prix || '';
+            document.getElementById('modalQuantite').value = data?.quantite || '';
+            document.getElementById('modalModele').value = data?.modele || '';
+
+            const submitBtn = document.getElementById('modalSubmitBtn');
+            if (data) {
+                submitBtn.textContent = 'MODIFIER';
+            } else {
+                submitBtn.textContent = 'AJOUTER';
+            }
+
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        function openAddModal() {
+            openModal('Ajouter un composant');
+        }
+
+        function openEditModal(id) {
+            const item = inventaireData.find(d => d.id === id);
+            if (item) {
+                openModal('Modifier le composant', item);
+            } else {
+                showToast('❌ Composant non trouvé', 'error');
+            }
+        }
+
+        // ==================== SAUVEGARDER (AJOUT / MODIFICATION) ====================
+        document.getElementById('modalForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('editId').value;
+            const nom = document.getElementById('modalNom').value.trim();
+            const fonction = document.getElementById('modalFonction').value.trim();
+            const dispo = document.getElementById('modalDispo').value;
+            const prix = document.getElementById('modalPrix').value.trim();
+            const quantite = document.getElementById('modalQuantite').value.trim();
+            const modele = document.getElementById('modalModele').value.trim();
+
+            if (!nom || !fonction) {
+                showToast('⚠️ Le nom et la fonction sont obligatoires.', 'error');
+                return;
+            }
+
+            const payload = {
+                action: id ? 'update' : 'add',
+                id: id,
+                nom: nom,
+                fonction: fonction,
+                dispo: dispo,
+                prix: prix || '0',
+                quantite: quantite || '0',
+                modele: modele || ''
+            };
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showToast(id ? '✅ Composant modifié !' : '✅ Composant ajouté !');
+                    closeModal();
+                    loadInventory();
+                } else {
+                    showToast('❌ Erreur : ' + result.error, 'error');
+                }
+            } catch (error) {
+                showToast('❌ Erreur réseau : ' + error.message, 'error');
+            }
+        });
+
+        // ==================== SUPPRIMER ====================
+        async function deleteComponent(id) {
+            if (!confirm('⚠️ Voulez-vous vraiment supprimer ce composant ? Cette action est irréversible.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'delete',
+                        id: id
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showToast('🗑️ Composant supprimé.');
+                    loadInventory();
+                } else {
+                    showToast('❌ Erreur : ' + result.error, 'error');
+                }
+            } catch (error) {
+                showToast('❌ Erreur réseau : ' + error.message, 'error');
+            }
+        }
+
+        // ==================== INIT ====================
+        loadInventory();
+    </script>
+</body>
+</html>
