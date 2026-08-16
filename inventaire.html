@@ -257,7 +257,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* MODAL */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -482,7 +481,6 @@
 
     <script>
         // ==================== CONFIGURATION ====================
-        // 🔧 REMPLACE CETTE URL PAR CELLE DE TON SCRIPT DÉPLOYÉ
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwf2LWgJCvAT3khZrLau_oQuq4XrS0ExlTSiB-4mIl29bZxfasLQl1bdibYzUIzQQ/exec';
 
         // ==================== ACCÈS RESTREINT ====================
@@ -543,7 +541,28 @@
                     return;
                 }
 
-                inventaireData = result.data || [];
+                // ========== CORRECTION : INVERSION DES COLONNES ==========
+                inventaireData = (result.data || []).map(item => ({
+                    id: item.id || '',
+                    // La colonne 'nom' contient en réalité le CODE (C1, C2...)
+                    // La colonne 'fonction' contient le NOM du composant
+                    // La colonne 'dispo' contient la FONCTION
+                    // La colonne 'prix' contient la DISPO
+                    // La colonne 'quantite' contient le PRIX
+                    // La colonne 'modele' contient la QUANTITE
+                    // On va réorganiser proprement :
+                    code: item.nom || '',           // C1, C2, ...
+                    nom: item.fonction || '',       // Capteur ultrasonique...
+                    fonction: item.dispo || '',     // Permet de détecter...
+                    dispo: item.prix || '',         // Oui / Non
+                    prix: item.quantite || '',      // 2500, 1200, ...
+                    quantite: item.modele || '',    // 2, 1, ...
+                    modele: ''                      // (on perd le modèle car la colonne est vide)
+                }));
+
+                // Si le modèle est perdu, on peut le récupérer depuis la colonne 'modele' d'origine si elle existe
+                // Mais dans ton cas, elle était vide, donc on laisse vide
+
                 filteredData = [...inventaireData];
                 renderTable();
 
@@ -580,12 +599,12 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>Code</th>
                             <th>Nom</th>
                             <th>Fonction</th>
                             <th>Disponible</th>
                             <th>Prix (FCFA)</th>
                             <th>Quantité</th>
-                            <th>Modèle</th>
                             <th style="text-align:center;">Actions</th>
                         </tr>
                     </thead>
@@ -597,12 +616,12 @@
                 const dispoText = (item.dispo || '').toUpperCase();
                 html += `
                     <tr>
-                        <td><strong>${item.nom || ''}</strong></td>
+                        <td><strong>${item.code || ''}</strong></td>
+                        <td>${item.nom || ''}</td>
                         <td>${item.fonction || ''}</td>
                         <td><span class="${dispoClass}">${dispoText}</span></td>
                         <td>${item.prix ? parseInt(item.prix).toLocaleString('fr-FR') : ''}</td>
                         <td>${item.quantite || 0}</td>
-                        <td>${item.modele || ''}</td>
                         <td style="text-align:center; white-space:nowrap;">
                             <button class="action-btn edit" onclick="openEditModal('${item.id}')" title="Modifier">
                                 <i class="fas fa-edit"></i>
