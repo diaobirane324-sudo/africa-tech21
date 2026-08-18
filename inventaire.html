@@ -7,13 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Exo 2', 'Segoe UI', sans-serif;
-        }
-
+        /* ===== STYLES COMPLETS ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Exo 2', 'Segoe UI', sans-serif; }
         :root {
             --neon-blue: #00f0ff;
             --neon-green: #00ff88;
@@ -26,14 +21,12 @@
             --glass-border: rgba(255, 255, 255, 0.1);
             --panel-glow: 0 0 30px rgba(0, 240, 255, 0.2);
         }
-
         body {
             background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
             color: var(--text-primary);
             min-height: 100vh;
             padding: 2rem;
         }
-
         .hologram-grid {
             position: fixed;
             top: 0;
@@ -48,12 +41,7 @@
             pointer-events: none;
             z-index: -2;
         }
-
-        @keyframes gridScan {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-
+        @keyframes gridScan { 0% { transform: translate(0, 0); } 100% { transform: translate(50px, 50px); } }
         .back-btn {
             display: inline-block;
             padding: 0.8rem 2rem;
@@ -66,17 +54,8 @@
             font-weight: 600;
             transition: all 0.3s ease;
         }
-
-        .back-btn:hover {
-            background: rgba(0, 240, 255, 0.2);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
-        }
-
-        .page-container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
+        .back-btn:hover { background: rgba(0, 240, 255, 0.2); box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
+        .page-container { max-width: 1400px; margin: 0 auto; }
         .page-header {
             background: var(--glass);
             backdrop-filter: blur(15px);
@@ -87,7 +66,6 @@
             text-align: center;
             box-shadow: var(--panel-glow);
         }
-
         .page-header h1 {
             font-family: 'Orbitron', sans-serif;
             font-size: 2.5rem;
@@ -96,13 +74,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
-        .page-header .subtitle {
-            color: var(--text-secondary);
-            margin-top: 0.5rem;
-            font-size: 1.1rem;
-        }
-
+        .page-header .subtitle { color: var(--text-secondary); margin-top: 0.5rem; font-size: 1.1rem; }
         .controls {
             display: flex;
             flex-wrap: wrap;
@@ -110,7 +82,6 @@
             margin-bottom: 2rem;
             align-items: center;
         }
-
         .search-input {
             flex: 1;
             min-width: 250px;
@@ -123,12 +94,7 @@
             outline: none;
             transition: 0.3s;
         }
-
-        .search-input:focus {
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
-        }
-
+        .search-input:focus { border-color: var(--neon-blue); box-shadow: 0 0 20px rgba(0, 240, 255, 0.1); }
         .btn-primary {
             padding: 0.8rem 2rem;
             background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
@@ -140,30 +106,7 @@
             transition: 0.3s;
             white-space: nowrap;
         }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(123, 44, 191, 0.4);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, var(--neon-green), #00b894);
-            color: #050510;
-        }
-
-        .btn-success:hover {
-            box-shadow: 0 6px 25px rgba(0, 255, 136, 0.4);
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #ff4757, #c0392b);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            box-shadow: 0 6px 25px rgba(255, 71, 87, 0.4);
-        }
-
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(123, 44, 191, 0.4); }
         .table-container {
             background: var(--glass);
             backdrop-filter: blur(15px);
@@ -173,13 +116,7 @@
             box-shadow: var(--panel-glow);
             overflow-x: auto;
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-        }
-
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
         th {
             text-align: left;
             padding: 1rem 0.8rem;
@@ -188,23 +125,9 @@
             font-weight: 700;
             white-space: nowrap;
         }
-
-        td {
-            padding: 0.8rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            vertical-align: middle;
-        }
-
-        td .dispo-oui {
-            color: var(--neon-green);
-            font-weight: 700;
-        }
-
-        td .dispo-non {
-            color: #ff4757;
-            font-weight: 700;
-        }
-
+        td { padding: 0.8rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); vertical-align: middle; }
+        td .dispo-oui { color: var(--neon-green); font-weight: 700; }
+        td .dispo-non { color: #ff4757; font-weight: 700; }
         .action-btn {
             background: none;
             border: none;
@@ -215,32 +138,11 @@
             transition: 0.3s;
             font-size: 1rem;
         }
-
-        .action-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-primary);
-        }
-
-        .action-btn.edit:hover {
-            color: var(--neon-blue);
-        }
-
-        .action-btn.delete:hover {
-            color: #ff4757;
-        }
-
-        .empty-state {
-            text-align: center;
-            color: var(--text-secondary);
-            padding: 3rem;
-        }
-
-        .loading-text {
-            text-align: center;
-            color: var(--text-secondary);
-            padding: 3rem;
-        }
-
+        .action-btn:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
+        .action-btn.edit:hover { color: var(--neon-blue); }
+        .action-btn.delete:hover { color: #ff4757; }
+        .empty-state { text-align: center; color: var(--text-secondary); padding: 3rem; }
+        .loading-text { text-align: center; color: var(--text-secondary); padding: 3rem; }
         .loading-spinner {
             display: inline-block;
             width: 30px;
@@ -251,12 +153,7 @@
             animation: spin 0.8s linear infinite;
             margin-bottom: 1rem;
         }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .modal-overlay {
             display: none;
             position: fixed;
@@ -271,11 +168,7 @@
             justify-content: center;
             padding: 2rem;
         }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
+        .modal-overlay.active { display: flex; }
         .modal-content {
             background: linear-gradient(135deg, #0a0a12 0%, #050510 100%);
             border: 1px solid var(--glass-border);
@@ -287,17 +180,8 @@
             padding: 2.5rem;
             box-shadow: 0 0 60px rgba(123, 44, 191, 0.3);
         }
-
-        .modal-content h2 {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--neon-blue);
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-content .form-group {
-            margin-bottom: 1.2rem;
-        }
-
+        .modal-content h2 { font-family: 'Orbitron', sans-serif; color: var(--neon-blue); margin-bottom: 1.5rem; }
+        .modal-content .form-group { margin-bottom: 1.2rem; }
         .modal-content .form-group label {
             display: block;
             color: var(--text-secondary);
@@ -305,7 +189,6 @@
             margin-bottom: 0.3rem;
             font-size: 0.9rem;
         }
-
         .modal-content .form-group input,
         .modal-content .form-group select {
             width: 100%;
@@ -318,23 +201,17 @@
             outline: none;
             transition: 0.3s;
         }
-
         .modal-content .form-group input:focus,
         .modal-content .form-group select:focus {
             border-color: var(--neon-blue);
             box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
         }
-
-        .modal-content .form-group select option {
-            background: var(--dark-space);
-        }
-
+        .modal-content .form-group select option { background: var(--dark-space); }
         .modal-actions {
             display: flex;
             gap: 1rem;
             margin-top: 1.5rem;
         }
-
         .modal-actions button {
             flex: 1;
             padding: 0.8rem;
@@ -344,26 +221,16 @@
             cursor: pointer;
             transition: 0.3s;
         }
-
         .modal-actions .btn-cancel {
             background: rgba(255, 255, 255, 0.05);
             color: var(--text-secondary);
         }
-
-        .modal-actions .btn-cancel:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
+        .modal-actions .btn-cancel:hover { background: rgba(255, 255, 255, 0.1); }
         .modal-actions .btn-confirm {
             background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
             color: white;
         }
-
-        .modal-actions .btn-confirm:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(123, 44, 191, 0.4);
-        }
-
+        .modal-actions .btn-confirm:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(123, 44, 191, 0.4); }
         .toast-message {
             position: fixed;
             bottom: 2rem;
@@ -380,17 +247,14 @@
             max-width: 90%;
             text-align: center;
         }
-
         .toast-message.error {
             background: rgba(255, 71, 87, 0.95);
             color: white;
         }
-
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateX(-50%) translateY(20px); }
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
-
         @media (max-width: 768px) {
             body { padding: 1rem; }
             .page-header h1 { font-size: 2rem; }
@@ -481,7 +345,7 @@
 
     <script>
         // ==================== CONFIGURATION ====================
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbysUV3ccpUhbZBM3u22odDa__99qO0mYBYZFEAVN6B4LR0BuO91abGTVPl9U15WIOxl/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwsZ1Z1z6IT52DiqJ51dQISQuxeagOnEGnbRkpU45L3FOUo0UANKdRGBwmzB77YFhE/exec';
 
         // ==================== ACCÈS RESTREINT ====================
         const ALLOWED_IDS = ['AT21_006', 'AT21_0026'];
@@ -541,28 +405,7 @@
                     return;
                 }
 
-                // ========== CORRECTION : INVERSION DES COLONNES ==========
-                inventaireData = (result.data || []).map(item => ({
-                    id: item.id || '',
-                    // La colonne 'nom' contient en réalité le CODE (C1, C2...)
-                    // La colonne 'fonction' contient le NOM du composant
-                    // La colonne 'dispo' contient la FONCTION
-                    // La colonne 'prix' contient la DISPO
-                    // La colonne 'quantite' contient le PRIX
-                    // La colonne 'modele' contient la QUANTITE
-                    // On va réorganiser proprement :
-                    code: item.nom || '',           // C1, C2, ...
-                    nom: item.fonction || '',       // Capteur ultrasonique...
-                    fonction: item.dispo || '',     // Permet de détecter...
-                    dispo: item.prix || '',         // Oui / Non
-                    prix: item.quantite || '',      // 2500, 1200, ...
-                    quantite: item.modele || '',    // 2, 1, ...
-                    modele: ''                      // (on perd le modèle car la colonne est vide)
-                }));
-
-                // Si le modèle est perdu, on peut le récupérer depuis la colonne 'modele' d'origine si elle existe
-                // Mais dans ton cas, elle était vide, donc on laisse vide
-
+                inventaireData = result.data || [];
                 filteredData = [...inventaireData];
                 renderTable();
 
@@ -599,12 +442,12 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Code</th>
                             <th>Nom</th>
                             <th>Fonction</th>
                             <th>Disponible</th>
                             <th>Prix (FCFA)</th>
                             <th>Quantité</th>
+                            <th>Modèle</th>
                             <th style="text-align:center;">Actions</th>
                         </tr>
                     </thead>
@@ -616,12 +459,12 @@
                 const dispoText = (item.dispo || '').toUpperCase();
                 html += `
                     <tr>
-                        <td><strong>${item.code || ''}</strong></td>
-                        <td>${item.nom || ''}</td>
+                        <td><strong>${item.nom || ''}</strong></td>
                         <td>${item.fonction || ''}</td>
                         <td><span class="${dispoClass}">${dispoText}</span></td>
                         <td>${item.prix ? parseInt(item.prix).toLocaleString('fr-FR') : ''}</td>
                         <td>${item.quantite || 0}</td>
+                        <td>${item.modele || ''}</td>
                         <td style="text-align:center; white-space:nowrap;">
                             <button class="action-btn edit" onclick="openEditModal('${item.id}')" title="Modifier">
                                 <i class="fas fa-edit"></i>
@@ -680,7 +523,7 @@
             }
         }
 
-        // ==================== SAUVEGARDER (AJOUT / MODIFICATION) ====================
+        // ==================== SAUVEGARDER ====================
         document.getElementById('modalForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
