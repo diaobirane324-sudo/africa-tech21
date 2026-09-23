@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport de Fin de Journée | AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Exo 2', 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-green: #00ff88;
+            --neon-purple: #7b2cbf;
+            --neon-pink: #ff00ff;
+            --dark-space: #0a0a12;
+            --deep-space: #050510;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a8c0;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --panel-glow: 0 0 30px rgba(0, 240, 255, 0.2);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .hologram-grid {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridScan 20s linear infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        @keyframes gridScan {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            margin-bottom: 2rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 10px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        .page-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: var(--panel-glow);
+        }
+
+        .page-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header .subtitle {
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .section {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--panel-glow);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--neon-blue);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title i { color: var(--neon-green); }
+
+        /* ===== FORMULAIRE ===== */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-box {
+            background: rgba(0, 240, 255, 0.05);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .info-box .label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.3rem;
+        }
+
+        .info-box .value {
+            color: var(--neon-green);
+            font-weight: 700;
+            font-size: 1.1rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--neon-blue);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+            font-family: 'Exo 2', sans-serif;
+        }
+
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+        }
+
+        .form-group select option { background: var(--dark-space); }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 200px;
+            line-height: 1.6;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(123, 44, 191, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            padding: 1rem 2rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 12px;
+            color: var(--neon-blue);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 240, 255, 0.2);
+        }
+
+        /* ===== LISTE DES RAPPORTS ===== */
+        .rapport-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: 0.3s;
+        }
+
+        .rapport-item:hover {
+            border-color: var(--neon-blue);
+            background: rgba(0, 240, 255, 0.03);
+        }
+
+        .rapport-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .rapport-date {
+            color: var(--neon-blue);
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .rapport-objet {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .objet-reparations { background: rgba(0, 240, 255, 0.15); color: var(--neon-blue); }
+        .objet-creations { background: rgba(0, 255, 136, 0.15); color: var(--neon-green); }
+        .objet-reamenagement { background: rgba(255, 165, 0, 0.15); color: #ffa500; }
+        .objet-autre { background: rgba(255, 0, 255, 0.15); color: var(--neon-pink); }
+        .objet-rien { background: rgba(160, 168, 192, 0.15); color: var(--text-secondary); }
+
+        .rapport-auteur {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .rapport-contenu {
+            color: var(--text-primary);
+            line-height: 1.6;
+            white-space: pre-wrap;
+            margin: 0.8rem 0;
+        }
+
+        .rapport-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+        }
+
+        .btn-action {
+            padding: 0.4rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-edit {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--neon-blue);
+            border: 1px solid var(--neon-blue);
+        }
+
+        .btn-edit:hover { background: rgba(0, 240, 255, 0.2); }
+
+        .btn-delete {
+            background: rgba(255, 71, 87, 0.1);
+            color: #ff4757;
+            border: 1px solid #ff4757;
+        }
+
+        .btn-delete:hover { background: rgba(255, 71, 87, 0.2); }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 3rem;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--glass-border);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .loading-text {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 2rem;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--glass-border);
+            border-top: 3px solid var(--neon-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-content {
+            background: linear-gradient(135deg, #0a0a12 0%, #050510 100%);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            max-width: 500px;
+            width: 100%;
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .modal-content h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            outline: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-content input:focus {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+        }
+
+        .modal-content .error-msg {
+            color: #ff4757;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        /* ===== TOAST ===== */
+        .toast-message {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 255, 136, 0.95);
+            color: #050510;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            z-index: 9999;
+            animation: fadeInUp 0.3s ease;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .toast-message.error {
+            background: rgba(255, 71, 87, 0.95);
+            color: white;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        /* ===== BADGE DIRECTION ===== */
+        .direction-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #ffd700, #ff8c00);
+            color: #0a0505;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-left: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .page-header h1 { font-size: 1.8rem; }
+            .section { padding: 1.5rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .btn-container { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hologram-grid"></div>
+
+    <div class="page-container">
+        <a href="dashboard.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD
+        </a>
+
+        <header class="page-header">
+            <h1><i class="fas fa-clipboard-check"></i> RAPPORT DE FIN DE JOURNÉE</h1>
+            <p class="subtitle">Rédigez votre rapport d'activité quotidien – AFRICA.TECH21</p>
+        </header>
+
+        <!-- ===== FORMULAIRE DE RAPPORT ===== -->
+        <section class="section">
+            <h2 class="section-title">
+                <i class="fas fa-edit"></i> RÉDIGER MON RAPPORT
+                <span class="direction-badge" id="directionBadge" style="display:none;">
+                    <i class="fas fa-crown"></i> DIRECTION
+                </span>
+            </h2>
+
+            <!-- Informations du membre (auto-remplies) -->
+            <div class="form-grid">
+                <div class="info-box">
+                    <div class="label"><i class="fas fa-calendar"></i> Date</div>
+                    <div class="value" id="autoDate">--/--/----</div>
+                </div>
+                <div class="info-box">
+                    <div class="label"><i class="fas fa-clock"></i> Heure</div>
+                    <div class="value" id="autoHeure">--:--</div>
+                </div>
+                <div class="info-box">
+                    <div class="label"><i class="fas fa-user"></i> Nom</div>
+                    <div class="value" id="autoNom">---</div>
+                </div>
+                <div class="info-box">
+                    <div class="label"><i class="fas fa-id-card"></i> ID</div>
+                    <div class="value" id="autoId">---</div>
+                </div>
+                <div class="info-box" style="grid-column: 1 / -1;">
+                    <div class="label"><i class="fas fa-briefcase"></i> Fonction</div>
+                    <div class="value" id="autoFonction">---</div>
+                </div>
+            </div>
+
+            <!-- Objet du rapport -->
+            <div class="form-group">
+                <label for="objetSelect"><i class="fas fa-tag"></i> Objet du rapport *</label>
+                <select id="objetSelect" required>
+                    <option value="">-- Sélectionnez l'objet --</option>
+                    <option value="Réparations">🔧 Réparations</option>
+                    <option value="Créations">💡 Créations</option>
+                    <option value="Réaménagement du labo">🏗️ Réaménagement du labo</option>
+                    <option value="Autre">📌 Autre</option>
+                    <option value="Rien à signaler">✅ Rien à signaler</option>
+                </select>
+            </div>
+
+            <!-- Contenu -->
+            <div class="form-group">
+                <label for="contenuInput"><i class="fas fa-align-left"></i> Contenu du rapport *</label>
+                <textarea id="contenuInput" placeholder="Décrivez en détail ce que vous avez fait aujourd'hui..." required></textarea>
+            </div>
+
+            <!-- Boutons -->
+            <div class="btn-container">
+                <button class="btn-primary" id="saveBtn" onclick="sauvegarderRapport()">
+                    <i class="fas fa-save"></i> <span id="saveBtnText">SAUVEGARDER LE RAPPORT</span>
+                </button>
+                <button class="btn-secondary" onclick="reinitialiserFormulaire()">
+                    <i class="fas fa-redo"></i> RÉINITIALISER
+                </button>
+            </div>
+            <input type="hidden" id="editId" value="">
+        </section>
+
+        <!-- ===== MES RAPPORTS ===== -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-history"></i> MES RAPPORTS RÉCENTS</h2>
+            <div id="mesRapports">
+                <div class="loading-text">
+                    <div class="loading-spinner"></div>
+                    <p>Chargement...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== TOUS LES RAPPORTS (DIRECTION UNIQUEMENT) ===== -->
+        <section class="section" id="sectionTousRapports" style="display:none;">
+            <h2 class="section-title"><i class="fas fa-users"></i> TOUS LES RAPPORTS <span class="direction-badge"><i class="fas fa-crown"></i> DIRECTION</span></h2>
+            <div id="tousRapports">
+                <div class="loading-text">
+                    <div class="loading-spinner"></div>
+                    <p>Chargement...</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ===== MODAL DE VÉRIFICATION ID ===== -->
+    <div class="modal-overlay active" id="idModal">
+        <div class="modal-content">
+            <h2><i class="fas fa-id-card"></i> IDENTIFICATION</h2>
+            <p style="color:var(--text-secondary); margin-bottom:1.5rem;">Entrez votre ID membre pour continuer</p>
+            <input type="text" id="idInput" placeholder="Ex: AT21_006" autocomplete="off" autofocus>
+            <div class="error-msg" id="idError">❌ ID non reconnu. Vérifiez votre identifiant.</div>
+            <button class="btn-primary" onclick="verifierId()" style="width:100%;">
+                <i class="fas fa-check"></i> VALIDER
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toastContainer"></div>
+
+    <script>
+        // ==================== CONFIGURATION ====================
+        const SCRIPT_URL = 'https://script.google.com/macros/s/TA_NOUVELLE_URL_ICI/exec';
+
+        // ==================== BASE DES MEMBRES ====================
+        const MEMBRES = {
+            "AT21-001": { nom: "DIAKHATE", prenom: "ABDOU", fonction: "VICE PRÉSIDENT" },
+            "AT21_0011": { nom: "MOUHAMED", prenom: "DIALLO", fonction: "RESPONSABLE DES PROJETS" },
+            "AT21_0016": { nom: "DRAMÉ", prenom: "AICHA", fonction: "SECRÉTAIRE GÉNÉRAL" },
+            "AT21_0021": { nom: "DIOP", prenom: "SALAMATA", fonction: "ADJOINTE SECRÉTAIRE" },
+            "AT21_0026": { nom: "TOURÉ", prenom: "SOKHNA BINTOU", fonction: "ADJOINTE FINANCE/GESTIONNAIRE" },
+            "AT21_0031": { nom: "WADE", prenom: "ADJA FAMA", fonction: "RESPONSABLE FINANCE" },
+            "AT21_0036": { nom: "NDIAYE", prenom: "MARIE ANGÉLIQUE DABA", fonction: "RESPONSABLE COMMUNICATION" },
+            "AT21_0046": { nom: "DIALLO", prenom: "MOUHAMED", fonction: "CRÉATEUR DE CONTENU" },
+            "AT21_006": { nom: "BIRANE", prenom: "DIAO", fonction: "PRÉSIDENT DE LA COMMUNAUTÉ" },
+            "AT21_0041": { nom: "FALL", prenom: "SEYDINA MOUHAMED", fonction: "FFAM" },
+            "AT21_0052": { nom: "SALL", prenom: "ABDOURAKHMANE", fonction: "CRÉATEUR DE CONTENU OFFICIEL" },
+            "AT21_0057": { nom: "SY", prenom: "MOUHAMED", fonction: "ÉQUIPE TECHNIQUE" },
+            "AT21_0062": { nom: "GAYE", prenom: "IBRAHIMA", fonction: "FFAM" },
+            "AT21_0071": { nom: "SY", prenom: "OUMOU SALAMATA", fonction: "FFAM" },
+            "AT21_0072": { nom: "SOW", prenom: "HALIMA AS SADIYA", fonction: "FFAM" }
+        };
+
+        // ==================== ACCÈS DIRECTION ====================
+        const ACCES_AUTORISES = ['Birane186@00', 'AT21_0036', 'AT21-001', 'AT21_0011'];
+
+        // ==================== ÉTAT ====================
+        let membreActuel = null;
+        let rapportsData = [];
+        let isDirection = false;
+        let editMode = false;
+
+        // ==================== INITIALISATION ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Vérifier si déjà identifié
+            const savedId = localStorage.getItem('rapport_memberId');
+            if (savedId && MEMBRES[savedId]) {
+                membreActuel = { id: savedId, ...MEMBRES[savedId] };
+                isDirection = ACCES_AUTORISES.includes(savedId) || savedId === 'AT21_006';
+                fermerModal();
+                initialiserPage();
+            }
+
+            // Écouter la touche Entrée sur le champ ID
+            document.getElementById('idInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') verifierId();
+            });
+        });
+
+        // ==================== VÉRIFICATION ID ====================
+        function verifierId() {
+            const id = document.getElementById('idInput').value.trim();
+            const errorMsg = document.getElementById('idError');
+
+            if (MEMBRES[id]) {
+                membreActuel = { id: id, ...MEMBRES[id] };
+                isDirection = ACCES_AUTORISES.includes(id) || id === 'AT21_006';
+                localStorage.setItem('rapport_memberId', id);
+                fermerModal();
+                initialiserPage();
+            } else {
+                errorMsg.style.display = 'block';
+                document.getElementById('idInput').value = '';
+                document.getElementById('idInput').focus();
+                setTimeout(() => errorMsg.style.display = 'none', 3000);
+            }
+        }
+
+        function fermerModal() {
+            document.getElementById('idModal').classList.remove('active');
+        }
+
+        // ==================== INITIALISATION PAGE ====================
+        function initialiserPage() {
+            // Date et heure auto
+            mettreAJourDateHeure();
+            setInterval(mettreAJourDateHeure, 60000);
+
+            // Infos membre
+            document.getElementById('autoNom').textContent = membreActuel.prenom + ' ' + membreActuel.nom;
+            document.getElementById('autoId').textContent = membreActuel.id;
+            document.getElementById('autoFonction').textContent = membreActuel.fonction;
+
+            // Afficher badge direction si applicable
+            if (isDirection) {
+                document.getElementById('directionBadge').style.display = 'inline-block';
+                document.getElementById('sectionTousRapports').style.display = 'block';
+            }
+
+            // Charger les rapports
+            chargerRapports();
+        }
+
+        function mettreAJourDateHeure() {
+            const now = new Date();
+            document.getElementById('autoDate').textContent = now.toLocaleDateString('fr-FR');
+            document.getElementById('autoHeure').textContent = now.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'});
+        }
+
+        // ==================== TOAST ====================
+        function showToast(message, type = '') {
+            const old = document.querySelector('.toast-message');
+            if (old) old.remove();
+            const toast = document.createElement('div');
+            toast.className = 'toast-message ' + type;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.5s';
+                setTimeout(() => toast.remove(), 500);
+            }, 4000);
+        }
+
+        // ==================== CHARGER LES RAPPORTS ====================
+        async function chargerRapports() {
+            try {
+                const response = await fetch(SCRIPT_URL + '?action=getAll');
+                const result = await response.json();
+
+                if (!result.success) {
+                    document.getElementById('mesRapports').innerHTML = '<div class="empty-state">❌ Erreur de chargement</div>';
+                    return;
+                }
+
+                rapportsData = result.data || [];
+                afficherMesRapports();
+
+                if (isDirection) {
+                    afficherTousRapports();
+                }
+
+            } catch (error) {
+                document.getElementById('mesRapports').innerHTML = '<div class="empty-state">❌ Erreur réseau</div>';
+            }
+        }
+
+        // ==================== AFFICHER MES RAPPORTS ====================
+        function afficherMesRapports() {
+            const container = document.getElementById('mesRapports');
+            const mesRapports = rapportsData.filter(r => r.id === membreActuel.id);
+
+            if (mesRapports.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-file-alt"></i>
+                        <p>Aucun rapport pour le moment. Rédigez votre premier rapport ci-dessus.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Trier par date décroissante
+            mesRapports.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            container.innerHTML = mesRapports.map(r => creerHtmlRapport(r, true)).join('');
+        }
+
+        // ==================== AFFICHER TOUS LES RAPPORTS ====================
+        function afficherTousRapports() {
+            const container = document.getElementById('tousRapports');
+
+            if (rapportsData.length === 0) {
+                container.innerHTML = '<div class="empty-state">Aucun rapport enregistré.</div>';
+                return;
+            }
+
+            const sorted = [...rapportsData].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            container.innerHTML = sorted.map(r => creerHtmlRapport(r, false)).join('');
+        }
+
+        // ==================== CREER HTML RAPPORT ====================
+        function creerHtmlRapport(rapport, showActions) {
+            const objetClass = 'objet-' + (rapport.objet || '').toLowerCase()
+                .replace('é', 'e').replace('è', 'e').replace('ê', 'e')
+                .replace('â', 'a').replace('ô', 'o').replace('û', 'u')
+                .replace(/\s+/g, '').replace('réaménagementdulabo', 'reamenagement');
+
+            let actionsHtml = '';
+            if (showActions) {
+                actionsHtml = `
+                    <div class="rapport-actions">
+                        <button class="btn-action btn-edit" onclick="modifierRapport('${rapport.id}')">
+                            <i class="fas fa-edit"></i> Modifier
+                        </button>
+                        <button class="btn-action btn-delete" onclick="supprimerRapport('${rapport.id}')">
+                            <i class="fas fa-trash"></i> Supprimer
+                        </button>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="rapport-item">
+                    <div class="rapport-header">
+                        <span class="rapport-date"><i class="fas fa-calendar"></i> ${rapport.date} à ${rapport.heure}</span>
+                        <span class="rapport-objet ${objetClass}">${rapport.objet}</span>
+                    </div>
+                    <div class="rapport-auteur">
+                        <i class="fas fa-user"></i> ${rapport.nom} (${rapport.id}) - ${rapport.fonction}
+                    </div>
+                    <div class="rapport-contenu">${rapport.contenu}</div>
+                    ${actionsHtml}
+                </div>
+            `;
+        }
+
+        // ==================== SAUVEGARDER RAPPORT ====================
+        async function sauvegarderRapport() {
+            const objet = document.getElementById('objetSelect').value;
+            const contenu = document.getElementById('contenuInput').value.trim();
+            const editId = document.getElementById('editId').value;
+
+            if (!objet) {
+                showToast('⚠️ Veuillez sélectionner un objet.', 'error');
+                return;
+            }
+
+            if (!contenu) {
+                showToast('⚠️ Veuillez écrire le contenu du rapport.', 'error');
+                return;
+            }
+
+            const now = new Date();
+            const payload = {
+                action: editId ? 'update' : 'add',
+                id: editId || '',
+                memberId: membreActuel.id,
+                nom: membreActuel.prenom + ' ' + membreActuel.nom,
+                fonction: membreActuel.fonction,
+                date: now.toLocaleDateString('fr-FR'),
+                heure: now.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'}),
+                objet: objet,
+                contenu: contenu
+            };
+
+            const btn = document.getElementById('saveBtn');
+            btn.disabled = true;
+            document.getElementById('saveBtnText').textContent = 'SAUVEGARDE...';
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showToast(editId ? '✅ Rapport modifié !' : '✅ Rapport enregistré !');
+                    reinitialiserFormulaire();
+                    chargerRapports();
+                } else {
+                    showToast('❌ Erreur : ' + result.error, 'error');
+                }
+            } catch (error) {
+                showToast('❌ Erreur réseau', 'error');
+            } finally {
+                btn.disabled = false;
+                document.getElementById('saveBtnText').textContent = 'SAUVEGARDER LE RAPPORT';
+            }
+        }
+
+        // ==================== MODIFIER RAPPORT ====================
+        function modifierRapport(rapportId) {
+            const rapport = rapportsData.find(r => r.id === rapportId);
+            if (!rapport) return;
+
+            document.getElementById('objetSelect').value = rapport.objet;
+            document.getElementById('contenuInput').value = rapport.contenu;
+            document.getElementById('editId').value = rapportId;
+            document.getElementById('saveBtnText').textContent = 'MODIFIER LE RAPPORT';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ==================== SUPPRIMER RAPPORT ====================
+        async function supprimerRapport(rapportId) {
+            if (!confirm('⚠️ Voulez-vous vraiment supprimer ce rapport ?')) return;
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'delete',
+                        id: rapportId
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showToast('🗑️ Rapport supprimé.');
+                    chargerRapports();
+                } else {
+                    showToast('❌ Erreur : ' + result.error, 'error');
+                }
+            } catch (error) {
+                showToast('❌ Erreur réseau', 'error');
+            }
+        }
+
+        // ==================== REINITIALISER ====================
+        function reinitialiserFormulaire() {
+            document.getElementById('objetSelect').value = '';
+            document.getElementById('contenuInput').value = '';
+            document.getElementById('editId').value = '';
+            document.getElementById('saveBtnText').textContent = 'SAUVEGARDER LE RAPPORT';
+            mettreAJourDateHeure();
+        }
+    </script>
+</body>
+</html>
