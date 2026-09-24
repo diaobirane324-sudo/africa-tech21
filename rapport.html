@@ -803,61 +803,49 @@ const PROXY_WRITE = 'https://corsproxy.io/?url=';
         }
 
         // ==================== SAUVEGARDER RAPPORT ====================
-        async function sauvegarderRapport() {
-            const objet = document.getElementById('objetSelect').value;
-            const contenu = document.getElementById('contenuInput').value.trim();
-            const editId = document.getElementById('editId').value;
+       async function sauvegarderRapport() {
+    const objet = document.getElementById('objetSelect').value;
+    const contenu = document.getElementById('contenuInput').value.trim();
+    const editId = document.getElementById('editId').value;
 
-            if (!objet) {
-                showToast('⚠️ Veuillez sélectionner un objet.', 'error');
-                return;
-            }
+    if (!objet) { showToast('⚠️ Sélectionnez un objet.', 'error'); return; }
+    if (!contenu) { showToast('⚠️ Écrivez le contenu.', 'error'); return; }
 
-            if (!contenu) {
-                showToast('⚠️ Veuillez écrire le contenu du rapport.', 'error');
-                return;
-            }
+    const now = new Date();
+    const payload = {
+        action: editId ? 'update' : 'add',
+        id: editId || '',
+        memberId: membreActuel.id,
+        nom: membreActuel.prenom + ' ' + membreActuel.nom,
+        fonction: membreActuel.fonction,
+        date: now.toLocaleDateString('fr-FR'),
+        heure: now.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'}),
+        objet: objet,
+        contenu: contenu
+    };
 
-            const now = new Date();
-            const payload = {
-                action: editId ? 'update' : 'add',
-                id: editId || '',
-                memberId: membreActuel.id,
-                nom: membreActuel.prenom + ' ' + membreActuel.nom,
-                fonction: membreActuel.fonction,
-                date: now.toLocaleDateString('fr-FR'),
-                heure: now.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'}),
-                objet: objet,
-                contenu: contenu
-            };
+    const btn = document.getElementById('saveBtn');
+    btn.disabled = true;
+    document.getElementById('saveBtnText').textContent = 'SAUVEGARDE...';
 
-            const btn = document.getElementById('saveBtn');
-            btn.disabled = true;
-            document.getElementById('saveBtnText').textContent = 'SAUVEGARDE...';
+    try {
+        await fetch(PROXY_WRITE + encodeURIComponent(SCRIPT_URL), {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
 
-            try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    showToast(editId ? '✅ Rapport modifié !' : '✅ Rapport enregistré !');
-                    reinitialiserFormulaire();
-                    chargerRapports();
-                } else {
-                    showToast('❌ Erreur : ' + result.error, 'error');
-                }
-            } catch (error) {
-                showToast('❌ Erreur réseau', 'error');
-            } finally {
-                btn.disabled = false;
-                document.getElementById('saveBtnText').textContent = 'SAUVEGARDER LE RAPPORT';
-            }
-        }
+        showToast(editId ? '✅ Rapport modifié !' : '✅ Rapport enregistré !');
+        reinitialiserFormulaire();
+        setTimeout(chargerRapports, 2000);
+    } catch (error) {
+        showToast('❌ Erreur réseau', 'error');
+    } finally {
+        btn.disabled = false;
+        document.getElementById('saveBtnText').textContent = 'SAUVEGARDER LE RAPPORT';
+    }
+}
 
         // ==================== MODIFIER RAPPORT ====================
         function modifierRapport(rapportId) {
@@ -873,31 +861,23 @@ const PROXY_WRITE = 'https://corsproxy.io/?url=';
         }
 
         // ==================== SUPPRIMER RAPPORT ====================
-        async function supprimerRapport(rapportId) {
-            if (!confirm('⚠️ Voulez-vous vraiment supprimer ce rapport ?')) return;
+       async function supprimerRapport(rapportId) {
+    if (!confirm('⚠️ Voulez-vous vraiment supprimer ce rapport ?')) return;
 
-            try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action: 'delete',
-                        id: rapportId
-                    })
-                });
+    try {
+        await fetch(PROXY_WRITE + encodeURIComponent(SCRIPT_URL), {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'delete', id: rapportId })
+        });
 
-                const result = await response.json();
-
-                if (result.success) {
-                    showToast('🗑️ Rapport supprimé.');
-                    chargerRapports();
-                } else {
-                    showToast('❌ Erreur : ' + result.error, 'error');
-                }
-            } catch (error) {
-                showToast('❌ Erreur réseau', 'error');
-            }
-        }
+        showToast('🗑️ Rapport supprimé.');
+        setTimeout(chargerRapports, 2000);
+    } catch (error) {
+        showToast('❌ Erreur réseau', 'error');
+    }
+}
 
         // ==================== REINITIALISER ====================
         function reinitialiserFormulaire() {
