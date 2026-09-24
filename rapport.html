@@ -710,28 +710,28 @@ const PROXY_WRITE = 'https://corsproxy.io/?url=';
         }
 
         // ==================== CHARGER LES RAPPORTS ====================
-        async function chargerRapports() {
-            try {
-                const response = await fetch(SCRIPT_URL + '?action=getAll');
-                const result = await response.json();
+       async function chargerRapports() {
+    try {
+        const url = PROXY_READ + encodeURIComponent(SCRIPT_URL + '?action=getAll');
+        const response = await fetch(url);
+        const result = await response.json();
 
-                if (!result.success) {
-                    document.getElementById('mesRapports').innerHTML = '<div class="empty-state">❌ Erreur de chargement</div>';
-                    return;
-                }
-
-                rapportsData = result.data || [];
-                afficherMesRapports();
-
-                if (isDirection) {
-                    afficherTousRapports();
-                }
-
-            } catch (error) {
-                document.getElementById('mesRapports').innerHTML = '<div class="empty-state">❌ Erreur réseau</div>';
-            }
+        if (!result.success) {
+            document.getElementById('mesRapports').innerHTML = '<div class="empty-state">❌ Erreur de chargement</div>';
+            return;
         }
 
+        rapportsData = result.data || [];
+        afficherMesRapports();
+
+        if (isDirection) {
+            afficherTousRapports();
+        }
+
+    } catch (error) {
+        document.getElementById('mesRapports').innerHTML = '<div class="empty-state">❌ Erreur réseau</div>';
+    }
+}
         // ==================== AFFICHER MES RAPPORTS ====================
         function afficherMesRapports() {
             const container = document.getElementById('mesRapports');
