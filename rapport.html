@@ -491,7 +491,7 @@
         </header>
 
         <!-- ===== FORMULAIRE DE RAPPORT ===== -->
-        <section class="section">
+        <section class="section" id="formSection" style="display:none;">
             <h2 class="section-title">
                 <i class="fas fa-edit"></i> RÉDIGER MON RAPPORT
                 <span class="direction-badge" id="directionBadge" style="display:none;">
@@ -555,7 +555,7 @@
         </section>
 
         <!-- ===== MES RAPPORTS ===== -->
-        <section class="section">
+        <section class="section" id="sectionMesRapports" style="display:none;">
             <h2 class="section-title"><i class="fas fa-history"></i> MES RAPPORTS RÉCENTS</h2>
             <div id="mesRapports">
                 <div class="loading-text">
@@ -582,7 +582,7 @@
         <div class="modal-content">
             <h2><i class="fas fa-id-card"></i> IDENTIFICATION</h2>
             <p style="color:var(--text-secondary); margin-bottom:1.5rem;">Entrez votre ID membre pour continuer</p>
-            <input type="text" id="idInput" placeholder="Ex: AT21_006" autocomplete="off" autofocus>
+            <input type="text" id="idInput" placeholder="" autocomplete="off" autofocus>
             <div class="error-msg" id="idError">❌ ID non reconnu. Vérifiez votre identifiant.</div>
             <button class="btn-primary" onclick="verifierId()" style="width:100%;">
                 <i class="fas fa-check"></i> VALIDER
@@ -595,9 +595,9 @@
 
     <script>
         // ==================== CONFIGURATION ====================
-     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxmRE_xQS1G8rXN31saegDVbaZHPKEMxawDJKve4C6ZV0aDQA6cllG4cr7QoJGpbsz0/exec';
-const PROXY_READ = 'https://corsproxy.io/?url=';
-const PROXY_WRITE = 'https://corsproxy.io/?url=';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxmRE_xQS1G8rXN31saegDVbaZHPKEMxawDJKve4C6ZV0aDQA6cllG4cr7QoJGpbsz0/exec';
+        const PROXY_READ = 'https://corsproxy.io/?url=';
+        const PROXY_WRITE = 'https://corsproxy.io/?url=';
 
         // ==================== BASE DES MEMBRES ====================
         const MEMBRES = {
@@ -625,18 +625,11 @@ const PROXY_WRITE = 'https://corsproxy.io/?url=';
         let membreActuel = null;
         let rapportsData = [];
         let isDirection = false;
-        let editMode = false;
 
         // ==================== INITIALISATION ====================
         document.addEventListener('DOMContentLoaded', function() {
-            // Vérifier si déjà identifié
-            const savedId = localStorage.getItem('rapport_memberId');
-            if (savedId && MEMBRES[savedId]) {
-                membreActuel = { id: savedId, ...MEMBRES[savedId] };
-                isDirection = ACCES_AUTORISES.includes(savedId) || savedId === 'AT21_006';
-                fermerModal();
-                initialiserPage();
-            }
+            // NE PAS restaurer de session - toujours demander l'ID
+            localStorage.removeItem('rapport_memberId');
 
             // Écouter la touche Entrée sur le champ ID
             document.getElementById('idInput').addEventListener('keypress', function(e) {
@@ -652,7 +645,7 @@ const PROXY_WRITE = 'https://corsproxy.io/?url=';
             if (MEMBRES[id]) {
                 membreActuel = { id: id, ...MEMBRES[id] };
                 isDirection = ACCES_AUTORISES.includes(id) || id === 'AT21_006';
-                localStorage.setItem('rapport_memberId', id);
+
                 fermerModal();
                 initialiserPage();
             } else {
@@ -669,6 +662,10 @@ const PROXY_WRITE = 'https://corsproxy.io/?url=';
 
         // ==================== INITIALISATION PAGE ====================
         function initialiserPage() {
+            // Afficher les sections
+            document.getElementById('formSection').style.display = 'block';
+            document.getElementById('sectionMesRapports').style.display = 'block';
+
             // Date et heure auto
             mettreAJourDateHeure();
             setInterval(mettreAJourDateHeure, 60000);
@@ -710,28 +707,29 @@ const PROXY_WRITE = 'https://corsproxy.io/?url=';
         }
 
         // ==================== CHARGER LES RAPPORTS ====================
-       async function chargerRapports() {
-    try {
-        const url = PROXY_READ + encodeURIComponent(SCRIPT_URL + '?action=getAll');
-        const response = await fetch(url);
-        const result = await response.json();
+        async function chargerRapports() {
+            try {
+                const url = PROXY_READ + encodeURIComponent(SCRIPT_URL + '?action=getAll');
+                const response = await fetch(url);
+                const result = await response.json();
 
-        if (!result.success) {
-            document.getElementById('mesRapports').innerHTML = '<div class="empty-state">❌ Erreur de chargement</div>';
-            return;
+                if (!result.success) {
+                    document.getElementById('mesRapports').innerHTML = '<div class="empty-state">❌ Erreur de chargement</div>';
+                    return;
+                }
+
+                rapportsData = result.data || [];
+                afficherMesRapports();
+
+                if (isDirection) {
+                    afficherTousRapports();
+                }
+
+            } catch (error) {
+                document.getElementById('mesRapports').innerHTML = '<div class="empty-state">❌ Erreur réseau</div>';
+            }
         }
 
-        rapportsData = result.data || [];
-        afficherMesRapports();
-
-        if (isDirection) {
-            afficherTousRapports();
-        }
-
-    } catch (error) {
-        document.getElementById('mesRapports').innerHTML = '<div class="empty-state">❌ Erreur réseau</div>';
-    }
-}
         // ==================== AFFICHER MES RAPPORTS ====================
         function afficherMesRapports() {
             const container = document.getElementById('mesRapports');
@@ -747,9 +745,7 @@ const PROXY_WRITE = 'https://corsproxy.io/?url=';
                 return;
             }
 
-            // Trier par date décroissante
             mesRapports.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-
             container.innerHTML = mesRapports.map(r => creerHtmlRapport(r, true)).join('');
         }
 
@@ -803,49 +799,49 @@ const PROXY_WRITE = 'https://corsproxy.io/?url=';
         }
 
         // ==================== SAUVEGARDER RAPPORT ====================
-       async function sauvegarderRapport() {
-    const objet = document.getElementById('objetSelect').value;
-    const contenu = document.getElementById('contenuInput').value.trim();
-    const editId = document.getElementById('editId').value;
+        async function sauvegarderRapport() {
+            const objet = document.getElementById('objetSelect').value;
+            const contenu = document.getElementById('contenuInput').value.trim();
+            const editId = document.getElementById('editId').value;
 
-    if (!objet) { showToast('⚠️ Sélectionnez un objet.', 'error'); return; }
-    if (!contenu) { showToast('⚠️ Écrivez le contenu.', 'error'); return; }
+            if (!objet) { showToast('⚠️ Sélectionnez un objet.', 'error'); return; }
+            if (!contenu) { showToast('⚠️ Écrivez le contenu.', 'error'); return; }
 
-    const now = new Date();
-    const payload = {
-        action: editId ? 'update' : 'add',
-        id: editId || '',
-        memberId: membreActuel.id,
-        nom: membreActuel.prenom + ' ' + membreActuel.nom,
-        fonction: membreActuel.fonction,
-        date: now.toLocaleDateString('fr-FR'),
-        heure: now.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'}),
-        objet: objet,
-        contenu: contenu
-    };
+            const now = new Date();
+            const payload = {
+                action: editId ? 'update' : 'add',
+                id: editId || '',
+                memberId: membreActuel.id,
+                nom: membreActuel.prenom + ' ' + membreActuel.nom,
+                fonction: membreActuel.fonction,
+                date: now.toLocaleDateString('fr-FR'),
+                heure: now.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'}),
+                objet: objet,
+                contenu: contenu
+            };
 
-    const btn = document.getElementById('saveBtn');
-    btn.disabled = true;
-    document.getElementById('saveBtnText').textContent = 'SAUVEGARDE...';
+            const btn = document.getElementById('saveBtn');
+            btn.disabled = true;
+            document.getElementById('saveBtnText').textContent = 'SAUVEGARDE...';
 
-    try {
-        await fetch(PROXY_WRITE + encodeURIComponent(SCRIPT_URL), {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
+            try {
+                await fetch(PROXY_WRITE + encodeURIComponent(SCRIPT_URL), {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
 
-        showToast(editId ? '✅ Rapport modifié !' : '✅ Rapport enregistré !');
-        reinitialiserFormulaire();
-        setTimeout(chargerRapports, 2000);
-    } catch (error) {
-        showToast('❌ Erreur réseau', 'error');
-    } finally {
-        btn.disabled = false;
-        document.getElementById('saveBtnText').textContent = 'SAUVEGARDER LE RAPPORT';
-    }
-}
+                showToast(editId ? '✅ Rapport modifié !' : '✅ Rapport enregistré !');
+                reinitialiserFormulaire();
+                setTimeout(chargerRapports, 2000);
+            } catch (error) {
+                showToast('❌ Erreur réseau', 'error');
+            } finally {
+                btn.disabled = false;
+                document.getElementById('saveBtnText').textContent = 'SAUVEGARDER LE RAPPORT';
+            }
+        }
 
         // ==================== MODIFIER RAPPORT ====================
         function modifierRapport(rapportId) {
@@ -861,23 +857,23 @@ const PROXY_WRITE = 'https://corsproxy.io/?url=';
         }
 
         // ==================== SUPPRIMER RAPPORT ====================
-       async function supprimerRapport(rapportId) {
-    if (!confirm('⚠️ Voulez-vous vraiment supprimer ce rapport ?')) return;
+        async function supprimerRapport(rapportId) {
+            if (!confirm('⚠️ Voulez-vous vraiment supprimer ce rapport ?')) return;
 
-    try {
-        await fetch(PROXY_WRITE + encodeURIComponent(SCRIPT_URL), {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'delete', id: rapportId })
-        });
+            try {
+                await fetch(PROXY_WRITE + encodeURIComponent(SCRIPT_URL), {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'delete', id: rapportId })
+                });
 
-        showToast('🗑️ Rapport supprimé.');
-        setTimeout(chargerRapports, 2000);
-    } catch (error) {
-        showToast('❌ Erreur réseau', 'error');
-    }
-}
+                showToast('🗑️ Rapport supprimé.');
+                setTimeout(chargerRapports, 2000);
+            } catch (error) {
+                showToast('❌ Erreur réseau', 'error');
+            }
+        }
 
         // ==================== REINITIALISER ====================
         function reinitialiserFormulaire() {
