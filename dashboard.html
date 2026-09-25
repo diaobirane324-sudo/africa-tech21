@@ -53,16 +53,129 @@
         .hero-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(123, 44, 191, 0.1) 0%, transparent 50%); pointer-events: none; }
         .hero-title { font-family: 'Orbitron', sans-serif; font-size: 3.5rem; background: linear-gradient(45deg, var(--neon-blue), #ffffff, var(--neon-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; margin-bottom: 1rem; text-shadow: 0 0 30px rgba(0, 240, 255, 0.5); }
         .hero-subtitle { font-size: 1.3rem; color: var(--text-secondary); text-align: center; max-width: 600px; margin: 0 auto; line-height: 1.6; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.5rem; margin-bottom: 4rem; }
-        .feature-card { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 3rem 2.5rem; transition: all 0.4s ease; cursor: pointer; position: relative; overflow: hidden; }
-        .feature-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.05), transparent); transition: 0.6s; }
-        .feature-card:hover { transform: translateY(-10px) scale(1.02); border-color: var(--neon-blue); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), var(--panel-glow); }
-        .feature-card:hover::before { left: 100%; }
-        .feature-icon { font-size: 4rem; color: var(--neon-blue); margin-bottom: 2rem; text-shadow: var(--accent-glow); text-align: center; }
-        .feature-title { font-size: 1.8rem; color: var(--neon-blue); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px; text-align: center; font-weight: 700; }
-        .feature-description { color: var(--text-secondary); line-height: 1.7; text-align: center; margin-bottom: 2rem; font-size: 1.1rem; }
-        .feature-status { text-align: center; font-weight: 700; letter-spacing: 1px; }
+
+        /* ===== NOUVELLES CARTES CYBERPUNK ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            position: relative;
+            padding: 3rem 2.5rem;
+            background: rgba(10, 10, 20, 0.75);
+            backdrop-filter: blur(15px);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            clip-path: polygon(
+                30px 0%, 100% 0%,
+                100% calc(100% - 30px),
+                calc(100% - 30px) 100%,
+                0% 100%, 0% 30px
+            );
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 2px;
+            background: linear-gradient(90deg, #00f0ff, #7b2cbf, #ff00ff, #00f0ff);
+            background-size: 300% 300%;
+            -webkit-mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: borderShift 4s linear infinite;
+            pointer-events: none;
+            clip-path: polygon(
+                30px 0%, 100% 0%,
+                100% calc(100% - 30px),
+                calc(100% - 30px) 100%,
+                0% 100%, 0% 30px
+            );
+        }
+
+        @keyframes borderShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.08), transparent);
+            transition: 0.6s;
+            pointer-events: none;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 240, 255, 0.4);
+        }
+
+        .feature-card:hover::after { left: 100%; }
+
+        /* Lignes d'angle décoratives */
+        .feature-card .corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-color: var(--neon-blue);
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        .feature-card .corner.tl { top: 10px; left: 10px; border-top: 2px solid; border-left: 2px solid; }
+        .feature-card .corner.br { bottom: 10px; right: 10px; border-bottom: 2px solid; border-right: 2px solid; }
+
+        .feature-card:hover .corner { opacity: 1; width: 30px; height: 30px; }
+
+        .feature-icon {
+            font-size: 4rem;
+            color: var(--neon-blue);
+            margin-bottom: 2rem;
+            text-shadow: var(--accent-glow);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        .feature-title {
+            font-size: 1.8rem;
+            color: var(--neon-blue);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+        }
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 2;
+        }
+        .feature-status {
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 2;
+        }
         .status-active { color: var(--neon-blue); text-shadow: var(--accent-glow); }
+
+        /* ===== FORUM ===== */
         .forum-section { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 25px; padding: 3rem; margin-bottom: 4rem; box-shadow: var(--panel-glow); }
         .section-title { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; color: var(--neon-blue); text-align: center; margin-bottom: 3rem; text-transform: uppercase; letter-spacing: 2px; text-shadow: var(--accent-glow); }
         .messages-container { max-height: 500px; overflow-y: auto; margin-bottom: 2.5rem; border: 1px solid var(--glass-border); border-radius: 15px; padding: 2rem; background: rgba(10, 10, 20, 0.6); }
@@ -90,7 +203,7 @@
             .hero-section { padding: 2rem 1.5rem; }
             .hero-title { font-size: 2.5rem; }
             .features-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-            .feature-card { padding: 2rem 1.5rem; }
+            .feature-card { padding: 2rem 1.5rem; clip-path: polygon(20px 0%, 100% 0%, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0% 100%, 0% 20px); }
             .input-group { flex-direction: column; }
             .send-btn { width: 100%; }
             .info-banner { font-size: 1rem; padding: 0.8rem 1rem; }
@@ -145,40 +258,50 @@
         </section>
 
         <div class="features-grid">
-            <!-- ESPACE DIRECTION (NOUVELLE CARTE) -->
+            <!-- ESPACE DIRECTION -->
             <div class="feature-card" onclick="accederEspaceDirection()">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
                 <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
                 <h3 class="feature-title">ESPACE DIRECTION</h3>
                 <p class="feature-description">Postes de travail des membres de la direction. Secrétariat, Gestion des Stocks, Admin Examens, Espace Major. Accès strictement réservé.</p>
                 <div class="feature-status status-active"><i class="fas fa-lock"></i> ACCÈS: DIRECTION</div>
             </div>
 
-            <!-- RSMA (VERROUILLÉ) -->
+            <!-- RSMA -->
             <div class="feature-card" onclick="verifierAcces('rsma.html')">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
                 <div class="feature-icon"><i class="fas fa-water"></i></div>
                 <h3 class="feature-title">RSMA V1.0</h3>
                 <p class="feature-description">Système de robot sous-marin autonome pour l'exploration marine.</p>
                 <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
             </div>
 
-            <!-- OXY (VERROUILLÉ) -->
+            <!-- OXY -->
             <div class="feature-card" onclick="verifierAcces('oxy.html')">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
                 <div class="feature-icon"><i class="fas fa-wind"></i></div>
                 <h3 class="feature-title">PROJET OXY</h3>
                 <p class="feature-description">Système d'assistance respiratoire automatique.</p>
                 <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
             </div>
 
-            <!-- RAPPORT DE FIN DE JOURNÉE -->
+            <!-- RAPPORT -->
             <div class="feature-card" onclick="window.location.href='rapport.html'">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
                 <div class="feature-icon"><i class="fas fa-clipboard-check"></i></div>
                 <h3 class="feature-title">RAPPORT DE FIN DE JOURNÉE</h3>
                 <p class="feature-description">Rédigez votre rapport d'activité quotidien.</p>
                 <div class="feature-status status-active"><i class="fas fa-users"></i> ACCÈS: MEMBRES</div>
             </div>
 
-            <!-- EXAMINER MON TRAVAIL -->
+            <!-- EXAMINER -->
             <div class="feature-card" onclick="window.location.href='examiner.html'">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
                 <div class="feature-icon"><i class="fas fa-file-pdf"></i></div>
                 <h3 class="feature-title">EXAMINER MON TRAVAIL</h3>
                 <p class="feature-description">Soumettez votre travail (PDF) à l'examen ultra-rigoureux.</p>
@@ -187,14 +310,18 @@
 
             <!-- EXAMEN FFAM -->
             <div class="feature-card" onclick="window.location.href='examen-ffam.html'">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
                 <div class="feature-icon"><i class="fas fa-graduation-cap"></i></div>
                 <h3 class="feature-title">EXAMEN FFAM</h3>
                 <p class="feature-description">Évaluation technique pour les Future Members.</p>
                 <div class="feature-status status-active"><i class="fas fa-lock"></i> ACCÈS: RÉSERVÉ</div>
             </div>
 
-            <!-- RGA (VERROUILLÉ) -->
+            <!-- RGA -->
             <div class="feature-card" onclick="verifierAcces('rga.html')">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
                 <div class="feature-icon"><i class="fas fa-robot"></i></div>
                 <h3 class="feature-title">ROBOT DE GUIDE (RGA)</h3>
                 <p class="feature-description">Robot intelligent autonome pour l'accueil et l'assistance.</p>
@@ -203,6 +330,8 @@
 
             <!-- PROFIL -->
             <div class="feature-card" onclick="window.location.href='profile.html'">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
                 <div class="feature-icon"><i class="fas fa-user-cog"></i></div>
                 <h3 class="feature-title">PROFIL TECHNIQUE</h3>
                 <p class="feature-description">Gestion de votre profil technique et compétences.</p>
@@ -211,54 +340,68 @@
 
             <!-- RÉSEAU COLLABORATIF -->
             <div class="feature-card" onclick="window.location.href='collaboratif.html'">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
                 <div class="feature-icon"><i class="fas fa-users-cog"></i></div>
                 <h3 class="feature-title">RÉSEAU COLLABORATIF</h3>
                 <p class="feature-description">Plateforme de collaboration en temps réel avec les membres.</p>
                 <div class="feature-status status-active">ACCÈS: DISPONIBLE</div>
             </div>
 
-            <!-- IRRITECH (VERROUILLÉ) -->
+            <!-- IRRITECH -->
             <div class="feature-card" onclick="verifierAcces('irritech.html')">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
                 <div class="feature-icon"><i class="fas fa-tint"></i></div>
                 <h3 class="feature-title">IRRITECH V1.0</h3>
                 <p class="feature-description">Système d'arrosage automatique intelligent.</p>
                 <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
             </div>
 
-            <!-- MK-40 (VERROUILLÉ) -->
+            <!-- MK-40 -->
             <div class="feature-card" onclick="verifierAcces('mk40.html')">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
                 <div class="feature-icon"><i class="fas fa-egg"></i></div>
                 <h3 class="feature-title">MK-40</h3>
                 <p class="feature-description">Couveuse automatique intelligente nouvelle génération.</p>
                 <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
             </div>
 
-            <!-- SAGAF (VERROUILLÉ) -->
+            <!-- SAGAF -->
             <div class="feature-card" onclick="verifierAcces('sagaf.html')">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
                 <div class="feature-icon"><i class="fas fa-exclamation-triangle"></i></div>
                 <h3 class="feature-title">SAGAF</h3>
                 <p class="feature-description">Système d'Alerte pour Fuite de Gaz.</p>
                 <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
             </div>
 
-            <!-- BINV (VERROUILLÉ) -->
+            <!-- BINV -->
             <div class="feature-card" onclick="verifierAcces('binv.html')">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
                 <div class="feature-icon"><i class="fas fa-eye-slash"></i></div>
                 <h3 class="feature-title">BINV</h3>
                 <p class="feature-description">Bâton Intelligent pour les Non-Voyants.</p>
                 <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
             </div>
 
-            <!-- COURS AFRICA.TECH21 -->
+            <!-- COURS -->
             <div class="feature-card" onclick="window.location.href='cours.html'">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
                 <div class="feature-icon"><i class="fas fa-graduation-cap"></i></div>
                 <h3 class="feature-title">COURS AFRICA.TECH21</h3>
                 <p class="feature-description">Formation Future Members Africa.tech21 (FFAM).</p>
                 <div class="feature-status status-active">✅ ACCÈS: OUVERT</div>
             </div>
 
-            <!-- PAUSE QUIZ -->
+            <!-- QUIZ -->
             <div class="feature-card" onclick="window.location.href='quiz.html'">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
                 <div class="feature-icon"><i class="fas fa-brain"></i></div>
                 <h3 class="feature-title">PAUSE QUIZ</h3>
                 <p class="feature-description">100 questions sur l'électronique et la robotique.</p>
@@ -267,6 +410,8 @@
 
             <!-- IA -->
             <div class="feature-card" onclick="window.location.href='ia.html'">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
                 <div class="feature-icon"><i class="fas fa-brain"></i></div>
                 <h3 class="feature-title">IA AFRICA.TECH21</h3>
                 <p class="feature-description">Assistant IA intégré (Groq).</p>
@@ -294,16 +439,13 @@
     </div>
 
     <script>
-        // ==================== CONFIGURATION ====================
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyV86rnSYPMRVIyZ-sE62lQXoVRDvhfKPOppMW7Z2IACqM8s2pGbpXC0BcKUNydxs/exec';
         const INFO_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwESkPKPu4svg_ZDnCj-LSTZWlCE_GRLNAP00F_GQXqTBKhqxcmsRjHGk7aXBn5GbfF/exec';
 
-        // ==================== VÉRIFICATION CONNEXION ====================
         if (localStorage.getItem('memberLoggedIn') !== 'true') {
             window.location.href = 'espace-membres.html';
         }
 
-        // ==================== AFFICHAGE DES INFOS MEMBRE ====================
         const memberNom = localStorage.getItem('memberNom') || '';
         const memberPrenom = localStorage.getItem('memberPrenom') || '';
         const memberFonction = localStorage.getItem('memberFonction') || '';
@@ -315,7 +457,6 @@
         }
         document.getElementById('userRole').textContent = '🎯 ' + memberFonction;
 
-        // ==================== PARTICULES ====================
         function createParticles() {
             const container = document.getElementById('particles');
             for (let i = 0; i < 50; i++) {
@@ -328,17 +469,14 @@
             }
         }
 
-        // ==================== FORUM ====================
         function sendMessage() {
             const input = document.getElementById('newMessage');
             const msg = input.value.trim();
             if (!msg) return;
-
             const container = document.getElementById('forumMessages');
             const now = new Date();
             const dateStr = now.toLocaleDateString('fr-FR') + ' - ' + now.toLocaleTimeString('fr-FR');
             const email = localStorage.getItem('memberEmail');
-
             const div = document.createElement('div');
             div.className = 'message';
             div.innerHTML = `
@@ -385,29 +523,24 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        // ==================== BANDEAU D'INFORMATION ====================
         async function chargerInfoJour() {
             try {
                 const response = await fetch(INFO_SCRIPT_URL + '?action=getInfo');
                 const data = await response.json();
-
                 if (data.success && data.message) {
                     document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> ' + data.message;
                 } else {
                     document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> Projet OXY en développement actif !';
                 }
             } catch (error) {
-                console.error('Erreur chargement info:', error);
                 document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> 🚀 AFRICA.TECH21 - Innovation en mouvement !';
             }
         }
 
-        // ==================== ACCÈS PROJETS (3 membres) ====================
         const ACCES_AUTORISES = ['Birane186@00', 'AT21_0036', 'AT21-001', 'AT21-0011'];
 
         function verifierAcces(page) {
             const codeSaisi = prompt("🔒 Entrez votre code d'accès :");
-
             if (ACCES_AUTORISES.includes(codeSaisi)) {
                 window.location.href = page;
             } else {
@@ -415,12 +548,10 @@
             }
         }
 
-        // ==================== ESPACE DIRECTION ====================
         function accederEspaceDirection() {
             window.location.href = 'direction.html';
         }
 
-        // ==================== LOGOUT ====================
         function logout() {
             localStorage.removeItem('memberLoggedIn');
             localStorage.removeItem('memberId');
@@ -432,7 +563,6 @@
             window.location.href = 'index.html';
         }
 
-        // ==================== INIT ====================
         window.addEventListener('load', () => {
             createParticles();
             loadMessages();
