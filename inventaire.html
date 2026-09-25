@@ -7,136 +7,132 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ===== STYLES COMPLETS ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Exo 2', 'Segoe UI', sans-serif; }
         :root {
-            --neon-blue: #00f0ff;
-            --neon-green: #00ff88;
-            --neon-purple: #7b2cbf;
-            --dark-space: #0a0a12;
-            --deep-space: #050510;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a8c0;
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --panel-glow: 0 0 30px rgba(0, 240, 255, 0.2);
+            --neon-blue: #00f0ff; --neon-green: #00ff88; --neon-purple: #7b2cbf;
+            --dark-space: #0a0a12; --deep-space: #050510;
+            --text-primary: #ffffff; --text-secondary: #a0a8c0;
+            --glass: rgba(255,255,255,0.05); --glass-border: rgba(255,255,255,0.1);
+            --panel-glow: 0 0 30px rgba(0,240,255,0.2);
         }
         body {
-            background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(0, 240, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(123, 44, 191, 0.08) 0%, transparent 50%),
+                linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
             color: var(--text-primary);
             min-height: 100vh;
             padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
         }
         .hologram-grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
             background: 
                 linear-gradient(90deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px),
                 linear-gradient(180deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px);
             background-size: 50px 50px;
             animation: gridScan 20s linear infinite;
-            pointer-events: none;
-            z-index: -2;
+            pointer-events: none; z-index: -2;
         }
-        @keyframes gridScan { 0% { transform: translate(0, 0); } 100% { transform: translate(50px, 50px); } }
+        @keyframes gridScan { 0% { transform: translate(0,0); } 100% { transform: translate(50px,50px); } }
         .back-btn {
-            display: inline-block;
-            padding: 0.8rem 2rem;
-            margin-bottom: 2rem;
-            background: rgba(0, 240, 255, 0.1);
-            border: 1px solid var(--neon-blue);
-            border-radius: 10px;
-            color: var(--neon-blue);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            display: inline-block; padding: 0.8rem 2rem; margin-bottom: 2rem;
+            background: rgba(0, 240, 255, 0.1); border: 1px solid var(--neon-blue);
+            border-radius: 10px; color: var(--neon-blue); text-decoration: none;
+            font-weight: 600; transition: all 0.3s ease;
         }
         .back-btn:hover { background: rgba(0, 240, 255, 0.2); box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
-        .page-container { max-width: 1400px; margin: 0 auto; }
+        .page-container { max-width: 1500px; margin: 0 auto; }
         .page-header {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 25px;
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-            text-align: center;
+            background: var(--glass); backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border); border-radius: 25px;
+            padding: 2.5rem; margin-bottom: 2rem; text-align: center;
             box-shadow: var(--panel-glow);
         }
         .page-header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
+            font-family: 'Orbitron', sans-serif; font-size: 2.5rem;
             background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         .page-header .subtitle { color: var(--text-secondary); margin-top: 0.5rem; font-size: 1.1rem; }
-        .controls {
-            display: flex;
-            flex-wrap: wrap;
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
             margin-bottom: 2rem;
-            align-items: center;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(123, 44, 191, 0.05));
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            border-color: var(--neon-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.1);
+        }
+        .stat-card .stat-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--neon-blue);
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+        }
+        .stat-card .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.3rem;
+        }
+        .controls {
+            display: flex; flex-wrap: wrap; gap: 1rem;
+            margin-bottom: 2rem; align-items: center;
         }
         .search-input {
-            flex: 1;
-            min-width: 250px;
-            padding: 0.8rem 1.5rem;
+            flex: 1; min-width: 250px; padding: 0.8rem 1.5rem;
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 1rem;
-            outline: none;
+            border: 1px solid var(--glass-border); border-radius: 12px;
+            color: var(--text-primary); font-size: 1rem; outline: none;
             transition: 0.3s;
         }
         .search-input:focus { border-color: var(--neon-blue); box-shadow: 0 0 20px rgba(0, 240, 255, 0.1); }
         .btn-primary {
             padding: 0.8rem 2rem;
             background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
+            border: none; border-radius: 12px; color: white;
+            font-weight: 700; cursor: pointer; transition: 0.3s;
             white-space: nowrap;
         }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(123, 44, 191, 0.4); }
         .table-container {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 25px;
-            padding: 1.5rem;
-            box-shadow: var(--panel-glow);
+            background: var(--glass); backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border); border-radius: 25px;
+            padding: 1.5rem; box-shadow: var(--panel-glow);
             overflow-x: auto;
         }
         table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
         th {
-            text-align: left;
-            padding: 1rem 0.8rem;
-            color: var(--neon-blue);
+            text-align: left; padding: 1rem 0.8rem; color: var(--neon-blue);
             border-bottom: 2px solid rgba(0, 240, 255, 0.2);
-            font-weight: 700;
-            white-space: nowrap;
+            font-weight: 700; white-space: nowrap;
+            text-transform: uppercase; font-size: 0.8rem;
+            letter-spacing: 1px;
         }
         td { padding: 0.8rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); vertical-align: middle; }
+        tr { transition: all 0.2s ease; }
+        tr:hover { background: rgba(0, 240, 255, 0.03); }
         td .dispo-oui { color: var(--neon-green); font-weight: 700; }
         td .dispo-non { color: #ff4757; font-weight: 700; }
         .action-btn {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            padding: 0.3rem 0.6rem;
-            border-radius: 6px;
-            transition: 0.3s;
-            font-size: 1rem;
+            background: none; border: none; color: var(--text-secondary);
+            cursor: pointer; padding: 0.3rem 0.6rem; border-radius: 6px;
+            transition: 0.3s; font-size: 1rem;
         }
         .action-btn:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
         .action-btn.edit:hover { color: var(--neon-blue); }
@@ -144,62 +140,40 @@
         .empty-state { text-align: center; color: var(--text-secondary); padding: 3rem; }
         .loading-text { text-align: center; color: var(--text-secondary); padding: 3rem; }
         .loading-spinner {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
+            display: inline-block; width: 30px; height: 30px;
             border: 3px solid var(--glass-border);
             border-top: 3px solid var(--neon-blue);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+            border-radius: 50%; animation: spin 0.8s linear infinite;
             margin-bottom: 1rem;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
         .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px); z-index: 9999;
+            align-items: center; justify-content: center; padding: 2rem;
         }
         .modal-overlay.active { display: flex; }
         .modal-content {
             background: linear-gradient(135deg, #0a0a12 0%, #050510 100%);
-            border: 1px solid var(--glass-border);
-            border-radius: 25px;
-            max-width: 600px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 2.5rem;
+            border: 2px solid var(--glass-border); border-radius: 25px;
+            max-width: 600px; width: 100%; max-height: 90vh;
+            overflow-y: auto; padding: 2.5rem;
             box-shadow: 0 0 60px rgba(123, 44, 191, 0.3);
         }
         .modal-content h2 { font-family: 'Orbitron', sans-serif; color: var(--neon-blue); margin-bottom: 1.5rem; }
         .modal-content .form-group { margin-bottom: 1.2rem; }
         .modal-content .form-group label {
-            display: block;
-            color: var(--text-secondary);
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-            font-size: 0.9rem;
+            display: block; color: var(--text-secondary);
+            font-weight: 600; margin-bottom: 0.3rem; font-size: 0.9rem;
         }
         .modal-content .form-group input,
         .modal-content .form-group select {
-            width: 100%;
-            padding: 0.8rem 1rem;
+            width: 100%; padding: 0.8rem 1rem;
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            border-radius: 10px;
-            color: var(--text-primary);
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
+            border: 1px solid var(--glass-border); border-radius: 10px;
+            color: var(--text-primary); font-size: 1rem;
+            outline: none; transition: 0.3s;
         }
         .modal-content .form-group input:focus,
         .modal-content .form-group select:focus {
@@ -207,19 +181,11 @@
             box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
         }
         .modal-content .form-group select option { background: var(--dark-space); }
-        .modal-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
+        .modal-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
         .modal-actions button {
-            flex: 1;
-            padding: 0.8rem;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
+            flex: 1; padding: 0.8rem; border: none;
+            border-radius: 10px; font-weight: 700;
+            cursor: pointer; transition: 0.3s;
         }
         .modal-actions .btn-cancel {
             background: rgba(255, 255, 255, 0.05);
@@ -232,25 +198,14 @@
         }
         .modal-actions .btn-confirm:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(123, 44, 191, 0.4); }
         .toast-message {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
+            position: fixed; bottom: 2rem; left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 255, 136, 0.95);
-            color: #050510;
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            z-index: 9999;
-            animation: fadeInUp 0.3s ease;
-            max-width: 90%;
-            text-align: center;
+            background: rgba(0, 255, 136, 0.95); color: #050510;
+            padding: 1rem 2rem; border-radius: 12px;
+            font-weight: 700; font-size: 1.1rem; z-index: 9999;
+            animation: fadeInUp 0.3s ease; max-width: 90%; text-align: center;
         }
-        .toast-message.error {
-            background: rgba(255, 71, 87, 0.95);
-            color: white;
-        }
+        .toast-message.error { background: rgba(255, 71, 87, 0.95); color: white; }
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateX(-50%) translateY(20px); }
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -277,6 +232,26 @@
             <h1><i class="fas fa-boxes"></i> GESTION DES STOCKS</h1>
             <p class="subtitle">Inventaire des composants électroniques – AFRICA.TECH21</p>
         </header>
+
+        <!-- Statistiques -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-number" id="statTotal">0</div>
+                <div class="stat-label">Total Composants</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="statDispo">0</div>
+                <div class="stat-label">Disponibles</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="statIndispo">0</div>
+                <div class="stat-label">Indisponibles</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="statValeur">0</div>
+                <div class="stat-label">Valeur Totale (FCFA)</div>
+            </div>
+        </div>
 
         <div class="controls">
             <input type="text" id="searchInput" class="search-input" placeholder="🔍 Rechercher un composant (nom, fonction, modèle...)">
@@ -343,13 +318,16 @@
         </div>
     </div>
 
+    <!-- ==================== SUPABASE ==================== -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // ==================== CONFIGURATION ====================
-        // === NOUVELLE URL DU PROXY ===
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyRTw13YwctUOqOKxEZEWVC8qpc0LzZyxmM2Se5MAhiGFi76U6Z2nX3pAAs1BUUHQg/exec';
+        // ==================== CONFIGURATION SUPABASE ====================
+        const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // ==================== ACCÈS RESTREINT ====================
-        const ALLOWED_IDS = ['AT21_006', 'AT21_0026','Birane186@00'];
+        const ALLOWED_IDS = ['AT21_006', 'AT21_0026', 'Birane186@00'];
 
         if (localStorage.getItem('memberLoggedIn') !== 'true') {
             window.location.href = 'espace-membres.html';
@@ -357,14 +335,7 @@
 
         const memberId = localStorage.getItem('memberId') || '';
         if (!ALLOWED_IDS.includes(memberId)) {
-            document.body.innerHTML = `
-                <div style="display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column; gap:1rem; text-align:center; padding:2rem;">
-                    <i class="fas fa-lock" style="font-size:4rem; color:#ff4757;"></i>
-                    <h1 style="color:#ff4757;">ACCÈS REFUSÉ</h1>
-                    <p style="color:var(--text-secondary);">Cette page est réservée au Président et à la Gestionnaire.</p>
-                    <a href="dashboard.html" style="color:var(--neon-blue); text-decoration:underline;">Retour au Dashboard</a>
-                </div>
-            `;
+            document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column;gap:1rem;text-align:center;padding:2rem;"><i class="fas fa-lock" style="font-size:4rem;color:#ff4757;"></i><h1 style="color:#ff4757;">ACCÈS REFUSÉ</h1><p>Cette page est réservée au Président et à la Gestionnaire.</p><a href="dashboard.html" style="color:var(--neon-blue);">Retour au Dashboard</a></div>';
             throw new Error('Accès refusé');
         }
 
@@ -390,29 +361,37 @@
         // ==================== CHARGER ====================
         async function loadInventory() {
             const container = document.getElementById('tableContent');
-            container.innerHTML = `
-                <div class="loading-text">
-                    <div class="loading-spinner"></div>
-                    <p>Chargement de l'inventaire...</p>
-                </div>
-            `;
+            container.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div><p>Chargement de l\'inventaire...</p></div>';
 
             try {
-                const response = await fetch(SCRIPT_URL + '?action=getInventory');
-                const result = await response.json();
+                const { data, error } = await supabaseClient
+                    .from('inventaire')
+                    .select('*')
+                    .order('nom', { ascending: true });
 
-                if (!result.success) {
-                    container.innerHTML = `<div class="empty-state">❌ Erreur : ${result.error}</div>`;
-                    return;
-                }
+                if (error) throw error;
 
-                inventaireData = result.data || [];
+                inventaireData = data || [];
                 filteredData = [...inventaireData];
+                updateStats();
                 renderTable();
 
             } catch (error) {
-                container.innerHTML = `<div class="empty-state">❌ Erreur réseau : ${error.message}</div>`;
+                container.innerHTML = `<div class="empty-state">❌ Erreur : ${error.message}</div>`;
             }
+        }
+
+        // ==================== STATISTIQUES ====================
+        function updateStats() {
+            const total = inventaireData.length;
+            const dispo = inventaireData.filter(i => (i.dispo || '').toLowerCase() === 'oui').length;
+            const indispo = total - dispo;
+            const valeur = inventaireData.reduce((sum, i) => sum + ((parseInt(i.prix) || 0) * (parseInt(i.quantite) || 0)), 0);
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statDispo').textContent = dispo;
+            document.getElementById('statIndispo').textContent = indispo;
+            document.getElementById('statValeur').textContent = valeur.toLocaleString('fr-FR');
         }
 
         // ==================== RECHERCHE ====================
@@ -498,11 +477,7 @@
             document.getElementById('modalModele').value = data?.modele || '';
 
             const submitBtn = document.getElementById('modalSubmitBtn');
-            if (data) {
-                submitBtn.textContent = 'MODIFIER';
-            } else {
-                submitBtn.textContent = 'AJOUTER';
-            }
+            submitBtn.textContent = data ? 'MODIFIER' : 'AJOUTER';
 
             document.getElementById('modalOverlay').classList.add('active');
         }
@@ -516,7 +491,7 @@
         }
 
         function openEditModal(id) {
-            const item = inventaireData.find(d => d.id === id);
+            const item = inventaireData.find(d => d.id == id);
             if (item) {
                 openModal('Modifier le composant', item);
             } else {
@@ -542,63 +517,49 @@
             }
 
             const payload = {
-                action: id ? 'update' : 'add',
-                id: id,
                 nom: nom,
                 fonction: fonction,
                 dispo: dispo,
-                prix: prix || '0',
-                quantite: quantite || '0',
-                modele: modele || ''
+                prix: parseInt(prix) || 0,
+                quantite: parseInt(quantite) || 0,
+                modele: modele || '',
+                timestamp: Date.now()
             };
 
             try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    showToast(id ? '✅ Composant modifié !' : '✅ Composant ajouté !');
-                    closeModal();
-                    loadInventory();
+                let result;
+                if (id) {
+                    result = await supabaseClient.from('inventaire').update(payload).eq('id', id);
                 } else {
-                    showToast('❌ Erreur : ' + result.error, 'error');
+                    result = await supabaseClient.from('inventaire').insert([payload]);
                 }
+
+                if (result.error) throw result.error;
+
+                showToast(id ? '✅ Composant modifié !' : '✅ Composant ajouté !');
+                closeModal();
+                loadInventory();
             } catch (error) {
-                showToast('❌ Erreur réseau : ' + error.message, 'error');
+                showToast('❌ Erreur : ' + error.message, 'error');
             }
         });
 
         // ==================== SUPPRIMER ====================
         async function deleteComponent(id) {
-            if (!confirm('⚠️ Voulez-vous vraiment supprimer ce composant ? Cette action est irréversible.')) {
-                return;
-            }
+            if (!confirm('⚠️ Voulez-vous vraiment supprimer ce composant ?')) return;
 
             try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action: 'delete',
-                        id: id
-                    })
-                });
+                const { error } = await supabaseClient
+                    .from('inventaire')
+                    .delete()
+                    .eq('id', id);
 
-                const result = await response.json();
+                if (error) throw error;
 
-                if (result.success) {
-                    showToast('🗑️ Composant supprimé.');
-                    loadInventory();
-                } else {
-                    showToast('❌ Erreur : ' + result.error, 'error');
-                }
+                showToast('🗑️ Composant supprimé.');
+                loadInventory();
             } catch (error) {
-                showToast('❌ Erreur réseau : ' + error.message, 'error');
+                showToast('❌ Erreur : ' + error.message, 'error');
             }
         }
 
