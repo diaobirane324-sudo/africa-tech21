@@ -122,6 +122,7 @@
             transition: all 0.3s ease;
             font-family: 'Orbitron', sans-serif;
             font-size: 0.85rem;
+            position: relative;
         }
         .tab:hover { background: rgba(255, 0, 51, 0.1); }
         .tab.active {
@@ -360,11 +361,89 @@
             from { opacity: 0; transform: translateX(-50%) translateY(20px); }
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
+
+        /* ===== ALERTE ===== */
+        .alerte-banner {
+            display: none;
+            background: linear-gradient(90deg, #ff0033, #8b0000, #ff0033);
+            background-size: 300%;
+            border: 2px solid #ff0033;
+            border-radius: 18px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #fff;
+            box-shadow: 0 0 40px rgba(255, 0, 51, 0.6);
+            animation: alertePulse 1s infinite, bgMoveAlerte 3s linear infinite;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .alerte-banner.active { display: block; }
+        .alerte-banner .alerte-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .alerte-banner i.warn-icon { font-size: 1.8rem; animation: shakeIcon 0.5s infinite; }
+        @keyframes alertePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        @keyframes bgMoveAlerte {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+        @keyframes shakeIcon {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-15deg); }
+            75% { transform: rotate(15deg); }
+        }
+        .btn-stop-son {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 0.6rem 1.3rem;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+        .btn-stop-son:hover { background: #fff; color: #ff0033; }
+        .btn-stop-son.muet { background: #fff; color: #ff0033; }
+
+        .tab .badge-alerte {
+            display: inline-block;
+            background: #ff0033;
+            color: white;
+            border-radius: 50%;
+            min-width: 22px;
+            height: 22px;
+            line-height: 22px;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 900;
+            margin-left: 0.5rem;
+            animation: badgePulse 0.8s infinite;
+            box-shadow: 0 0 15px #ff0033;
+        }
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+
         @media (max-width: 768px) {
             body { padding: 1rem; }
             .page-header h1 { font-size: 1.8rem; }
             .card-box { padding: 1.5rem; }
             .tabs { flex-direction: column; }
+            .alerte-banner { font-size: 1rem; padding: 1rem; }
         }
     </style>
 </head>
@@ -376,6 +455,16 @@
         <a href="direction.html" class="back-btn">
             <i class="fas fa-arrow-left"></i> RETOUR ESPACE DIRECTION
         </a>
+
+        <div class="alerte-banner" id="alerteBanner">
+            <div class="alerte-content">
+                <i class="fas fa-exclamation-triangle warn-icon"></i>
+                <span id="alerteTexte">⚠️ VOUS AVEZ DES DOSSIERS À CORRIGER !</span>
+                <button class="btn-stop-son" id="btnStopSon" onclick="toggleSon(event)">
+                    <i class="fas fa-volume-up"></i> ARRÊTER LE SON
+                </button>
+            </div>
+        </div>
 
         <header class="page-header">
             <h1><i class="fas fa-project-diagram"></i> ESPACE RESPONSABLE PROJETS</h1>
@@ -739,6 +828,91 @@
             } catch (e) { showToast('❌ ' + e.message); }
         }
 
+        // ==================== ALERTE SONORE ====================
+        let audioCtx = null;
+        let sonMuet = false;
+        let intervalBuzzer = null;
+
+        function jouerBuzzer() {
+            if (sonMuet) return;
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const now = audioCtx.currentTime;
+                for (let i = 0; i < 3; i++) {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'square';
+                    osc.frequency.value = 220;
+                    gain.gain.setValueAtTime(0.15, now + i * 0.3);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.3 + 0.25);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now + i * 0.3);
+                    osc.stop(now + i * 0.3 + 0.3);
+                }
+            } catch (e) { console.warn('Audio bloqué:', e); }
+        }
+
+        function demarrerBuzzer() {
+            if (intervalBuzzer) return;
+            jouerBuzzer();
+            intervalBuzzer = setInterval(() => {
+                if (!sonMuet) jouerBuzzer();
+            }, 5 * 60 * 1000); // 5 minutes
+        }
+
+        function arreterBuzzer() {
+            if (intervalBuzzer) {
+                clearInterval(intervalBuzzer);
+                intervalBuzzer = null;
+            }
+        }
+
+        function toggleSon(event) {
+            event.stopPropagation();
+            sonMuet = !sonMuet;
+            const btn = document.getElementById('btnStopSon');
+            if (sonMuet) {
+                btn.classList.add('muet');
+                btn.innerHTML = '<i class="fas fa-volume-mute"></i> SON COUPÉ';
+            } else {
+                btn.classList.remove('muet');
+                btn.innerHTML = '<i class="fas fa-volume-up"></i> ARRÊTER LE SON';
+                jouerBuzzer();
+            }
+        }
+
+        function afficherAlerte(nb) {
+            const banner = document.getElementById('alerteBanner');
+            const texte = document.getElementById('alerteTexte');
+            if (nb > 0) {
+                texte.innerHTML = `⚠️ VOUS AVEZ <strong>${nb}</strong> DOSSIER${nb > 1 ? 'S' : ''} À CORRIGER !`;
+                banner.classList.add('active');
+                demarrerBuzzer();
+            } else {
+                banner.classList.remove('active');
+                arreterBuzzer();
+                sonMuet = false;
+                const btn = document.getElementById('btnStopSon');
+                btn.classList.remove('muet');
+                btn.innerHTML = '<i class="fas fa-volume-up"></i> ARRÊTER LE SON';
+            }
+        }
+
+        function mettreAJourBadge(nb) {
+            const tabTravaux = document.querySelectorAll('.tab')[2];
+            if (!tabTravaux) return;
+            const ancien = tabTravaux.querySelector('.badge-alerte');
+            if (ancien) ancien.remove();
+            if (nb > 0) {
+                const badge = document.createElement('span');
+                badge.className = 'badge-alerte';
+                badge.textContent = nb;
+                tabTravaux.appendChild(badge);
+            }
+        }
+
         // ==================== TRAVAUX MEMBRES ====================
         async function loadTravaux() {
             const attenteC = document.getElementById('travauxAttente');
@@ -756,6 +930,9 @@
 
                 const attente = (data || []).filter(t => t.statut === 'en_attente');
                 const corriges = (data || []).filter(t => t.statut === 'corrige');
+
+                afficherAlerte(attente.length);
+                mettreAJourBadge(attente.length);
 
                 if (attente.length === 0) {
                     attenteC.innerHTML = '<div class="empty-state">📭 Aucun travail en attente.</div>';
@@ -858,6 +1035,9 @@
         loadProjets();
         loadEvaluations();
         loadTravaux();
+
+        // Recharger les travaux toutes les 30s pour détecter les nouveaux dépôts
+        setInterval(loadTravaux, 30000);
     </script>
 </body>
 </html>
