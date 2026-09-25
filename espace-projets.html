@@ -193,26 +193,13 @@
             border-color: var(--neon-red);
             box-shadow: 0 0 25px rgba(255, 0, 51, 0.2);
         }
-        #editorContent img {
-            max-width: 100%;
-            border-radius: 10px;
-            margin: 1rem 0;
-        }
-        #editorContent table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-        }
+        #editorContent img { max-width: 100%; border-radius: 10px; margin: 1rem 0; }
+        #editorContent table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
         #editorContent table td, #editorContent table th {
             border: 1px solid rgba(255, 0, 51, 0.3);
             padding: 0.5rem;
         }
-        .editor-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
+        .editor-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
         .btn {
             padding: 0.9rem 2rem;
             border: none;
@@ -230,6 +217,8 @@
         .btn-blue:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0, 68, 255, 0.5); }
         .btn-dark { background: rgba(255, 255, 255, 0.05); color: var(--text-secondary); border: 1px solid rgba(255, 0, 51, 0.2); }
         .btn-dark:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
+        .btn-green { background: linear-gradient(135deg, #00b894, #00ff88); color: #031a0a; }
+        .btn-green:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0, 255, 136, 0.5); }
         .input-full {
             width: 100%;
             padding: 1rem 1.5rem;
@@ -289,7 +278,7 @@
         }
         .list-item .title { color: var(--neon-red); font-weight: 700; font-size: 1.1rem; margin-bottom: 0.3rem; }
         .list-item .meta { color: var(--text-secondary); font-size: 0.85rem; }
-        .list-item .actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+        .list-item .actions { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
         .list-item .actions button {
             background: rgba(255, 0, 51, 0.1);
             border: 1px solid rgba(255, 0, 51, 0.3);
@@ -304,6 +293,21 @@
         .list-item .actions button:hover { background: rgba(255, 0, 51, 0.2); }
         .list-item .actions button.delete { color: #ff4757; border-color: rgba(255, 71, 87, 0.3); background: rgba(255, 71, 87, 0.05); }
         .list-item .actions button.delete:hover { background: rgba(255, 71, 87, 0.2); }
+        .list-item .actions button.corriger { color: #00ff88; border-color: rgba(0, 255, 136, 0.4); background: rgba(0, 255, 136, 0.08); }
+        .list-item .actions button.corriger:hover { background: rgba(0, 255, 136, 0.2); }
+        .list-item .actions button.voir { color: #87ceeb; border-color: rgba(135, 206, 235, 0.4); background: rgba(135, 206, 235, 0.08); }
+        .list-item .actions button.voir:hover { background: rgba(135, 206, 235, 0.2); }
+        .statut-badge {
+            display: inline-block;
+            padding: 0.3rem 0.9rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+        }
+        .statut-en_attente { background: rgba(255, 200, 0, 0.15); border: 1px solid #ffc800; color: #ffc800; }
+        .statut-corrige { background: rgba(0, 255, 136, 0.15); border: 1px solid #00ff88; color: #00ff88; }
         .empty-state { text-align: center; color: var(--text-secondary); padding: 3rem; }
         .loading-text { text-align: center; color: var(--text-secondary); padding: 2rem; }
         .loading-spinner {
@@ -378,7 +382,6 @@
             <p class="subtitle">Gestion des projets et évaluation des travaux</p>
         </header>
 
-        <!-- TABS -->
         <div class="tabs">
             <div class="tab active" onclick="switchTab('redaction')">
                 <i class="fas fa-edit"></i> RÉDACTION PROJETS
@@ -386,15 +389,16 @@
             <div class="tab" onclick="switchTab('evaluations')">
                 <i class="fas fa-star"></i> ÉVALUATIONS
             </div>
+            <div class="tab" onclick="switchTab('travaux')">
+                <i class="fas fa-folder-open"></i> TRAVAUX MEMBRES
+            </div>
         </div>
 
         <!-- SECTION RÉDACTION -->
         <div class="section active" id="sectionRedaction">
             <div class="card-box">
                 <h2><i class="fas fa-pen-fancy"></i> ÉDITEUR DE PROJETS</h2>
-
                 <input type="text" id="projetTitle" class="input-full" placeholder="Titre du projet...">
-
                 <div class="editor-toolbar">
                     <button onclick="execCmd('bold')" title="Gras"><i class="fas fa-bold"></i></button>
                     <button onclick="execCmd('italic')" title="Italique"><i class="fas fa-italic"></i></button>
@@ -420,9 +424,7 @@
                     <span style="width:1px; height:24px; background:rgba(255,0,51,0.2); align-self:center;"></span>
                     <button onclick="execCmd('removeFormat')" title="Effacer format"><i class="fas fa-eraser"></i></button>
                 </div>
-
                 <div id="editorContent" contenteditable="true" placeholder="Rédigez votre projet ici..."></div>
-
                 <div class="editor-actions">
                     <button class="btn btn-danger" onclick="saveProjet()"><i class="fas fa-save"></i> SAUVEGARDER</button>
                     <button class="btn btn-blue" onclick="loadProjets()"><i class="fas fa-sync"></i> SYNC</button>
@@ -443,7 +445,6 @@
         <div class="section" id="sectionEvaluations">
             <div class="card-box">
                 <h2><i class="fas fa-star"></i> ÉVALUER UN TRAVAIL</h2>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label>Type de travail</label>
@@ -461,19 +462,16 @@
                         <input type="text" id="evalCibleNom" placeholder="Ex: DIAO BIRANE">
                     </div>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label>Note (/20)</label>
                         <input type="number" id="evalNote" min="0" max="20" step="1" placeholder="Ex: 15">
                     </div>
                 </div>
-
                 <div class="form-group" style="margin-bottom: 1rem;">
                     <label>Commentaire</label>
                     <textarea id="evalCommentaire" rows="4" placeholder="Commentaire sur le travail..."></textarea>
                 </div>
-
                 <button class="btn btn-danger" onclick="saveEvaluation()"><i class="fas fa-check"></i> ENREGISTRER L'ÉVALUATION</button>
             </div>
 
@@ -484,9 +482,26 @@
                 </div>
             </div>
         </div>
+
+        <!-- SECTION TRAVAUX MEMBRES -->
+        <div class="section" id="sectionTravaux">
+            <div class="card-box">
+                <h2><i class="fas fa-hourglass-half"></i> TRAVAUX EN ATTENTE</h2>
+                <div id="travauxAttente">
+                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
+                </div>
+            </div>
+
+            <div class="card-box">
+                <h2><i class="fas fa-check-circle"></i> TRAVAUX CORRIGÉS</h2>
+                <div id="travauxCorriges">
+                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- MODAL VIEW -->
+    <!-- MODAL VIEW PROJET -->
     <div class="modal-overlay" id="viewModal">
         <div class="modal-content">
             <h2><i class="fas fa-file-alt"></i> <span id="viewTitle">Titre</span></h2>
@@ -498,15 +513,36 @@
         </div>
     </div>
 
-    <!-- ==================== SUPABASE ==================== -->
+    <!-- MODAL CORRECTION -->
+    <div class="modal-overlay" id="correctionModal">
+        <div class="modal-content">
+            <h2><i class="fas fa-check-double"></i> CORRIGER LE TRAVAIL</h2>
+            <div id="correctionInfo" style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.7;"></div>
+
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Note (/20)</label>
+                <input type="number" id="corrNote" min="0" max="20" step="1" placeholder="Ex: 15">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label>Correction / Commentaire</label>
+                <textarea id="corrCommentaire" rows="6" placeholder="Détaillez votre correction..."></textarea>
+            </div>
+
+            <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+                <button class="btn btn-green" onclick="validerCorrection()"><i class="fas fa-check"></i> VALIDER LA CORRECTION</button>
+                <button class="btn btn-dark" onclick="closeCorrectionModal()">ANNULER</button>
+            </div>
+            <input type="hidden" id="corrTravailId" value="">
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // ==================== CONFIGURATION ====================
         const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // ==================== ACCÈS ====================
         const ALLOWED_IDS = ['AT21_0011', 'AT21_006', 'Birane186@00'];
         if (localStorage.getItem('memberLoggedIn') !== 'true') window.location.href = 'espace-membres.html';
         const memberId = localStorage.getItem('memberId') || '';
@@ -518,7 +554,6 @@
         const memberNom = localStorage.getItem('memberNom') || '';
         const memberPrenom = localStorage.getItem('memberPrenom') || '';
 
-        // ==================== TOAST ====================
         function showToast(msg, type='') {
             const old = document.querySelector('.toast'); if (old) old.remove();
             const t = document.createElement('div');
@@ -528,7 +563,18 @@
             setTimeout(() => t.remove(), 4000);
         }
 
-        // ==================== TABS ====================
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.animationDelay = Math.random() * 15 + 's';
+                p.style.animationDuration = (10 + Math.random() * 12) + 's';
+                container.appendChild(p);
+            }
+        }
+
         function switchTab(name) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -536,36 +582,21 @@
             document.getElementById('section' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
         }
 
-        // ==================== ÉDITEUR ====================
         function execCmd(cmd, val=null) {
             document.execCommand(cmd, false, val);
             document.getElementById('editorContent').focus();
         }
-
-        function insertLink() {
-            const url = prompt('URL du lien :');
-            if (url) execCmd('createLink', url);
-        }
-
-        function insertImage() {
-            const url = prompt('URL de l\'image :');
-            if (url) execCmd('insertImage', url);
-        }
-
+        function insertLink() { const url = prompt('URL du lien :'); if (url) execCmd('createLink', url); }
+        function insertImage() { const url = prompt('URL de l\'image :'); if (url) execCmd('insertImage', url); }
         function insertTable() {
             const rows = prompt('Nombre de lignes :', '3');
             const cols = prompt('Nombre de colonnes :', '3');
             if (!rows || !cols) return;
             let html = '<table>';
-            for (let i = 0; i < rows; i++) {
-                html += '<tr>';
-                for (let j = 0; j < cols; j++) html += '<td>&nbsp;</td>';
-                html += '</tr>';
-            }
+            for (let i = 0; i < rows; i++) { html += '<tr>'; for (let j = 0; j < cols; j++) html += '<td>&nbsp;</td>'; html += '</tr>'; }
             html += '</table>';
             execCmd('insertHTML', html);
         }
-
         function clearEditor() {
             if (confirm('Effacer le contenu ?')) {
                 document.getElementById('editorContent').innerHTML = '';
@@ -579,9 +610,7 @@
             const title = document.getElementById('projetTitle').value.trim() || 'Sans titre';
             const content = document.getElementById('editorContent').innerHTML.trim();
             const editId = document.getElementById('editProjetId').value;
-
-            if (!content || content === '<br>') { showToast('⚠️ Écrivez du contenu.', ''); return; }
-
+            if (!content || content === '<br>') { showToast('⚠️ Écrivez du contenu.'); return; }
             const now = new Date();
             const payload = {
                 title, content,
@@ -590,14 +619,11 @@
                 date: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
                 timestamp: Date.now()
             };
-
             try {
                 let res;
                 if (editId) res = await supabaseClient.from('projets_redaction').update(payload).eq('id', editId);
                 else res = await supabaseClient.from('projets_redaction').insert([payload]);
-
                 if (res.error) throw res.error;
-
                 showToast('✅ Projet sauvegardé !', 'success');
                 document.getElementById('editorContent').innerHTML = '';
                 document.getElementById('projetTitle').value = '';
@@ -627,8 +653,6 @@
             } catch (e) { c.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>'; }
         }
 
-        let projetsCache = [];
-
         async function viewProjet(id) {
             const { data } = await supabaseClient.from('projets_redaction').select('*').eq('id', id).single();
             if (!data) return;
@@ -637,9 +661,7 @@
             document.getElementById('viewBody').innerHTML = data.content;
             document.getElementById('viewModal').classList.add('active');
         }
-
         function closeViewModal() { document.getElementById('viewModal').classList.remove('active'); }
-
         async function editProjet(id) {
             const { data } = await supabaseClient.from('projets_redaction').select('*').eq('id', id).single();
             if (!data) return;
@@ -648,7 +670,6 @@
             document.getElementById('editProjetId').value = id;
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-
         async function deleteProjet(id) {
             if (!confirm('Supprimer ce projet ?')) return;
             try {
@@ -666,23 +687,16 @@
             const cibleNom = document.getElementById('evalCibleNom').value.trim();
             const note = document.getElementById('evalNote').value;
             const commentaire = document.getElementById('evalCommentaire').value.trim();
-
             if (!cibleId || !cibleNom) { showToast('⚠️ Remplissez ID et Nom.'); return; }
             if (!note || note < 0 || note > 20) { showToast('⚠️ Note entre 0 et 20.'); return; }
-
             const now = new Date();
             const payload = {
-                type_travail: type,
-                cible_id: cibleId,
-                cible_nom: cibleNom,
-                note: parseInt(note),
-                commentaire: commentaire,
-                evaluateur: `${memberPrenom} ${memberNom}`,
-                evaluateur_id: memberId,
+                type_travail: type, cible_id: cibleId, cible_nom: cibleNom,
+                note: parseInt(note), commentaire: commentaire,
+                evaluateur: `${memberPrenom} ${memberNom}`, evaluateur_id: memberId,
                 date: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
                 timestamp: Date.now()
             };
-
             try {
                 const { error } = await supabaseClient.from('evaluations').insert([payload]);
                 if (error) throw error;
@@ -725,9 +739,125 @@
             } catch (e) { showToast('❌ ' + e.message); }
         }
 
+        // ==================== TRAVAUX MEMBRES ====================
+        async function loadTravaux() {
+            const attenteC = document.getElementById('travauxAttente');
+            const corrigesC = document.getElementById('travauxCorriges');
+            attenteC.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
+            corrigesC.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('travaux_membres')
+                    .select('*')
+                    .order('timestamp', { ascending: false });
+
+                if (error) throw error;
+
+                const attente = (data || []).filter(t => t.statut === 'en_attente');
+                const corriges = (data || []).filter(t => t.statut === 'corrige');
+
+                if (attente.length === 0) {
+                    attenteC.innerHTML = '<div class="empty-state">📭 Aucun travail en attente.</div>';
+                } else {
+                    attenteC.innerHTML = attente.map(t => `
+                        <div class="list-item">
+                            <div class="title"><i class="fas fa-file-pdf" style="color:#ff4757;"></i> ${t.fichier_nom}</div>
+                            <div class="meta">👤 ${t.membre_nom} (${t.membre_id})</div>
+                            <div class="meta">📅 ${t.date_depot}</div>
+                            ${t.commentaire ? `<div class="meta" style="margin-top:0.4rem;">💬 ${t.commentaire}</div>` : ''}
+                            <div class="statut-badge statut-en_attente"><i class="fas fa-clock"></i> EN ATTENTE</div>
+                            <div class="actions">
+                                <button class="voir" onclick="window.open('${t.fichier_url}', '_blank')"><i class="fas fa-eye"></i> Voir PDF</button>
+                                <button class="corriger" onclick="ouvrirCorrection('${t.id}')"><i class="fas fa-check-double"></i> Corriger</button>
+                                <button class="delete" onclick="supprimerTravail('${t.id}', '${t.storage_path}')"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+
+                if (corriges.length === 0) {
+                    corrigesC.innerHTML = '<div class="empty-state">📭 Aucun travail corrigé.</div>';
+                } else {
+                    corrigesC.innerHTML = corriges.map(t => `
+                        <div class="list-item">
+                            <div class="title"><i class="fas fa-file-pdf" style="color:#00ff88;"></i> ${t.fichier_nom}</div>
+                            <div class="meta">👤 ${t.membre_nom} (${t.membre_id})</div>
+                            <div class="meta">📅 Déposé le ${t.date_depot}</div>
+                            <div class="statut-badge statut-corrige"><i class="fas fa-check-circle"></i> CORRIGÉ — ${t.note}/20</div>
+                            <div class="meta" style="margin-top:0.6rem; color:#fff;">${t.correction || ''}</div>
+                            ${t.date_correction ? `<div class="meta" style="margin-top:0.4rem;">Corrigé le ${t.date_correction}</div>` : ''}
+                            <div class="actions">
+                                <button class="voir" onclick="window.open('${t.fichier_url}', '_blank')"><i class="fas fa-eye"></i> Voir PDF</button>
+                                <button class="delete" onclick="supprimerTravail('${t.id}', '${t.storage_path}')"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (e) {
+                attenteC.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>';
+                corrigesC.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>';
+            }
+        }
+
+        function ouvrirCorrection(id) {
+            document.getElementById('corrTravailId').value = id;
+            document.getElementById('corrNote').value = '';
+            document.getElementById('corrCommentaire').value = '';
+            document.getElementById('correctionModal').classList.add('active');
+        }
+
+        function closeCorrectionModal() {
+            document.getElementById('correctionModal').classList.remove('active');
+        }
+
+        async function validerCorrection() {
+            const id = document.getElementById('corrTravailId').value;
+            const note = document.getElementById('corrNote').value;
+            const correction = document.getElementById('corrCommentaire').value.trim();
+
+            if (!note || note < 0 || note > 20) { showToast('⚠️ Note entre 0 et 20.'); return; }
+            if (!correction) { showToast('⚠️ Écrivez la correction.'); return; }
+
+            const now = new Date();
+            try {
+                const { error } = await supabaseClient
+                    .from('travaux_membres')
+                    .update({
+                        statut: 'corrige',
+                        note: parseInt(note),
+                        correction: correction,
+                        correcteur: `${memberPrenom} ${memberNom}`,
+                        date_correction: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})
+                    })
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                showToast('✅ Correction validée !', 'success');
+                closeCorrectionModal();
+                loadTravaux();
+            } catch (e) { showToast('❌ ' + e.message); }
+        }
+
+        async function supprimerTravail(id, storagePath) {
+            if (!confirm('Supprimer ce travail ?')) return;
+            try {
+                const { error } = await supabaseClient.from('travaux_membres').delete().eq('id', id);
+                if (error) throw error;
+                if (storagePath) {
+                    await supabaseClient.storage.from('documents').remove([storagePath]);
+                }
+                showToast('🗑️ Travail supprimé.', 'success');
+                loadTravaux();
+            } catch (e) { showToast('❌ ' + e.message); }
+        }
+
         // ==================== INIT ====================
+        createParticles();
         loadProjets();
         loadEvaluations();
+        loadTravaux();
     </script>
 </body>
 </html>
