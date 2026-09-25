@@ -3,275 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Examiner mon travail | AFRICA.TECH21</title>
+    <title>Déposer mon travail | AFRICA.TECH21</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
-        /* ===== STYLES IDENTIQUES ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Exo 2', 'Segoe UI', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Exo 2', 'Segoe UI', sans-serif; }
         :root {
-            --neon-blue: #00f0ff;
-            --neon-purple: #7b2cbf;
-            --neon-green: #00ff88;
-            --neon-pink: #ff00ff;
-            --dark-space: #0a0a12;
-            --deep-space: #050510;
+            --sky-blue: #87ceeb;
+            --sky-blue-dark: #4a9fd4;
+            --sky-blue-deep: #1e5f8f;
+            --sky-glow: 0 0 30px rgba(135, 206, 235, 0.4);
+            --dark-space: #06141f;
+            --deep-space: #030a12;
             --text-primary: #ffffff;
-            --text-secondary: #a0a8c0;
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --panel-glow: 0 0 30px rgba(0, 240, 255, 0.2);
+            --text-secondary: #a0c0d8;
+            --glass: rgba(135, 206, 235, 0.05);
+            --glass-border: rgba(135, 206, 235, 0.2);
         }
         body {
-            background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(135, 206, 235, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(74, 159, 212, 0.1) 0%, transparent 50%),
+                linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0a1a28 100%);
             color: var(--text-primary);
             min-height: 100vh;
             padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
         }
         .hologram-grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
             background: 
-                linear-gradient(90deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(180deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px);
+                linear-gradient(90deg, rgba(135, 206, 235, 0.03) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(135, 206, 235, 0.03) 1px, transparent 1px);
             background-size: 50px 50px;
             animation: gridScan 20s linear infinite;
-            pointer-events: none;
-            z-index: -2;
+            pointer-events: none; z-index: -2;
         }
-        @keyframes gridScan {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
+        @keyframes gridScan { 0% { transform: translate(0,0); } 100% { transform: translate(50px,50px); } }
         .back-btn {
-            display: inline-block;
-            padding: 0.8rem 2rem;
-            margin-bottom: 2rem;
-            background: rgba(0, 240, 255, 0.1);
-            border: 1px solid var(--neon-blue);
-            border-radius: 10px;
-            color: var(--neon-blue);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            display: inline-block; padding: 0.8rem 2rem; margin-bottom: 2rem;
+            background: rgba(135, 206, 235, 0.1); border: 1px solid var(--sky-blue);
+            border-radius: 10px; color: var(--sky-blue); text-decoration: none;
+            font-weight: 600; transition: all 0.3s ease;
         }
-        .back-btn:hover {
-            background: rgba(0, 240, 255, 0.2);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
-        }
-        .page-container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
+        .back-btn:hover { background: rgba(135, 206, 235, 0.2); box-shadow: var(--sky-glow); }
+        .page-container { max-width: 950px; margin: 0 auto; }
         .page-header {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 25px;
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-            text-align: center;
-            box-shadow: var(--panel-glow);
+            background: var(--glass); backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border); border-radius: 25px;
+            padding: 3rem 2.5rem; margin-bottom: 2rem; text-align: center;
+            box-shadow: var(--sky-glow); position: relative; overflow: hidden;
         }
+        .page-header::before {
+            content: ''; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(135, 206, 235, 0.08) 0%, transparent 60%);
+            animation: rotateGlow 20s linear infinite;
+        }
+        @keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .page-header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-family: 'Orbitron', sans-serif; font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--sky-blue), #ffffff, var(--sky-blue-dark));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; letter-spacing: 2px; position: relative; z-index: 1;
         }
         .page-header .subtitle {
-            color: var(--text-secondary);
-            margin-top: 0.5rem;
-            font-size: 1.1rem;
+            color: var(--text-secondary); margin-top: 0.5rem;
+            font-size: 1.05rem; position: relative; z-index: 1;
         }
-        .form-section {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 25px;
-            padding: 2.5rem;
-            box-shadow: var(--panel-glow);
+        .section {
+            background: var(--glass); backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border); border-radius: 25px;
+            padding: 2.5rem; box-shadow: var(--sky-glow); margin-bottom: 2rem;
         }
-        .form-group {
+        .section h2 {
+            font-family: 'Orbitron', sans-serif; color: var(--sky-blue);
+            font-size: 1.4rem; margin-bottom: 1.5rem;
+            display: flex; align-items: center; gap: 0.8rem;
+            text-shadow: 0 0 15px rgba(135, 206, 235, 0.5);
+        }
+        .status-badge {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            padding: 0.8rem 1.5rem; border-radius: 15px;
+            font-weight: 700; letter-spacing: 1px; margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        .status-en_attente { background: rgba(255, 200, 0, 0.15); border: 1px solid #ffc800; color: #ffc800; }
+        .status-corrige { background: rgba(0, 255, 136, 0.15); border: 1px solid #00ff88; color: #00ff88; }
+        .upload-area {
+            border: 2px dashed var(--glass-border); border-radius: 18px;
+            padding: 3rem 2rem; text-align: center; cursor: pointer;
+            transition: all 0.3s ease; background: rgba(135, 206, 235, 0.02);
             margin-bottom: 1.5rem;
         }
-        .form-group label {
-            display: block;
-            color: var(--neon-blue);
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-        .form-group input[type="file"] {
-            width: 100%;
-            padding: 1.5rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 2px dashed var(--glass-border);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .form-group input[type="file"]:hover {
-            border-color: var(--neon-blue);
-            background: rgba(0, 240, 255, 0.05);
-        }
-        .form-group input[type="file"]::file-selector-button {
-            padding: 0.6rem 1.5rem;
-            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-right: 1rem;
-        }
-        .form-group input[type="file"]::file-selector-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
-        }
+        .upload-area:hover { border-color: var(--sky-blue); background: rgba(135, 206, 235, 0.06); box-shadow: var(--sky-glow); }
+        .upload-area i { font-size: 4rem; color: var(--sky-blue); margin-bottom: 1rem; display: block; text-shadow: var(--sky-glow); }
+        .upload-area p { color: var(--text-secondary); font-size: 1.05rem; }
+        .upload-area .file-selected { color: var(--sky-blue); font-weight: 700; margin-top: 1rem; font-size: 1rem; }
+        .upload-area input { display: none; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; color: var(--sky-blue); font-weight: 600; margin-bottom: 0.5rem; font-size: 1rem; }
         .form-group textarea {
-            width: 100%;
-            padding: 1rem 1.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 1rem;
-            resize: vertical;
-            min-height: 80px;
-            outline: none;
-            transition: all 0.3s ease;
+            width: 100%; padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border); border-radius: 12px;
+            color: var(--text-primary); font-size: 1rem; resize: vertical;
+            min-height: 100px; outline: none; transition: all 0.3s ease;
         }
-        .form-group textarea:focus {
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
-        }
-        .form-group .file-info {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-top: 0.3rem;
-        }
+        .form-group textarea:focus { border-color: var(--sky-blue); box-shadow: 0 0 20px rgba(135, 206, 235, 0.2); }
         .btn-submit {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-weight: 700;
-            font-size: 1.2rem;
-            cursor: pointer;
+            width: 100%; padding: 1.2rem;
+            background: linear-gradient(135deg, var(--sky-blue-deep), var(--sky-blue));
+            border: none; border-radius: 12px; color: #031a2a;
+            font-weight: 700; font-size: 1.1rem; cursor: pointer;
+            transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1.5px;
+        }
+        .btn-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(135, 206, 235, 0.5); }
+        .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-secondary {
+            padding: 0.9rem 2rem; background: rgba(135, 206, 235, 0.1);
+            border: 1px solid var(--sky-blue); border-radius: 12px;
+            color: var(--sky-blue); font-weight: 700; cursor: pointer;
+            transition: all 0.3s ease; text-transform: uppercase;
+            letter-spacing: 1px; font-size: 0.9rem;
+        }
+        .btn-secondary:hover { background: rgba(135, 206, 235, 0.2); box-shadow: var(--sky-glow); }
+        .blocage-box {
+            background: rgba(255, 200, 0, 0.08); border: 2px solid #ffc800;
+            border-radius: 18px; padding: 2rem; text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .blocage-box i { font-size: 3.5rem; color: #ffc800; margin-bottom: 1rem; display: block; }
+        .blocage-box h3 { color: #ffc800; font-family: 'Orbitron', sans-serif; font-size: 1.3rem; margin-bottom: 0.8rem; }
+        .blocage-box p { color: var(--text-secondary); line-height: 1.7; font-size: 1rem; }
+        .correction-box {
+            background: rgba(0, 255, 136, 0.06); border-left: 4px solid #00ff88;
+            border-radius: 12px; padding: 1.5rem; margin-top: 1rem;
+        }
+        .correction-box .label { color: #00ff88; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.4rem; }
+        .correction-box .note-value { font-family: 'Orbitron', sans-serif; font-size: 2rem; color: #00ff88; margin: 0.5rem 0; }
+        .correction-box .content { color: var(--text-primary); line-height: 1.7; white-space: pre-wrap; font-size: 0.95rem; }
+        .travail-item {
+            background: rgba(135, 206, 235, 0.04); border: 1px solid var(--glass-border);
+            border-radius: 15px; padding: 1.5rem; margin-bottom: 1rem;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
         }
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(123, 44, 191, 0.6);
-        }
-        .btn-submit:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .result-box {
-            margin-top: 2rem;
-            padding: 2rem;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 15px;
-            border-left: 4px solid var(--neon-blue);
-            display: none;
-            max-height: 600px;
-            overflow-y: auto;
-        }
-        .result-box.active {
-            display: block;
-        }
-        .result-box .label {
-            color: var(--neon-green);
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-        }
-        .result-box .content {
-            color: var(--text-primary);
-            white-space: pre-wrap;
-            line-height: 1.7;
-            font-size: 1rem;
-        }
-        .result-box .note {
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: var(--neon-blue);
-            margin: 1rem 0;
-            padding: 0.5rem 1rem;
-            background: rgba(0, 240, 255, 0.1);
-            border-radius: 10px;
-            display: inline-block;
-        }
-        .loading-text {
-            text-align: center;
-            color: var(--text-secondary);
-            padding: 2rem;
-            display: none;
-        }
-        .loading-text.active {
-            display: block;
-        }
+        .travail-item:hover { border-color: var(--sky-blue); background: rgba(135, 206, 235, 0.08); }
+        .travail-item .title { color: var(--sky-blue); font-weight: 700; font-size: 1.05rem; margin-bottom: 0.4rem; }
+        .travail-item .meta { color: var(--text-secondary); font-size: 0.85rem; }
+        .empty-state { text-align: center; color: var(--text-secondary); padding: 2.5rem; }
+        .empty-state i { font-size: 3rem; color: var(--glass-border); margin-bottom: 1rem; display: block; }
+        .loading-text { text-align: center; color: var(--text-secondary); padding: 2rem; }
         .loading-spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--glass-border);
-            border-top: 4px solid var(--neon-blue);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+            display: inline-block; width: 28px; height: 28px;
+            border: 3px solid rgba(135, 206, 235, 0.2);
+            border-top: 3px solid var(--sky-blue);
+            border-radius: 50%; animation: spin 0.8s linear infinite;
             margin-bottom: 1rem;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .toast {
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+            background: rgba(135, 206, 235, 0.95); color: #031a2a;
+            padding: 1rem 2rem; border-radius: 12px; font-weight: 700;
+            z-index: 10001; animation: fadeInUp 0.3s ease;
         }
-        .toast-message {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 71, 87, 0.95);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            z-index: 9999;
-            box-shadow: 0 4px 20px rgba(255, 71, 87, 0.4);
-            animation: fadeInUp 0.3s ease;
-            max-width: 90%;
-            text-align: center;
-        }
+        .toast.error { background: rgba(255, 71, 87, 0.95); color: white; }
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateX(-50%) translateY(20px); }
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
+        .progress-bar {
+            width: 100%; height: 8px; background: rgba(135, 206, 235, 0.15);
+            border-radius: 10px; overflow: hidden; margin-top: 1rem;
+            display: none;
+        }
+        .progress-bar.active { display: block; }
+        .progress-fill {
+            height: 100%; background: linear-gradient(90deg, var(--sky-blue-deep), var(--sky-blue));
+            width: 0%; transition: width 0.3s ease;
+        }
         @media (max-width: 768px) {
             body { padding: 1rem; }
-            .page-header h1 { font-size: 2rem; }
-            .form-section { padding: 1.5rem; }
+            .page-header h1 { font-size: 1.8rem; }
+            .section { padding: 1.5rem; }
+            .upload-area { padding: 2rem 1rem; }
         }
     </style>
 </head>
@@ -284,231 +202,231 @@
         </a>
 
         <header class="page-header">
-            <h1><i class="fas fa-file-pdf"></i> EXAMINER MON TRAVAIL</h1>
-            <p class="subtitle">Déposez votre travail (PDF) pour une évaluation ultra-rigoureuse par le système.</p>
+            <h1><i class="fas fa-cloud-upload-alt"></i> DÉPOSER MON TRAVAIL</h1>
+            <p class="subtitle">Déposez votre travail PDF — il sera corrigé par le Responsable des Projets</p>
         </header>
 
-        <div class="form-section">
-            <form id="examForm">
-                <div class="form-group">
-                    <label for="fileInput"><i class="fas fa-upload"></i> Fichier PDF</label>
-                    <input type="file" id="fileInput" accept=".pdf" required>
-                    <div class="file-info" id="fileInfo">Aucun fichier sélectionné</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="commentInput"><i class="fas fa-comment"></i> Commentaire (optionnel)</label>
-                    <textarea id="commentInput" placeholder="Ajoutez des précisions sur votre travail..."></textarea>
-                </div>
-
-                <button type="submit" class="btn-submit" id="submitBtn">
-                    <i class="fas fa-paper-plane"></i> ENVOYER POUR EXAMEN
-                </button>
-            </form>
-
-            <div class="loading-text" id="loadingArea">
-                <div class="loading-spinner"></div>
-                <p>Le système examine votre travail...</p>
-                <p style="font-size:0.9rem; color:var(--text-secondary);">L'examen est très rigoureux, cela peut prendre quelques secondes.</p>
+        <!-- ZONE DÉPÔT -->
+        <div class="section" id="depotSection">
+            <h2><i class="fas fa-file-upload"></i> NOUVEAU DÉPÔT</h2>
+            <div id="depotContenu">
+                <div class="loading-text"><div class="loading-spinner"></div> Vérification...</div>
             </div>
+        </div>
 
-            <div class="result-box" id="resultBox">
-                <div class="label">📋 RAPPORT D'EXAMEN</div>
-                <div class="content" id="resultContent"></div>
+        <!-- MES DÉPÔTS -->
+        <div class="section">
+            <h2><i class="fas fa-folder-open"></i> MES DÉPÔTS</h2>
+            <div id="mesTravaux">
+                <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
             </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // ==================== VÉRIFICATION CONNEXION ====================
+        const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
         if (localStorage.getItem('memberLoggedIn') !== 'true') {
             window.location.href = 'espace-membres.html';
         }
 
-        // ==================== CONFIGURATION (DEEPSEEK) ====================
-        const DEEPSEEK_API_KEY = 'sk-0c271def911a484eab813109dbe8a43a';
-        const DEEPSEEK_URL = 'https://api.deepseek.com/v1/chat/completions';
-        const SCRIPT_URL_EVAL = 'https://script.google.com/macros/s/AKfycbzdreoJkj4zaCzN1QiLJA6cipZw64YafOqbBGJh-GUuhm9T0p7zzzT0Imy8BrufkXo/exec';
+        const memberId = localStorage.getItem('memberId') || '';
+        const memberNom = localStorage.getItem('memberNom') || '';
+        const memberPrenom = localStorage.getItem('memberPrenom') || '';
 
-        // ==================== RÉFÉRENCES DOM ====================
-        const form = document.getElementById('examForm');
-        const fileInput = document.getElementById('fileInput');
-        const fileInfo = document.getElementById('fileInfo');
-        const commentInput = document.getElementById('commentInput');
-        const submitBtn = document.getElementById('submitBtn');
-        const loadingArea = document.getElementById('loadingArea');
-        const resultBox = document.getElementById('resultBox');
-        const resultContent = document.getElementById('resultContent');
-
-        // ==================== AFFICHAGE NOM DU FICHIER ====================
-        fileInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                fileInfo.textContent = `📄 ${file.name} (${(file.size / 1024).toFixed(0)} Ko)`;
-            } else {
-                fileInfo.textContent = 'Aucun fichier sélectionné';
-            }
-        });
-
-        // ==================== FONCTION POUR EXTRAIRE LE TEXTE D'UN PDF ====================
-        async function extraireTextePDF(file) {
-            const arrayBuffer = await file.arrayBuffer();
-            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-            let texteComplet = '';
-            for (let i = 1; i <= pdf.numPages; i++) {
-                const page = await pdf.getPage(i);
-                const content = await page.getTextContent();
-                const strings = content.items.map(item => item.str);
-                texteComplet += strings.join(' ') + '\n';
-            }
-            return texteComplet.trim();
+        function showToast(msg, type='') {
+            const old = document.querySelector('.toast'); if (old) old.remove();
+            const t = document.createElement('div');
+            t.className = 'toast ' + type;
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 4000);
         }
 
-        // ==================== AFFICHER UN MESSAGE TEMPORAIRE ====================
-        function showToast(message) {
-            const old = document.querySelector('.toast-message');
-            if (old) old.remove();
-            const toast = document.createElement('div');
-            toast.className = 'toast-message';
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transition = 'opacity 0.5s';
-                setTimeout(() => toast.remove(), 500);
-            }, 4000);
-        }
+        let mesTravauxCache = [];
 
-        // ==================== SAUVEGARDER DANS GOOGLE SHEETS ====================
-        async function sauvegarderEvaluation(membre, fichier, commentaire, note, mention, rapport) {
+        async function chargerEtatDepot() {
+            const c = document.getElementById('depotContenu');
+            c.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Vérification...</div>';
+
             try {
-                const date = new Date().toLocaleString('fr-FR');
-                await fetch(SCRIPT_URL_EVAL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        membre: membre,
-                        fichier: fichier,
-                        commentaire: commentaire,
-                        note: note,
-                        mention: mention,
-                        rapport: rapport,
-                        date: date
-                    })
-                });
-                console.log('✅ Évaluation envoyée (sauvegarde en arrière-plan)');
-            } catch (error) {
-                console.warn('⚠️ La sauvegarde a été envoyée, impossible de vérifier la réponse');
+                const { data, error } = await supabaseClient
+                    .from('travaux_membres')
+                    .select('*')
+                    .eq('membre_id', memberId)
+                    .order('timestamp', { ascending: false });
+
+                if (error) throw error;
+
+                mesTravauxCache = data || [];
+
+                const enAttente = mesTravauxCache.find(t => t.statut === 'en_attente');
+
+                if (enAttente) {
+                    c.innerHTML = `
+                        <div class="blocage-box">
+                            <i class="fas fa-hourglass-half"></i>
+                            <h3>DÉPÔT BLOQUÉ</h3>
+                            <p>Vous avez un travail en attente de correction.</p>
+                            <p style="margin-top:0.8rem;">Veuillez attendre la correction du <strong>Responsable des Projets</strong> avant de déposer un nouveau travail.</p>
+                        </div>
+                        <div class="travail-item">
+                            <div class="title"><i class="fas fa-file-pdf" style="color:#87ceeb;"></i> ${enAttente.fichier_nom}</div>
+                            <div class="meta">📅 Déposé le ${enAttente.date_depot}</div>
+                            <div class="status-badge status-en_attente" style="margin-top:0.8rem;">
+                                <i class="fas fa-clock"></i> EN ATTENTE DE CORRECTION
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    c.innerHTML = `
+                        <label class="upload-area" for="fileInput">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Cliquez pour sélectionner votre fichier PDF</p>
+                            <p style="font-size:0.85rem; margin-top:0.5rem;">Format accepté : PDF (max 20 Mo)</p>
+                            <div class="file-selected" id="fileSelected"></div>
+                            <input type="file" id="fileInput" accept=".pdf">
+                        </label>
+                        <div class="progress-bar" id="progressBar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-comment"></i> Commentaire (optionnel)</label>
+                            <textarea id="commentInput" placeholder="Ajoutez des précisions sur votre travail..."></textarea>
+                        </div>
+                        <button class="btn-submit" id="submitBtn" onclick="deposerTravail()">
+                            <i class="fas fa-paper-plane"></i> DÉPOSER MON TRAVAIL
+                        </button>
+                    `;
+                    document.getElementById('fileInput').addEventListener('change', function(e) {
+                        const f = e.target.files[0];
+                        if (f) document.getElementById('fileSelected').textContent = '📄 ' + f.name + ' (' + (f.size/1024).toFixed(0) + ' Ko)';
+                    });
+                }
+            } catch (e) {
+                c.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>';
             }
         }
 
-        // ==================== SOUMISSION DU FORMULAIRE ====================
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-
+        async function deposerTravail() {
+            const fileInput = document.getElementById('fileInput');
             const file = fileInput.files[0];
-            if (!file) {
-                showToast('⚠️ Veuillez sélectionner un fichier PDF.');
-                return;
-            }
+            const commentaire = document.getElementById('commentInput').value.trim();
+            const btn = document.getElementById('submitBtn');
 
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> EXAMEN EN COURS...';
-            loadingArea.classList.add('active');
-            resultBox.classList.remove('active');
-            resultContent.textContent = '';
+            if (!file) { showToast('⚠️ Sélectionnez un PDF.', 'error'); return; }
+            if (file.type !== 'application/pdf') { showToast('⚠️ Seuls les PDF sont acceptés.', 'error'); return; }
+            if (file.size > 20 * 1024 * 1024) { showToast('⚠️ Fichier trop volumineux (max 20 Mo).', 'error'); return; }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENVOI...';
+            document.getElementById('progressBar').classList.add('active');
 
             try {
-                let textePDF = '';
-                try {
-                    textePDF = await extraireTextePDF(file);
-                } catch (err) {
-                    showToast('❌ Impossible de lire le PDF. Vérifiez qu\'il n\'est pas corrompu.');
-                    throw err;
-                }
+                const timestamp = Date.now();
+                const cleanName = file.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9._-]/g, '_');
+                const fileName = `travaux/${memberId}_${timestamp}_${cleanName}`;
 
-                if (textePDF.length < 10) {
-                    showToast('⚠️ Le PDF semble vide ou contient peu de texte.');
-                    throw new Error('PDF vide');
-                }
+                const { error: upErr } = await supabaseClient.storage
+                    .from('documents')
+                    .upload(fileName, file, {
+                        onUploadProgress: (p) => {
+                            document.getElementById('progressFill').style.width = (p.loaded / p.total * 100) + '%';
+                        }
+                    });
 
-                const commentaire = commentInput.value.trim() || 'Aucun commentaire fourni.';
-                const membre = localStorage.getItem('memberPrenom') + ' ' + localStorage.getItem('memberNom') || 'Membre inconnu';
+                if (upErr) throw upErr;
 
-                const systemPrompt = `Tu es un examinateur technique extrêmement rigoureux, plus sévère que le MAJOR lui-même. 
-Tu évalues des travaux techniques (robotique, électronique, programmation, projets d'ingénierie). 
-Tu identifies les failles, les incohérences, les approximations, les oublis, les raisonnements erronés. 
-Tu notes sur 20 et tu donnes un avis structuré comme suit :
+                const { data: urlData } = supabaseClient.storage
+                    .from('documents')
+                    .getPublicUrl(fileName);
 
-📌 NOTE : X/20
-📌 MENTION : [Excellent / Très Bien / Bien / Passable / Insuffisant]
-📌 POINTS FORTS : (liste)
-📌 POINTS FAIBLES : (liste précise, impitoyable)
-📌 SUGGESTIONS D'AMÉLIORATION : (concrètes)
-📌 CONCLUSION GÉNÉRALE : (un paragraphe clair)
+                const now = new Date();
+                const { error: dbErr } = await supabaseClient
+                    .from('travaux_membres')
+                    .insert([{
+                        membre_id: memberId,
+                        membre_nom: `${memberPrenom} ${memberNom}`,
+                        fichier_nom: file.name,
+                        fichier_url: urlData.publicUrl,
+                        storage_path: fileName,
+                        commentaire: commentaire,
+                        statut: 'en_attente',
+                        date_depot: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
+                        timestamp: timestamp
+                    }]);
 
-Tu ne laisses rien passer. Tu es impitoyable sur la rigueur. Si le travail est médiocre, tu le dis. Si c'est excellent, tu le reconnais mais sans complaisance.`;
+                if (dbErr) throw dbErr;
 
-                const userMessage = `
-Membre : ${membre}
-Commentaire du membre : ${commentaire}
+                showToast('✅ Travail déposé ! En attente de correction.');
+                chargerEtatDepot();
+                chargerMesTravaux();
 
-Contenu du travail (extrait du PDF) :
----
-${textePDF.substring(0, 12000)}
----
-`;
-
-                const response = await fetch(DEEPSEEK_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
-                    },
-                    body: JSON.stringify({
-                        model: 'deepseek-chat',
-                        messages: [
-                            { role: 'system', content: systemPrompt },
-                            { role: 'user', content: userMessage }
-                        ],
-                        temperature: 0.2,
-                        max_tokens: 1500
-                    })
-                });
-
-                if (!response.ok) {
-                    const err = await response.json();
-                    throw new Error(err.error?.message || 'Erreur API');
-                }
-
-                const data = await response.json();
-                const reponseIA = data.choices[0].message.content;
-
-                // Extraire la note et la mention
-                const noteMatch = reponseIA.match(/NOTE\s*:\s*(\d+)\/20/);
-                const mentionMatch = reponseIA.match(/MENTION\s*:\s*([^\n]+)/);
-                const note = noteMatch ? noteMatch[1] : 'Non spécifiée';
-                const mention = mentionMatch ? mentionMatch[1].trim() : 'Non spécifiée';
-
-                // Sauvegarder dans Google Sheets
-                const fichierNom = file.name;
-                await sauvegarderEvaluation(membre, fichierNom, commentaire, note, mention, reponseIA);
-
-                // Afficher le résultat
-                resultContent.innerHTML = reponseIA.replace(/\n/g, '<br>');
-                resultBox.classList.add('active');
-
-            } catch (error) {
-                showToast('❌ Erreur : ' + error.message);
-                resultContent.textContent = 'Une erreur est survenue. Veuillez réessayer.';
-                resultBox.classList.add('active');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> ENVOYER POUR EXAMEN';
-                loadingArea.classList.remove('active');
+            } catch (e) {
+                showToast('❌ ' + e.message, 'error');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> DÉPOSER MON TRAVAIL';
+                document.getElementById('progressBar').classList.remove('active');
             }
-        });
+        }
+
+        async function chargerMesTravaux() {
+            const c = document.getElementById('mesTravaux');
+            c.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('travaux_membres')
+                    .select('*')
+                    .eq('membre_id', memberId)
+                    .order('timestamp', { ascending: false });
+
+                if (error) throw error;
+
+                if (!data || data.length === 0) {
+                    c.innerHTML = '<div class="empty-state"><i class="fas fa-folder-open"></i><p>Aucun dépôt pour le moment.</p></div>';
+                    return;
+                }
+
+                c.innerHTML = data.map(t => {
+                    let statutBadge = '';
+                    let correctionBlock = '';
+
+                    if (t.statut === 'en_attente') {
+                        statutBadge = '<div class="status-badge status-en_attente"><i class="fas fa-clock"></i> EN ATTENTE</div>';
+                    } else if (t.statut === 'corrige') {
+                        statutBadge = '<div class="status-badge status-corrige"><i class="fas fa-check-circle"></i> CORRIGÉ</div>';
+                        correctionBlock = `
+                            <div class="correction-box">
+                                <div class="label">Note</div>
+                                <div class="note-value">${t.note || '--'}/20</div>
+                                <div class="label" style="margin-top:1rem;">Correction</div>
+                                <div class="content">${t.correction || 'Aucun commentaire.'}</div>
+                                ${t.date_correction ? `<div class="meta" style="margin-top:0.8rem;">Corrigé le ${t.date_correction} par ${t.correcteur || 'Responsable'}</div>` : ''}
+                            </div>
+                        `;
+                    }
+
+                    return `
+                        <div class="travail-item">
+                            <div class="title"><i class="fas fa-file-pdf" style="color:#87ceeb;"></i> ${t.fichier_nom}</div>
+                            <div class="meta">📅 Déposé le ${t.date_depot}</div>
+                            ${t.commentaire ? `<div class="meta" style="margin-top:0.4rem;">💬 ${t.commentaire}</div>` : ''}
+                            <div style="margin-top:0.8rem;">${statutBadge}</div>
+                            ${correctionBlock}
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) {
+                c.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>';
+            }
+        }
+
+        chargerEtatDepot();
+        chargerMesTravaux();
     </script>
 </body>
 </html>
