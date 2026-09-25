@@ -7,392 +7,77 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ===== CSS COMPLET (identique) ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Exo 2', 'Segoe UI', sans-serif; }
         :root {
-            --neon-blue: #00f0ff;
-            --neon-purple: #7b2cbf;
-            --neon-pink: #ff00ff;
-            --neon-green: #00ff88;
-            --dark-space: #0a0a12;
-            --deep-space: #050510;
-            --panel-dark: rgba(16, 16, 32, 0.95);
+            --neon-blue: #00f0ff; --neon-purple: #7b2cbf; --neon-pink: #ff00ff; --neon-green: #00ff88;
+            --dark-space: #0a0a12; --deep-space: #050510; --panel-dark: rgba(16, 16, 32, 0.95);
             --panel-glow: 0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(123, 44, 191, 0.2);
-            --text-primary: #ffffff;
-            --text-secondary: #a0a8c0;
-            --accent-glow: 0 0 15px var(--neon-blue);
-            --glass: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff; --text-secondary: #a0a8c0; --accent-glow: 0 0 15px var(--neon-blue);
+            --glass: rgba(255, 255, 255, 0.08); --glass-border: rgba(255, 255, 255, 0.1);
         }
-        body {
-            background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
-            color: var(--text-primary);
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
-        .hologram-grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(180deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridScan 20s linear infinite;
-            pointer-events: none;
-            z-index: -2;
-        }
-        .ambient-light {
-            position: fixed;
-            width: 500px;
-            height: 500px;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.1;
-            z-index: -1;
-        }
-        .light-1 {
-            background: var(--neon-blue);
-            top: -200px;
-            right: -100px;
-            animation: floatLight 8s ease-in-out infinite;
-        }
-        .light-2 {
-            background: var(--neon-purple);
-            bottom: -150px;
-            left: -100px;
-            animation: floatLight 10s ease-in-out infinite reverse;
-        }
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-        .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: var(--neon-blue);
-            border-radius: 50%;
-            animation: float 15s infinite linear;
-            box-shadow: 0 0 10px var(--neon-blue);
-        }
+        body { background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%); color: var(--text-primary); min-height: 100vh; position: relative; overflow-x: hidden; }
+        .hologram-grid { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px), linear-gradient(180deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px); background-size: 50px 50px; animation: gridScan 20s linear infinite; pointer-events: none; z-index: -2; }
+        .ambient-light { position: fixed; width: 500px; height: 500px; border-radius: 50%; filter: blur(100px); opacity: 0.1; z-index: -1; }
+        .light-1 { background: var(--neon-blue); top: -200px; right: -100px; animation: floatLight 8s ease-in-out infinite; }
+        .light-2 { background: var(--neon-purple); bottom: -150px; left: -100px; animation: floatLight 10s ease-in-out infinite reverse; }
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
+        .particle { position: absolute; width: 3px; height: 3px; background: var(--neon-blue); border-radius: 50%; animation: float 15s infinite linear; box-shadow: 0 0 10px var(--neon-blue); }
         @keyframes gridScan { 0% { transform: translate(0, 0); } 100% { transform: translate(50px, 50px); } }
         @keyframes floatLight { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(50px, -30px) scale(1.1); } }
-        @keyframes float {
-            0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100px) translateX(100px) rotate(360deg); opacity: 0; }
-        }
-        .neuro-header {
-            background: rgba(20, 20, 35, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
-            padding: 1.5rem 3rem;
-            position: relative;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-        .neuro-header::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
-        }
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-        .logo-container h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: var(--accent-glow);
-            letter-spacing: 2px;
-            font-weight: 900;
-        }
-        .logo-container .subtitle {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-top: 0.5rem;
-        }
+        @keyframes float { 0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100px) translateX(100px) rotate(360deg); opacity: 0; } }
+        .neuro-header { background: rgba(20, 20, 35, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 240, 255, 0.2); padding: 1.5rem 3rem; position: relative; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); }
+        .neuro-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--neon-blue), transparent); }
+        .header-content { display: flex; justify-content: space-between; align-items: center; max-width: 1600px; margin: 0 auto; }
+        .logo-container h1 { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: var(--accent-glow); letter-spacing: 2px; font-weight: 900; }
+        .logo-container .subtitle { font-size: 0.9rem; color: var(--text-secondary); letter-spacing: 3px; text-transform: uppercase; margin-top: 0.5rem; }
         .user-panel { display: flex; align-items: center; gap: 2rem; }
-        .user-badge {
-            background: rgba(0, 240, 255, 0.1);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            border-radius: 15px;
-            padding: 0.8rem 1.5rem;
-            backdrop-filter: blur(10px);
-            text-align: center;
-        }
+        .user-badge { background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 15px; padding: 0.8rem 1.5rem; backdrop-filter: blur(10px); text-align: center; }
         .user-email { color: var(--neon-blue); font-weight: 600; font-size: 0.95rem; }
         .user-role { color: var(--neon-green); font-size: 0.8rem; margin-top: 5px; }
         .nav-buttons { display: flex; gap: 1rem; }
-        .nav-btn {
-            background: transparent;
-            border: 2px solid;
-            border-image: linear-gradient(45deg, var(--neon-blue), var(--neon-green)) 1;
-            color: var(--neon-blue);
-            padding: 0.7rem 1.2rem;
-            border-radius: 10px;
-            cursor: pointer;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-        .nav-btn:hover {
-            background: rgba(0, 240, 255, 0.1);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
-            transform: translateY(-2px);
-        }
-        .logout-btn {
-            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
-        }
+        .nav-btn { background: transparent; border: 2px solid; border-image: linear-gradient(45deg, var(--neon-blue), var(--neon-green)) 1; color: var(--neon-blue); padding: 0.7rem 1.2rem; border-radius: 10px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; text-decoration: none; }
+        .nav-btn:hover { background: rgba(0, 240, 255, 0.1); box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); transform: translateY(-2px); }
+        .logout-btn { background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue)); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 10px; cursor: pointer; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4); }
         .logout-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(123, 44, 191, 0.6); }
         .dashboard-container { padding: 3rem; max-width: 1600px; margin: 0 auto; }
-        .info-banner {
-            background: linear-gradient(90deg, #00f0ff, #7b2cbf, #ff00ff, #00f0ff);
-            background-size: 300%;
-            padding: 1.2rem 2rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-            text-align: center;
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #ffffff;
-            text-shadow: 0 0 20px rgba(0, 240, 255, 0.8);
-            box-shadow: 0 0 40px rgba(0, 240, 255, 0.3);
-            animation: clignoter 1.5s infinite, bgMove 4s linear infinite;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
+        .info-banner { background: linear-gradient(90deg, #00f0ff, #7b2cbf, #ff00ff, #00f0ff); background-size: 300%; padding: 1.2rem 2rem; border-radius: 15px; margin-bottom: 2rem; text-align: center; font-size: 1.3rem; font-weight: 700; color: #ffffff; text-shadow: 0 0 20px rgba(0, 240, 255, 0.8); box-shadow: 0 0 40px rgba(0, 240, 255, 0.3); animation: clignoter 1.5s infinite, bgMove 4s linear infinite; position: relative; overflow: hidden; border: 2px solid rgba(255, 255, 255, 0.2); }
         @keyframes clignoter { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.85; transform: scale(1.01); } }
         @keyframes bgMove { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
-        .info-banner::before {
-            content: '';
-            position: absolute;
-            top: -100%; left: -100%;
-            width: 300%; height: 300%;
-            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
-            animation: rotateGlow 4s linear infinite;
-        }
+        .info-banner::before { content: ''; position: absolute; top: -100%; left: -100%; width: 300%; height: 300%; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%); animation: rotateGlow 4s linear infinite; }
         @keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .info-banner .icon { margin-right: 1rem; font-size: 1.8rem; animation: pulseIcon 1.5s ease-in-out infinite; }
         @keyframes pulseIcon { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
         .info-banner .message-text { position: relative; z-index: 1; }
         .info-banner .message-text i { margin-right: 0.8rem; }
-        .hero-section {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 25px;
-            padding: 4rem;
-            margin-bottom: 3rem;
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--panel-glow);
-        }
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(123, 44, 191, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-        }
-        .hero-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3.5rem;
-            background: linear-gradient(45deg, var(--neon-blue), #ffffff, var(--neon-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-align: center;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
-        }
-        .hero-subtitle {
-            font-size: 1.3rem;
-            color: var(--text-secondary);
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 2.5rem;
-            margin-bottom: 4rem;
-        }
-        .feature-card {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 3rem 2.5rem;
-            transition: all 0.4s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.05), transparent);
-            transition: 0.6s;
-        }
-        .feature-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: var(--neon-blue);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), var(--panel-glow);
-        }
+        .hero-section { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 25px; padding: 4rem; margin-bottom: 3rem; position: relative; overflow: hidden; box-shadow: var(--panel-glow); }
+        .hero-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(123, 44, 191, 0.1) 0%, transparent 50%); pointer-events: none; }
+        .hero-title { font-family: 'Orbitron', sans-serif; font-size: 3.5rem; background: linear-gradient(45deg, var(--neon-blue), #ffffff, var(--neon-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; margin-bottom: 1rem; text-shadow: 0 0 30px rgba(0, 240, 255, 0.5); }
+        .hero-subtitle { font-size: 1.3rem; color: var(--text-secondary); text-align: center; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.5rem; margin-bottom: 4rem; }
+        .feature-card { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 3rem 2.5rem; transition: all 0.4s ease; cursor: pointer; position: relative; overflow: hidden; }
+        .feature-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.05), transparent); transition: 0.6s; }
+        .feature-card:hover { transform: translateY(-10px) scale(1.02); border-color: var(--neon-blue); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), var(--panel-glow); }
         .feature-card:hover::before { left: 100%; }
-        .feature-icon {
-            font-size: 4rem;
-            color: var(--neon-blue);
-            margin-bottom: 2rem;
-            text-shadow: var(--accent-glow);
-            text-align: center;
-        }
-        .feature-title {
-            font-size: 1.8rem;
-            color: var(--neon-blue);
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-align: center;
-            font-weight: 700;
-        }
-        .feature-description {
-            color: var(--text-secondary);
-            line-height: 1.7;
-            text-align: center;
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-        }
+        .feature-icon { font-size: 4rem; color: var(--neon-blue); margin-bottom: 2rem; text-shadow: var(--accent-glow); text-align: center; }
+        .feature-title { font-size: 1.8rem; color: var(--neon-blue); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px; text-align: center; font-weight: 700; }
+        .feature-description { color: var(--text-secondary); line-height: 1.7; text-align: center; margin-bottom: 2rem; font-size: 1.1rem; }
         .feature-status { text-align: center; font-weight: 700; letter-spacing: 1px; }
         .status-active { color: var(--neon-blue); text-shadow: var(--accent-glow); }
-        .forum-section {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 25px;
-            padding: 3rem;
-            margin-bottom: 4rem;
-            box-shadow: var(--panel-glow);
-        }
-        .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            color: var(--neon-blue);
-            text-align: center;
-            margin-bottom: 3rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: var(--accent-glow);
-        }
-        .messages-container {
-            max-height: 500px;
-            overflow-y: auto;
-            margin-bottom: 2.5rem;
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            padding: 2rem;
-            background: rgba(10, 10, 20, 0.6);
-        }
-        .message {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        .message::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 4px; height: 100%;
-            background: linear-gradient(180deg, var(--neon-blue), var(--neon-purple));
-            border-radius: 15px 0 0 15px;
-        }
-        .message:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(0, 240, 255, 0.3);
-            transform: translateX(5px);
-        }
+        .forum-section { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 25px; padding: 3rem; margin-bottom: 4rem; box-shadow: var(--panel-glow); }
+        .section-title { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; color: var(--neon-blue); text-align: center; margin-bottom: 3rem; text-transform: uppercase; letter-spacing: 2px; text-shadow: var(--accent-glow); }
+        .messages-container { max-height: 500px; overflow-y: auto; margin-bottom: 2.5rem; border: 1px solid var(--glass-border); border-radius: 15px; padding: 2rem; background: rgba(10, 10, 20, 0.6); }
+        .message { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); border-radius: 15px; padding: 2rem; margin-bottom: 1.5rem; transition: all 0.3s ease; position: relative; }
+        .message::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, var(--neon-blue), var(--neon-purple)); border-radius: 15px 0 0 15px; }
+        .message:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(0, 240, 255, 0.3); transform: translateX(5px); }
         .message-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
         .message-user { color: var(--neon-blue); font-weight: 700; font-size: 1.1rem; }
         .message-time { color: var(--text-secondary); font-size: 0.9rem; }
         .message-content { color: var(--text-primary); line-height: 1.6; font-size: 1.05rem; }
         .input-group { display: flex; gap: 1.5rem; align-items: center; }
-        .message-input {
-            flex-grow: 1;
-            padding: 1.5rem 2rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            color: var(--text-primary);
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-        .message-input:focus {
-            outline: none;
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
-            background: rgba(255, 255, 255, 0.08);
-        }
+        .message-input { flex-grow: 1; padding: 1.5rem 2rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); border-radius: 15px; color: var(--text-primary); font-size: 1.1rem; transition: all 0.3s ease; backdrop-filter: blur(10px); }
+        .message-input:focus { outline: none; border-color: var(--neon-blue); box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); background: rgba(255, 255, 255, 0.08); }
         .message-input::placeholder { color: var(--text-secondary); }
-        .send-btn {
-            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
-            color: white;
-            border: none;
-            padding: 1.5rem 3rem;
-            border-radius: 15px;
-            cursor: pointer;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
-            min-width: 180px;
-        }
+        .send-btn { background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue)); color: white; border: none; padding: 1.5rem 3rem; border-radius: 15px; cursor: pointer; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4); min-width: 180px; }
         .send-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(123, 44, 191, 0.6); }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
@@ -460,11 +145,19 @@
         </section>
 
         <div class="features-grid">
+            <!-- ESPACE DIRECTION (NOUVELLE CARTE) -->
+            <div class="feature-card" onclick="accederEspaceDirection()">
+                <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3 class="feature-title">ESPACE DIRECTION</h3>
+                <p class="feature-description">Postes de travail des membres de la direction. Secrétariat, Gestion des Stocks, Admin Examens, Espace Major. Accès strictement réservé.</p>
+                <div class="feature-status status-active"><i class="fas fa-lock"></i> ACCÈS: DIRECTION</div>
+            </div>
+
             <!-- RSMA (VERROUILLÉ) -->
             <div class="feature-card" onclick="verifierAcces('rsma.html')">
                 <div class="feature-icon"><i class="fas fa-water"></i></div>
                 <h3 class="feature-title">RSMA V1.0</h3>
-                <p class="feature-description">Système de robot sous-marin autonome pour l'exploration marine. Accès aux spécifications techniques complètes et données de développement.</p>
+                <p class="feature-description">Système de robot sous-marin autonome pour l'exploration marine.</p>
                 <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
             </div>
 
@@ -472,46 +165,23 @@
             <div class="feature-card" onclick="verifierAcces('oxy.html')">
                 <div class="feature-icon"><i class="fas fa-wind"></i></div>
                 <h3 class="feature-title">PROJET OXY</h3>
-                <p class="feature-description">Système d'assistance respiratoire automatique pour patients avec insuffisance respiratoire.</p>
+                <p class="feature-description">Système d'assistance respiratoire automatique.</p>
                 <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
             </div>
 
-            <!-- ESPACE DIRECTION -->
-<div class="feature-card" onclick="accederEspaceDirection()">
-    <div class="feature-icon">
-        <i class="fas fa-shield-alt"></i>
-    </div>
-    <h3 class="feature-title">ESPACE DIRECTION</h3>
-    <p class="feature-description">
-        Postes de travail des membres de la direction.
-        Accès strictement réservé.
-    </p>
-    <div class="feature-status status-active">
-        <i class="fas fa-lock"></i> ACCÈS: DIRECTION
-    </div>
-</div>
-
             <!-- RAPPORT DE FIN DE JOURNÉE -->
-<div class="feature-card" onclick="window.location.href='rapport.html'">
-    <div class="feature-icon">
-        <i class="fas fa-clipboard-check"></i>
-    </div>
-    <h3 class="feature-title">RAPPORT DE FIN DE JOURNÉE</h3>
-    <p class="feature-description">
-        Rédigez votre rapport d'activité quotidien.
-        Date, heure et identité remplies automatiquement.
-        Historique et modification disponibles.
-    </p>
-    <div class="feature-status status-active">
-        <i class="fas fa-users"></i> ACCÈS: MEMBRES
-    </div>
-</div>
+            <div class="feature-card" onclick="window.location.href='rapport.html'">
+                <div class="feature-icon"><i class="fas fa-clipboard-check"></i></div>
+                <h3 class="feature-title">RAPPORT DE FIN DE JOURNÉE</h3>
+                <p class="feature-description">Rédigez votre rapport d'activité quotidien.</p>
+                <div class="feature-status status-active"><i class="fas fa-users"></i> ACCÈS: MEMBRES</div>
+            </div>
 
             <!-- EXAMINER MON TRAVAIL -->
             <div class="feature-card" onclick="window.location.href='examiner.html'">
                 <div class="feature-icon"><i class="fas fa-file-pdf"></i></div>
                 <h3 class="feature-title">EXAMINER MON TRAVAIL</h3>
-                <p class="feature-description">Soumettez votre travail (PDF) à l'examen ultra-rigoureux du système.</p>
+                <p class="feature-description">Soumettez votre travail (PDF) à l'examen ultra-rigoureux.</p>
                 <div class="feature-status status-active"><i class="fas fa-lock"></i> RÉSERVÉ AUX MEMBRES</div>
             </div>
 
@@ -531,7 +201,7 @@
                 <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
             </div>
 
-            <!-- PROFIL (libre) -->
+            <!-- PROFIL -->
             <div class="feature-card" onclick="window.location.href='profile.html'">
                 <div class="feature-icon"><i class="fas fa-user-cog"></i></div>
                 <h3 class="feature-title">PROFIL TECHNIQUE</h3>
@@ -539,15 +209,7 @@
                 <div class="feature-status status-active">ACCÈS: AUTORISÉ</div>
             </div>
 
-            <!-- ADMIN EXAMENS -->
-            <div class="feature-card" onclick="window.location.href='admin-examens.html'">
-                <div class="feature-icon"><i class="fas fa-clipboard-list"></i></div>
-                <h3 class="feature-title">ADMIN EXAMENS</h3>
-                <p class="feature-description">Accès administrateur pour consulter, noter et commenter les travaux soumis.</p>
-                <div class="feature-status status-active"><i class="fas fa-lock"></i> RÉSERVÉ AU MAJOR</div>
-            </div>
-
-            <!-- RÉSEAU COLLABORATIF (libre) -->
+            <!-- RÉSEAU COLLABORATIF -->
             <div class="feature-card" onclick="window.location.href='collaboratif.html'">
                 <div class="feature-icon"><i class="fas fa-users-cog"></i></div>
                 <h3 class="feature-title">RÉSEAU COLLABORATIF</h3>
@@ -587,52 +249,28 @@
                 <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
             </div>
 
-            <!-- COURS AFRICA.TECH21 (OUVERT) -->
+            <!-- COURS AFRICA.TECH21 -->
             <div class="feature-card" onclick="window.location.href='cours.html'">
                 <div class="feature-icon"><i class="fas fa-graduation-cap"></i></div>
                 <h3 class="feature-title">COURS AFRICA.TECH21</h3>
-                <p class="feature-description">Formation Future Members Africa.tech21 (FFAM). Programme complet.</p>
+                <p class="feature-description">Formation Future Members Africa.tech21 (FFAM).</p>
                 <div class="feature-status status-active">✅ ACCÈS: OUVERT</div>
             </div>
 
-            <!-- SECRÉTARIAT (restreint) -->
-            <div class="feature-card" onclick="window.location.href='secretariat.html'">
-                <div class="feature-icon"><i class="fas fa-pen-fancy"></i></div>
-                <h3 class="feature-title">SECRÉTARIAT</h3>
-                <p class="feature-description">Espace dédié à la Secrétaire Générale et au Président.</p>
-                <div class="feature-status status-active"><i class="fas fa-lock"></i> ACCÈS: RESTREINT</div>
-            </div>
-
-            <!-- GESTION DES STOCKS -->
-            <div class="feature-card" onclick="window.location.href='inventaire.html'">
-                <div class="feature-icon"><i class="fas fa-boxes"></i></div>
-                <h3 class="feature-title">GESTION DES STOCKS</h3>
-                <p class="feature-description">Inventaire complet des composants électroniques.</p>
-                <div class="feature-status status-active"><i class="fas fa-lock"></i> ACCÈS: RESTREINT</div>
-            </div>
-
-            <!-- PAUSE QUIZ (OUVERT) -->
+            <!-- PAUSE QUIZ -->
             <div class="feature-card" onclick="window.location.href='quiz.html'">
                 <div class="feature-icon"><i class="fas fa-brain"></i></div>
                 <h3 class="feature-title">PAUSE QUIZ</h3>
-                <p class="feature-description">100 questions sur l'électronique, la robotique et les projets AFRICA.TECH21.</p>
+                <p class="feature-description">100 questions sur l'électronique et la robotique.</p>
                 <div class="feature-status status-active"><i class="fas fa-gamepad"></i> DISPONIBLE</div>
             </div>
 
-            <!-- IA (OUVERT) -->
+            <!-- IA -->
             <div class="feature-card" onclick="window.location.href='ia.html'">
                 <div class="feature-icon"><i class="fas fa-brain"></i></div>
                 <h3 class="feature-title">IA AFRICA.TECH21</h3>
                 <p class="feature-description">Assistant IA intégré (Groq).</p>
                 <div class="feature-status status-active"><i class="fas fa-lock"></i> ACCÈS: CODE REQUIS</div>
-            </div>
-
-            <!-- ESPACE MAJOR -->
-            <div class="feature-card" onclick="accederEspaceMajor()">
-                <div class="feature-icon"><i class="fas fa-crown"></i></div>
-                <h3 class="feature-title">ESPACE MAJOR</h3>
-                <p class="feature-description">Laboratoire technique privé. Zone de développement sécurisée.</p>
-                <div class="feature-status status-active"><i class="fas fa-shield-alt"></i> NIVEAU MAXIMUM</div>
             </div>
         </div>
 
@@ -764,9 +402,8 @@
             }
         }
 
-        // ==================== VÉRIFICATION D'ACCÈS (NOUVELLE RÈGLE) ====================
-        // Seuls ces 3 accès sont autorisés pour les projets verrouillés
-        const ACCES_AUTORISES = ['Birane186@00', 'AT21_0036', 'AT21-001','AT21-0011'];
+        // ==================== ACCÈS PROJETS (3 membres) ====================
+        const ACCES_AUTORISES = ['Birane186@00', 'AT21_0036', 'AT21-001', 'AT21-0011'];
 
         function verifierAcces(page) {
             const codeSaisi = prompt("🔒 Entrez votre code d'accès :");
@@ -776,6 +413,11 @@
             } else {
                 alert("❌ Code incorrect. Accès refusé.");
             }
+        }
+
+        // ==================== ESPACE DIRECTION ====================
+        function accederEspaceDirection() {
+            window.location.href = 'direction.html';
         }
 
         // ==================== LOGOUT ====================
@@ -788,16 +430,6 @@
             localStorage.removeItem('memberEmail');
             localStorage.removeItem('currentUser');
             window.location.href = 'index.html';
-        }
-
-        // ==================== ESPACE MAJOR ====================
-        function accederEspaceMajor() {
-            const code = prompt("🔒 CODE D'ACCÈS ESPACE MAJOR :");
-            if (code === "Birane186@00") {
-                window.location.href = 'espace-major.html';
-            } else {
-                alert("❌ Code incorrect. Accès refusé.");
-            }
         }
 
         // ==================== INIT ====================
