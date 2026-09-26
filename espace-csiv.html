@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace CSIV | AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Exo 2', 'Segoe UI', sans-serif; }
+        :root {
+            --purple-royal: #6a0dad;
+            --purple-light: #9b30ff;
+            --purple-deep: #2a004d;
+            --gold: #ffd700;
+            --gold-glow: 0 0 30px rgba(255, 215, 0, 0.5);
+            --purple-glow: 0 0 30px rgba(155, 48, 255, 0.4);
+            --deep-space: #0a0014;
+            --dark-space: #14002a;
+            --text-primary: #ffffff;
+            --text-secondary: #c0a0e0;
+            --glass: rgba(155, 48, 255, 0.04);
+            --glass-border: rgba(155, 48, 255, 0.2);
+        }
+        body {
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(106, 13, 173, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.06) 0%, transparent 50%),
+                linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #1a0033 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .hologram-grid {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(155, 48, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(255, 215, 0, 0.02) 1px, transparent 1px);
+            background-size: 55px 55px;
+            animation: gridScan 22s linear infinite;
+            pointer-events: none; z-index: -2;
+        }
+        @keyframes gridScan { 0% { transform: translate(0,0); } 100% { transform: translate(55px,55px); } }
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
+        .particle {
+            position: absolute; width: 3px; height: 3px;
+            background: var(--purple-light); border-radius: 50%;
+            animation: float 15s infinite linear;
+            box-shadow: 0 0 10px var(--purple-light);
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.9; }
+            90% { opacity: 0.9; }
+            100% { transform: translateY(-100px) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+        .back-btn {
+            display: inline-block; padding: 0.8rem 2rem; margin-bottom: 2rem;
+            background: rgba(155, 48, 255, 0.1); border: 1px solid var(--purple-light);
+            border-radius: 10px; color: var(--purple-light); text-decoration: none;
+            font-weight: 600; transition: all 0.3s ease;
+        }
+        .back-btn:hover { background: rgba(155, 48, 255, 0.2); box-shadow: var(--purple-glow); }
+        .page-container { max-width: 1400px; margin: 0 auto; }
+        .page-header {
+            background: linear-gradient(135deg, rgba(106, 13, 173, 0.2), rgba(255, 215, 0, 0.05));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 28px;
+            padding: 3rem 2.5rem;
+            margin-bottom: 2.5rem;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(155, 48, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header::before {
+            content: '';
+            position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.06) 0%, transparent 60%);
+            animation: rotateGlow 20s linear infinite;
+        }
+        @keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .crown-icon {
+            font-size: 4rem; color: var(--gold);
+            margin-bottom: 1rem; text-shadow: var(--gold-glow);
+            animation: pulseCrown 2s ease-in-out infinite;
+            position: relative; z-index: 1;
+        }
+        @keyframes pulseCrown {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px var(--gold)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 30px var(--gold)); }
+        }
+        .page-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            background: linear-gradient(45deg, var(--gold), #ffffff, var(--purple-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+            font-weight: 900;
+            position: relative; z-index: 1;
+        }
+        .page-header .subtitle {
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            font-size: 1.05rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative; z-index: 1;
+        }
+        .user-info {
+            margin-top: 1.5rem;
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 0.8rem 2rem;
+            border-radius: 20px;
+            color: var(--gold);
+            font-weight: 600;
+            position: relative; z-index: 1;
+        }
+        .tabs {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 0.9rem 1.6rem;
+            background: rgba(155, 48, 255, 0.05);
+            border: 1px solid rgba(155, 48, 255, 0.25);
+            border-radius: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.78rem;
+            position: relative;
+        }
+        .tab:hover { background: rgba(155, 48, 255, 0.12); }
+        .tab.active {
+            background: linear-gradient(135deg, var(--purple-royal), var(--purple-light));
+            border-color: var(--gold);
+            color: white;
+            box-shadow: 0 0 25px rgba(155, 48, 255, 0.5);
+        }
+        .section { display: none; }
+        .section.active { display: block; }
+        .card-box {
+            background: linear-gradient(135deg, rgba(20, 0, 40, 0.75), rgba(10, 0, 25, 0.75));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(155, 48, 255, 0.25);
+            border-radius: 22px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 40px rgba(155, 48, 255, 0.12);
+        }
+        .card-box h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+        .editor-toolbar {
+            display: flex; flex-wrap: wrap; gap: 0.4rem;
+            margin-bottom: 1rem; padding: 0.7rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px; border: 1px solid rgba(155, 48, 255, 0.2);
+        }
+        .editor-toolbar button {
+            background: rgba(155, 48, 255, 0.1);
+            border: 1px solid rgba(155, 48, 255, 0.25);
+            border-radius: 6px; padding: 0.45rem 0.75rem;
+            color: var(--text-primary); cursor: pointer;
+            transition: all 0.3s ease; font-size: 0.85rem;
+        }
+        .editor-toolbar button:hover {
+            background: rgba(255, 215, 0, 0.15);
+            border-color: var(--gold);
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+        }
+        #editorContent {
+            width: 100%; min-height: 420px; padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(155, 48, 255, 0.25);
+            border-radius: 12px; color: var(--text-primary);
+            font-size: 1rem; line-height: 1.8; outline: none;
+            transition: all 0.3s ease;
+        }
+        #editorContent:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
+        }
+        #editorContent img { max-width: 100%; border-radius: 10px; margin: 1rem 0; }
+        #editorContent table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        #editorContent table td, #editorContent table th {
+            border: 1px solid rgba(255, 215, 0, 0.3); padding: 0.5rem;
+        }
+        .editor-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1rem; }
+        .btn {
+            padding: 0.85rem 1.8rem; border: none; border-radius: 10px;
+            font-weight: 700; cursor: pointer; transition: all 0.3s ease;
+            text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem;
+        }
+        .btn-purple { background: linear-gradient(135deg, var(--purple-royal), var(--purple-light)); color: white; }
+        .btn-purple:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(155, 48, 255, 0.5); }
+        .btn-gold { background: linear-gradient(135deg, #b8860b, var(--gold)); color: #1a0033; }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(255, 215, 0, 0.5); }
+        .btn-green { background: linear-gradient(135deg, #00b894, #00ff88); color: #031a0a; }
+        .btn-green:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0, 255, 136, 0.5); }
+        .btn-danger { background: linear-gradient(135deg, #8b0000, #ff0033); color: white; }
+        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(255, 0, 51, 0.5); }
+        .btn-dark { background: rgba(255, 255, 255, 0.05); color: var(--text-secondary); border: 1px solid rgba(155, 48, 255, 0.3); }
+        .btn-dark:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
+        .input-full {
+            width: 100%; padding: 1rem 1.3rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(155, 48, 255, 0.25);
+            border-radius: 12px; color: var(--text-primary);
+            font-size: 1rem; outline: none; transition: 0.3s;
+            margin-bottom: 1rem;
+        }
+        .input-full:focus { border-color: var(--gold); box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); }
+        .form-row {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem; margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block; color: var(--text-secondary);
+            font-weight: 600; margin-bottom: 0.4rem;
+            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 0.9rem 1.1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(155, 48, 255, 0.25);
+            border-radius: 10px; color: var(--text-primary);
+            font-size: 1rem; outline: none; transition: 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--gold); box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+        }
+        .form-group select option { background: var(--deep-space); }
+        .list-item {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(155, 48, 255, 0.15);
+            border-radius: 14px; padding: 1.5rem; margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        .list-item:hover {
+            border-color: var(--purple-light);
+            background: rgba(155, 48, 255, 0.06);
+            transform: translateX(5px);
+        }
+        .list-item .title { color: var(--gold); font-weight: 700; font-size: 1.1rem; margin-bottom: 0.3rem; }
+        .list-item .meta { color: var(--text-secondary); font-size: 0.85rem; }
+        .list-item .actions { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+        .list-item .actions button {
+            background: rgba(155, 48, 255, 0.1);
+            border: 1px solid rgba(155, 48, 255, 0.3);
+            border-radius: 8px; color: var(--purple-light);
+            padding: 0.4rem 0.9rem; cursor: pointer;
+            font-size: 0.82rem; font-weight: 600; transition: 0.3s;
+        }
+        .list-item .actions button:hover { background: rgba(155, 48, 255, 0.25); }
+        .list-item .actions button.delete { color: #ff4757; border-color: rgba(255, 71, 87, 0.3); background: rgba(255, 71, 87, 0.05); }
+        .list-item .actions button.transmettre { color: var(--gold); border-color: rgba(255, 215, 0, 0.4); background: rgba(255, 215, 0, 0.08); }
+        .statut-badge {
+            display: inline-block; padding: 0.3rem 0.9rem;
+            border-radius: 15px; font-size: 0.78rem; font-weight: 700;
+            letter-spacing: 1px; margin-top: 0.5rem;
+        }
+        .statut-actif { background: rgba(155, 48, 255, 0.2); border: 1px solid var(--purple-light); color: var(--purple-light); }
+        .statut-transmis { background: rgba(255, 215, 0, 0.15); border: 1px solid var(--gold); color: var(--gold); }
+        .statut-en_attente { background: rgba(255, 200, 0, 0.15); border: 1px solid #ffc800; color: #ffc800; }
+        .statut-en_cours { background: rgba(0, 160, 255, 0.15); border: 1px solid #00a0ff; color: #00a0ff; }
+        .statut-termine { background: rgba(0, 255, 136, 0.15); border: 1px solid #00ff88; color: #00ff88; }
+        .empty-state { text-align: center; color: var(--text-secondary); padding: 3rem; }
+        .empty-state i { font-size: 3rem; color: rgba(155, 48, 255, 0.2); margin-bottom: 1rem; display: block; }
+        .loading-text { text-align: center; color: var(--text-secondary); padding: 2rem; }
+        .loading-spinner {
+            display: inline-block; width: 30px; height: 30px;
+            border: 3px solid rgba(155, 48, 255, 0.2);
+            border-top: 3px solid var(--gold);
+            border-radius: 50%; animation: spin 0.8s linear infinite;
+            margin-bottom: 1rem;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 9999; align-items: center; justify-content: center;
+            padding: 2rem;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: linear-gradient(135deg, #0a0014 0%, #14002a 100%);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 25px; max-width: 750px; width: 100%;
+            max-height: 90vh; overflow-y: auto;
+            padding: 2.5rem;
+            box-shadow: 0 0 60px rgba(155, 48, 255, 0.4);
+        }
+        .modal-content h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--gold); margin-bottom: 1.5rem;
+            display: flex; align-items: center; gap: 1rem;
+        }
+        .toast {
+            position: fixed; bottom: 2rem; left: 50%;
+            transform: translateX(-50%);
+            background: rgba(155, 48, 255, 0.95);
+            color: white; padding: 1rem 2rem;
+            border-radius: 12px; font-weight: 700;
+            z-index: 10001; animation: fadeInUp 0.3s ease;
+        }
+        .toast.success { background: rgba(0, 255, 136, 0.95); color: #050510; }
+        .toast.error { background: rgba(255, 0, 51, 0.95); color: white; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        .alerte-rapport {
+            display: none;
+            background: linear-gradient(90deg, var(--gold), #b8860b, var(--gold));
+            background-size: 300%;
+            border: 2px solid var(--gold);
+            border-radius: 18px;
+            padding: 1.2rem 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #1a0033;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+            animation: alertePulse 1.2s infinite, bgMoveAlerte 3s linear infinite;
+        }
+        .alerte-rapport.active { display: block; }
+        @keyframes alertePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+        @keyframes bgMoveAlerte { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem; margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: rgba(155, 48, 255, 0.06);
+            border: 1px solid rgba(155, 48, 255, 0.25);
+            border-radius: 15px; padding: 1.5rem; text-align: center;
+        }
+        .stat-card .num { font-family: 'Orbitron', sans-serif; font-size: 2rem; color: var(--gold); }
+        .stat-card .label { color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 0.3rem; }
+        .equipe-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(155, 48, 255, 0.2);
+            border-radius: 12px; padding: 1rem 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+        .equipe-item .info .nom { color: var(--gold); font-weight: 700; }
+        .equipe-item .info .role { color: var(--text-secondary); font-size: 0.85rem; }
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .page-header h1 { font-size: 1.8rem; }
+            .card-box { padding: 1.5rem; }
+            .tabs { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hologram-grid"></div>
+    <div class="particles" id="particles"></div>
+
+    <div class="page-container">
+        <a href="direction.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> RETOUR ESPACE DIRECTION
+        </a>
+
+        <header class="page-header">
+            <i class="fas fa-crown crown-icon"></i>
+            <h1>ESPACE CSIV</h1>
+            <p class="subtitle">Cellule Stratégique d'Innovation et de Veille</p>
+            <div class="user-info" id="userInfo">
+                <i class="fas fa-user-shield"></i> CHARGEMENT...
+            </div>
+        </header>
+
+        <div class="alerte-rapport" id="alerteRapport">
+            <i class="fas fa-bell"></i> RAPPEL : Vous n'avez pas encore soumis votre rapport mensuel CSIV !
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('communication')">
+                <i class="fas fa-bullhorn"></i> COMMUNICATION
+            </div>
+            <div class="tab" onclick="switchTab('veille')">
+                <i class="fas fa-binoculars"></i> VEILLE
+            </div>
+            <div class="tab" onclick="switchTab('problemes')">
+                <i class="fas fa-exclamation-circle"></i> PROBLÈMES
+            </div>
+            <div class="tab" onclick="switchTab('cahiers')">
+                <i class="fas fa-file-contract"></i> CAHIERS
+            </div>
+            <div class="tab" onclick="switchTab('rapports')">
+                <i class="fas fa-chart-line"></i> RAPPORTS
+            </div>
+            <div class="tab" onclick="switchTab('equipe')">
+                <i class="fas fa-users"></i> ÉQUIPE
+            </div>
+        </div>
+
+        <!-- SECTION COMMUNICATION -->
+        <div class="section active" id="sectionCommunication">
+            <div class="card-box">
+                <h2><i class="fas fa-pen-fancy"></i> ÉDITEUR DE COMMUNICATION</h2>
+                <input type="text" id="commTitle" class="input-full" placeholder="Titre de la publication / annonce...">
+                <div class="editor-toolbar">
+                    <button onclick="execCmd('bold')" title="Gras"><i class="fas fa-bold"></i></button>
+                    <button onclick="execCmd('italic')" title="Italique"><i class="fas fa-italic"></i></button>
+                    <button onclick="execCmd('underline')" title="Souligné"><i class="fas fa-underline"></i></button>
+                    <button onclick="execCmd('strikeThrough')" title="Barré"><i class="fas fa-strikethrough"></i></button>
+                    <span style="width:1px; height:24px; background:rgba(155,48,255,0.3); align-self:center;"></span>
+                    <button onclick="execCmd('formatBlock','h1')">H1</button>
+                    <button onclick="execCmd('formatBlock','h2')">H2</button>
+                    <button onclick="execCmd('formatBlock','h3')">H3</button>
+                    <button onclick="execCmd('formatBlock','h4')">H4</button>
+                    <button onclick="execCmd('formatBlock','p')">P</button>
+                    <span style="width:1px; height:24px; background:rgba(155,48,255,0.3); align-self:center;"></span>
+                    <button onclick="execCmd('insertUnorderedList')" title="Liste à puces"><i class="fas fa-list-ul"></i></button>
+                    <button onclick="execCmd('insertOrderedList')" title="Liste numérotée"><i class="fas fa-list-ol"></i></button>
+                    <button onclick="execCmd('indent')" title="Indenter"><i class="fas fa-indent"></i></button>
+                    <button onclick="execCmd('outdent')" title="Désindenter"><i class="fas fa-outdent"></i></button>
+                    <span style="width:1px; height:24px; background:rgba(155,48,255,0.3); align-self:center;"></span>
+                    <button onclick="execCmd('justifyLeft')"><i class="fas fa-align-left"></i></button>
+                    <button onclick="execCmd('justifyCenter')"><i class="fas fa-align-center"></i></button>
+                    <button onclick="execCmd('justifyRight')"><i class="fas fa-align-right"></i></button>
+                    <button onclick="execCmd('justifyFull')"><i class="fas fa-align-justify"></i></button>
+                    <span style="width:1px; height:24px; background:rgba(155,48,255,0.3); align-self:center;"></span>
+                    <button onclick="insertLink()" title="Lien"><i class="fas fa-link"></i></button>
+                    <button onclick="insertImage()" title="Image"><i class="fas fa-image"></i></button>
+                    <button onclick="insertTable()" title="Tableau"><i class="fas fa-table"></i></button>
+                    <button onclick="execCmd('insertHorizontalRule')" title="Séparateur"><i class="fas fa-minus"></i></button>
+                    <button onclick="execCmd('insertHTML','&nbsp;&nbsp;&nbsp;&nbsp;')" title="Tabulation">⇥ Tab</button>
+                    <span style="width:1px; height:24px; background:rgba(155,48,255,0.3); align-self:center;"></span>
+                    <button onclick="execCmd('superscript')" title="Exposant">x²</button>
+                    <button onclick="execCmd('subscript')" title="Indice">x₂</button>
+                    <button onclick="execCmd('removeFormat')" title="Effacer format"><i class="fas fa-eraser"></i></button>
+                </div>
+                <div id="editorContent" contenteditable="true" placeholder="Rédigez votre communication ici..."></div>
+                <div class="editor-actions">
+                    <button class="btn btn-gold" onclick="saveComm()"><i class="fas fa-save"></i> PUBLIER</button>
+                    <button class="btn btn-purple" onclick="loadComm()"><i class="fas fa-sync"></i> SYNC</button>
+                    <button class="btn btn-dark" onclick="clearEditor('comm')"><i class="fas fa-eraser"></i> EFFACER</button>
+                </div>
+                <input type="hidden" id="editCommId" value="">
+            </div>
+
+            <div class="card-box">
+                <h2><i class="fas fa-archive"></i> PUBLICATIONS</h2>
+                <div id="commList">
+                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION VEILLE -->
+        <div class="section" id="sectionVeille">
+            <div class="card-box">
+                <h2><i class="fas fa-binoculars"></i> AJOUTER UNE OPPORTUNITÉ</h2>
+                <input type="text" id="veilleTitre" class="input-full" placeholder="Titre de l'opportunité / appel à projets...">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select id="veilleType">
+                            <option value="Concours">🏆 Concours</option>
+                            <option value="Appel à projets">📢 Appel à projets</option>
+                            <option value="Programme d'innovation">💡 Programme d'innovation</option>
+                            <option value="Bourse">🎓 Bourse</option>
+                            <option value="Financement">💰 Financement</option>
+                            <option value="Autre">📌 Autre</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Deadline</label>
+                        <input type="date" id="veilleDeadline">
+                    </div>
+                    <div class="form-group">
+                        <label>Lien / Source</label>
+                        <input type="text" id="veilleLien" placeholder="https://...">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom:1rem;">
+                    <label>Description / Analyse</label>
+                    <textarea id="veilleDesc" rows="5" placeholder="Décrivez l'opportunité, son intérêt pour AFRICA.TECH21..."></textarea>
+                </div>
+                <button class="btn btn-gold" onclick="saveVeille()"><i class="fas fa-plus"></i> AJOUTER</button>
+            </div>
+
+            <div class="card-box">
+                <h2><i class="fas fa-list"></i> VEILLE EN COURS</h2>
+                <div id="veilleList">
+                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION PROBLÈMES -->
+        <div class="section" id="sectionProblemes">
+            <div class="card-box">
+                <h2><i class="fas fa-exclamation-circle"></i> ANALYSE D'UN PROBLÈME SOCIÉTAL</h2>
+                <input type="text" id="probTitre" class="input-full" placeholder="Titre du problème...">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Domaine</label>
+                        <select id="probDomaine">
+                            <option value="Énergie">⚡ Énergie</option>
+                            <option value="Éducation">📚 Éducation</option>
+                            <option value="Santé">🏥 Santé</option>
+                            <option value="Agriculture">🌾 Agriculture</option>
+                            <option value="Numérique">💻 Numérique</option>
+                            <option value="Environnement">🌍 Environnement</option>
+                            <option value="Transport">🚗 Transport</option>
+                            <option value="Autre">📌 Autre</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom:1rem;">
+                    <label>Description du problème</label>
+                    <textarea id="probDesc" rows="6" placeholder="Décrivez le problème constaté..."></textarea>
+                </div>
+                <button class="btn btn-gold" onclick="saveProbleme()"><i class="fas fa-plus"></i> ENREGISTRER</button>
+            </div>
+
+            <div class="card-box">
+                <h2><i class="fas fa-list"></i> PROBLÈMES RECENSÉS</h2>
+                <div id="probList">
+                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION CAHIERS -->
+        <div class="section" id="sectionCahiers">
+            <div class="card-box">
+                <h2><i class="fas fa-file-contract"></i> CRÉER UN CAHIER DES CHARGES</h2>
+                <input type="text" id="cahierTitre" class="input-full" placeholder="Titre du cahier des charges...">
+                <div class="form-group" style="margin-bottom:1rem;">
+                    <label>Contenu / Spécifications</label>
+                    <textarea id="cahierContenu" rows="8" placeholder="Détaillez les spécifications techniques, objectifs, contraintes..."></textarea>
+                </div>
+                <button class="btn btn-gold" onclick="saveCahier()"><i class="fas fa-plus"></i> CRÉER</button>
+            </div>
+
+            <div class="card-box">
+                <h2><i class="fas fa-paper-plane"></i> CAHIERS CRÉÉS</h2>
+                <div id="cahierList">
+                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION RAPPORTS -->
+        <div class="section" id="sectionRapports">
+            <div class="stats-grid">
+                <div class="stat-card"><div class="num" id="statVeille">0</div><div class="label">Veilles</div></div>
+                <div class="stat-card"><div class="num" id="statProb">0</div><div class="label">Problèmes</div></div>
+                <div class="stat-card"><div class="num" id="statCahier">0</div><div class="label">Cahiers</div></div>
+                <div class="stat-card"><div class="num" id="statRapport">0</div><div class="label">Rapports</div></div>
+            </div>
+
+            <div class="card-box">
+                <h2><i class="fas fa-chart-line"></i> RÉDIGER UN RAPPORT MENSUEL</h2>
+                <input type="text" id="rapportTitre" class="input-full" placeholder="Titre du rapport (ex: Rapport CSIV - Novembre 2026)...">
+                <div class="form-group" style="margin-bottom:1rem;">
+                    <label>Contenu du rapport</label>
+                    <textarea id="rapportContenu" rows="10" placeholder="Résumé des activités, avancées, blocages, résultats..."></textarea>
+                </div>
+                <button class="btn btn-gold" onclick="saveRapport()"><i class="fas fa-save"></i> SOUMETTRE LE RAPPORT</button>
+            </div>
+
+            <div class="card-box">
+                <h2><i class="fas fa-history"></i> HISTORIQUE DES RAPPORTS</h2>
+                <div id="rapportList">
+                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION ÉQUIPE -->
+        <div class="section" id="sectionEquipe">
+            <div class="card-box">
+                <h2><i class="fas fa-user-plus"></i> AJOUTER UN MEMBRE À L'ÉQUIPE CSIV</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>ID du membre</label>
+                        <input type="text" id="eqId" placeholder="Ex: AT21_0046">
+                    </div>
+                    <div class="form-group">
+                        <label>Nom complet</label>
+                        <input type="text" id="eqNom" placeholder="Ex: DIALLO MOUHAMED">
+                    </div>
+                    <div class="form-group">
+                        <label>Rôle dans la CSIV</label>
+                        <input type="text" id="eqRole" placeholder="Ex: Analyste veille">
+                    </div>
+                </div>
+                <button class="btn btn-gold" onclick="ajouterEquipe()"><i class="fas fa-plus"></i> AJOUTER</button>
+            </div>
+
+            <div class="card-box">
+                <h2><i class="fas fa-users"></i> MON ÉQUIPE CSIV</h2>
+                <div id="equipeList">
+                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL VIEW -->
+    <div class="modal-overlay" id="viewModal">
+        <div class="modal-content">
+            <h2><i class="fas fa-file-alt"></i> <span id="viewTitle">Titre</span></h2>
+            <div class="meta" id="viewMeta" style="color: var(--text-secondary); margin-bottom: 1.5rem;"></div>
+            <div id="viewBody" style="line-height: 1.8;"></div>
+            <div style="margin-top: 2rem;">
+                <button class="btn btn-dark" onclick="closeViewModal()">FERMER</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL TRANSMISSION -->
+    <div class="modal-overlay" id="transModal">
+        <div class="modal-content">
+            <h2><i class="fas fa-paper-plane"></i> TRANSMETTRE AU RESPONSABLE PROJETS</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Le cahier des charges sera envoyé directement au Responsable des Projets.</p>
+            <div class="form-group" style="margin-bottom:1rem;">
+                <label>Titre du cahier</label>
+                <input type="text" id="transTitre" class="input-full" readonly>
+            </div>
+            <div class="form-group" style="margin-bottom:1.5rem;">
+                <label>Message / Précisions (optionnel)</label>
+                <textarea id="transMessage" rows="4" placeholder="Ajoutez un message d'accompagnement..."></textarea>
+            </div>
+            <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+                <button class="btn btn-green" onclick="confirmerTransmission()"><i class="fas fa-check"></i> TRANSMETTRE</button>
+                <button class="btn btn-dark" onclick="closeTransModal()">ANNULER</button>
+            </div>
+            <input type="hidden" id="transCahierId" value="">
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const ALLOWED_IDS = ['AT21_0036', 'AT21_006', 'Birane186@00'];
+        if (localStorage.getItem('memberLoggedIn') !== 'true') window.location.href = 'espace-membres.html';
+        const memberId = localStorage.getItem('memberId') || '';
+        if (!ALLOWED_IDS.includes(memberId)) {
+            document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column;gap:1rem;"><i class="fas fa-lock" style="font-size:4rem;color:#9b30ff;"></i><h1 style="color:#9b30ff;">ACCÈS REFUSÉ</h1><a href="dashboard.html" style="color:#00f0ff;">Retour</a></div>';
+            throw new Error('Accès refusé');
+        }
+
+        const memberNom = localStorage.getItem('memberNom') || '';
+        const memberPrenom = localStorage.getItem('memberPrenom') || '';
+        const memberFonction = localStorage.getItem('memberFonction') || '';
+        document.getElementById('userInfo').innerHTML = `<i class="fas fa-user-shield"></i> ${memberPrenom} ${memberNom} — ${memberFonction}`;
+
+        function showToast(msg, type='') {
+            const old = document.querySelector('.toast'); if (old) old.remove();
+            const t = document.createElement('div');
+            t.className = 'toast ' + type;
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 4000);
+        }
+
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 55; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.animationDelay = Math.random() * 15 + 's';
+                p.style.animationDuration = (10 + Math.random() * 12) + 's';
+                const colors = ['#9b30ff', '#ffd700', '#6a0dad'];
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.boxShadow = `0 0 10px ${p.style.background}`;
+                container.appendChild(p);
+            }
+        }
+
+        function switchTab(name) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            event.target.closest('.tab').classList.add('active');
+            document.getElementById('section' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
+        }
+
+        function execCmd(cmd, val=null) {
+            document.execCommand(cmd, false, val);
+            document.getElementById('editorContent').focus();
+        }
+        function insertLink() { const url = prompt('URL du lien :'); if (url) execCmd('createLink', url); }
+        function insertImage() { const url = prompt('URL de l\'image :'); if (url) execCmd('insertImage', url); }
+        function insertTable() {
+            const rows = prompt('Nombre de lignes :', '3');
+            const cols = prompt('Nombre de colonnes :', '3');
+            if (!rows || !cols) return;
+            let html = '<table>';
+            for (let i = 0; i < rows; i++) { html += '<tr>'; for (let j = 0; j < cols; j++) html += '<td>&nbsp;</td>'; html += '</tr>'; }
+            html += '</table>';
+            execCmd('insertHTML', html);
+        }
+        function clearEditor() {
+            if (confirm('Effacer le contenu ?')) {
+                document.getElementById('editorContent').innerHTML = '';
+                document.getElementById('commTitle').value = '';
+                document.getElementById('editCommId').value = '';
+            }
+        }
+
+        // ==================== COMMUNICATION ====================
+        async function saveComm() {
+            const title = document.getElementById('commTitle').value.trim() || 'Sans titre';
+            const content = document.getElementById('editorContent').innerHTML.trim();
+            const editId = document.getElementById('editCommId').value;
+            if (!content || content === '<br>') { showToast('⚠️ Écrivez du contenu.', 'error'); return; }
+
+            const now = new Date();
+            const payload = {
+                type: 'communication',
+                titre: title,
+                contenu: content,
+                statut: 'actif',
+                auteur: `${memberPrenom} ${memberNom}`,
+                auteur_id: memberId,
+                date_creation: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
+                timestamp: Date.now()
+            };
+
+            try {
+                let res;
+                if (editId) res = await supabaseClient.from('csiv_data').update(payload).eq('id', editId);
+                else res = await supabaseClient.from('csiv_data').insert([payload]);
+                if (res.error) throw res.error;
+
+                showToast('✅ Publication enregistrée !', 'success');
+                document.getElementById('editorContent').innerHTML = '';
+                document.getElementById('commTitle').value = '';
+                document.getElementById('editCommId').value = '';
+                loadComm();
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+        }
+
+        async function loadComm() {
+            const c = document.getElementById('commList');
+            c.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
+            try {
+                const { data, error } = await supabaseClient.from('csiv_data').select('*').eq('type', 'communication').order('timestamp', {ascending: false});
+                if (error) throw error;
+                if (!data || data.length === 0) { c.innerHTML = '<div class="empty-state"><i class="fas fa-bullhorn"></i><p>Aucune publication.</p></div>'; return; }
+                c.innerHTML = data.map(p => `
+                    <div class="list-item">
+                        <div class="title">${p.titre}</div>
+                        <div class="meta">📅 ${p.date_creation} - ✍️ ${p.auteur}</div>
+                        <div class="actions">
+                            <button onclick="viewItem('${p.id}')"><i class="fas fa-eye"></i> Voir</button>
+                            <button onclick="editComm('${p.id}')"><i class="fas fa-edit"></i> Modifier</button>
+                            <button class="delete" onclick="deleteItem('${p.id}', 'comm')"><i class="fas fa-trash"></i> Supprimer</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (e) { c.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>'; }
+        }
+
+        async function editComm(id) {
+            const { data } = await supabaseClient.from('csiv_data').select('*').eq('id', id).single();
+            if (!data) return;
+            document.getElementById('commTitle').value = data.titre;
+            document.getElementById('editorContent').innerHTML = data.contenu;
+            document.getElementById('editCommId').value = id;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ==================== VEILLE ====================
+        async function saveVeille() {
+            const titre = document.getElementById('veilleTitre').value.trim();
+            const type = document.getElementById('veilleType').value;
+            const deadline = document.getElementById('veilleDeadline').value;
+            const lien = document.getElementById('veilleLien').value.trim();
+            const desc = document.getElementById('veilleDesc').value.trim();
+
+            if (!titre) { showToast('⚠️ Titre obligatoire.', 'error'); return; }
+
+            const now = new Date();
+            const metadata = JSON.stringify({ type_opp: type, deadline, lien });
+
+            try {
+                const { error } = await supabaseClient.from('csiv_data').insert([{
+                    type: 'veille',
+                    titre: titre,
+                    contenu: desc,
+                    statut: 'actif',
+                    auteur: `${memberPrenom} ${memberNom}`,
+                    auteur_id: memberId,
+                    metadata: metadata,
+                    date_creation: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
+                    timestamp: Date.now()
+                }]);
+                if (error) throw error;
+                showToast('✅ Veille ajoutée !', 'success');
+                document.getElementById('veilleTitre').value = '';
+                document.getElementById('veilleDeadline').value = '';
+                document.getElementById('veilleLien').value = '';
+                document.getElementById('veilleDesc').value = '';
+                loadVeille();
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+        }
+
+        async function loadVeille() {
+            const c = document.getElementById('veilleList');
+            c.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
+            try {
+                const { data, error } = await supabaseClient.from('csiv_data').select('*').eq('type', 'veille').order('timestamp', {ascending: false});
+                if (error) throw error;
+                if (!data || data.length === 0) { c.innerHTML = '<div class="empty-state"><i class="fas fa-binoculars"></i><p>Aucune veille.</p></div>'; return; }
+                c.innerHTML = data.map(v => {
+                    let meta = {};
+                    try { meta = JSON.parse(v.metadata || '{}'); } catch(e) {}
+                    return `
+                        <div class="list-item">
+                            <div class="title">${v.titre}</div>
+                            <div class="meta">📌 ${meta.type_opp || '—'} ${meta.deadline ? '— Deadline : ' + meta.deadline : ''}</div>
+                            <div class="meta">📅 ${v.date_creation} - ✍️ ${v.auteur}</div>
+                            ${meta.lien ? `<div class="meta" style="margin-top:0.4rem;"><a href="${meta.lien}" target="_blank" style="color:#ffd700;">🔗 ${meta.lien}</a></div>` : ''}
+                            <div class="actions">
+                                <button onclick="viewItem('${v.id}')"><i class="fas fa-eye"></i> Voir</button>
+                                <button class="delete" onclick="deleteItem('${v.id}', 'veille')"><i class="fas fa-trash"></i> Supprimer</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) { c.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>'; }
+        }
+
+        // ==================== PROBLÈMES ====================
+        async function saveProbleme() {
+            const titre = document.getElementById('probTitre').value.trim();
+            const domaine = document.getElementById('probDomaine').value;
+            const desc = document.getElementById('probDesc').value.trim();
+            if (!titre) { showToast('⚠️ Titre obligatoire.', 'error'); return; }
+
+            const now = new Date();
+            try {
+                const { error } = await supabaseClient.from('csiv_data').insert([{
+                    type: 'probleme',
+                    titre: titre,
+                    contenu: desc,
+                    statut: 'actif',
+                    auteur: `${memberPrenom} ${memberNom}`,
+                    auteur_id: memberId,
+                    metadata: JSON.stringify({ domaine }),
+                    date_creation: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
+                    timestamp: Date.now()
+                }]);
+                if (error) throw error;
+                showToast('✅ Problème enregistré !', 'success');
+                document.getElementById('probTitre').value = '';
+                document.getElementById('probDesc').value = '';
+                loadProblemes();
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+        }
+
+        async function loadProblemes() {
+            const c = document.getElementById('probList');
+            c.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
+            try {
+                const { data, error } = await supabaseClient.from('csiv_data').select('*').eq('type', 'probleme').order('timestamp', {ascending: false});
+                if (error) throw error;
+                if (!data || data.length === 0) { c.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Aucun problème recensé.</p></div>'; return; }
+                c.innerHTML = data.map(p => {
+                    let meta = {};
+                    try { meta = JSON.parse(p.metadata || '{}'); } catch(e) {}
+                    return `
+                        <div class="list-item">
+                            <div class="title">${p.titre}</div>
+                            <div class="meta">📂 ${meta.domaine || '—'} — 📅 ${p.date_creation}</div>
+                            <div class="actions">
+                                <button onclick="viewItem('${p.id}')"><i class="fas fa-eye"></i> Voir</button>
+                                <button class="delete" onclick="deleteItem('${p.id}', 'prob')"><i class="fas fa-trash"></i> Supprimer</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) { c.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>'; }
+        }
+
+        // ==================== CAHIERS ====================
+        async function saveCahier() {
+            const titre = document.getElementById('cahierTitre').value.trim();
+            const contenu = document.getElementById('cahierContenu').value.trim();
+            if (!titre || !contenu) { showToast('⚠️ Titre et contenu obligatoires.', 'error'); return; }
+
+            const now = new Date();
+            try {
+                const { error } = await supabaseClient.from('cahiers_charges').insert([{
+                    titre: titre,
+                    contenu: contenu,
+                    emetteur: `${memberPrenom} ${memberNom}`,
+                    emetteur_id: memberId,
+                    statut: 'en_attente',
+                    date_envoi: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
+                    timestamp: Date.now()
+                }]);
+                if (error) throw error;
+                showToast('✅ Cahier créé !', 'success');
+                document.getElementById('cahierTitre').value = '';
+                document.getElementById('cahierContenu').value = '';
+                loadCahiers();
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+        }
+
+        async function loadCahiers() {
+            const c = document.getElementById('cahierList');
+            c.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
+            try {
+                const { data, error } = await supabaseClient.from('cahiers_charges').select('*').order('timestamp', {ascending: false});
+                if (error) throw error;
+                if (!data || data.length === 0) { c.innerHTML = '<div class="empty-state"><i class="fas fa-file-contract"></i><p>Aucun cahier créé.</p></div>'; return; }
+                c.innerHTML = data.map(k => `
+                    <div class="list-item">
+                        <div class="title">${k.titre}</div>
+                        <div class="meta">📅 ${k.date_envoi} - ✍️ ${k.emetteur}</div>
+                        <div class="statut-badge statut-${k.statut}">${k.statut.replace('_', ' ').toUpperCase()}</div>
+                        ${k.retour ? `<div class="meta" style="margin-top:0.6rem; color:#fff;">↩️ Retour : ${k.retour}</div>` : ''}
+                        <div class="actions">
+                            <button onclick="viewItem('${k.id}', 'cahier')"><i class="fas fa-eye"></i> Voir</button>
+                            <button class="transmettre" onclick="ouvrirTransmission('${k.id}', '${k.titre.replace(/'/g, "\\'")}')"><i class="fas fa-paper-plane"></i> Transmettre au Resp. Projets</button>
+                            <button class="delete" onclick="deleteCahier('${k.id}')"><i class="fas fa-trash"></i> Supprimer</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (e) { c.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>'; }
+        }
+
+        function ouvrirTransmission(id, titre) {
+            document.getElementById('transCahierId').value = id;
+            document.getElementById('transTitre').value = titre;
+            document.getElementById('transMessage').value = '';
+            document.getElementById('transModal').classList.add('active');
+        }
+        function closeTransModal() { document.getElementById('transModal').classList.remove('active'); }
+
+        async function confirmerTransmission() {
+            const id = document.getElementById('transCahierId').value;
+            const message = document.getElementById('transMessage').value.trim();
+            try {
+                const { data: cahier } = await supabaseClient.from('cahiers_charges').select('*').eq('id', id).single();
+                if (!cahier) throw new Error('Cahier introuvable');
+
+                const now = new Date();
+                const contenuFull = cahier.contenu + (message ? `\n\n---\nMessage : ${message}` : '');
+
+                // Créer une entrée dans travaux_membres pour le Responsable Projets
+                const { error: err1 } = await supabaseClient.from('travaux_membres').insert([{
+                    membre_id: memberId,
+                    membre_nom: `${memberPrenom} ${memberNom}`,
+                    fichier_nom: `CAHIER: ${cahier.titre}`,
+                    fichier_url: 'cahier-csiv',
+                    storage_path: null,
+                    commentaire: contenuFull.substring(0, 500),
+                    statut: 'en_attente',
+                    date_depot: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
+                    timestamp: Date.now()
+                }]);
+                if (err1) throw err1;
+
+                // Mettre à jour le cahier
+                const { error: err2 } = await supabaseClient.from('cahiers_charges').update({
+                    statut: 'en_cours',
+                    date_retour: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})
+                }).eq('id', id);
+                if (err2) throw err2;
+
+                showToast('✅ Cahier transmis au Responsable Projets !', 'success');
+                closeTransModal();
+                loadCahiers();
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+        }
+
+        async function deleteCahier(id) {
+            if (!confirm('Supprimer ce cahier ?')) return;
+            try {
+                const { error } = await supabaseClient.from('cahiers_charges').delete().eq('id', id);
+                if (error) throw error;
+                showToast('🗑️ Cahier supprimé.', 'success');
+                loadCahiers();
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+        }
+
+        // ==================== RAPPORTS ====================
+        async function saveRapport() {
+            const titre = document.getElementById('rapportTitre').value.trim();
+            const contenu = document.getElementById('rapportContenu').value.trim();
+            if (!titre || !contenu) { showToast('⚠️ Titre et contenu obligatoires.', 'error'); return; }
+
+            const now = new Date();
+            try {
+                const { error } = await supabaseClient.from('csiv_data').insert([{
+                    type: 'rapport',
+                    titre: titre,
+                    contenu: contenu,
+                    statut: 'actif',
+                    auteur: `${memberPrenom} ${memberNom}`,
+                    auteur_id: memberId,
+                    date_creation: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
+                    timestamp: Date.now()
+                }]);
+                if (error) throw error;
+                showToast('✅ Rapport soumis !', 'success');
+                document.getElementById('rapportTitre').value = '';
+                document.getElementById('rapportContenu').value = '';
+                loadRapports();
+                verifierRapportMensuel();
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+        }
+
+        async function loadRapports() {
+            const c = document.getElementById('rapportList');
+            c.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
+            try {
+                const { data, error } = await supabaseClient.from('csiv_data').select('*').eq('type', 'rapport').order('timestamp', {ascending: false});
+                if (error) throw error;
+                if (!data || data.length === 0) { c.innerHTML = '<div class="empty-state"><i class="fas fa-chart-line"></i><p>Aucun rapport.</p></div>'; return; }
+                c.innerHTML = data.map(r => `
+                    <div class="list-item">
+                        <div class="title">${r.titre}</div>
+                        <div class="meta">📅 ${r.date_creation} - ✍️ ${r.auteur}</div>
+                        <div class="actions">
+                            <button onclick="viewItem('${r.id}', 'rapport')"><i class="fas fa-eye"></i> Voir</button>
+                            <button class="delete" onclick="deleteItem('${r.id}', 'rapport')"><i class="fas fa-trash"></i> Supprimer</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (e) { c.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>'; }
+        }
+
+        async function verifierRapportMensuel() {
+            try {
+                const { data } = await supabaseClient.from('csiv_data').select('*').eq('type', 'rapport').order('timestamp', {ascending: false}).limit(1);
+                const alerte = document.getElementById('alerteRapport');
+                if (!data || data.length === 0) {
+                    alerte.classList.add('active');
+                    return;
+                }
+                const dernier = data[0];
+                const diffJours = (Date.now() - dernier.timestamp) / (1000 * 60 * 60 * 24);
+                if (diffJours > 30) alerte.classList.add('active');
+                else alerte.classList.remove('active');
+            } catch (e) { console.warn(e); }
+        }
+
+        // ==================== ÉQUIPE ====================
+        async function ajouterEquipe() {
+            const id = document.getElementById('eqId').value.trim();
+            const nom = document.getElementById('eqNom').value.trim();
+            const role = document.getElementById('eqRole').value.trim();
+            if (!id || !nom) { showToast('⚠️ ID et Nom obligatoires.', 'error'); return; }
+
+            const now = new Date();
+            try {
+                const { error } = await supabaseClient.from('csiv_equipe').insert([{
+                    membre_id: id,
+                    membre_nom: nom,
+                    role: role || 'Membre CSIV',
+                    ajoute_par: `${memberPrenom} ${memberNom}`,
+                    date_ajout: now.toLocaleDateString('fr-FR'),
+                    timestamp: Date.now()
+                }]);
+                if (error) throw error;
+                showToast('✅ Membre ajouté !', 'success');
+                document.getElementById('eqId').value = '';
+                document.getElementById('eqNom').value = '';
+                document.getElementById('eqRole').value = '';
+                loadEquipe();
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+        }
+
+        async function loadEquipe() {
+            const c = document.getElementById('equipeList');
+            c.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
+            try {
+                const { data, error } = await supabaseClient.from('csiv_equipe').select('*').order('timestamp', {ascending: false});
+                if (error) throw error;
+                if (!data || data.length === 0) { c.innerHTML = '<div class="empty-state"><i class="fas fa-users"></i><p>Aucun membre dans l\'équipe.</p></div>'; return; }
+                c.innerHTML = data.map(m => `
+                    <div class="equipe-item">
+                        <div class="info">
+                            <div class="nom">${m.membre_nom} (${m.membre_id})</div>
+                            <div class="role">${m.role} — Ajouté le ${m.date_ajout}</div>
+                        </div>
+                        <button class="delete" style="background:rgba(255,71,87,0.1); border:1px solid rgba(255,71,87,0.3); color:#ff4757; padding:0.4rem 0.9rem; border-radius:8px; cursor:pointer; font-size:0.82rem; font-weight:600;" onclick="retirerEquipe('${m.id}')"><i class="fas fa-user-minus"></i> Retirer</button>
+                    </div>
+                `).join('');
+            } catch (e) { c.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>'; }
+        }
+
+        async function retirerEquipe(id) {
+            if (!confirm('Retirer ce membre de l\'équipe CSIV ?')) return;
+            try {
+                const { error } = await supabaseClient.from('csiv_equipe').delete().eq('id', id);
+                if (error) throw error;
+                showToast('🗑️ Membre retiré.', 'success');
+                loadEquipe();
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+        }
+
+        // ==================== VUE / SUPPRESSION GÉNÉRIQUE ====================
+        async function viewItem(id, source='csiv') {
+            let data;
+            if (source === 'cahier') {
+                const res = await supabaseClient.from('cahiers_charges').select('*').eq('id', id).single();
+                data = res.data;
+                if (data) {
+                    document.getElementById('viewTitle').textContent = data.titre;
+                    document.getElementById('viewMeta').textContent = `📅 ${data.date_envoi} - ✍️ ${data.emetteur}`;
+                    document.getElementById('viewBody').innerHTML = data.contenu.replace(/\n/g, '<br>');
+                }
+            } else {
+                const res = await supabaseClient.from('csiv_data').select('*').eq('id', id).single();
+                data = res.data;
+                if (data) {
+                    document.getElementById('viewTitle').textContent = data.titre;
+                    document.getElementById('viewMeta').textContent = `📅 ${data.date_creation} - ✍️ ${data.auteur}`;
+                    document.getElementById('viewBody').innerHTML = data.contenu.includes('<') ? data.contenu : data.contenu.replace(/\n/g, '<br>');
+                }
+            }
+            if (data) document.getElementById('viewModal').classList.add('active');
+        }
+        function closeViewModal() { document.getElementById('viewModal').classList.remove('active'); }
+
+        async function deleteItem(id, source='csiv') {
+            if (!confirm('Supprimer cet élément ?')) return;
+            try {
+                let res;
+                if (source === 'cahier') res = await supabaseClient.from('cahiers_charges').delete().eq('id', id);
+                else res = await supabaseClient.from('csiv_data').delete().eq('id', id);
+                if (res.error) throw res.error;
+                showToast('🗑️ Supprimé.', 'success');
+                loadAll();
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+        }
+
+        // ==================== STATS ====================
+        async function loadStats() {
+            try {
+                const { data } = await supabaseClient.from('csiv_data').select('*');
+                if (!data) return;
+                const veille = data.filter(d => d.type === 'veille').length;
+                const prob = data.filter(d => d.type === 'probleme').length;
+                const rap = data.filter(d => d.type === 'rapport').length;
+                document.getElementById('statVeille').textContent = veille;
+                document.getElementById('statProb').textContent = prob;
+                document.getElementById('statRapport').textContent = rap;
+
+                const { data: cahiers } = await supabaseClient.from('cahiers_charges').select('*');
+                document.getElementById('statCahier').textContent = cahiers ? cahiers.length : 0;
+            } catch (e) { console.warn(e); }
+        }
+
+        // ==================== INIT ====================
+        function loadAll() {
+            loadComm();
+            loadVeille();
+            loadProblemes();
+            loadCahiers();
+            loadRapports();
+            loadEquipe();
+            loadStats();
+            verifierRapportMensuel();
+        }
+
+        createParticles();
+        loadAll();
+    </script>
+</body>
+</html>
