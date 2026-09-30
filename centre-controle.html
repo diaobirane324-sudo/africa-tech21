@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Centre de Contrôle | AFRICA.TECH21</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Exo 2',sans-serif; }
+:root {
+  --cyan:#00f0ff; --green:#00ff88; --orange:#ff8c00; --red:#ff0033;
+  --purple:#7b2cbf; --yellow:#ffd700;
+  --dark:#050510; --panel:#0a0a1a; --panel2:#101028;
+  --border:rgba(0,240,255,0.25); --glow:0 0 25px rgba(0,240,255,0.3);
+  --text:#fff; --text2:#a0a8c0;
+}
+body {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0,240,255,0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(123,44,191,0.1) 0%, transparent 50%),
+    linear-gradient(135deg,#050510,#0a0a1a 50%,#0f0f1f);
+  color:var(--text); min-height:100vh; padding:1.5rem;
+  font-size:14px;
+}
+.hologram-grid {
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  background:
+    linear-gradient(90deg, rgba(0,240,255,0.02) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(0,240,255,0.02) 1px, transparent 1px);
+  background-size:40px 40px; animation:gridScan 25s linear infinite;
+  pointer-events:none; z-index:-1;
+}
+@keyframes gridScan { 0%{transform:translate(0,0);} 100%{transform:translate(40px,40px);} }
+.back-btn {
+  display:inline-block; padding:0.7rem 1.6rem; margin-bottom:1.5rem;
+  background:rgba(0,240,255,0.1); border:1px solid var(--cyan);
+  border-radius:10px; color:var(--cyan); text-decoration:none;
+  font-weight:600; font-size:0.85rem; transition:all 0.3s;
+}
+.back-btn:hover { background:rgba(0,240,255,0.2); box-shadow:var(--glow); }
+.page-container { max-width:1500px; margin:0 auto; }
+.page-header {
+  background:linear-gradient(135deg, rgba(0,240,255,0.08), rgba(123,44,191,0.08));
+  backdrop-filter:blur(15px); border:1px solid var(--border);
+  border-radius:22px; padding:2rem; margin-bottom:1.5rem; text-align:center;
+  box-shadow:var(--glow);
+}
+.page-header h1 {
+  font-family:'Orbitron',sans-serif; font-size:2.2rem;
+  background:linear-gradient(45deg,var(--cyan),var(--green));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text; letter-spacing:2px;
+}
+.page-header .subtitle { color:var(--text2); margin-top:0.4rem; font-size:0.9rem; letter-spacing:1.5px; text-transform:uppercase; }
+.user-info { margin-top:1rem; display:inline-block; background:rgba(0,255,136,0.1); border:1px solid var(--green); padding:0.5rem 1.5rem; border-radius:15px; color:var(--green); font-size:0.85rem; font-weight:600; }
+.tabs { display:flex; gap:0.6rem; margin-bottom:1.5rem; flex-wrap:wrap; }
+.tab {
+  padding:0.75rem 1.4rem; background:rgba(0,240,255,0.05);
+  border:1px solid var(--border); border-radius:10px;
+  color:var(--text2); cursor:pointer; font-weight:700;
+  text-transform:uppercase; letter-spacing:1px; font-size:0.72rem;
+  font-family:'Orbitron',sans-serif; transition:all 0.3s;
+}
+.tab:hover { background:rgba(0,240,255,0.12); color:var(--cyan); }
+.tab.active {
+  background:linear-gradient(135deg, rgba(0,240,255,0.2), rgba(123,44,191,0.2));
+  border-color:var(--cyan); color:#fff; box-shadow:var(--glow);
+}
+.section { display:none; }
+.section.active { display:block; }
+.card-box {
+  background:linear-gradient(135deg, rgba(16,16,40,0.85), rgba(10,10,26,0.85));
+  backdrop-filter:blur(15px); border:1px solid var(--border);
+  border-radius:18px; padding:1.5rem; margin-bottom:1.5rem;
+  box-shadow:0 0 30px rgba(0,240,255,0.08);
+}
+.card-box h2 {
+  font-family:'Orbitron',sans-serif; font-size:1.15rem;
+  color:var(--cyan); margin-bottom:1.2rem;
+  display:flex; align-items:center; gap:0.7rem;
+  text-shadow:0 0 12px rgba(0,240,255,0.4);
+}
+.btn {
+  padding:0.7rem 1.5rem; border:none; border-radius:9px;
+  font-weight:700; cursor:pointer; transition:all 0.3s;
+  text-transform:uppercase; letter-spacing:1px; font-size:0.78rem;
+}
+.btn-cyan { background:linear-gradient(135deg,#0088aa,var(--cyan)); color:#050510; }
+.btn-cyan:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,240,255,0.5); }
+.btn-green { background:linear-gradient(135deg,#008844,var(--green)); color:#050510; }
+.btn-green:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,255,136,0.5); }
+.btn-red { background:linear-gradient(135deg,#8b0000,var(--red)); color:#fff; }
+.btn-red:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(255,0,51,0.5); }
+.btn-orange { background:linear-gradient(135deg,#aa5500,var(--orange)); color:#fff; }
+.btn-orange:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(255,140,0,0.5); }
+.btn-dark { background:rgba(255,255,255,0.05); color:var(--text2); border:1px solid var(--border); }
+.btn-dark:hover { background:rgba(255,255,255,0.1); color:#fff; }
+.input-full {
+  width:100%; padding:0.8rem 1.1rem;
+  background:rgba(0,0,0,0.5); border:1px solid var(--border);
+  border-radius:10px; color:#fff; font-size:0.95rem;
+  outline:none; transition:0.3s; margin-bottom:0.8rem;
+}
+.input-full:focus { border-color:var(--cyan); box-shadow:0 0 15px rgba(0,240,255,0.2); }
+.form-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:0.8rem; margin-bottom:0.8rem; }
+.form-group label { display:block; color:var(--text2); font-weight:600; margin-bottom:0.3rem; font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; }
+.form-group input, .form-group select, .form-group textarea {
+  width:100%; padding:0.7rem 1rem; background:rgba(0,0,0,0.5);
+  border:1px solid var(--border); border-radius:9px;
+  color:#fff; font-size:0.9rem; outline:none; transition:0.3s;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--cyan); box-shadow:0 0 15px rgba(0,240,255,0.2); }
+.form-group select option { background:var(--dark); }
+/* Appareil card */
+.appareil-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1rem; }
+.appareil-card {
+  background:rgba(0,0,0,0.4); border:1px solid var(--border);
+  border-radius:14px; padding:1.3rem; transition:all 0.3s; position:relative;
+}
+.appareil-card:hover { border-color:var(--cyan); background:rgba(0,240,255,0.04); transform:translateY(-4px); box-shadow:var(--glow); }
+.appareil-card .nom { color:var(--cyan); font-weight:700; font-size:1.05rem; font-family:'Orbitron',sans-serif; }
+.appareil-card .meta { color:var(--text2); font-size:0.78rem; margin-top:0.3rem; }
+.appareil-card .statut-dot { width:10px; height:10px; border-radius:50%; display:inline-block; margin-right:0.5rem; }
+.statut-online { background:var(--green); box-shadow:0 0 10px var(--green); animation:pulseDot 1.5s infinite; }
+.statut-offline { background:var(--red); }
+.statut-attente { background:var(--yellow); animation:pulseDot 1s infinite; }
+@keyframes pulseDot { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.5;transform:scale(1.3);} }
+.appareil-card .actions { display:flex; gap:0.4rem; margin-top:1rem; flex-wrap:wrap; }
+.appareil-card .actions button {
+  padding:0.35rem 0.8rem; font-size:0.7rem; border-radius:7px;
+  border:1px solid var(--border); background:rgba(0,240,255,0.08);
+  color:var(--cyan); cursor:pointer; font-weight:700; transition:0.3s;
+}
+.appareil-card .actions button:hover { background:rgba(0,240,255,0.2); }
+.appareil-card .actions button.delete { color:var(--red); border-color:rgba(255,0,51,0.3); background:rgba(255,0,51,0.08); }
+/* Manette Simple */
+.manette-simple {
+  background:rgba(0,0,0,0.5); border:2px solid var(--border);
+  border-radius:20px; padding:2rem; display:grid;
+  grid-template-columns:1fr 1fr 1fr; gap:1.5rem; align-items:center;
+  max-width:600px; margin:0 auto;
+}
+.joy-pad {
+  width:140px; height:140px; background:radial-gradient(circle, #1a1a2e, #0a0a14);
+  border:2px solid var(--cyan); border-radius:50%;
+  position:relative; cursor:pointer; box-shadow:0 0 25px rgba(0,240,255,0.3);
+  touch-action:none; margin:0 auto;
+}
+.joy-knob {
+  width:50px; height:50px; background:radial-gradient(circle, #00f0ff, #0088aa);
+  border-radius:50%; position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%); box-shadow:0 0 20px var(--cyan);
+  pointer-events:none;
+}
+.btn-big {
+  padding:1rem; font-size:1.2rem; font-weight:900;
+  border-radius:15px; border:2px solid; cursor:pointer;
+  font-family:'Orbitron',sans-serif; transition:all 0.2s;
+  min-width:80px; text-align:center;
+}
+.btn-big:active { transform:scale(0.92); }
+.btn-A { background:linear-gradient(135deg,#00aa44,#00ff88); color:#050510; border-color:#00ff88; }
+.btn-B { background:linear-gradient(135deg,#aa0000,#ff0033); color:#fff; border-color:#ff0033; }
+.btn-X { background:linear-gradient(135deg,#0044aa,#0088ff); color:#fff; border-color:#0088ff; }
+.btn-Y { background:linear-gradient(135deg,#aaaa00,#ffd700); color:#050510; border-color:#ffd700; }
+.btn-STOP { background:linear-gradient(135deg,#8b0000,#ff0033); color:#fff; border-color:#ff0033; font-size:1rem; padding:1.5rem; }
+/* Manette Xbox */
+.manette-xbox {
+  background:linear-gradient(135deg,#1a1a2e,#0a0a14);
+  border:2px solid var(--border); border-radius:30px;
+  padding:2rem; max-width:900px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 1fr; gap:2rem;
+  position:relative; box-shadow:0 0 40px rgba(0,240,255,0.15);
+}
+.xbox-side { display:flex; flex-direction:column; align-items:center; gap:1rem; }
+.xbox-buttons { display:grid; grid-template-columns:repeat(2,70px); gap:0.6rem; justify-content:center; }
+.gachette {
+  width:60px; height:120px; background:rgba(0,0,0,0.6);
+  border:2px solid var(--cyan); border-radius:15px;
+  position:relative; cursor:pointer; overflow:hidden; touch-action:none;
+}
+.gachette-fill {
+  position:absolute; bottom:0; left:0; width:100%;
+  height:0%; background:linear-gradient(180deg, var(--cyan), rgba(0,240,255,0.3));
+  transition:height 0.1s; pointer-events:none;
+}
+.gachette-label { position:absolute; top:5px; left:50%; transform:translateX(-50%); color:var(--cyan); font-size:0.7rem; font-weight:900; z-index:2; }
+/* Panneau industriel */
+.control-panel {
+  background:#0a0a14; border:2px solid #2a2a3e;
+  border-radius:15px; padding:1.2rem;
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:1rem;
+}
+.io-box {
+  background:#050510; border:1px solid #1a1a2e;
+  border-radius:10px; padding:1rem;
+}
+.io-box h4 {
+  font-family:'Orbitron',sans-serif; color:var(--cyan);
+  font-size:0.85rem; margin-bottom:0.8rem;
+  text-align:center; border-bottom:1px solid var(--border); padding-bottom:0.5rem;
+}
+.switch-row { display:flex; gap:0.5rem; margin-bottom:0.6rem; align-items:center; }
+.switch-row .label { flex:1; font-size:0.75rem; color:var(--text2); }
+.switch-btn {
+  padding:0.4rem 0.9rem; border-radius:6px; border:1px solid;
+  font-size:0.7rem; font-weight:700; cursor:pointer; transition:0.3s;
+  font-family:'Orbitron',sans-serif;
+}
+.switch-on { background:linear-gradient(135deg,#008844,#00ff88); color:#050510; border-color:#00ff88; }
+.switch-off { background:linear-gradient(135deg,#8b0000,#ff0033); color:#fff; border-color:#ff0033; }
+.jauge {
+  width:100%; height:20px; background:rgba(0,0,0,0.6);
+  border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:0.4rem;
+}
+.jauge-fill { height:100%; background:linear-gradient(90deg,var(--green),var(--cyan)); transition:width 0.3s; }
+.slider-row { display:flex; align-items:center; gap:0.6rem; margin-bottom:0.6rem; }
+.slider-row input[type="range"] { flex:1; accent-color:var(--cyan); }
+.slider-row .val { font-family:'Orbitron',sans-serif; color:var(--cyan); font-size:0.85rem; min-width:40px; text-align:right; }
+.io-monitor { font-family:'Courier New',monospace; font-size:0.78rem; }
+.io-line { display:flex; justify-content:space-between; padding:0.3rem 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+.io-line .io-led { width:10px; height:10px; border-radius:50%; }
+.led-green { background:var(--green); box-shadow:0 0 8px var(--green); }
+.led-yellow { background:var(--yellow); box-shadow:0 0 8px var(--yellow); }
+.led-red { background:var(--red); box-shadow:0 0 8px var(--red); }
+/* Simulation */
+.sim-area {
+  background:#050510; border:2px solid var(--border);
+  border-radius:15px; padding:1rem; position:relative;
+}
+#simCanvas { width:100%; height:500px; background:radial-gradient(circle,#0a0a1a,#050510); border-radius:10px; display:block; }
+.sim-stats { display:flex; gap:1.5rem; justify-content:center; margin-top:1rem; flex-wrap:wrap; }
+.sim-stat { background:rgba(0,240,255,0.08); border:1px solid var(--border); padding:0.5rem 1rem; border-radius:10px; font-family:'Orbitron',sans-serif; font-size:0.8rem; color:var(--cyan); }
+/* Combat */
+.combat-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.robot-fighter {
+  background:rgba(0,0,0,0.5); border:2px solid var(--border);
+  border-radius:15px; padding:1.5rem; text-align:center;
+}
+.robot-fighter.p1 { border-color:var(--cyan); }
+.robot-fighter.p2 { border-color:var(--red); }
+.hp-bar { width:100%; height:25px; background:rgba(0,0,0,0.6); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin:1rem 0; }
+.hp-fill { height:100%; background:linear-gradient(90deg,#00ff88,#00aa44); transition:width 0.3s; }
+.hp-fill.low { background:linear-gradient(90deg,#ff8c00,#ff0033); }
+.combat-controls { display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap; margin-top:1rem; }
+.combat-controls button { padding:0.6rem 1rem; border-radius:8px; border:1px solid var(--border); background:rgba(0,240,255,0.1); color:var(--cyan); cursor:pointer; font-weight:700; font-size:0.75rem; transition:0.3s; }
+.combat-controls button:hover { background:rgba(0,240,255,0.25); }
+/* Terminal / logs */
+.terminal {
+  background:#000; border:1px solid var(--border); border-radius:10px;
+  padding:1rem; font-family:'Courier New',monospace; font-size:0.8rem;
+  max-height:200px; overflow-y:auto; color:var(--green);
+}
+.terminal .log-line { padding:0.15rem 0; }
+.terminal .log-line .ts { color:var(--text2); margin-right:0.5rem; }
+/* Toast */
+.toast {
+  position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%);
+  background:rgba(0,240,255,0.95); color:#050510;
+  padding:0.9rem 1.8rem; border-radius:12px; font-weight:700;
+  z-index:10001; animation:fadeInUp 0.3s;
+}
+.toast.error { background:rgba(255,0,51,0.95); color:#fff; }
+.toast.success { background:rgba(0,255,136,0.95); color:#050510; }
+@keyframes fadeInUp { from{opacity:0;transform:translateX(-50%) translateY(20px);} to{opacity:1;transform:translateX(-50%) translateY(0);} }
+.empty-state { text-align:center; color:var(--text2); padding:2.5rem; }
+.empty-state i { font-size:3rem; color:rgba(0,240,255,0.2); margin-bottom:1rem; display:block; }
+.loading-text { text-align:center; color:var(--text2); padding:1.5rem; }
+.loading-spinner {
+  display:inline-block; width:28px; height:28px;
+  border:3px solid rgba(0,240,255,0.2); border-top:3px solid var(--cyan);
+  border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:1rem;
+}
+@keyframes spin { 100%{transform:rotate(360deg);} }
+@media (max-width:768px) {
+  body { padding:0.8rem; font-size:13px; }
+  .page-header h1 { font-size:1.5rem; }
+  .manette-xbox, .manette-simple { grid-template-columns:1fr; }
+  .combat-grid { grid-template-columns:1fr; }
+  .tabs { flex-direction:column; }
+}
+</style>
+</head>
+<body>
+<div class="hologram-grid"></div>
+
+<div class="page-container">
+  <a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD</a>
+
+  <header class="page-header">
+    <h1><i class="fas fa-satellite-dish"></i> CENTRE DE CONTRÔLE</h1>
+    <p class="subtitle">Pilotage des robots et systèmes automatiques</p>
+    <div class="user-info" id="userInfo"><i class="fas fa-user-shield"></i> CHARGEMENT...</div>
+  </header>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('appareils')"><i class="fas fa-microchip"></i> APPAREILS</div>
+    <div class="tab" onclick="switchTab('simple')"><i class="fas fa-gamepad"></i> MANETTE SIMPLE</div>
+    <div class="tab" onclick="switchTab('xbox')"><i class="fas fa-gamepad"></i> MANETTE XBOX</div>
+    <div class="tab" onclick="switchTab('industriel')"><i class="fas fa-sliders-h"></i> PANNEAU INDUSTRIEL</div>
+    <div class="tab" onclick="switchTab('simulation')"><i class="fas fa-cube"></i> SIMULATION</div>
+    <div class="tab" onclick="switchTab('combat')"><i class="fas fa-crosshairs"></i> COMBAT</div>
+  </div>
+
+  <!-- APPAREILS -->
+  <div class="section active" id="sectionAppareils">
+    <div class="card-box">
+      <h2><i class="fas fa-plus-circle"></i> AJOUTER UN APPAREIL</h2>
+      <input type="text" id="appNom" class="input-full" placeholder="Nom (ex: IRRITECH-01, Robot Combat...)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Type</label>
+          <select id="appType">
+            <option value="ESP32">ESP32</option>
+            <option value="Raspberry Pi">Raspberry Pi</option>
+            <option value="Arduino">Arduino</option>
+            <option value="ROS2">ROS2</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Adresse IP</label>
+          <input type="text" id="appIp" placeholder="192.168.1.100">
+        </div>
+        <div class="form-group">
+          <label>Port</label>
+          <input type="text" id="appPort" placeholder="80" value="80">
+        </div>
+        <div class="form-group">
+          <label>Nombre de moteurs</label>
+          <input type="number" id="appMoteurs" min="1" max="8" value="2">
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:0.8rem;">
+        <label>Capteurs disponibles (séparés par des virgules)</label>
+        <input type="text" id="appCapteurs" placeholder="température, humidité, ultrason, caméra...">
+      </div>
+      <div class="form-group" style="margin-bottom:1rem;">
+        <label>Description (optionnel)</label>
+        <input type="text" id="appDesc" placeholder="Rôle de l'appareil...">
+      </div>
+      <button class="btn btn-cyan" onclick="ajouterAppareil()"><i class="fas fa-plus"></i> AJOUTER</button>
+      <button class="btn btn-dark" onclick="loadAppareils()"><i class="fas fa-sync"></i> SYNC</button>
+    </div>
+
+    <div class="card-box">
+      <h2><i class="fas fa-list"></i> MES APPAREILS</h2>
+      <div class="appareil-grid" id="appareilGrid">
+        <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MANETTE SIMPLE -->
+  <div class="section" id="sectionSimple">
+    <div class="card-box">
+      <h2><i class="fas fa-gamepad"></i> MANETTE SIMPLE</h2>
+      <p style="color:var(--text2); margin-bottom:1rem; font-size:0.85rem;">Choisissez un appareil actif, puis utilisez le joystick et les boutons.</p>
+      <select id="simpleAppareil" class="input-full" onchange="majAppareilActif('simple')">
+        <option value="">-- Aucun appareil --</option>
+      </select>
+
+      <div class="manette-simple" style="margin-top:1.5rem;">
+        <div style="text-align:center;">
+          <div class="joy-pad" id="joySimple"><div class="joy-knob" id="joySimpleKnob"></div></div>
+          <div style="color:var(--text2); font-size:0.75rem; margin-top:0.5rem;">DÉPLACEMENT</div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; justify-content:center;">
+          <button class="btn-big btn-A" onclick="envoyer('A')">A</button>
+          <button class="btn-big btn-B" onclick="envoyer('B')">B</button>
+          <button class="btn-big btn-X" onclick="envoyer('X')">X</button>
+          <button class="btn-big btn-Y" onclick="envoyer('Y')">Y</button>
+        </div>
+        <div style="text-align:center;">
+          <button class="btn-big btn-STOP" onclick="envoyer('STOP')" style="width:100%;">STOP</button>
+        </div>
+      </div>
+
+      <div class="sim-stats" style="margin-top:1.5rem;">
+        <div class="sim-stat">X: <span id="simpleX">0</span></div>
+        <div class="sim-stat">Y: <span id="simpleY">0</span></div>
+        <div class="sim-stat">Dernière commande: <span id="simpleLast">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MANETTE XBOX -->
+  <div class="section" id="sectionXbox">
+    <div class="card-box">
+      <h2><i class="fas fa-gamepad"></i> MANETTE XBOX PRO</h2>
+      <select id="xboxAppareil" class="input-full" onchange="majAppareilActif('xbox')">
+        <option value="">-- Aucun appareil --</option>
+      </select>
+
+      <div class="manette-xbox" style="margin-top:1.5rem;">
+        <div class="xbox-side">
+          <div class="joy-pad" id="joyLeft"><div class="joy-knob" id="joyLeftKnob"></div></div>
+          <div style="color:var(--text2); font-size:0.75rem;">JOYSTICK GAUCHE</div>
+          <div class="gachette" id="gachetteL"><div class="gachette-fill" id="gachetteLFill"></div><div class="gachette-label">L</div></div>
+        </div>
+        <div class="xbox-side">
+          <div class="joy-pad" id="joyRight"><div class="joy-knob" id="joyRightKnob"></div></div>
+          <div style="color:var(--text2); font-size:0.75rem;">JOYSTICK DROIT</div>
+          <div class="gachette" id="gachetteR"><div class="gachette-fill" id="gachetteRFill"></div><div class="gachette-label">R</div></div>
+        </div>
+        <div style="grid-column:1/-1; text-align:center;">
+          <div class="xbox-buttons" style="margin-top:1rem;">
+            <button class="btn-big btn-Y" onclick="envoyer('Y')" style="width:70px; height:70px;">Y</button>
+            <button class="btn-big btn-B" onclick="envoyer('B')" style="width:70px; height:70px;">B</button>
+            <button class="btn-big btn-X" onclick="envoyer('X')" style="width:70px; height:70px;">X</button>
+            <button class="btn-big btn-A" onclick="envoyer('A')" style="width:70px; height:70px;">A</button>
+          </div>
+          <button class="btn-big btn-STOP" onclick="envoyer('STOP')" style="margin-top:1rem; width:200px;">STOP URGENCE</button>
+        </div>
+      </div>
+
+      <div class="sim-stats" style="margin-top:1.5rem;">
+        <div class="sim-stat">L-X: <span id="lxVal">0</span></div>
+        <div class="sim-stat">L-Y: <span id="lyVal">0</span></div>
+        <div class="sim-stat">R-X: <span id="rxVal">0</span></div>
+        <div class="sim-stat">R-Y: <span id="ryVal">0</span></div>
+        <div class="sim-stat">L2: <span id="l2Val">0</span></div>
+        <div class="sim-stat">R2: <span id="r2Val">0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANNEAU INDUSTRIEL -->
+  <div class="section" id="sectionIndustriel">
+    <div class="card-box">
+      <h2><i class="fas fa-sliders-h"></i> PANNEAU INDUSTRIEL</h2>
+      <select id="indusAppareil" class="input-full" onchange="majAppareilActif('indus')">
+        <option value="">-- Aucun appareil --</option>
+      </select>
+
+      <div class="control-panel" style="margin-top:1.5rem;">
+        <!-- SWITCHES -->
+        <div class="io-box">
+          <h4><i class="fas fa-toggle-on"></i> COMMANDES ON/OFF</h4>
+          <div class="switch-row">
+            <span class="label">SYSTÈME</span>
+            <button class="switch-btn switch-off" id="swSystem" onclick="toggleSwitch('swSystem','SYSTEME')">OFF</button>
+          </div>
+          <div class="switch-row">
+            <span class="label">MOTEURS</span>
+            <button class="switch-btn switch-off" id="swMoteurs" onclick="toggleSwitch('swMoteurs','MOTEURS')">OFF</button>
+          </div>
+          <div class="switch-row">
+            <span class="label">CAPTEURS</span>
+            <button class="switch-btn switch-off" id="swCapteurs" onclick="toggleSwitch('swCapteurs','CAPTEURS')">OFF</button>
+          </div>
+          <div class="switch-row">
+            <span class="label">ALARME</span>
+            <button class="switch-btn switch-off" id="swAlarme" onclick="toggleSwitch('swAlarme','ALARME')">OFF</button>
+          </div>
+        </div>
+
+        <!-- MODES -->
+        <div class="io-box">
+          <h4><i class="fas fa-cog"></i> MODE OPÉRATOIRE</h4>
+          <button class="switch-btn switch-off" id="modeAuto" onclick="setMode('AUTO')" style="width:100%; margin-bottom:0.5rem; padding:0.8rem;">AUTO</button>
+          <button class="switch-btn switch-on" id="modeManuel" onclick="setMode('MANUEL')" style="width:100%; margin-bottom:0.5rem; padding:0.8rem;">MANUEL</button>
+          <button class="switch-btn switch-off" id="modeBypass" onclick="setMode('BYPASS')" style="width:100%; padding:0.8rem;">BYPASS</button>
+        </div>
+
+        <!-- VITESSE -->
+        <div class="io-box">
+          <h4><i class="fas fa-tachometer-alt"></i> VITESSE</h4>
+          <div class="slider-row">
+            <input type="range" id="sliderVitesse" min="0" max="100" value="0" oninput="majVitesse(this.value)">
+            <span class="val" id="vitesseVal">0%</span>
+          </div>
+          <div class="slider-row">
+            <input type="range" id="sliderPuissance" min="0" max="100" value="0" oninput="majPuissance(this.value)">
+            <span class="val" id="puissanceVal">0%</span>
+          </div>
+        </div>
+
+        <!-- JAUGES CAPTEURS -->
+        <div class="io-box">
+          <h4><i class="fas fa-thermometer-half"></i> CAPTEURS</h4>
+          <div style="margin-bottom:0.8rem;">
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text2);"><span>TEMP</span><span id="valTemp">0°C</span></div>
+            <div class="jauge"><div class="jauge-fill" id="jaugeTemp" style="width:0%;"></div></div>
+          </div>
+          <div style="margin-bottom:0.8rem;">
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text2);"><span>HUMIDITÉ</span><span id="valHum">0%</span></div>
+            <div class="jauge"><div class="jauge-fill" id="jaugeHum" style="width:0%;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text2);"><span>VOLTAGE</span><span id="valVolt">0V</span></div>
+            <div class="jauge"><div class="jauge-fill" id="jaugeVolt" style="width:0%;"></div></div>
+          </div>
+        </div>
+
+        <!-- MONITEUR I/O -->
+        <div class="io-box" style="grid-column:1/-1;">
+          <h4><i class="fas fa-microchip"></i> MONITEUR ENTÉES / SORTIES</h4>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+            <div class="io-monitor">
+              <div style="color:var(--cyan); font-weight:700; margin-bottom:0.5rem;">INPUT</div>
+              <div class="io-line"><span>MOTEUR 1</span><span class="io-led led-green"></span></div>
+              <div class="io-line"><span>MOTEUR 2</span><span class="io-led led-green"></span></div>
+              <div class="io-line"><span>ULTRASON</span><span class="io-led led-yellow"></span></div>
+              <div class="io-line"><span>CAPTEUR TEMP</span><span class="io-led led-green"></span></div>
+              <div class="io-line"><span>CAPTEUR HUM</span><span class="io-led led-green"></span></div>
+            </div>
+            <div class="io-monitor">
+              <div style="color:var(--cyan); font-weight:700; margin-bottom:0.5rem;">OUTPUT</div>
+              <div class="io-line"><span>RELAIS 1</span><span class="io-led led-red"></span></div>
+              <div class="io-line"><span>RELAIS 2</span><span class="io-led led-red"></span></div>
+              <div class="io-line"><span>LED STATUT</span><span class="io-led led-green"></span></div>
+              <div class="io-line"><span>BUZZER</span><span class="io-led led-yellow"></span></div>
+              <div class="io-line"><span>ÉCRAN</span><span class="io-led led-green"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TERMINAL -->
+    <div class="card-box">
+      <h2><i class="fas fa-terminal"></i> JOURNAL DES COMMANDES</h2>
+      <div class="terminal" id="terminalLog"></div>
+    </div>
+  </div>
+
+  <!-- SIMULATION -->
+  <div class="section" id="sectionSimulation">
+    <div class="card-box">
+      <h2><i class="fas fa-cube"></i> SIMULATION</h2>
+      <p style="color:var(--text2); margin-bottom:1rem; font-size:0.85rem;">Pilotez le robot virtuel avec les joysticks — les commandes sont envoyées à l'appareil sélectionné.</p>
+      <select id="simAppareil" class="input-full" onchange="majAppareilActif('sim')">
+        <option value="">-- Mode simulation uniquement --</option>
+      </select>
+
+      <div class="sim-area" style="margin-top:1.5rem;">
+        <canvas id="simCanvas"></canvas>
+        <div class="sim-stats">
+          <div class="sim-stat">Position: <span id="simPos">0, 0</span></div>
+          <div class="sim-stat">Vitesse: <span id="simVit">0</span></div>
+          <div class="sim-stat">Direction: <span id="simDir">0°</span></div>
+          <div class="sim-stat">Commandes: <span id="simCmds">0</span></div>
+        </div>
+      </div>
+
+      <div class="manette-simple" style="margin-top:1.5rem;">
+        <div style="text-align:center;">
+          <div class="joy-pad" id="joySim"><div class="joy-knob" id="joySimKnob"></div></div>
+          <div style="color:var(--text2); font-size:0.75rem; margin-top:0.5rem;">DÉPLACEMENT</div>
+        </div>
+        <div style="text-align:center;">
+          <button class="btn-big btn-STOP" onclick="resetSim()">RESET</button>
+        </div>
+        <div style="text-align:center;">
+          <button class="btn-big btn-A" onclick="simBoost()">BOOST</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMBAT -->
+  <div class="section" id="sectionCombat">
+    <div class="card-box">
+      <h2><i class="fas fa-crosshairs"></i> ARÈNE DE COMBAT</h2>
+      <div class="combat-grid">
+        <div class="robot-fighter p1">
+          <div style="font-family:'Orbitron',sans-serif; color:var(--cyan); font-size:1.2rem;">ROBOT 1 (VOUS)</div>
+          <div class="hp-bar"><div class="hp-fill" id="hp1" style="width:100%;"></div></div>
+          <div style="color:var(--text2); font-size:0.85rem;">HP: <span id="hp1Val">100</span>/100</div>
+          <div class="combat-controls">
+            <button onclick="combatAction('ATTACK', 1)">ATTAQUER</button>
+            <button onclick="combatAction('DEFEND', 1)">DÉFENDRE</button>
+            <button onclick="combatAction('SPECIAL', 1)">SPÉCIAL</button>
+          </div>
+        </div>
+        <div class="robot-fighter p2">
+          <div style="font-family:'Orbitron',sans-serif; color:var(--red); font-size:1.2rem;">ROBOT 2 (ENNEMI)</div>
+          <div class="hp-bar"><div class="hp-fill" id="hp2" style="width:100%;"></div></div>
+          <div style="color:var(--text2); font-size:0.85rem;">HP: <span id="hp2Val">100</span>/100</div>
+          <div class="combat-controls">
+            <button onclick="combatAction('ATTACK', 2)">ATTAQUER</button>
+            <button onclick="combatAction('DEFEND', 2)">DÉFENDRE</button>
+            <button onclick="combatAction('SPECIAL', 2)">SPÉCIAL</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="terminal" id="combatLog" style="margin-top:1.5rem;"></div>
+
+      <div style="text-align:center; margin-top:1rem;">
+        <button class="btn btn-orange" onclick="resetCombat()"><i class="fas fa-redo"></i> NOUVEAU COMBAT</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Accès réservé
+const ALLOWED_IDS = ['AT21_006', 'Birane186@00'];
+if (localStorage.getItem('memberLoggedIn') !== 'true') window.location.href = 'espace-membres.html';
+const memberId = localStorage.getItem('memberId') || '';
+if (!ALLOWED_IDS.includes(memberId)) {
+  document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column;gap:1rem;"><i class="fas fa-lock" style="font-size:4rem;color:#ff0033;"></i><h1 style="color:#ff0033;">ACCÈS REFUSÉ</h1><a href="dashboard.html" style="color:#00f0ff;">Retour</a></div>';
+  throw new Error('Accès refusé');
+}
+const memberNom = localStorage.getItem('memberNom') || '';
+const memberPrenom = localStorage.getItem('memberPrenom') || '';
+document.getElementById('userInfo').innerHTML = `<i class="fas fa-user-shield"></i> ${memberPrenom} ${memberNom}`;
+
+// ============ UTILS ============
+function showToast(msg, type='') {
+  const old = document.querySelector('.toast'); if (old) old.remove();
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+function log(msg) {
+  const term = document.getElementById('terminalLog');
+  if (!term) return;
+  const now = new Date().toLocaleTimeString('fr-FR');
+  const line = document.createElement('div');
+  line.className = 'log-line';
+  line.innerHTML = `<span class="ts">[${now}]</span> ${msg}`;
+  term.appendChild(line);
+  term.scrollTop = term.scrollHeight;
+  if (term.children.length > 200) term.removeChild(term.firstChild);
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  event.target.closest('.tab').classList.add('active');
+  document.getElementById('section' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
+  if (name === 'simulation') initSim();
+}
+
+// ============ APPAREILS ============
+let appareilsCache = [];
+
+async function loadAppareils() {
+  const grid = document.getElementById('appareilGrid');
+  grid.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
+  try {
+    const { data, error } = await supabaseClient.from('appareils').select('*').eq('proprietaire_id', memberId).order('timestamp', {ascending: false});
+    if (error) throw error;
+    appareilsCache = data || [];
+    if (!appareilsCache.length) {
+      grid.innerHTML = '<div class="empty-state"><i class="fas fa-microchip"></i><p>Aucun appareil enregistré.</p></div>';
+    } else {
+      grid.innerHTML = appareilsCache.map(a => `
+        <div class="appareil-card">
+          <div class="nom"><span class="statut-dot statut-offline"></span>${a.nom}</div>
+          <div class="meta">🔧 ${a.type} — IP: ${a.ip}:${a.port}</div>
+          <div class="meta">⚙️ ${a.nb_moteurs} moteur(s)</div>
+          <div class="meta">📡 ${a.capteurs || 'Aucun capteur'}</div>
+          ${a.description ? `<div class="meta">📝 ${a.description}</div>` : ''}
+          <div class="actions">
+            <button onclick="testerConnexion('${a.id}')"><i class="fas fa-wifi"></i> Tester</button>
+            <button onclick="voirAppareil('${a.id}')"><i class="fas fa-eye"></i> Info</button>
+            <button class="delete" onclick="supprimerAppareil('${a.id}')"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      `).join('');
+    }
+    majListesAppareils();
+  } catch (e) {
+    grid.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>';
+  }
+}
+
+function majListesAppareils() {
+  const selects = ['simpleAppareil','xboxAppareil','indusAppareil','simAppareil'];
+  selects.forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const cur = sel.value;
+    sel.innerHTML = id === 'simAppareil'
+      ? '<option value="">-- Mode simulation uniquement --</option>'
+      : '<option value="">-- Aucun appareil --</option>';
+    appareilsCache.forEach(a => {
+      const opt = document.createElement('option');
+      opt.value = a.id;
+      opt.textContent = `${a.nom} (${a.ip})`;
+      sel.appendChild(opt);
+    });
+    if (cur) sel.value = cur;
+  });
+}
+
+async function ajouterAppareil() {
+  const nom = document.getElementById('appNom').value.trim();
+  const type = document.getElementById('appType').value;
+  const ip = document.getElementById('appIp').value.trim();
+  const port = document.getElementById('appPort').value.trim() || '80';
+  const nb_moteurs = parseInt(document.getElementById('appMoteurs').value) || 2;
+  const capteurs = document.getElementById('appCapteurs').value.trim();
+  const description = document.getElementById('appDesc').value.trim();
+
+  if (!nom || !ip) { showToast('⚠️ Nom et IP obligatoires.', 'error'); return; }
+
+  try {
+    const { error } = await supabaseClient.from('appareils').insert([{
+      nom, type, ip, port, nb_moteurs, capteurs, description,
+      statut: 'hors_ligne',
+      proprietaire_id: memberId,
+      timestamp: Date.now()
+    }]);
+    if (error) throw error;
+    showToast('✅ Appareil ajouté !', 'success');
+    log(`Ajout appareil: ${nom} (${ip})`);
+    document.getElementById('appNom').value = '';
+    document.getElementById('appIp').value = '';
+    document.getElementById('appCapteurs').value = '';
+    document.getElementById('appDesc').value = '';
+    loadAppareils();
+  } catch (e) { showToast('❌ ' + e.message, 'error'); }
+}
+
+async function supprimerAppareil(id) {
+  if (!confirm('Supprimer cet appareil ?')) return;
+  try {
+    const { error } = await supabaseClient.from('appareils').delete().eq('id', id);
+    if (error) throw error;
+    showToast('🗑️ Appareil supprimé.', 'success');
+    log('Appareil supprimé: ' + id);
+    loadAppareils();
+  } catch (e) { showToast('❌ ' + e.message, 'error'); }
+}
+
+function voirAppareil(id) {
+  const a = appareilsCache.find(x => x.id === id);
+  if (!a) return;
+  alert(`NOM: ${a.nom}\nTYPE: ${a.type}\nIP: ${a.ip}:${a.port}\nMOTEURS: ${a.nb_moteurs}\nCAPTEURS: ${a.capteurs || 'aucun'}\nDESCRIPTION: ${a.description || '-'}`);
+}
+
+async function testerConnexion(id) {
+  const a = appareilsCache.find(x => x.id === id);
+  if (!a) return;
+  showToast('🔍 Test de connexion...', '');
+  log(`Ping ${a.ip}:${a.port}`);
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 3000);
+    await fetch(`http://${a.ip}:${a.port}/ping`, { signal: controller.signal, mode: 'no-cors' });
+    clearTimeout(timeout);
+    showToast('✅ Réponse reçue (voir journal)', 'success');
+    await supabaseClient.from('appareils').update({ statut: 'en_ligne' }).eq('id', id);
+    log(`✅ ${a.nom} répond`);
+  } catch (e) {
+    showToast('⚠️ Pas de réponse (normal si robot éteint)', '');
+    log(`⚠️ ${a.nom} - pas de réponse`);
+  }
+  loadAppareils();
+}
+
+// ============ ENVOI DE COMMANDES ============
+let appareilActif = null;
+
+function majAppareilActif(mode) {
+  const map = { simple: 'simpleAppareil', xbox: 'xboxAppareil', indus: 'indusAppareil', sim: 'simAppareil' };
+  const id = document.getElementById(map[mode]).value;
+  appareilActif = appareilsCache.find(a => a.id === id) || null;
+  if (appareilActif) {
+    showToast('🎯 Appareil actif: ' + appareilActif.nom, 'success');
+    log('Appareil actif: ' + appareilActif.nom);
+  }
+}
+
+async function envoyer(cmd, val=null) {
+  const payload = { cmd, val, ts: Date.now() };
+  document.getElementById('simpleLast').textContent = cmd;
+  log(`➡️ CMD: ${cmd}${val !== null ? ' (' + val + ')' : ''}`);
+
+  if (!appareilActif) {
+    showToast('⚠️ Aucun appareil actif.', 'error');
+    return;
+  }
+
+  try {
+    await fetch(`http://${appareilActif.ip}:${appareilActif.port}/cmd`, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch (e) {
+    // no-cors → erreur normale
+  }
+}
+
+// ============ JOYSTICKS ============
+function setupJoystick(padId, knobId, onMove, onEnd) {
+  const pad = document.getElementById(padId);
+  const knob = document.getElementById(knobId);
+  if (!pad) return;
+  let active = false;
+  const rect = () => pad.getBoundingClientRect();
+
+  function move(e) {
+    if (!active) return;
+    const r = rect();
+    const cx = r.left + r.width/2;
+    const cy = r.top + r.height/2;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    let dx = clientX - cx;
+    let dy = clientY - cy;
+    const maxR = r.width/2 - 25;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    if (dist > maxR) { dx = dx/dist*maxR; dy = dy/dist*maxR; }
+    knob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+    const xPct = Math.round(dx / maxR * 100);
+    const yPct = Math.round(-dy / maxR * 100);
+    onMove(xPct, yPct);
+  }
+  function start(e) { active = true; e.preventDefault(); move(e); }
+  function end() { if (!active) return; active = false; knob.style.transform = 'translate(-50%,-50%)'; if (onEnd) onEnd(); }
+
+  pad.addEventListener('mousedown', start);
+  pad.addEventListener('touchstart', start, {passive:false});
+  document.addEventListener('mousemove', move);
+  document.addEventListener('touchmove', move, {passive:false});
+  document.addEventListener('mouseup', end);
+  document.addEventListener('touchend', end);
+}
+
+setupJoystick('joySimple', 'joySimpleKnob', (x,y) => {
+  document.getElementById('simpleX').textContent = x;
+  document.getElementById('simpleY').textContent = y;
+  envoyer('MOVE', {x, y});
+});
+
+setupJoystick('joyLeft', 'joyLeftKnob', (x,y) => {
+  document.getElementById('lxVal').textContent = x;
+  document.getElementById('lyVal').textContent = y;
+  envoyer('JOY_L', {x, y});
+});
+
+setupJoystick('joyRight', 'joyRightKnob', (x,y) => {
+  document.getElementById('rxVal').textContent = x;
+  document.getElementById('ryVal').textContent = y;
+  envoyer('JOY_R', {x, y});
+});
+
+setupJoystick('joySim', 'joySimKnob', (x,y) => {
+  simDirX = x/100;
+  simDirY = y/100;
+});
+
+// Gâchettes
+function setupGachette(id, fillId, onChange) {
+  const el = document.getElementById(id);
+  const fill = document.getElementById(fillId);
+  if (!el) return;
+  let active = false;
+  function calc(e) {
+    if (!active) return;
+    const r = el.getBoundingClientRect();
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    let pct = Math.round((clientY - r.top) / r.height * 100);
+    pct = Math.max(0, Math.min(100, 100 - pct));
+    fill.style.height = pct + '%';
+    onChange(pct);
+  }
+  el.addEventListener('mousedown', e => { active = true; calc(e); });
+  el.addEventListener('touchstart', e => { active = true; calc(e); }, {passive:false});
+  document.addEventListener('mousemove', calc);
+  document.addEventListener('touchmove', calc, {passive:false});
+  document.addEventListener('mouseup', () => { if (active) { active = false; fill.style.height = '0%'; onChange(0); } });
+  document.addEventListener('touchend', () => { if (active) { active = false; fill.style.height = '0%'; onChange(0); } });
+}
+setupGachette('gachetteL', 'gachetteLFill', v => { document.getElementById('l2Val').textContent = v; envoyer('L2', v); });
+setupGachette('gachetteR', 'gachetteRFill', v => { document.getElementById('r2Val').textContent = v; envoyer('R2', v); });
+
+// ============ PANNEAU INDUSTRIEL ============
+const etat = { system:false, moteurs:false, capteurs:false, alarme:false, mode:'MANUEL' };
+
+function toggleSwitch(id, label) {
+  const btn = document.getElementById(id);
+  const isOn = btn.classList.contains('switch-on');
+  if (isOn) {
+    btn.classList.remove('switch-on'); btn.classList.add('switch-off'); btn.textContent = 'OFF';
+  } else {
+    btn.classList.remove('switch-off'); btn.classList.add('switch-on'); btn.textContent = 'ON';
+  }
+  log(`Switch ${label}: ${!isOn ? 'ON' : 'OFF'}`);
+  envoyer('SWITCH', { cible: label, etat: !isOn });
+}
+function setMode(m) {
+  ['modeAuto','modeManuel','modeBypass'].forEach(id => {
+    const b = document.getElementById(id);
+    b.classList.remove('switch-on'); b.classList.add('switch-off');
+  });
+  const b = document.getElementById('mode' + m.charAt(0) + m.slice(1).toLowerCase());
+  if (b) { b.classList.remove('switch-off'); b.classList.add('switch-on'); }
+  etat.mode = m;
+  log(`Mode: ${m}`);
+  envoyer('MODE', m);
+}
+function majVitesse(v) {
+  document.getElementById('vitesseVal').textContent = v + '%';
+  document.getElementById('jaugeTemp').style.width = v + '%';
+  document.getElementById('valTemp').textContent = Math.round(v * 0.9) + '°C';
+  envoyer('VITESSE', parseInt(v));
+}
+function majPuissance(v) {
+  document.getElementById('puissanceVal').textContent = v + '%';
+  document.getElementById('jaugeVolt').style.width = v + '%';
+  document.getElementById('valVolt').textContent = (v * 0.12).toFixed(1) + 'V';
+  envoyer('PUISSANCE', parseInt(v));
+}
+
+// Simulation capteurs qui bougent
+setInterval(() => {
+  const hum = Math.round(40 + Math.random() * 30);
+  document.getElementById('jaugeHum').style.width = hum + '%';
+  document.getElementById('valHum').textContent = hum + '%';
+}, 3000);
+
+// ============ SIMULATION CANVAS ============
+let simCanvas, simCtx;
+let simX = 0, simY = 0, simAngle = 0, simVitesse = 0, simCmds = 0;
+let simDirX = 0, simDirY = 0;
+let simBoosted = false;
+
+function initSim() {
+  simCanvas = document.getElementById('simCanvas');
+  if (!simCanvas || simCanvas.width) return;
+  simCanvas.width = simCanvas.offsetWidth;
+  simCanvas.height = 500;
+  simCtx = simCanvas.getContext('2d');
+  requestAnimationFrame(simLoop);
+}
+
+function simLoop() {
+  if (!simCtx) return;
+  simVitesse = Math.sqrt(simDirX*simDirX + simDirY*simDirY) * (simBoosted ? 8 : 4);
+  simX += simDirX * simVitesse;
+  simY -= simDirY * simVitesse;
+  if (Math.abs(simDirX) > 0.05 || Math.abs(simDirY) > 0.05) {
+    simAngle = Math.atan2(-simDirY, simDirX);
+    if (Math.random() < 0.3) {
+      simCmds++;
+      document.getElementById('simCmds').textContent = simCmds;
+    }
+  }
+  // Bordures
+  const w = simCanvas.width, h = simCanvas.height;
+  simX = Math.max(30, Math.min(w-30, simX));
+  simY = Math.max(30, Math.min(h-30, simY));
+  if (simX === 0 && simY === 0) { simX = w/2; simY = h/2; }
+
+  simCtx.clearRect(0, 0, w, h);
+  // Grille
+  simCtx.strokeStyle = 'rgba(0,240,255,0.08)';
+  simCtx.lineWidth = 1;
+  for (let i = 0; i < w; i += 40) { simCtx.beginPath(); simCtx.moveTo(i,0); simCtx.lineTo(i,h); simCtx.stroke(); }
+  for (let i = 0; i < h; i += 40) { simCtx.beginPath(); simCtx.moveTo(0,i); simCtx.lineTo(w,i); simCtx.stroke(); }
+  // Robot
+  simCtx.save();
+  simCtx.translate(simX, simY);
+  simCtx.rotate(simAngle);
+  simCtx.fillStyle = '#00f0ff';
+  simCtx.shadowBlur = 20; simCtx.shadowColor = '#00f0ff';
+  simCtx.beginPath();
+  simCtx.roundRect(-20, -15, 40, 30, 6);
+  simCtx.fill();
+  simCtx.fillStyle = '#050510';
+  simCtx.beginPath();
+  simCtx.arc(10, 0, 4, 0, Math.PI*2);
+  simCtx.fill();
+  simCtx.restore();
+
+  document.getElementById('simPos').textContent = Math.round(simX) + ', ' + Math.round(simY);
+  document.getElementById('simVit').textContent = Math.round(simVitesse);
+  document.getElementById('simDir').textContent = Math.round(simAngle * 180 / Math.PI) + '°';
+
+  requestAnimationFrame(simLoop);
+}
+function resetSim() {
+  simX = simCanvas.width/2; simY = simCanvas.height/2; simAngle = 0; simVitesse = 0; simCmds = 0;
+  simDirX = 0; simDirY = 0;
+  showToast('🔄 Simulation réinitialisée', 'success');
+}
+function simBoost() {
+  simBoosted = !simBoosted;
+  showToast(simBoosted ? '⚡ BOOST activé' : 'BOOST désactivé', 'success');
+}
+
+// ============ COMBAT ============
+let hp1 = 100, hp2 = 100;
+function combatAction(action, joueur) {
+  const logE = document.getElementById('combatLog');
+  const now = new Date().toLocaleTimeString('fr-FR');
+  let msg = '';
+  if (action === 'ATTACK') {
+    const dmg = 5 + Math.floor(Math.random() * 20);
+    if (joueur === 1) { hp2 = Math.max(0, hp2 - dmg); msg = `⚔️ Robot 1 attaque → -${dmg} HP au Robot 2`; }
+    else { hp1 = Math.max(0, hp1 - dmg); msg = `⚔️ Robot 2 attaque → -${dmg} HP au Robot 1`; }
+  } else if (action === 'DEFEND') {
+    msg = `🛡️ Robot ${joueur} se défend (+5 HP)`;
+    if (joueur === 1) hp1 = Math.min(100, hp1 + 5); else hp2 = Math.min(100, hp2 + 5);
+  } else if (action === 'SPECIAL') {
+    const dmg = 15 + Math.floor(Math.random() * 25);
+    if (joueur === 1) { hp2 = Math.max(0, hp2 - dmg); msg = `💥 SPÉCIAL Robot 1 → -${dmg} HP au Robot 2`; }
+    else { hp1 = Math.max(0, hp1 - dmg); msg = `💥 SPÉCIAL Robot 2 → -${dmg} HP au Robot 1`; }
+  }
+  const line = document.createElement('div');
+  line.className = 'log-line';
+  line.innerHTML = `<span class="ts">[${now}]</span> ${msg}`;
+  logE.appendChild(line);
+  logE.scrollTop = logE.scrollHeight;
+  updateHP();
+  if (hp1 === 0 || hp2 === 0) {
+    const winner = hp1 === 0 ? 'Robot 2' : 'Robot 1';
+    const l = document.createElement('div');
+    l.className = 'log-line';
+    l.innerHTML = `<span class="ts">[${now}]</span> 🏆 <strong>${winner} GAGNE !</strong>`;
+    logE.appendChild(l);
+    showToast('🏆 ' + winner + ' remporte le combat !', 'success');
+    envoyer('COMBAT_END', winner);
+  }
+}
+function updateHP() {
+  document.getElementById('hp1').style.width = hp1 + '%';
+  document.getElementById('hp2').style.width = hp2 + '%';
+  document.getElementById('hp1Val').textContent = hp1;
+  document.getElementById('hp2Val').textContent = hp2;
+  document.getElementById('hp1').classList.toggle('low', hp1 < 30);
+  document.getElementById('hp2').classList.toggle('low', hp2 < 30);
+}
+function resetCombat() {
+  hp1 = 100; hp2 = 100; updateHP();
+  document.getElementById('combatLog').innerHTML = '';
+  showToast('🔄 Nouveau combat', 'success');
+}
+
+// ============ INIT ============
+document.addEventListener('DOMContentLoaded', () => {
+  loadAppareils();
+  log('Centre de contrôle initialisé');
+  log('Utilisateur: ' + memberPrenom + ' ' + memberNom);
+});
+</script>
+</body>
+</html>
