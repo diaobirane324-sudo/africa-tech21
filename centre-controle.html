@@ -112,7 +112,6 @@ body {
 }
 .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--cyan); box-shadow:0 0 15px rgba(0,240,255,0.2); }
 .form-group select option { background:var(--dark); }
-/* Appareil card */
 .appareil-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1rem; }
 .appareil-card {
   background:rgba(0,0,0,0.4); border:1px solid var(--border);
@@ -134,7 +133,6 @@ body {
 }
 .appareil-card .actions button:hover { background:rgba(0,240,255,0.2); }
 .appareil-card .actions button.delete { color:var(--red); border-color:rgba(255,0,51,0.3); background:rgba(255,0,51,0.08); }
-/* Manette Simple */
 .manette-simple {
   background:rgba(0,0,0,0.5); border:2px solid var(--border);
   border-radius:20px; padding:2rem; display:grid;
@@ -165,7 +163,6 @@ body {
 .btn-X { background:linear-gradient(135deg,#0044aa,#0088ff); color:#fff; border-color:#0088ff; }
 .btn-Y { background:linear-gradient(135deg,#aaaa00,#ffd700); color:#050510; border-color:#ffd700; }
 .btn-STOP { background:linear-gradient(135deg,#8b0000,#ff0033); color:#fff; border-color:#ff0033; font-size:1rem; padding:1.5rem; }
-/* Manette Xbox */
 .manette-xbox {
   background:linear-gradient(135deg,#1a1a2e,#0a0a14);
   border:2px solid var(--border); border-radius:30px;
@@ -186,7 +183,6 @@ body {
   transition:height 0.1s; pointer-events:none;
 }
 .gachette-label { position:absolute; top:5px; left:50%; transform:translateX(-50%); color:var(--cyan); font-size:0.7rem; font-weight:900; z-index:2; }
-/* Panneau industriel */
 .control-panel {
   background:#0a0a14; border:2px solid #2a2a3e;
   border-radius:15px; padding:1.2rem;
@@ -225,7 +221,6 @@ body {
 .led-green { background:var(--green); box-shadow:0 0 8px var(--green); }
 .led-yellow { background:var(--yellow); box-shadow:0 0 8px var(--yellow); }
 .led-red { background:var(--red); box-shadow:0 0 8px var(--red); }
-/* Simulation */
 .sim-area {
   background:#050510; border:2px solid var(--border);
   border-radius:15px; padding:1rem; position:relative;
@@ -233,7 +228,6 @@ body {
 #simCanvas { width:100%; height:500px; background:radial-gradient(circle,#0a0a1a,#050510); border-radius:10px; display:block; }
 .sim-stats { display:flex; gap:1.5rem; justify-content:center; margin-top:1rem; flex-wrap:wrap; }
 .sim-stat { background:rgba(0,240,255,0.08); border:1px solid var(--border); padding:0.5rem 1rem; border-radius:10px; font-family:'Orbitron',sans-serif; font-size:0.8rem; color:var(--cyan); }
-/* Combat */
 .combat-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
 .robot-fighter {
   background:rgba(0,0,0,0.5); border:2px solid var(--border);
@@ -247,7 +241,6 @@ body {
 .combat-controls { display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap; margin-top:1rem; }
 .combat-controls button { padding:0.6rem 1rem; border-radius:8px; border:1px solid var(--border); background:rgba(0,240,255,0.1); color:var(--cyan); cursor:pointer; font-weight:700; font-size:0.75rem; transition:0.3s; }
 .combat-controls button:hover { background:rgba(0,240,255,0.25); }
-/* Terminal / logs */
 .terminal {
   background:#000; border:1px solid var(--border); border-radius:10px;
   padding:1rem; font-family:'Courier New',monospace; font-size:0.8rem;
@@ -255,7 +248,6 @@ body {
 }
 .terminal .log-line { padding:0.15rem 0; }
 .terminal .log-line .ts { color:var(--text2); margin-right:0.5rem; }
-/* Toast */
 .toast {
   position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%);
   background:rgba(0,240,255,0.95); color:#050510;
@@ -434,16 +426,15 @@ body {
       <select id="indusAppareil" class="input-full" onchange="majAppareilActif('indus')">
         <option value="">-- Aucun appareil --</option>
       </select>
-            <!-- SCHÉMA ANIMÉ -->
-      <div style="background:#050510; border:2px solid var(--border); border-radius:15px; padding:1rem; margin-bottom:1.5rem; position:relative; overflow:hidden;">
+
+      <div style="background:#050510; border:2px solid var(--border); border-radius:15px; padding:1rem; margin:1.5rem 0; position:relative; overflow:hidden;">
         <div style="position:absolute; top:8px; left:12px; color:var(--cyan); font-family:'Orbitron',sans-serif; font-size:0.75rem; letter-spacing:1px; z-index:2;">
           <i class="fas fa-microchip"></i> SCHÉMA SYSTÈME — TEMPS RÉEL
         </div>
         <canvas id="indusCanvas" style="width:100%; height:280px; display:block; border-radius:10px;"></canvas>
       </div>
 
-      <div class="control-panel" style="margin-top:1.5rem;">
-        <!-- SWITCHES -->
+      <div class="control-panel">
         <div class="io-box">
           <h4><i class="fas fa-toggle-on"></i> COMMANDES ON/OFF</h4>
           <div class="switch-row">
@@ -464,7 +455,6 @@ body {
           </div>
         </div>
 
-        <!-- MODES -->
         <div class="io-box">
           <h4><i class="fas fa-cog"></i> MODE OPÉRATOIRE</h4>
           <button class="switch-btn switch-off" id="modeAuto" onclick="setMode('AUTO')" style="width:100%; margin-bottom:0.5rem; padding:0.8rem;">AUTO</button>
@@ -472,7 +462,6 @@ body {
           <button class="switch-btn switch-off" id="modeBypass" onclick="setMode('BYPASS')" style="width:100%; padding:0.8rem;">BYPASS</button>
         </div>
 
-        <!-- VITESSE -->
         <div class="io-box">
           <h4><i class="fas fa-tachometer-alt"></i> VITESSE</h4>
           <div class="slider-row">
@@ -485,7 +474,6 @@ body {
           </div>
         </div>
 
-        <!-- JAUGES CAPTEURS -->
         <div class="io-box">
           <h4><i class="fas fa-thermometer-half"></i> CAPTEURS</h4>
           <div style="margin-bottom:0.8rem;">
@@ -502,7 +490,6 @@ body {
           </div>
         </div>
 
-        <!-- MONITEUR I/O -->
         <div class="io-box" style="grid-column:1/-1;">
           <h4><i class="fas fa-microchip"></i> MONITEUR ENTÉES / SORTIES</h4>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
@@ -527,7 +514,6 @@ body {
       </div>
     </div>
 
-    <!-- TERMINAL -->
     <div class="card-box">
       <h2><i class="fas fa-terminal"></i> JOURNAL DES COMMANDES</h2>
       <div class="terminal" id="terminalLog"></div>
@@ -538,7 +524,7 @@ body {
   <div class="section" id="sectionSimulation">
     <div class="card-box">
       <h2><i class="fas fa-cube"></i> SIMULATION</h2>
-      <p style="color:var(--text2); margin-bottom:1rem; font-size:0.85rem;">Pilotez le robot virtuel avec les joysticks — les commandes sont envoyées à l'appareil sélectionné.</p>
+      <p style="color:var(--text2); margin-bottom:1rem; font-size:0.85rem;">Pilotez le robot virtuel avec le joystick. Les commandes sont envoyées à l'appareil sélectionné.</p>
       <select id="simAppareil" class="input-full" onchange="majAppareilActif('sim')">
         <option value="">-- Mode simulation uniquement --</option>
       </select>
@@ -610,7 +596,6 @@ const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Accès réservé
 const ALLOWED_IDS = ['AT21_006', 'Birane186@00'];
 if (localStorage.getItem('memberLoggedIn') !== 'true') window.location.href = 'espace-membres.html';
 const memberId = localStorage.getItem('memberId') || '';
@@ -648,8 +633,11 @@ function switchTab(name) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   event.target.closest('.tab').classList.add('active');
   document.getElementById('section' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
+  // Attendre que la section soit visible AVANT d'initialiser les canvas
+  setTimeout(() => {
     if (name === 'simulation') initSim();
-  if (name === 'industriel') { initIndusCanvas(); }
+    if (name === 'industriel') initIndusCanvas();
+  }, 60);
 }
 
 // ============ APPAREILS ============
@@ -786,13 +774,11 @@ function majAppareilActif(mode) {
 
 async function envoyer(cmd, val=null) {
   const payload = { cmd, val, ts: Date.now() };
-  document.getElementById('simpleLast').textContent = cmd;
-  log(`➡️ CMD: ${cmd}${val !== null ? ' (' + val + ')' : ''}`);
+  const sl = document.getElementById('simpleLast');
+  if (sl) sl.textContent = cmd;
+  log(`➡️ CMD: ${cmd}${val !== null ? ' (' + JSON.stringify(val) + ')' : ''}`);
 
-  if (!appareilActif) {
-    showToast('⚠️ Aucun appareil actif.', 'error');
-    return;
-  }
+  if (!appareilActif) return;
 
   try {
     await fetch(`http://${appareilActif.ip}:${appareilActif.port}/cmd`, {
@@ -801,9 +787,7 @@ async function envoyer(cmd, val=null) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-  } catch (e) {
-    // no-cors → erreur normale
-  }
+  } catch (e) {}
 }
 
 // ============ JOYSTICKS ============
@@ -865,7 +849,6 @@ setupJoystick('joySim', 'joySimKnob', (x,y) => {
   simDirY = y/100;
 });
 
-// Gâchettes
 function setupGachette(id, fillId, onChange) {
   const el = document.getElementById(id);
   const fill = document.getElementById(fillId);
@@ -927,20 +910,23 @@ function majPuissance(v) {
   document.getElementById('valVolt').textContent = (v * 0.12).toFixed(1) + 'V';
   envoyer('PUISSANCE', parseInt(v));
 }
-  // ============ SCHÉMA INDUSTRIEL ANIMÉ ============
+
+// ============ SCHÉMA INDUSTRIEL ANIMÉ ============
 let indusCanvas, indusCtx, indusFrame = 0;
 
 function initIndusCanvas() {
   indusCanvas = document.getElementById('indusCanvas');
   if (!indusCanvas) return;
-  if (!indusCanvas.width || indusCanvas.width < 10) {
-    indusCanvas.width = indusCanvas.offsetWidth;
+  const w = indusCanvas.offsetWidth;
+  if (w < 10) return;
+  if (indusCanvas.width !== w) {
+    indusCanvas.width = w;
     indusCanvas.height = 280;
     indusCtx = indusCanvas.getContext('2d');
-    if (!window._indusLoopStarted) {
-      window._indusLoopStarted = true;
-      drawIndus();
-    }
+  }
+  if (!window._indusLoopStarted) {
+    window._indusLoopStarted = true;
+    drawIndus();
   }
 }
 
@@ -950,17 +936,14 @@ function drawIndus() {
   indusCtx.clearRect(0, 0, w, h);
   indusFrame += 0.05;
 
-  // Grille de fond
   indusCtx.strokeStyle = 'rgba(0,240,255,0.06)';
   indusCtx.lineWidth = 1;
   for (let i = 0; i < w; i += 30) { indusCtx.beginPath(); indusCtx.moveTo(i,0); indusCtx.lineTo(i,h); indusCtx.stroke(); }
   for (let i = 0; i < h; i += 30) { indusCtx.beginPath(); indusCtx.moveTo(0,i); indusCtx.lineTo(w,i); indusCtx.stroke(); }
 
-  // === ROBOT / SYSTÈME AU CENTRE ===
   const cx = w/2, cy = h/2;
   const pulse = Math.sin(indusFrame) * 0.5 + 0.5;
 
-  // Châssis
   indusCtx.save();
   indusCtx.shadowBlur = 20 + pulse * 15;
   indusCtx.shadowColor = '#00f0ff';
@@ -973,7 +956,6 @@ function drawIndus() {
   indusCtx.stroke();
   indusCtx.restore();
 
-  // Écran central
   indusCtx.fillStyle = 'rgba(0,255,136,0.15)';
   indusCtx.strokeStyle = '#00ff88';
   indusCtx.lineWidth = 1.5;
@@ -981,14 +963,12 @@ function drawIndus() {
   indusCtx.roundRect(cx - 45, cy - 35, 90, 50, 6);
   indusCtx.fill();
   indusCtx.stroke();
-  // Texte écran
   indusCtx.fillStyle = '#00ff88';
   indusCtx.font = 'bold 12px "Courier New"';
   indusCtx.textAlign = 'center';
   indusCtx.fillText('STATUS', cx, cy - 15);
   indusCtx.fillText('OK', cx, cy + 5);
 
-  // === 4 MOTEURS / ROUES ===
   const wheelPos = [
     {x: cx - 100, y: cy - 70},
     {x: cx + 100, y: cy - 70},
@@ -1007,7 +987,6 @@ function drawIndus() {
     indusCtx.beginPath();
     indusCtx.arc(0, 0, 15, 0, Math.PI*2);
     indusCtx.stroke();
-    // Rayons
     for (let a = 0; a < 4; a++) {
       indusCtx.beginPath();
       indusCtx.moveTo(0, 0);
@@ -1017,7 +996,6 @@ function drawIndus() {
     indusCtx.restore();
   });
 
-  // === CAPTEURS AUTOUR ===
   const sensors = [
     {label:'TEMP', x: cx - 160, y: cy - 60},
     {label:'HUM', x: cx + 160, y: cy - 60},
@@ -1039,7 +1017,6 @@ function drawIndus() {
     indusCtx.fillText(s.label, s.x, s.y + 25);
     indusCtx.restore();
 
-    // Ligne de connexion au centre
     indusCtx.strokeStyle = 'rgba(0,240,255,0.2)';
     indusCtx.setLineDash([4, 4]);
     indusCtx.beginPath();
@@ -1048,7 +1025,6 @@ function drawIndus() {
     indusCtx.stroke();
     indusCtx.setLineDash([]);
 
-    // Flux de données
     const t = (indusFrame * 2 + i) % 1;
     const fx = s.x + (cx - s.x) * t;
     const fy = s.y + (cy - s.y) * t;
@@ -1060,7 +1036,6 @@ function drawIndus() {
     indusCtx.fill();
   });
 
-  // === ONDES RADAR ===
   indusCtx.strokeStyle = `rgba(0,240,255,${0.3 - (indusFrame % 2) * 0.15})`;
   indusCtx.lineWidth = 1;
   indusCtx.beginPath();
@@ -1070,11 +1045,12 @@ function drawIndus() {
   requestAnimationFrame(drawIndus);
 }
 
-// Simulation capteurs qui bougent
 setInterval(() => {
   const hum = Math.round(40 + Math.random() * 30);
-  document.getElementById('jaugeHum').style.width = hum + '%';
-  document.getElementById('valHum').textContent = hum + '%';
+  const jh = document.getElementById('jaugeHum');
+  const vh = document.getElementById('valHum');
+  if (jh) jh.style.width = hum + '%';
+  if (vh) vh.textContent = hum + '%';
 }, 3000);
 
 // ============ SIMULATION CANVAS ============
@@ -1092,22 +1068,19 @@ function simLoop() {
     simAngle = Math.atan2(-simDirY, simDirX);
     if (Math.random() < 0.3) {
       simCmds++;
-      document.getElementById('simCmds').textContent = simCmds;
+      const el = document.getElementById('simCmds');
+      if (el) el.textContent = simCmds;
     }
   }
-  // Bordures
   const w = simCanvas.width, h = simCanvas.height;
   simX = Math.max(30, Math.min(w-30, simX));
   simY = Math.max(30, Math.min(h-30, simY));
-  if (simX === 0 && simY === 0) { simX = w/2; simY = h/2; }
 
   simCtx.clearRect(0, 0, w, h);
-  // Grille
   simCtx.strokeStyle = 'rgba(0,240,255,0.08)';
   simCtx.lineWidth = 1;
   for (let i = 0; i < w; i += 40) { simCtx.beginPath(); simCtx.moveTo(i,0); simCtx.lineTo(i,h); simCtx.stroke(); }
   for (let i = 0; i < h; i += 40) { simCtx.beginPath(); simCtx.moveTo(0,i); simCtx.lineTo(w,i); simCtx.stroke(); }
-  // Robot
   simCtx.save();
   simCtx.translate(simX, simY);
   simCtx.rotate(simAngle);
@@ -1122,28 +1095,43 @@ function simLoop() {
   simCtx.fill();
   simCtx.restore();
 
-  document.getElementById('simPos').textContent = Math.round(simX) + ', ' + Math.round(simY);
-  document.getElementById('simVit').textContent = Math.round(simVitesse);
-  document.getElementById('simDir').textContent = Math.round(simAngle * 180 / Math.PI) + '°';
+  const ps = document.getElementById('simPos');
+  const pv = document.getElementById('simVit');
+  const pd = document.getElementById('simDir');
+  if (ps) ps.textContent = Math.round(simX) + ', ' + Math.round(simY);
+  if (pv) pv.textContent = Math.round(simVitesse);
+  if (pd) pd.textContent = Math.round(simAngle * 180 / Math.PI) + '°';
 
   requestAnimationFrame(simLoop);
 }
+
 function initSim() {
   simCanvas = document.getElementById('simCanvas');
   if (!simCanvas) return;
-  if (!simCanvas.width || simCanvas.width < 10) {
-    simCanvas.width = simCanvas.offsetWidth;
+  const w = simCanvas.offsetWidth;
+  if (w < 10) return;
+  if (simCanvas.width !== w) {
+    simCanvas.width = w;
     simCanvas.height = 500;
     simCtx = simCanvas.getContext('2d');
-    // Recentrer le robot
     simX = simCanvas.width / 2;
     simY = simCanvas.height / 2;
-    if (!window._simLoopStarted) {
-      window._simLoopStarted = true;
-      requestAnimationFrame(simLoop);
-    }
+  }
+  if (!window._simLoopStarted) {
+    window._simLoopStarted = true;
+    requestAnimationFrame(simLoop);
   }
 }
+
+function resetSim() {
+  simX = simCanvas.width / 2; simY = simCanvas.height / 2;
+  simAngle = 0; simVitesse = 0; simCmds = 0;
+  simDirX = 0; simDirY = 0;
+  const el = document.getElementById('simCmds');
+  if (el) el.textContent = 0;
+  showToast('🔄 Simulation réinitialisée', 'success');
+}
+
 function simBoost() {
   simBoosted = !simBoosted;
   showToast(simBoosted ? '⚡ BOOST activé' : 'BOOST désactivé', 'success');
@@ -1200,10 +1188,14 @@ function resetCombat() {
 // ============ INIT ============
 document.addEventListener('DOMContentLoaded', () => {
   loadAppareils();
-  setTimeout(() => { initIndusCanvas(); }, 100);
-  setTimeout(() => { initSim(); }, 100);
   log('Centre de contrôle initialisé');
   log('Utilisateur: ' + memberPrenom + ' ' + memberNom);
+
+  // Redimensionner les canvas si la fenêtre change
+  window.addEventListener('resize', () => {
+    if (simCanvas) { simCanvas.width = simCanvas.offsetWidth; simCanvas.height = 500; simX = simCanvas.width / 2; simY = simCanvas.height / 2; }
+    if (indusCanvas) { indusCanvas.width = indusCanvas.offsetWidth; indusCanvas.height = 280; }
+  });
 });
 </script>
 </body>
