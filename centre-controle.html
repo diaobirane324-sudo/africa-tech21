@@ -987,10 +987,21 @@ function simLoop() {
 
   requestAnimationFrame(simLoop);
 }
-function resetSim() {
-  simX = simCanvas.width/2; simY = simCanvas.height/2; simAngle = 0; simVitesse = 0; simCmds = 0;
-  simDirX = 0; simDirY = 0;
-  showToast('🔄 Simulation réinitialisée', 'success');
+function initSim() {
+  simCanvas = document.getElementById('simCanvas');
+  if (!simCanvas) return;
+  if (!simCanvas.width || simCanvas.width < 10) {
+    simCanvas.width = simCanvas.offsetWidth;
+    simCanvas.height = 500;
+    simCtx = simCanvas.getContext('2d');
+    // Recentrer le robot
+    simX = simCanvas.width / 2;
+    simY = simCanvas.height / 2;
+    if (!window._simLoopStarted) {
+      window._simLoopStarted = true;
+      requestAnimationFrame(simLoop);
+    }
+  }
 }
 function simBoost() {
   simBoosted = !simBoosted;
