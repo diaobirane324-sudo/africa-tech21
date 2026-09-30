@@ -926,6 +926,144 @@ function majPuissance(v) {
   document.getElementById('valVolt').textContent = (v * 0.12).toFixed(1) + 'V';
   envoyer('PUISSANCE', parseInt(v));
 }
+  // ============ SCHÉMA INDUSTRIEL ANIMÉ ============
+let indusCanvas, indusCtx, indusFrame = 0;
+
+function initIndusCanvas() {
+  indusCanvas = document.getElementById('indusCanvas');
+  if (!indusCanvas) return;
+  if (!indusCanvas.width || indusCanvas.width < 10) {
+    indusCanvas.width = indusCanvas.offsetWidth;
+    indusCanvas.height = 280;
+    indusCtx = indusCanvas.getContext('2d');
+  }
+}
+
+function drawIndus() {
+  if (!indusCtx) return;
+  const w = indusCanvas.width, h = indusCanvas.height;
+  indusCtx.clearRect(0, 0, w, h);
+  indusFrame += 0.05;
+
+  // Grille de fond
+  indusCtx.strokeStyle = 'rgba(0,240,255,0.06)';
+  indusCtx.lineWidth = 1;
+  for (let i = 0; i < w; i += 30) { indusCtx.beginPath(); indusCtx.moveTo(i,0); indusCtx.lineTo(i,h); indusCtx.stroke(); }
+  for (let i = 0; i < h; i += 30) { indusCtx.beginPath(); indusCtx.moveTo(0,i); indusCtx.lineTo(w,i); indusCtx.stroke(); }
+
+  // === ROBOT / SYSTÈME AU CENTRE ===
+  const cx = w/2, cy = h/2;
+  const pulse = Math.sin(indusFrame) * 0.5 + 0.5;
+
+  // Châssis
+  indusCtx.save();
+  indusCtx.shadowBlur = 20 + pulse * 15;
+  indusCtx.shadowColor = '#00f0ff';
+  indusCtx.strokeStyle = '#00f0ff';
+  indusCtx.lineWidth = 2;
+  indusCtx.fillStyle = 'rgba(0,240,255,0.08)';
+  indusCtx.beginPath();
+  indusCtx.roundRect(cx - 90, cy - 60, 180, 120, 12);
+  indusCtx.fill();
+  indusCtx.stroke();
+  indusCtx.restore();
+
+  // Écran central
+  indusCtx.fillStyle = 'rgba(0,255,136,0.15)';
+  indusCtx.strokeStyle = '#00ff88';
+  indusCtx.lineWidth = 1.5;
+  indusCtx.beginPath();
+  indusCtx.roundRect(cx - 45, cy - 35, 90, 50, 6);
+  indusCtx.fill();
+  indusCtx.stroke();
+  // Texte écran
+  indusCtx.fillStyle = '#00ff88';
+  indusCtx.font = 'bold 12px "Courier New"';
+  indusCtx.textAlign = 'center';
+  indusCtx.fillText('STATUS', cx, cy - 15);
+  indusCtx.fillText('OK', cx, cy + 5);
+
+  // === 4 MOTEURS / ROUES ===
+  const wheelPos = [
+    {x: cx - 100, y: cy - 70},
+    {x: cx + 100, y: cy - 70},
+    {x: cx - 100, y: cy + 70},
+    {x: cx + 100, y: cy + 70}
+  ];
+  wheelPos.forEach((p, i) => {
+    const rot = indusFrame * 3 * (i % 2 === 0 ? 1 : -1);
+    indusCtx.save();
+    indusCtx.translate(p.x, p.y);
+    indusCtx.rotate(rot);
+    indusCtx.strokeStyle = '#ffd700';
+    indusCtx.lineWidth = 3;
+    indusCtx.shadowBlur = 10;
+    indusCtx.shadowColor = '#ffd700';
+    indusCtx.beginPath();
+    indusCtx.arc(0, 0, 15, 0, Math.PI*2);
+    indusCtx.stroke();
+    // Rayons
+    for (let a = 0; a < 4; a++) {
+      indusCtx.beginPath();
+      indusCtx.moveTo(0, 0);
+      indusCtx.lineTo(Math.cos(a * Math.PI/2) * 14, Math.sin(a * Math.PI/2) * 14);
+      indusCtx.stroke();
+    }
+    indusCtx.restore();
+  });
+
+  // === CAPTEURS AUTOUR ===
+  const sensors = [
+    {label:'TEMP', x: cx - 160, y: cy - 60},
+    {label:'HUM', x: cx + 160, y: cy - 60},
+    {label:'VOLT', x: cx - 160, y: cy + 60},
+    {label:'GPS', x: cx + 160, y: cy + 60}
+  ];
+  sensors.forEach((s, i) => {
+    const blink = Math.sin(indusFrame * 2 + i) > 0;
+    indusCtx.save();
+    indusCtx.shadowBlur = 15;
+    indusCtx.shadowColor = blink ? '#00ff88' : '#004422';
+    indusCtx.fillStyle = blink ? '#00ff88' : '#003311';
+    indusCtx.beginPath();
+    indusCtx.arc(s.x, s.y, 8, 0, Math.PI*2);
+    indusCtx.fill();
+    indusCtx.fillStyle = '#00f0ff';
+    indusCtx.font = 'bold 10px "Orbitron"';
+    indusCtx.textAlign = 'center';
+    indusCtx.fillText(s.label, s.x, s.y + 25);
+    indusCtx.restore();
+
+    // Ligne de connexion au centre
+    indusCtx.strokeStyle = 'rgba(0,240,255,0.2)';
+    indusCtx.setLineDash([4, 4]);
+    indusCtx.beginPath();
+    indusCtx.moveTo(s.x, s.y);
+    indusCtx.lineTo(cx, cy);
+    indusCtx.stroke();
+    indusCtx.setLineDash([]);
+
+    // Flux de données
+    const t = (indusFrame * 2 + i) % 1;
+    const fx = s.x + (cx - s.x) * t;
+    const fy = s.y + (cy - s.y) * t;
+    indusCtx.fillStyle = '#00ff88';
+    indusCtx.shadowBlur = 12;
+    indusCtx.shadowColor = '#00ff88';
+    indusCtx.beginPath();
+    indusCtx.arc(fx, fy, 3, 0, Math.PI*2);
+    indusCtx.fill();
+  });
+
+  // === ONDES RADAR ===
+  indusCtx.strokeStyle = `rgba(0,240,255,${0.3 - (indusFrame % 2) * 0.15})`;
+  indusCtx.lineWidth = 1;
+  indusCtx.beginPath();
+  indusCtx.arc(cx, cy, 120 + (indusFrame * 30) % 80, 0, Math.PI*2);
+  indusCtx.stroke();
+
+  requestAnimationFrame(drawIndus);
+}
 
 // Simulation capteurs qui bougent
 setInterval(() => {
