@@ -1200,8 +1200,8 @@ function resetCombat() {
 // ============ INIT ============
 document.addEventListener('DOMContentLoaded', () => {
   loadAppareils();
-  initIndusCanvas();
-  drawIndus();
+  setTimeout(() => { initIndusCanvas(); }, 100);
+  setTimeout(() => { initSim(); }, 100);
   log('Centre de contrôle initialisé');
   log('Utilisateur: ' + memberPrenom + ' ' + memberNom);
 });
