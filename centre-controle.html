@@ -937,6 +937,10 @@ function initIndusCanvas() {
     indusCanvas.width = indusCanvas.offsetWidth;
     indusCanvas.height = 280;
     indusCtx = indusCanvas.getContext('2d');
+    if (!window._indusLoopStarted) {
+      window._indusLoopStarted = true;
+      drawIndus();
+    }
   }
 }
 
