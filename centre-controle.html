@@ -1079,15 +1079,6 @@ let simX = 0, simY = 0, simAngle = 0, simVitesse = 0, simCmds = 0;
 let simDirX = 0, simDirY = 0;
 let simBoosted = false;
 
-function initSim() {
-  simCanvas = document.getElementById('simCanvas');
-  if (!simCanvas || simCanvas.width) return;
-  simCanvas.width = simCanvas.offsetWidth;
-  simCanvas.height = 500;
-  simCtx = simCanvas.getContext('2d');
-  requestAnimationFrame(simLoop);
-}
-
 function simLoop() {
   if (!simCtx) return;
   simVitesse = Math.sqrt(simDirX*simDirX + simDirY*simDirY) * (simBoosted ? 8 : 4);
