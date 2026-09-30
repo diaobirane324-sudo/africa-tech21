@@ -10,7 +10,7 @@
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Exo 2',sans-serif; }
 :root {
   --cyan:#00f0ff; --green:#00ff88; --orange:#ff8c00; --red:#ff0033;
-  --purple:#7b2cbf; --yellow:#ffd700;
+  --purple:#7b2cbf; --yellow:#ffd700; --pink:#ff00c8;
   --dark:#050510; --panel:#0a0a1a; --panel2:#101028;
   --border:rgba(0,240,255,0.25); --glow:0 0 25px rgba(0,240,255,0.3);
   --text:#fff; --text2:#a0a8c0;
@@ -39,7 +39,7 @@ body {
   font-weight:600; font-size:0.85rem; transition:all 0.3s;
 }
 .back-btn:hover { background:rgba(0,240,255,0.2); box-shadow:var(--glow); }
-.page-container { max-width:1500px; margin:0 auto; }
+.page-container { max-width:1600px; margin:0 auto; }
 .page-header {
   background:linear-gradient(135deg, rgba(0,240,255,0.08), rgba(123,44,191,0.08));
   backdrop-filter:blur(15px); border:1px solid var(--border);
@@ -186,7 +186,7 @@ body {
 .control-panel {
   background:#0a0a14; border:2px solid #2a2a3e;
   border-radius:15px; padding:1.2rem;
-  display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:1rem;
 }
 .io-box {
@@ -212,6 +212,8 @@ body {
   border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:0.4rem;
 }
 .jauge-fill { height:100%; background:linear-gradient(90deg,var(--green),var(--cyan)); transition:width 0.3s; }
+.jauge-fill.warn { background:linear-gradient(90deg,var(--yellow),var(--orange)); }
+.jauge-fill.danger { background:linear-gradient(90deg,var(--orange),var(--red)); animation:pulseDot 0.8s infinite; }
 .slider-row { display:flex; align-items:center; gap:0.6rem; margin-bottom:0.6rem; }
 .slider-row input[type="range"] { flex:1; accent-color:var(--cyan); }
 .slider-row .val { font-family:'Orbitron',sans-serif; color:var(--cyan); font-size:0.85rem; min-width:40px; text-align:right; }
@@ -220,7 +222,7 @@ body {
 .io-line .io-led { width:10px; height:10px; border-radius:50%; }
 .led-green { background:var(--green); box-shadow:0 0 8px var(--green); }
 .led-yellow { background:var(--yellow); box-shadow:0 0 8px var(--yellow); }
-.led-red { background:var(--red); box-shadow:0 0 8px var(--red); }
+.led-red { background:var(--red); box-shadow:0 0 8px var(--red); animation:pulseDot 0.8s infinite; }
 .sim-area {
   background:#050510; border:2px solid var(--border);
   border-radius:15px; padding:1rem; position:relative;
@@ -244,10 +246,12 @@ body {
 .terminal {
   background:#000; border:1px solid var(--border); border-radius:10px;
   padding:1rem; font-family:'Courier New',monospace; font-size:0.8rem;
-  max-height:200px; overflow-y:auto; color:var(--green);
+  max-height:250px; overflow-y:auto; color:var(--green);
 }
 .terminal .log-line { padding:0.15rem 0; }
 .terminal .log-line .ts { color:var(--text2); margin-right:0.5rem; }
+.terminal .log-line.warn { color:var(--yellow); }
+.terminal .log-line.danger { color:var(--red); }
 .toast {
   position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%);
   background:rgba(0,240,255,0.95); color:#050510;
@@ -256,6 +260,7 @@ body {
 }
 .toast.error { background:rgba(255,0,51,0.95); color:#fff; }
 .toast.success { background:rgba(0,255,136,0.95); color:#050510; }
+.toast.warn { background:rgba(255,215,0,0.95); color:#050510; }
 @keyframes fadeInUp { from{opacity:0;transform:translateX(-50%) translateY(20px);} to{opacity:1;transform:translateX(-50%) translateY(0);} }
 .empty-state { text-align:center; color:var(--text2); padding:2.5rem; }
 .empty-state i { font-size:3rem; color:rgba(0,240,255,0.2); margin-bottom:1rem; display:block; }
@@ -266,6 +271,47 @@ body {
   border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:1rem;
 }
 @keyframes spin { 100%{transform:rotate(360deg);} }
+
+/* ===== VOCAL STATUS ===== */
+.vocal-status {
+  display:flex; align-items:center; gap:1rem;
+  background:linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,140,0,0.1));
+  border:1px solid var(--yellow);
+  border-radius:12px; padding:0.8rem 1.2rem; margin-bottom:1rem;
+}
+.vocal-status i.mic {
+  font-size:1.5rem; color:var(--yellow);
+  animation:pulseDot 1.5s infinite;
+}
+.vocal-status .text { flex:1; font-size:0.9rem; color:#fff; }
+.vocal-status .text strong { color:var(--yellow); }
+.btn-vocal {
+  background:linear-gradient(135deg,#aa5500,var(--yellow)); color:#050510;
+  border:none; padding:0.5rem 1rem; border-radius:8px;
+  font-weight:700; cursor:pointer; font-size:0.75rem;
+  display:flex; align-items:center; gap:0.4rem;
+}
+.btn-vocal:hover { transform:scale(1.05); }
+
+/* ===== GRILLE CAPTEURS ÉTENDUE ===== */
+.sensor-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:0.8rem; margin-bottom:1rem;
+}
+.sensor-card {
+  background:rgba(0,0,0,0.4); border:1px solid var(--border);
+  border-radius:10px; padding:0.8rem;
+}
+.sensor-card .name { color:var(--text2); font-size:0.7rem; letter-spacing:1px; text-transform:uppercase; }
+.sensor-card .value { font-family:'Orbitron',sans-serif; font-size:1.4rem; color:var(--cyan); margin:0.3rem 0; }
+.sensor-card .unit { font-size:0.7rem; color:var(--text2); }
+.sensor-card.warn .value { color:var(--yellow); }
+.sensor-card.danger .value { color:var(--red); animation:pulseDot 0.8s infinite; }
+.sensor-card.ok .value { color:var(--green); }
+
+/* ===== GRAPHE ===== */
+#graphCanvas { width:100%; height:140px; background:#050510; border:1px solid var(--border); border-radius:10px; display:block; }
+
 @media (max-width:768px) {
   body { padding:0.8rem; font-size:13px; }
   .page-header h1 { font-size:1.5rem; }
@@ -283,7 +329,7 @@ body {
 
   <header class="page-header">
     <h1><i class="fas fa-satellite-dish"></i> CENTRE DE CONTRÔLE</h1>
-    <p class="subtitle">Pilotage des robots et systèmes automatiques</p>
+    <p class="subtitle">Pilotage des robots et systèmes automatiques — Niveau MAJOR</p>
     <div class="user-info" id="userInfo"><i class="fas fa-user-shield"></i> CHARGEMENT...</div>
   </header>
 
@@ -322,12 +368,12 @@ body {
         </div>
         <div class="form-group">
           <label>Nombre de moteurs</label>
-          <input type="number" id="appMoteurs" min="1" max="8" value="2">
+          <input type="number" id="appMoteurs" min="1" max="8" value="4">
         </div>
       </div>
       <div class="form-group" style="margin-bottom:0.8rem;">
         <label>Capteurs disponibles (séparés par des virgules)</label>
-        <input type="text" id="appCapteurs" placeholder="température, humidité, ultrason, caméra...">
+        <input type="text" id="appCapteurs" placeholder="température, humidité, ultrason, voltage, courant, gaz, vibration, GPS">
       </div>
       <div class="form-group" style="margin-bottom:1rem;">
         <label>Description (optionnel)</label>
@@ -421,24 +467,90 @@ body {
 
   <!-- PANNEAU INDUSTRIEL -->
   <div class="section" id="sectionIndustriel">
+    <!-- ASSISTANT VOCAL -->
+    <div class="card-box" style="padding:1rem 1.5rem;">
+      <div class="vocal-status">
+        <i class="fas fa-microphone mic"></i>
+        <div class="text" id="vocalText">Assistant vocal prêt. <strong>Système opérationnel.</strong></div>
+        <button class="btn-vocal" id="btnVocal" onclick="toggleVocal()">
+          <i class="fas fa-volume-up"></i> <span id="vocalBtnText">ACTIVÉ</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- SÉLECTION APPAREIL -->
     <div class="card-box">
-      <h2><i class="fas fa-sliders-h"></i> PANNEAU INDUSTRIEL</h2>
+      <h2><i class="fas fa-sliders-h"></i> PANNEAU INDUSTRIEL MAJOR</h2>
       <select id="indusAppareil" class="input-full" onchange="majAppareilActif('indus')">
         <option value="">-- Aucun appareil --</option>
       </select>
 
-      <div style="background:#050510; border:2px solid var(--border); border-radius:15px; padding:1rem; margin:1.5rem 0; position:relative; overflow:hidden;">
+      <!-- SCHÉMA ANIMÉ COMPLET -->
+      <div style="background:#050510; border:2px solid var(--border); border-radius:15px; padding:1rem; margin:1rem 0; position:relative; overflow:hidden;">
         <div style="position:absolute; top:8px; left:12px; color:var(--cyan); font-family:'Orbitron',sans-serif; font-size:0.75rem; letter-spacing:1px; z-index:2;">
-          <i class="fas fa-microchip"></i> SCHÉMA SYSTÈME — TEMPS RÉEL
+          <i class="fas fa-microchip"></i> VUE SYSTÈME TEMPS RÉEL — 4 MOTEURS + 8 CAPTEURS
         </div>
-        <canvas id="indusCanvas" style="width:100%; height:280px; display:block; border-radius:10px;"></canvas>
+        <canvas id="indusCanvas" style="width:100%; height:400px; display:block; border-radius:10px;"></canvas>
       </div>
 
+      <!-- GRILLE CAPTEURS ÉTENDUE -->
+      <h2 style="margin-top:1.5rem;"><i class="fas fa-heartbeat"></i> SANTÉ SYSTÈME — 8 CAPTEURS</h2>
+      <div class="sensor-grid">
+        <div class="sensor-card" id="sc-temp">
+          <div class="name"><i class="fas fa-thermometer-half"></i> Température</div>
+          <div class="value" id="val-temp">0<span class="unit">°C</span></div>
+          <div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-temp" style="width:0%;"></div></div>
+        </div>
+        <div class="sensor-card" id="sc-hum">
+          <div class="name"><i class="fas fa-tint"></i> Humidité</div>
+          <div class="value" id="val-hum">0<span class="unit">%</span></div>
+          <div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-hum" style="width:0%;"></div></div>
+        </div>
+        <div class="sensor-card" id="sc-volt">
+          <div class="name"><i class="fas fa-bolt"></i> Voltage</div>
+          <div class="value" id="val-volt">0<span class="unit">V</span></div>
+          <div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-volt" style="width:0%;"></div></div>
+        </div>
+        <div class="sensor-card" id="sc-courant">
+          <div class="name"><i class="fas fa-plug"></i> Courant</div>
+          <div class="value" id="val-courant">0<span class="unit">A</span></div>
+          <div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-courant" style="width:0%;"></div></div>
+        </div>
+        <div class="sensor-card" id="sc-dist">
+          <div class="name"><i class="fas fa-ruler"></i> Distance</div>
+          <div class="value" id="val-dist">0<span class="unit">cm</span></div>
+          <div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-dist" style="width:0%;"></div></div>
+        </div>
+        <div class="sensor-card" id="sc-gaz">
+          <div class="name"><i class="fas fa-wind"></i> Gaz</div>
+          <div class="value" id="val-gaz">0<span class="unit">ppm</span></div>
+          <div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-gaz" style="width:0%;"></div></div>
+        </div>
+        <div class="sensor-card" id="sc-vib">
+          <div class="name"><i class="fas fa-wave-square"></i> Vibration</div>
+          <div class="value" id="val-vib">0<span class="unit">Hz</span></div>
+          <div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-vib" style="width:0%;"></div></div>
+        </div>
+        <div class="sensor-card" id="sc-gps">
+          <div class="name"><i class="fas fa-map-marker-alt"></i> GPS Fix</div>
+          <div class="value" id="val-gps">0<span class="unit">sat</span></div>
+          <div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-gps" style="width:0%;"></div></div>
+        </div>
+      </div>
+
+      <!-- GRAPHE TEMPS RÉEL -->
+      <h2 style="margin-top:1.5rem;"><i class="fas fa-chart-line"></i> GRAPHE TEMPS RÉEL — Température & Courant</h2>
+      <canvas id="graphCanvas"></canvas>
+    </div>
+
+    <!-- CONTRÔLES -->
+    <div class="card-box">
+      <h2><i class="fas fa-cogs"></i> CONTRÔLES AVANCÉS</h2>
       <div class="control-panel">
         <div class="io-box">
-          <h4><i class="fas fa-toggle-on"></i> COMMANDES ON/OFF</h4>
+          <h4><i class="fas fa-toggle-on"></i> SYSTÈMES</h4>
           <div class="switch-row">
-            <span class="label">SYSTÈME</span>
+            <span class="label">SYSTÈME PRINCIPAL</span>
             <button class="switch-btn switch-off" id="swSystem" onclick="toggleSwitch('swSystem','SYSTEME')">OFF</button>
           </div>
           <div class="switch-row">
@@ -453,67 +565,94 @@ body {
             <span class="label">ALARME</span>
             <button class="switch-btn switch-off" id="swAlarme" onclick="toggleSwitch('swAlarme','ALARME')">OFF</button>
           </div>
+          <div class="switch-row">
+            <span class="label">ÉCLAIRAGE</span>
+            <button class="switch-btn switch-off" id="swLumiere" onclick="toggleSwitch('swLumiere','LUMIERE')">OFF</button>
+          </div>
+          <div class="switch-row">
+            <span class="label">VENTILATION</span>
+            <button class="switch-btn switch-off" id="swVentil" onclick="toggleSwitch('swVentil','VENTILATION')">OFF</button>
+          </div>
         </div>
 
         <div class="io-box">
           <h4><i class="fas fa-cog"></i> MODE OPÉRATOIRE</h4>
           <button class="switch-btn switch-off" id="modeAuto" onclick="setMode('AUTO')" style="width:100%; margin-bottom:0.5rem; padding:0.8rem;">AUTO</button>
           <button class="switch-btn switch-on" id="modeManuel" onclick="setMode('MANUEL')" style="width:100%; margin-bottom:0.5rem; padding:0.8rem;">MANUEL</button>
-          <button class="switch-btn switch-off" id="modeBypass" onclick="setMode('BYPASS')" style="width:100%; padding:0.8rem;">BYPASS</button>
+          <button class="switch-btn switch-off" id="modeBypass" onclick="setMode('BYPASS')" style="width:100%; margin-bottom:0.5rem; padding:0.8rem;">BYPASS</button>
+          <button class="switch-btn switch-off" id="modeUrgence" onclick="setMode('URGENCE')" style="width:100%; padding:0.8rem;">ARRÊT URGENCE</button>
         </div>
 
         <div class="io-box">
-          <h4><i class="fas fa-tachometer-alt"></i> VITESSE</h4>
+          <h4><i class="fas fa-tachometer-alt"></i> MOTEURS — VITESSE</h4>
           <div class="slider-row">
+            <span style="font-size:0.7rem; color:var(--text2); min-width:50px;">MOTEUR 1</span>
+            <input type="range" id="sliderM1" min="0" max="100" value="0" oninput="majMoteur(1, this.value)">
+            <span class="val" id="m1Val">0%</span>
+          </div>
+          <div class="slider-row">
+            <span style="font-size:0.7rem; color:var(--text2); min-width:50px;">MOTEUR 2</span>
+            <input type="range" id="sliderM2" min="0" max="100" value="0" oninput="majMoteur(2, this.value)">
+            <span class="val" id="m2Val">0%</span>
+          </div>
+          <div class="slider-row">
+            <span style="font-size:0.7rem; color:var(--text2); min-width:50px;">MOTEUR 3</span>
+            <input type="range" id="sliderM3" min="0" max="100" value="0" oninput="majMoteur(3, this.value)">
+            <span class="val" id="m3Val">0%</span>
+          </div>
+          <div class="slider-row">
+            <span style="font-size:0.7rem; color:var(--text2); min-width:50px;">MOTEUR 4</span>
+            <input type="range" id="sliderM4" min="0" max="100" value="0" oninput="majMoteur(4, this.value)">
+            <span class="val" id="m4Val">0%</span>
+          </div>
+        </div>
+
+        <div class="io-box">
+          <h4><i class="fas fa-sliders-h"></i> GLOBAL</h4>
+          <div class="slider-row">
+            <span style="font-size:0.7rem; color:var(--text2); min-width:70px;">VITESSE</span>
             <input type="range" id="sliderVitesse" min="0" max="100" value="0" oninput="majVitesse(this.value)">
             <span class="val" id="vitesseVal">0%</span>
           </div>
           <div class="slider-row">
+            <span style="font-size:0.7rem; color:var(--text2); min-width:70px;">PUISSANCE</span>
             <input type="range" id="sliderPuissance" min="0" max="100" value="0" oninput="majPuissance(this.value)">
             <span class="val" id="puissanceVal">0%</span>
           </div>
-        </div>
-
-        <div class="io-box">
-          <h4><i class="fas fa-thermometer-half"></i> CAPTEURS</h4>
-          <div style="margin-bottom:0.8rem;">
-            <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text2);"><span>TEMP</span><span id="valTemp">0°C</span></div>
-            <div class="jauge"><div class="jauge-fill" id="jaugeTemp" style="width:0%;"></div></div>
-          </div>
-          <div style="margin-bottom:0.8rem;">
-            <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text2);"><span>HUMIDITÉ</span><span id="valHum">0%</span></div>
-            <div class="jauge"><div class="jauge-fill" id="jaugeHum" style="width:0%;"></div></div>
-          </div>
-          <div>
-            <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text2);"><span>VOLTAGE</span><span id="valVolt">0V</span></div>
-            <div class="jauge"><div class="jauge-fill" id="jaugeVolt" style="width:0%;"></div></div>
-          </div>
-        </div>
-
-        <div class="io-box" style="grid-column:1/-1;">
-          <h4><i class="fas fa-microchip"></i> MONITEUR ENTÉES / SORTIES</h4>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
-            <div class="io-monitor">
-              <div style="color:var(--cyan); font-weight:700; margin-bottom:0.5rem;">INPUT</div>
-              <div class="io-line"><span>MOTEUR 1</span><span class="io-led led-green"></span></div>
-              <div class="io-line"><span>MOTEUR 2</span><span class="io-led led-green"></span></div>
-              <div class="io-line"><span>ULTRASON</span><span class="io-led led-yellow"></span></div>
-              <div class="io-line"><span>CAPTEUR TEMP</span><span class="io-led led-green"></span></div>
-              <div class="io-line"><span>CAPTEUR HUM</span><span class="io-led led-green"></span></div>
-            </div>
-            <div class="io-monitor">
-              <div style="color:var(--cyan); font-weight:700; margin-bottom:0.5rem;">OUTPUT</div>
-              <div class="io-line"><span>RELAIS 1</span><span class="io-led led-red"></span></div>
-              <div class="io-line"><span>RELAIS 2</span><span class="io-led led-red"></span></div>
-              <div class="io-line"><span>LED STATUT</span><span class="io-led led-green"></span></div>
-              <div class="io-line"><span>BUZZER</span><span class="io-led led-yellow"></span></div>
-              <div class="io-line"><span>ÉCRAN</span><span class="io-led led-green"></span></div>
-            </div>
+          <div class="slider-row">
+            <span style="font-size:0.7rem; color:var(--text2); min-width:70px;">TEMP CIBLE</span>
+            <input type="range" id="sliderTemp" min="20" max="80" value="45" oninput="majTempCible(this.value)">
+            <span class="val" id="tempVal">45°C</span>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- DIAGNOSTIC -->
+    <div class="card-box">
+      <h2><i class="fas fa-stethoscope"></i> DIAGNOSTIC SYSTÈME</h2>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+        <div class="io-monitor">
+          <div style="color:var(--cyan); font-weight:700; margin-bottom:0.5rem;">ÉTAT DES COMPOSANTS</div>
+          <div class="io-line"><span>MOTEUR M1</span><span class="io-led led-green" id="diag-m1"></span></div>
+          <div class="io-line"><span>MOTEUR M2</span><span class="io-led led-green" id="diag-m2"></span></div>
+          <div class="io-line"><span>MOTEUR M3</span><span class="io-led led-green" id="diag-m3"></span></div>
+          <div class="io-line"><span>MOTEUR M4</span><span class="io-led led-green" id="diag-m4"></span></div>
+          <div class="io-line"><span>CAPTEUR TEMP</span><span class="io-led led-green" id="diag-temp"></span></div>
+          <div class="io-line"><span>CAPTEUR HUM</span><span class="io-led led-green" id="diag-hum"></span></div>
+          <div class="io-line"><span>ULTRASON</span><span class="io-led led-green" id="diag-dist"></span></div>
+          <div class="io-line"><span>CAPTEUR GAZ</span><span class="io-led led-green" id="diag-gaz"></span></div>
+        </div>
+        <div class="io-monitor">
+          <div style="color:var(--cyan); font-weight:700; margin-bottom:0.5rem;">ALERTES ACTIVES</div>
+          <div id="alertesList" style="font-size:0.8rem; line-height:1.7;">
+            <div style="color:var(--green);">✅ Aucune alerte active</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TERMINAL -->
     <div class="card-box">
       <h2><i class="fas fa-terminal"></i> JOURNAL DES COMMANDES</h2>
       <div class="terminal" id="terminalLog"></div>
@@ -616,12 +755,12 @@ function showToast(msg, type='') {
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 3500);
 }
-function log(msg) {
+function log(msg, level='') {
   const term = document.getElementById('terminalLog');
   if (!term) return;
   const now = new Date().toLocaleTimeString('fr-FR');
   const line = document.createElement('div');
-  line.className = 'log-line';
+  line.className = 'log-line ' + level;
   line.innerHTML = `<span class="ts">[${now}]</span> ${msg}`;
   term.appendChild(line);
   term.scrollTop = term.scrollHeight;
@@ -633,11 +772,50 @@ function switchTab(name) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   event.target.closest('.tab').classList.add('active');
   document.getElementById('section' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
-  // Attendre que la section soit visible AVANT d'initialiser les canvas
   setTimeout(() => {
     if (name === 'simulation') initSim();
     if (name === 'industriel') initIndusCanvas();
   }, 60);
+}
+
+// ============ ASSISTANT VOCAL ============
+let vocalActive = true;
+let dernieresAlertes = {};
+
+function parler(texte) {
+  if (!vocalActive) return;
+  if (!('speechSynthesis' in window)) return;
+  // Éviter de répéter la même alerte en 20s
+  const now = Date.now();
+  if (dernieresAlertes[texte] && (now - dernieresAlertes[texte]) < 20000) return;
+  dernieresAlertes[texte] = now;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(texte);
+  u.lang = 'fr-FR';
+  u.rate = 1.05;
+  u.pitch = 1.0;
+  window.speechSynthesis.speak(u);
+  majVocalText(texte);
+}
+
+function majVocalText(texte) {
+  const el = document.getElementById('vocalText');
+  if (el) el.innerHTML = `🎙️ <strong>${texte}</strong>`;
+}
+
+function toggleVocal() {
+  vocalActive = !vocalActive;
+  const btn = document.getElementById('btnVocal');
+  const txt = document.getElementById('vocalBtnText');
+  if (vocalActive) {
+    btn.classList.remove('switch-off');
+    txt.textContent = 'ACTIVÉ';
+    parler('Assistant vocal activé.');
+  } else {
+    txt.textContent = 'COUPÉ';
+    window.speechSynthesis.cancel();
+    majVocalText('Assistant vocal coupé.');
+  }
 }
 
 // ============ APPAREILS ============
@@ -698,7 +876,7 @@ async function ajouterAppareil() {
   const type = document.getElementById('appType').value;
   const ip = document.getElementById('appIp').value.trim();
   const port = document.getElementById('appPort').value.trim() || '80';
-  const nb_moteurs = parseInt(document.getElementById('appMoteurs').value) || 2;
+  const nb_moteurs = parseInt(document.getElementById('appMoteurs').value) || 4;
   const capteurs = document.getElementById('appCapteurs').value.trim();
   const description = document.getElementById('appDesc').value.trim();
 
@@ -874,10 +1052,11 @@ setupGachette('gachetteL', 'gachetteLFill', v => { document.getElementById('l2Va
 setupGachette('gachetteR', 'gachetteRFill', v => { document.getElementById('r2Val').textContent = v; envoyer('R2', v); });
 
 // ============ PANNEAU INDUSTRIEL ============
-const etat = { system:false, moteurs:false, capteurs:false, alarme:false, mode:'MANUEL' };
+let moteursVitesse = [0, 0, 0, 0]; // M1, M2, M3, M4
 
 function toggleSwitch(id, label) {
   const btn = document.getElementById(id);
+  if (!btn) return;
   const isOn = btn.classList.contains('switch-on');
   if (isOn) {
     btn.classList.remove('switch-on'); btn.classList.add('switch-off'); btn.textContent = 'OFF';
@@ -885,30 +1064,129 @@ function toggleSwitch(id, label) {
     btn.classList.remove('switch-off'); btn.classList.add('switch-on'); btn.textContent = 'ON';
   }
   log(`Switch ${label}: ${!isOn ? 'ON' : 'OFF'}`);
+  if (label === 'SYSTEME' && !isOn) parler('Système principal activé.');
+  if (label === 'ALARME' && !isOn) parler('Alarme déclenchée.');
   envoyer('SWITCH', { cible: label, etat: !isOn });
 }
+
 function setMode(m) {
-  ['modeAuto','modeManuel','modeBypass'].forEach(id => {
+  ['modeAuto','modeManuel','modeBypass','modeUrgence'].forEach(id => {
     const b = document.getElementById(id);
-    b.classList.remove('switch-on'); b.classList.add('switch-off');
+    if (b) { b.classList.remove('switch-on'); b.classList.add('switch-off'); }
   });
   const b = document.getElementById('mode' + m.charAt(0) + m.slice(1).toLowerCase());
   if (b) { b.classList.remove('switch-off'); b.classList.add('switch-on'); }
-  etat.mode = m;
   log(`Mode: ${m}`);
+  if (m === 'URGENCE') parler('Arrêt d\'urgence activé. Moteurs stoppés.');
+  else parler('Mode ' + m + ' sélectionné.');
   envoyer('MODE', m);
 }
+
+function majMoteur(num, val) {
+  moteursVitesse[num-1] = parseInt(val);
+  document.getElementById('m' + num + 'Val').textContent = val + '%';
+  if (val > 80) {
+    parler('Attention, moteur ' + num + ' tourne très vite. Ralentissez.');
+  }
+  envoyer('MOTEUR_' + num, parseInt(val));
+}
+
 function majVitesse(v) {
   document.getElementById('vitesseVal').textContent = v + '%';
-  document.getElementById('jaugeTemp').style.width = v + '%';
-  document.getElementById('valTemp').textContent = Math.round(v * 0.9) + '°C';
   envoyer('VITESSE', parseInt(v));
 }
 function majPuissance(v) {
   document.getElementById('puissanceVal').textContent = v + '%';
-  document.getElementById('jaugeVolt').style.width = v + '%';
-  document.getElementById('valVolt').textContent = (v * 0.12).toFixed(1) + 'V';
   envoyer('PUISSANCE', parseInt(v));
+}
+function majTempCible(v) {
+  document.getElementById('tempVal').textContent = v + '°C';
+}
+
+// ============ CAPTEURS SIMULÉS ============
+const capteursEtat = {
+  temp: 35, hum: 55, volt: 12, courant: 2.5,
+  dist: 150, gaz: 200, vib: 10, gps: 8
+};
+
+function majCapteurs() {
+  // Fluctuations
+  capteursEtat.temp += (Math.random() - 0.5) * 2 + (moteursVitesse.reduce((a,b)=>a+b,0)/400);
+  capteursEtat.hum += (Math.random() - 0.5) * 2;
+  capteursEtat.volt += (Math.random() - 0.5) * 0.3;
+  capteursEtat.courant = 2 + (moteursVitesse.reduce((a,b)=>a+b,0)/100);
+  capteursEtat.dist = Math.max(10, capteursEtat.dist + (Math.random() - 0.5) * 20);
+  capteursEtat.gaz += (Math.random() - 0.5) * 5;
+  capteursEtat.vib = 5 + (moteursVitesse.reduce((a,b)=>a+b,0)/20) + Math.random()*5;
+  capteursEtat.gps = Math.min(12, capteursEtat.gps + (Math.random()-0.4));
+
+  // Bornes
+  capteursEtat.temp = Math.max(20, Math.min(90, capteursEtat.temp));
+  capteursEtat.hum = Math.max(20, Math.min(95, capteursEtat.hum));
+  capteursEtat.volt = Math.max(10, Math.min(14, capteursEtat.volt));
+  capteursEtat.gaz = Math.max(0, Math.min(1000, capteursEtat.gaz));
+  capteursEtat.gps = Math.max(0, Math.min(12, capteursEtat.gps));
+
+  // Affichage
+  majCapteurUI('temp', capteursEtat.temp.toFixed(1), '%', capteursEtat.temp/90*100, 60, 75);
+  majCapteurUI('hum', capteursEtat.hum.toFixed(1), '%', capteursEtat.hum, 70, 85);
+  majCapteurUI('volt', capteursEtat.volt.toFixed(1), 'V', capteursEtat.volt/14*100, 15, 90);
+  majCapteurUI('courant', capteursEtat.courant.toFixed(2), 'A', capteursEtat.courant/5*100, 70, 85);
+  majCapteurUI('dist', capteursEtat.dist.toFixed(0), 'cm', Math.min(100, capteursEtat.dist/200*100), 0, 90);
+  majCapteurUI('gaz', capteursEtat.gaz.toFixed(0), 'ppm', capteursEtat.gaz/1000*100, 60, 80);
+  majCapteurUI('vib', capteursEtat.vib.toFixed(1), 'Hz', capteursEtat.vib/50*100, 60, 80);
+  majCapteurUI('gps', capteursEtat.gps.toFixed(0), 'sat', capteursEtat.gps/12*100, 0, 100);
+
+  // Alertes vocales
+  if (capteursEtat.temp > 75) parler('Alerte : température élevée à ' + capteursEtat.temp.toFixed(0) + ' degrés. Risque de surchauffe.');
+  if (capteursEtat.gaz > 600) parler('Alerte : fuite de gaz détectée. Évacuation recommandée.');
+  if (capteursEtat.volt < 10.5) parler('Attention : tension batterie faible. Rechargez le système.');
+  if (capteursEtat.dist < 20) parler('Obstacle détecté à ' + capteursEtat.dist.toFixed(0) + ' centimètres.');
+  if (capteursEtat.hum > 85) parler('Humidité élevée. Risque de corrosion des composants.');
+
+  // Mise à jour alertes
+  majAlertes();
+}
+
+function majCapteurUI(nom, valeur, unite, pct, seuilWarn, seuilDanger) {
+  const el = document.getElementById('val-' + nom);
+  const jauge = document.getElementById('jauge-' + nom);
+  const card = document.getElementById('sc-' + nom);
+  if (!el) return;
+  el.innerHTML = valeur + '<span class="unit">' + unite + '</span>';
+  if (jauge) {
+    jauge.style.width = Math.min(100, pct) + '%';
+    jauge.classList.remove('warn','danger');
+    if (pct > seuilDanger) jauge.classList.add('danger');
+    else if (pct > seuilWarn) jauge.classList.add('warn');
+  }
+  if (card) {
+    card.classList.remove('warn','danger','ok');
+    if (pct > seuilDanger) card.classList.add('danger');
+    else if (pct > seuilWarn) card.classList.add('warn');
+    else card.classList.add('ok');
+  }
+}
+
+function majAlertes() {
+  const liste = document.getElementById('alertesList');
+  if (!liste) return;
+  const alertes = [];
+  if (capteursEtat.temp > 75) alertes.push({sev:'danger', txt:'🌡️ Surchauffe : ' + capteursEtat.temp.toFixed(0) + '°C'});
+  else if (capteursEtat.temp > 60) alertes.push({sev:'warn', txt:'🌡️ Température élevée : ' + capteursEtat.temp.toFixed(0) + '°C'});
+  if (capteursEtat.gaz > 600) alertes.push({sev:'danger', txt:'💨 Gaz détecté : ' + capteursEtat.gaz.toFixed(0) + ' ppm'});
+  if (capteursEtat.volt < 10.5) alertes.push({sev:'warn', txt:'🔋 Batterie faible : ' + capteursEtat.volt.toFixed(1) + 'V'});
+  if (capteursEtat.dist < 20) alertes.push({sev:'warn', txt:'📏 Obstacle proche : ' + capteursEtat.dist.toFixed(0) + ' cm'});
+  if (capteursEtat.hum > 85) alertes.push({sev:'warn', txt:'💧 Humidité élevée : ' + capteursEtat.hum.toFixed(0) + '%'});
+  if (moteursVitesse.some(v => v > 80)) alertes.push({sev:'warn', txt:'⚙️ Moteur rapide détecté'});
+
+  if (alertes.length === 0) {
+    liste.innerHTML = '<div style="color:var(--green);">✅ Aucune alerte active</div>';
+  } else {
+    liste.innerHTML = alertes.map(a =>
+      `<div style="color:${a.sev==='danger'?'var(--red)':'var(--yellow)'}; margin-bottom:0.4rem;">${a.txt}</div>`
+    ).join('');
+  }
 }
 
 // ============ SCHÉMA INDUSTRIEL ANIMÉ ============
@@ -921,7 +1199,7 @@ function initIndusCanvas() {
   if (w < 10) return;
   if (indusCanvas.width !== w) {
     indusCanvas.width = w;
-    indusCanvas.height = 280;
+    indusCanvas.height = 400;
     indusCtx = indusCanvas.getContext('2d');
   }
   if (!window._indusLoopStarted) {
@@ -936,6 +1214,7 @@ function drawIndus() {
   indusCtx.clearRect(0, 0, w, h);
   indusFrame += 0.05;
 
+  // Grille
   indusCtx.strokeStyle = 'rgba(0,240,255,0.06)';
   indusCtx.lineWidth = 1;
   for (let i = 0; i < w; i += 30) { indusCtx.beginPath(); indusCtx.moveTo(i,0); indusCtx.lineTo(i,h); indusCtx.stroke(); }
@@ -943,115 +1222,203 @@ function drawIndus() {
 
   const cx = w/2, cy = h/2;
   const pulse = Math.sin(indusFrame) * 0.5 + 0.5;
+  const totalVitesse = moteursVitesse.reduce((a,b)=>a+b,0);
 
+  // Châssis
   indusCtx.save();
   indusCtx.shadowBlur = 20 + pulse * 15;
-  indusCtx.shadowColor = '#00f0ff';
-  indusCtx.strokeStyle = '#00f0ff';
+  indusCtx.shadowColor = totalVitesse > 0 ? '#00ff88' : '#00f0ff';
+  indusCtx.strokeStyle = totalVitesse > 0 ? '#00ff88' : '#00f0ff';
   indusCtx.lineWidth = 2;
   indusCtx.fillStyle = 'rgba(0,240,255,0.08)';
   indusCtx.beginPath();
-  indusCtx.roundRect(cx - 90, cy - 60, 180, 120, 12);
+  indusCtx.roundRect(cx - 110, cy - 70, 220, 140, 14);
   indusCtx.fill();
   indusCtx.stroke();
   indusCtx.restore();
 
+  // Écran central
   indusCtx.fillStyle = 'rgba(0,255,136,0.15)';
   indusCtx.strokeStyle = '#00ff88';
   indusCtx.lineWidth = 1.5;
   indusCtx.beginPath();
-  indusCtx.roundRect(cx - 45, cy - 35, 90, 50, 6);
+  indusCtx.roundRect(cx - 55, cy - 40, 110, 60, 6);
   indusCtx.fill();
   indusCtx.stroke();
   indusCtx.fillStyle = '#00ff88';
-  indusCtx.font = 'bold 12px "Courier New"';
+  indusCtx.font = 'bold 11px "Courier New"';
   indusCtx.textAlign = 'center';
-  indusCtx.fillText('STATUS', cx, cy - 15);
-  indusCtx.fillText('OK', cx, cy + 5);
+  indusCtx.fillText('AFRICA.TECH21', cx, cy - 22);
+  indusCtx.font = 'bold 14px "Courier New"';
+  indusCtx.fillText('V=' + Math.round(totalVitesse/4) + '%', cx, cy - 2);
+  indusCtx.font = '10px "Courier New"';
+  indusCtx.fillText('T=' + capteursEtat.temp.toFixed(0) + '°C', cx, cy + 14);
 
+  // 4 MOTEURS / ROUES — vitesse proportionnelle
   const wheelPos = [
-    {x: cx - 100, y: cy - 70},
-    {x: cx + 100, y: cy - 70},
-    {x: cx - 100, y: cy + 70},
-    {x: cx + 100, y: cy + 70}
+    {x: cx - 120, y: cy - 85, m: 0},
+    {x: cx + 120, y: cy - 85, m: 1},
+    {x: cx - 120, y: cy + 85, m: 2},
+    {x: cx + 120, y: cy + 85, m: 3}
   ];
-  wheelPos.forEach((p, i) => {
-    const rot = indusFrame * 3 * (i % 2 === 0 ? 1 : -1);
+  wheelPos.forEach((p) => {
+    const vitesse = moteursVitesse[p.m] || 0;
+    const rot = indusFrame * (1 + vitesse/20) * (p.m % 2 === 0 ? 1 : -1);
     indusCtx.save();
     indusCtx.translate(p.x, p.y);
     indusCtx.rotate(rot);
-    indusCtx.strokeStyle = '#ffd700';
+    indusCtx.strokeStyle = vitesse > 50 ? '#00ff88' : (vitesse > 0 ? '#ffd700' : '#666');
     indusCtx.lineWidth = 3;
-    indusCtx.shadowBlur = 10;
-    indusCtx.shadowColor = '#ffd700';
+    indusCtx.shadowBlur = vitesse > 0 ? 15 : 5;
+    indusCtx.shadowColor = indusCtx.strokeStyle;
     indusCtx.beginPath();
-    indusCtx.arc(0, 0, 15, 0, Math.PI*2);
+    indusCtx.arc(0, 0, 20, 0, Math.PI*2);
     indusCtx.stroke();
-    for (let a = 0; a < 4; a++) {
+    // Rayons (tournent avec)
+    for (let a = 0; a < 6; a++) {
       indusCtx.beginPath();
       indusCtx.moveTo(0, 0);
-      indusCtx.lineTo(Math.cos(a * Math.PI/2) * 14, Math.sin(a * Math.PI/2) * 14);
+      indusCtx.lineTo(Math.cos(a * Math.PI/3) * 18, Math.sin(a * Math.PI/3) * 18);
       indusCtx.stroke();
     }
     indusCtx.restore();
+
+    // Label moteur
+    indusCtx.fillStyle = '#00f0ff';
+    indusCtx.font = 'bold 9px "Orbitron"';
+    indusCtx.textAlign = 'center';
+    indusCtx.fillText('M' + (p.m+1) + ' ' + vitesse + '%', p.x, p.y + 38);
   });
 
+  // 8 CAPTEURS AUTOUR
   const sensors = [
-    {label:'TEMP', x: cx - 160, y: cy - 60},
-    {label:'HUM', x: cx + 160, y: cy - 60},
-    {label:'VOLT', x: cx - 160, y: cy + 60},
-    {label:'GPS', x: cx + 160, y: cy + 60}
+    {label:'TEMP', x: cx - 200, y: cy - 100, val: capteursEtat.temp.toFixed(0) + '°', color:'#00ff88'},
+    {label:'HUM', x: cx + 200, y: cy - 100, val: capteursEtat.hum.toFixed(0) + '%', color:'#00f0ff'},
+    {label:'VOLT', x: cx - 200, y: cy, val: capteursEtat.volt.toFixed(1) + 'V', color:'#ffd700'},
+    {label:'AMP', x: cx + 200, y: cy, val: capteursEtat.courant.toFixed(1) + 'A', color:'#ff8c00'},
+    {label:'DIST', x: cx - 200, y: cy + 100, val: capteursEtat.dist.toFixed(0) + 'cm', color:'#00f0ff'},
+    {label:'GAZ', x: cx + 200, y: cy + 100, val: capteursEtat.gaz.toFixed(0), color:'#ff0033'},
+    {label:'VIB', x: cx, y: cy - 145, val: capteursEtat.vib.toFixed(0) + 'Hz', color:'#b300ff'},
+    {label:'GPS', x: cx, y: cy + 145, val: capteursEtat.gps.toFixed(0) + 'sat', color:'#00ff88'}
   ];
   sensors.forEach((s, i) => {
-    const blink = Math.sin(indusFrame * 2 + i) > 0;
+    const blink = Math.sin(indusFrame * 3 + i) > 0;
     indusCtx.save();
-    indusCtx.shadowBlur = 15;
-    indusCtx.shadowColor = blink ? '#00ff88' : '#004422';
-    indusCtx.fillStyle = blink ? '#00ff88' : '#003311';
+    indusCtx.shadowBlur = blink ? 18 : 6;
+    indusCtx.shadowColor = s.color;
+    indusCtx.fillStyle = blink ? s.color : 'rgba(0,0,0,0.6)';
+    indusCtx.strokeStyle = s.color;
+    indusCtx.lineWidth = 2;
     indusCtx.beginPath();
-    indusCtx.arc(s.x, s.y, 8, 0, Math.PI*2);
+    indusCtx.arc(s.x, s.y, 12, 0, Math.PI*2);
     indusCtx.fill();
-    indusCtx.fillStyle = '#00f0ff';
-    indusCtx.font = 'bold 10px "Orbitron"';
-    indusCtx.textAlign = 'center';
-    indusCtx.fillText(s.label, s.x, s.y + 25);
+    indusCtx.stroke();
     indusCtx.restore();
 
-    indusCtx.strokeStyle = 'rgba(0,240,255,0.2)';
-    indusCtx.setLineDash([4, 4]);
+    indusCtx.fillStyle = s.color;
+    indusCtx.font = 'bold 9px "Orbitron"';
+    indusCtx.textAlign = 'center';
+    indusCtx.fillText(s.label, s.x, s.y - 18);
+    indusCtx.font = 'bold 10px "Orbitron"';
+    indusCtx.fillText(s.val, s.x, s.y + 26);
+
+    // Ligne + flux
+    indusCtx.strokeStyle = 'rgba(0,240,255,0.15)';
+    indusCtx.setLineDash([3, 3]);
     indusCtx.beginPath();
     indusCtx.moveTo(s.x, s.y);
     indusCtx.lineTo(cx, cy);
     indusCtx.stroke();
     indusCtx.setLineDash([]);
 
-    const t = (indusFrame * 2 + i) % 1;
+    const t = (indusFrame * 1.5 + i * 0.15) % 1;
     const fx = s.x + (cx - s.x) * t;
     const fy = s.y + (cy - s.y) * t;
-    indusCtx.fillStyle = '#00ff88';
+    indusCtx.fillStyle = s.color;
     indusCtx.shadowBlur = 12;
-    indusCtx.shadowColor = '#00ff88';
+    indusCtx.shadowColor = s.color;
     indusCtx.beginPath();
     indusCtx.arc(fx, fy, 3, 0, Math.PI*2);
     indusCtx.fill();
   });
 
+  // Ondes radar
   indusCtx.strokeStyle = `rgba(0,240,255,${0.3 - (indusFrame % 2) * 0.15})`;
   indusCtx.lineWidth = 1;
   indusCtx.beginPath();
-  indusCtx.arc(cx, cy, 120 + (indusFrame * 30) % 80, 0, Math.PI*2);
+  indusCtx.arc(cx, cy, 140 + (indusFrame * 40) % 100, 0, Math.PI*2);
   indusCtx.stroke();
 
   requestAnimationFrame(drawIndus);
 }
 
+// ============ GRAPHE ============
+let graphCanvas, graphCtx;
+let graphDataTemp = [];
+let graphDataCourant = [];
+
+function initGraph() {
+  graphCanvas = document.getElementById('graphCanvas');
+  if (!graphCanvas) return;
+  const w = graphCanvas.offsetWidth;
+  if (w < 10) return;
+  graphCanvas.width = w;
+  graphCanvas.height = 140;
+  graphCtx = graphCanvas.getContext('2d');
+}
+
+function drawGraph() {
+  if (!graphCtx) return;
+  const w = graphCanvas.width, h = graphCanvas.height;
+  graphCtx.clearRect(0, 0, w, h);
+
+  // Grille
+  graphCtx.strokeStyle = 'rgba(0,240,255,0.08)';
+  for (let i = 0; i < w; i += 40) { graphCtx.beginPath(); graphCtx.moveTo(i, 0); graphCtx.lineTo(i, h); graphCtx.stroke(); }
+  for (let i = 0; i < h; i += 20) { graphCtx.beginPath(); graphCtx.moveTo(0, i); graphCtx.lineTo(w, i); graphCtx.stroke(); }
+
+  // Température (rouge)
+  if (graphDataTemp.length > 1) {
+    graphCtx.strokeStyle = '#ff0033';
+    graphCtx.lineWidth = 2;
+    graphCtx.beginPath();
+    graphDataTemp.forEach((v, i) => {
+      const x = (i / (graphDataTemp.length - 1)) * w;
+      const y = h - (v / 100) * h;
+      if (i === 0) graphCtx.moveTo(x, y); else graphCtx.lineTo(x, y);
+    });
+    graphCtx.stroke();
+  }
+
+  // Courant (cyan)
+  if (graphDataCourant.length > 1) {
+    graphCtx.strokeStyle = '#00f0ff';
+    graphCtx.lineWidth = 2;
+    graphCtx.beginPath();
+    graphDataCourant.forEach((v, i) => {
+      const x = (i / (graphDataCourant.length - 1)) * w;
+      const y = h - (v / 5) * h;
+      if (i === 0) graphCtx.moveTo(x, y); else graphCtx.lineTo(x, y);
+    });
+    graphCtx.stroke();
+  }
+
+  // Légende
+  graphCtx.fillStyle = '#ff0033';
+  graphCtx.font = 'bold 10px "Orbitron"';
+  graphCtx.fillText('🌡️ TEMPÉRATURE', 10, 15);
+  graphCtx.fillStyle = '#00f0ff';
+  graphCtx.fillText('⚡ COURANT', 140, 15);
+}
+
 setInterval(() => {
-  const hum = Math.round(40 + Math.random() * 30);
-  const jh = document.getElementById('jaugeHum');
-  const vh = document.getElementById('valHum');
-  if (jh) jh.style.width = hum + '%';
-  if (vh) vh.textContent = hum + '%';
-}, 3000);
+  majCapteurs();
+  graphDataTemp.push(capteursEtat.temp);
+  graphDataCourant.push(capteursEtat.courant);
+  if (graphDataTemp.length > 100) graphDataTemp.shift();
+  if (graphDataCourant.length > 100) graphDataCourant.shift();
+  drawGraph();
+}, 1000);
 
 // ============ SIMULATION CANVAS ============
 let simCanvas, simCtx;
@@ -1168,7 +1535,7 @@ function combatAction(action, joueur) {
     l.innerHTML = `<span class="ts">[${now}]</span> 🏆 <strong>${winner} GAGNE !</strong>`;
     logE.appendChild(l);
     showToast('🏆 ' + winner + ' remporte le combat !', 'success');
-    envoyer('COMBAT_END', winner);
+    parler(winner + ' remporte le combat.');
   }
 }
 function updateHP() {
@@ -1188,13 +1555,20 @@ function resetCombat() {
 // ============ INIT ============
 document.addEventListener('DOMContentLoaded', () => {
   loadAppareils();
-  log('Centre de contrôle initialisé');
+  initGraph();
+  majCapteurs();
+  log('Centre de contrôle MAJOR initialisé');
   log('Utilisateur: ' + memberPrenom + ' ' + memberNom);
+  log('Assistant vocal: ACTIVÉ', 'warn');
 
-  // Redimensionner les canvas si la fenêtre change
+  setTimeout(() => {
+    parler('Centre de contrôle initialisé. Bienvenue ' + memberPrenom + '.');
+  }, 1000);
+
   window.addEventListener('resize', () => {
     if (simCanvas) { simCanvas.width = simCanvas.offsetWidth; simCanvas.height = 500; simX = simCanvas.width / 2; simY = simCanvas.height / 2; }
-    if (indusCanvas) { indusCanvas.width = indusCanvas.offsetWidth; indusCanvas.height = 280; }
+    if (indusCanvas) { indusCanvas.width = indusCanvas.offsetWidth; indusCanvas.height = 400; }
+    if (graphCanvas) { graphCanvas.width = graphCanvas.offsetWidth; graphCanvas.height = 140; }
   });
 });
 </script>
