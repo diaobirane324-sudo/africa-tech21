@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Générateur QR Cartes | AFRICA.TECH21</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Exo 2',sans-serif; }
+:root {
+  --cyan:#00f0ff; --green:#00ff88; --red:#ff0033;
+  --purple:#7b2cbf; --gold:#ffd700;
+  --dark:#050510; --panel:#0a0a1a;
+  --border:rgba(0,240,255,0.25); --glow:0 0 25px rgba(0,240,255,0.3);
+  --text:#fff; --text2:#a0a8c0;
+}
+body {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0,240,255,0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(123,44,191,0.1) 0%, transparent 50%),
+    linear-gradient(135deg,#050510,#0a0a1a 50%,#0f0f1f);
+  color:var(--text); min-height:100vh; padding:2rem;
+}
+.hologram-grid {
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  background:
+    linear-gradient(90deg, rgba(0,240,255,0.02) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(0,240,255,0.02) 1px, transparent 1px);
+  background-size:40px 40px; animation:gridScan 25s linear infinite;
+  pointer-events:none; z-index:-1;
+}
+@keyframes gridScan { 0%{transform:translate(0,0);} 100%{transform:translate(40px,40px);} }
+.back-btn {
+  display:inline-block; padding:0.7rem 1.6rem; margin-bottom:1.5rem;
+  background:rgba(0,240,255,0.1); border:1px solid var(--cyan);
+  border-radius:10px; color:var(--cyan); text-decoration:none;
+  font-weight:600; font-size:0.85rem; transition:all 0.3s;
+}
+.back-btn:hover { background:rgba(0,240,255,0.2); box-shadow:var(--glow); }
+.page-container { max-width:1400px; margin:0 auto; }
+.page-header {
+  background:linear-gradient(135deg, rgba(0,240,255,0.08), rgba(123,44,191,0.08));
+  backdrop-filter:blur(15px); border:1px solid var(--border);
+  border-radius:22px; padding:2rem; margin-bottom:1.5rem; text-align:center;
+  box-shadow:var(--glow);
+}
+.page-header h1 {
+  font-family:'Orbitron',sans-serif; font-size:2rem;
+  background:linear-gradient(45deg,var(--cyan),var(--green));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text; letter-spacing:2px;
+}
+.page-header .subtitle { color:var(--text2); margin-top:0.4rem; font-size:0.85rem; letter-spacing:1.5px; text-transform:uppercase; }
+.user-info { margin-top:1rem; display:inline-block; background:rgba(0,255,136,0.1); border:1px solid var(--green); padding:0.5rem 1.5rem; border-radius:15px; color:var(--green); font-size:0.85rem; font-weight:600; }
+.card-box {
+  background:linear-gradient(135deg, rgba(16,16,40,0.85), rgba(10,10,26,0.85));
+  backdrop-filter:blur(15px); border:1px solid var(--border);
+  border-radius:18px; padding:1.5rem; margin-bottom:1.5rem;
+}
+.card-box h2 {
+  font-family:'Orbitron',sans-serif; font-size:1.15rem;
+  color:var(--cyan); margin-bottom:1.2rem;
+  display:flex; align-items:center; gap:0.7rem;
+}
+.warn-box {
+  background:linear-gradient(135deg, rgba(255,0,51,0.15), rgba(139,0,0,0.15));
+  border:2px solid var(--red); border-radius:15px;
+  padding:1.5rem; margin-bottom:1.5rem;
+}
+.warn-box h3 {
+  font-family:'Orbitron',sans-serif; color:var(--red);
+  font-size:1.1rem; margin-bottom:0.8rem;
+  display:flex; align-items:center; gap:0.6rem;
+}
+.warn-box p { color:var(--text); line-height:1.7; font-size:0.9rem; }
+.btn {
+  padding:0.8rem 1.6rem; border:none; border-radius:10px;
+  font-weight:700; cursor:pointer; transition:all 0.3s;
+  text-transform:uppercase; letter-spacing:1px; font-size:0.85rem;
+}
+.btn-cyan { background:linear-gradient(135deg,#0088aa,var(--cyan)); color:#050510; }
+.btn-cyan:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,240,255,0.5); }
+.btn-green { background:linear-gradient(135deg,#008844,var(--green)); color:#050510; }
+.btn-green:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,255,136,0.5); }
+.btn-red { background:linear-gradient(135deg,#8b0000,var(--red)); color:#fff; }
+.btn-red:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(255,0,51,0.5); }
+.btn-gold { background:linear-gradient(135deg,#b8860b,var(--gold)); color:#1a0033; }
+.btn-gold:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(255,215,0,0.5); }
+.btn-dark { background:rgba(255,255,255,0.05); color:var(--text2); border:1px solid var(--border); }
+.btn-dark:hover { background:rgba(255,255,255,0.1); color:#fff; }
+.btn:disabled { opacity:0.5; cursor:not-allowed; transform:none!important; }
+.cartes-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:1.5rem; margin-top:1.5rem;
+}
+.carte-item {
+  background:rgba(0,0,0,0.4); border:1px solid var(--border);
+  border-radius:15px; padding:1.2rem; text-align:center;
+  transition:all 0.3s;
+}
+.carte-item:hover { border-color:var(--cyan); box-shadow:var(--glow); transform:translateY(-4px); }
+.carte-item .membre-nom {
+  font-family:'Orbitron',sans-serif; color:var(--cyan);
+  font-size:1rem; font-weight:700; margin-bottom:0.3rem;
+}
+.carte-item .membre-id {
+  color:var(--text2); font-size:0.8rem; letter-spacing:1px; margin-bottom:1rem;
+}
+.carte-item canvas {
+  display:block; margin:0 auto 1rem;
+  background:#fff; padding:12px; border-radius:10px;
+  box-shadow:0 0 20px rgba(0,240,255,0.3);
+}
+.carte-item .code-carte {
+  font-family:'Courier New',monospace;
+  font-size:0.7rem; color:var(--text2);
+  background:rgba(0,0,0,0.5); padding:0.4rem 0.6rem;
+  border-radius:6px; margin-bottom:0.8rem;
+  word-break:break-all;
+}
+.carte-item .actions { display:flex; gap:0.4rem; justify-content:center; flex-wrap:wrap; }
+.carte-item .actions button {
+  padding:0.4rem 0.9rem; font-size:0.72rem; border-radius:8px;
+  border:1px solid var(--border); background:rgba(0,240,255,0.1);
+  color:var(--cyan); cursor:pointer; font-weight:700; transition:0.3s;
+}
+.carte-item .actions button:hover { background:rgba(0,240,255,0.25); }
+.toast {
+  position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%);
+  background:rgba(0,240,255,0.95); color:#050510;
+  padding:0.9rem 1.8rem; border-radius:12px; font-weight:700;
+  z-index:10001; animation:fadeInUp 0.3s;
+}
+.toast.error { background:rgba(255,0,51,0.95); color:#fff; }
+.toast.success { background:rgba(0,255,136,0.95); color:#050510; }
+.toast.warn { background:rgba(255,215,0,0.95); color:#050510; }
+@keyframes fadeInUp { from{opacity:0;transform:translateX(-50%) translateY(20px);} to{opacity:1;transform:translateX(-50%) translateY(0);} }
+.empty-state { text-align:center; color:var(--text2); padding:2.5rem; }
+.empty-state i { font-size:3rem; color:rgba(0,240,255,0.2); margin-bottom:1rem; display:block; }
+@media (max-width:768px) {
+  body { padding:1rem; }
+  .page-header h1 { font-size:1.5rem; }
+}
+</style>
+</head>
+<body>
+<div class="hologram-grid"></div>
+
+<div class="page-container">
+  <a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD</a>
+
+  <header class="page-header">
+    <h1><i class="fas fa-qrcode"></i> GÉNÉRATEUR QR CARTES</h1>
+    <p class="subtitle">Cartes membres officiels — Accès Espace Direction</p>
+    <div class="user-info" id="userInfo"><i class="fas fa-user-shield"></i> CHARGEMENT...</div>
+  </header>
+
+  <div class="warn-box">
+    <h3><i class="fas fa-exclamation-triangle"></i> ATTENTION — À LIRE AVANT DE GÉNÉRER</h3>
+    <p>
+      1. Cette page génère <strong>UNE SEULE FOIS</strong> les QR codes officiels pour les 6 membres de la direction.<br>
+      2. Une fois générés, ces codes sont <strong>enregistrés dans Supabase</strong> et ne peuvent plus être modifiés.<br>
+      3. Si tu recliques sur "Générer", les anciens codes seront <strong>désactivés</strong> et de nouveaux créés — les anciennes cartes imprimées ne fonctionneront plus.<br>
+      4. <strong>Ne génère qu'UNE FOIS.</strong>
+    </p>
+  </div>
+
+  <div class="card-box">
+    <h2><i class="fas fa-cogs"></i> ÉTAPE 1 — GÉNÉRER LES CARTES</h2>
+    <p style="color:var(--text2); margin-bottom:1rem; font-size:0.9rem;">
+      Clique sur le bouton ci-dessous pour créer les 6 cartes membres.
+    </p>
+    <button class="btn btn-red" id="btnGenerer" onclick="genererCartes()">
+      <i class="fas fa-bolt"></i> GÉNÉRER LES 6 CARTES OFFICIELLES
+    </button>
+    <button class="btn btn-dark" onclick="chargerCartes()" style="margin-left:0.5rem;">
+      <i class="fas fa-sync"></i> RECHARGER
+    </button>
+  </div>
+
+  <div class="card-box">
+    <h2><i class="fas fa-qrcode"></i> ÉTAPE 2 — TÉLÉCHARGER LES QR CODES</h2>
+    <p style="color:var(--text2); margin-bottom:1rem; font-size:0.9rem;">
+      Chaque QR code peut être téléchargé en PNG haute qualité (1000x1000px) pour l'impression.
+    </p>
+    <button class="btn btn-gold" id="btnDownloadAll" onclick="telechargerTout()" disabled>
+      <i class="fas fa-download"></i> TOUT TÉLÉCHARGER
+    </button>
+    <div class="cartes-grid" id="cartesGrid">
+      <div class="empty-state" style="grid-column:1/-1;">
+        <i class="fas fa-qrcode"></i>
+        <p>Aucune carte générée. Clique sur "GÉNÉRER" ci-dessus.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const ALLOWED_IDS = ['AT21_006', 'Birane186@00'];
+if (localStorage.getItem('memberLoggedIn') !== 'true') window.location.href = 'espace-membres.html';
+const memberId = localStorage.getItem('memberId') || '';
+if (!ALLOWED_IDS.includes(memberId)) {
+  document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column;gap:1rem;text-align:center;padding:2rem;"><i class="fas fa-lock" style="font-size:4rem;color:#ff0033;"></i><h1 style="color:#ff0033;">ACCÈS REFUSÉ</h1><p>Cette page est réservée au Président.</p><a href="dashboard.html" style="color:#00f0ff;">Retour au Dashboard</a></div>';
+  throw new Error('Accès refusé');
+}
+const memberNom = localStorage.getItem('memberNom') || '';
+const memberPrenom = localStorage.getItem('memberPrenom') || '';
+document.getElementById('userInfo').innerHTML = `<i class="fas fa-user-shield"></i> ${memberPrenom} ${memberNom}`;
+
+// Liste des membres de la direction
+const MEMBRES_DIRECTION = [
+  { id: 'AT21_006',  nom: 'DIAO BIRANE' },
+  { id: 'AT21_0016', nom: 'DRAMÉ AICHA' },
+  { id: 'AT21-001',  nom: 'DIAKHATE ABDOU' },
+  { id: 'AT21_0011', nom: 'DIALLO MOUHAMED' },
+  { id: 'AT21_0036', nom: 'NDIAYE MARIE ANGÉLIQUE DABA' },
+  { id: 'AT21_0031', nom: 'WADE ADJA FAMA' }
+];
+
+function showToast(msg, type='') {
+  const old = document.querySelector('.toast'); if (old) old.remove();
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 4000);
+}
+
+// Génère un code aléatoire unique
+function genererCodeAleatoire() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 8; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
+// Génère toutes les cartes
+async function genererCartes() {
+  const btn = document.getElementById('btnGenerer');
+  const conf = confirm(
+    '⚠️ ATTENTION\n\n' +
+    'Tu es sur le point de GÉNÉRER les 6 cartes membres.\n\n' +
+    'Si des cartes existent déjà, elles seront DÉSACTIVÉES.\n' +
+    'Les anciennes cartes imprimées ne fonctionneront plus.\n\n' +
+    'Confirmer ?'
+  );
+  if (!conf) return;
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> GÉNÉRATION...';
+
+  try {
+    // 1. Désactiver toutes les anciennes cartes
+    await supabaseClient.from('cartes_membres').update({ actif: false }).eq('actif', true);
+
+    // 2. Générer et insérer les nouvelles cartes
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('fr-FR');
+    const nouvellesCartes = [];
+
+    for (const m of MEMBRES_DIRECTION) {
+      const codeAleatoire = genererCodeAleatoire();
+      const codeCarte = `${m.id}_${codeAleatoire}`;
+      const qrData = `AFRICA21:${m.id}:${codeAleatoire}:DIRECTION`;
+
+      // Vérifier que le code n'existe pas déjà (très rare mais on vérifie)
+      const { data: existant } = await supabaseClient.from('cartes_membres').select('id').eq('code_carte', codeCarte).single();
+      if (existant) {
+        // Si collision, on regénère
+        return genererCartes();
+      }
+
+      const carte = {
+        membre_id: m.id,
+        membre_nom: m.nom,
+        code_carte: codeCarte,
+        qr_data: qrData,
+        actif: true,
+        date_emission: dateStr,
+        timestamp: Date.now()
+      };
+      nouvellesCartes.push(carte);
+    }
+
+    // Insérer en batch
+    const { error } = await supabaseClient.from('cartes_membres').insert(nouvellesCartes);
+    if (error) throw error;
+
+    showToast('✅ 6 cartes générées avec succès !', 'success');
+    await chargerCartes();
+
+  } catch (e) {
+    showToast('❌ Erreur : ' + e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-bolt"></i> GÉNÉRER LES 6 CARTES OFFICIELLES';
+  }
+}
+
+// Charge les cartes actives depuis Supabase
+async function chargerCartes() {
+  const grid = document.getElementById('cartesGrid');
+  grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-spinner fa-spin"></i><p>Chargement...</p></div>';
+
+  try {
+    const { data, error } = await supabaseClient
+      .from('cartes_membres')
+      .select('*')
+      .eq('actif', true)
+      .order('timestamp', { ascending: true });
+
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-qrcode"></i><p>Aucune carte active. Clique sur "GÉNÉRER".</p></div>';
+      document.getElementById('btnDownloadAll').disabled = true;
+      return;
+    }
+
+    document.getElementById('btnDownloadAll').disabled = false;
+    grid.innerHTML = '';
+
+    for (const carte of data) {
+      const div = document.createElement('div');
+      div.className = 'carte-item';
+      div.innerHTML = `
+        <div class="membre-nom">${carte.membre_nom}</div>
+        <div class="membre-id">${carte.membre_id}</div>
+        <canvas id="qr-${carte.id}" width="240" height="240"></canvas>
+        <div class="code-carte">${carte.code_carte}</div>
+        <div class="actions">
+          <button onclick="telechargerQR('${carte.id}', '${carte.membre_nom.replace(/'/g, "\\'")}')">
+            <i class="fas fa-download"></i> Télécharger
+          </button>
+        </div>
+      `;
+      grid.appendChild(div);
+
+      // Générer le QR code sur le canvas
+      await QRCode.toCanvas(document.getElementById('qr-' + carte.id), carte.qr_data, {
+        width: 240,
+        margin: 2,
+        color: { dark: '#000000', light: '#ffffff' },
+        errorCorrectionLevel: 'H'  // Niveau élevé pour impression
+      });
+    }
+
+  } catch (e) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">❌ ' + e.message + '</div>';
+  }
+}
+
+// Télécharge un QR code en PNG haute qualité
+async function telechargerQR(carteId, nomMembre) {
+  try {
+    const { data: carte } = await supabaseClient.from('cartes_membres').select('*').eq('id', carteId).single();
+    if (!carte) throw new Error('Carte introuvable');
+
+    // Créer un canvas haute résolution
+    const canvasHQ = document.createElement('canvas');
+    await QRCode.toCanvas(canvasHQ, carte.qr_data, {
+      width: 1200,
+      margin: 4,
+      color: { dark: '#000000', light: '#ffffff' },
+      errorCorrectionLevel: 'H'
+    });
+
+    // Télécharger
+    const link = document.createElement('a');
+    link.download = `QR_${carte.membre_id}_${nomMembre.replace(/\s+/g, '_')}.png`;
+    link.href = canvasHQ.toDataURL('image/png');
+    link.click();
+
+    showToast('✅ QR téléchargé : ' + carte.membre_id, 'success');
+  } catch (e) {
+    showToast('❌ Erreur : ' + e.message, 'error');
+  }
+}
+
+// Télécharge tous les QR codes d'un coup (avec délai pour éviter le blocage)
+async function telechargerTout() {
+  const btn = document.getElementById('btnDownloadAll');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> TÉLÉCHARGEMENT...';
+
+  try {
+    const { data, error } = await supabaseClient.from('cartes_membres').select('*').eq('actif', true).order('timestamp', { ascending: true });
+    if (error) throw error;
+
+    for (let i = 0; i < data.length; i++) {
+      await telechargerQR(data[i].id, data[i].membre_nom);
+      await new Promise(r => setTimeout(r, 600));  // Pause 600ms entre chaque
+    }
+
+    showToast('✅ ' + data.length + ' QR codes téléchargés !', 'success');
+  } catch (e) {
+    showToast('❌ Erreur : ' + e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-download"></i> TOUT TÉLÉCHARGER';
+  }
+}
+
+// ============ INIT ============
+document.addEventListener('DOMContentLoaded', () => {
+  chargerCartes();
+});
+</script>
+</body>
+</html>
