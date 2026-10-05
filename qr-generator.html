@@ -7,7 +7,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-<style>
+<script>
+  if (typeof QRCode === 'undefined') {
+    document.write('<script src="https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"><\/script>');
+  }
+</script>
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Exo 2',sans-serif; }
 :root {
   --cyan:#00f0ff; --green:#00ff88; --red:#ff0033;
