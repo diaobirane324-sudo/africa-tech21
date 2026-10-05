@@ -7,10 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  if (typeof QRCode === 'undefined') {
-    document.write('<script src="https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"><\/script>');
-  }
-</script>
+<style>
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Exo 2',sans-serif; }
 :root {
   --cyan:#00f0ff; --green:#00ff88; --red:#ff0033;
@@ -111,8 +108,10 @@ body {
 .carte-item .membre-id {
   color:var(--text2); font-size:0.8rem; letter-spacing:1px; margin-bottom:1rem;
 }
-.carte-item canvas {
-  display:block; margin:0 auto 1rem;
+.qr-wrapper {
+  display:flex; justify-content:center; margin-bottom:1rem;
+}
+.qr-wrapper img, .qr-wrapper canvas {
   background:#fff; padding:12px; border-radius:10px;
   box-shadow:0 0 20px rgba(0,240,255,0.3);
 }
@@ -186,7 +185,7 @@ body {
   <div class="card-box">
     <h2><i class="fas fa-qrcode"></i> ÉTAPE 2 — TÉLÉCHARGER LES QR CODES</h2>
     <p style="color:var(--text2); margin-bottom:1rem; font-size:0.9rem;">
-      Chaque QR code peut être téléchargé en PNG haute qualité (1000x1000px) pour l'impression.
+      Chaque QR code peut être téléchargé en PNG haute qualité pour l'impression.
     </p>
     <button class="btn btn-gold" id="btnDownloadAll" onclick="telechargerTout()" disabled>
       <i class="fas fa-download"></i> TOUT TÉLÉCHARGER
@@ -217,7 +216,7 @@ const memberNom = localStorage.getItem('memberNom') || '';
 const memberPrenom = localStorage.getItem('memberPrenom') || '';
 document.getElementById('userInfo').innerHTML = `<i class="fas fa-user-shield"></i> ${memberPrenom} ${memberNom}`;
 
-// Liste des membres de la direction
+// Liste des membres de la direction (sans Bintou)
 const MEMBRES_DIRECTION = [
   { id: 'AT21_006',  nom: 'DIAO BIRANE' },
   { id: 'AT21_0016', nom: 'DRAMÉ AICHA' },
@@ -236,7 +235,6 @@ function showToast(msg, type='') {
   setTimeout(() => t.remove(), 4000);
 }
 
-// Génère un code aléatoire unique
 function genererCodeAleatoire() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let code = '';
@@ -244,7 +242,7 @@ function genererCodeAleatoire() {
   return code;
 }
 
-// Génère toutes les cartes
+// ============ GÉNÉRATION ============
 async function genererCartes() {
   const btn = document.getElementById('btnGenerer');
   const conf = confirm(
@@ -260,10 +258,12 @@ async function genererCartes() {
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> GÉNÉRATION...';
 
   try {
-    // 1. Désactiver toutes les anciennes cartes
+    // Désactiver toutes les anciennes cartes
     await supabaseClient.from('cartes_membres').update({ actif: false }).eq('actif', true);
 
-    // 2. Générer et insérer les nouvelles cartes
+    // Supprimer toutes les cartes (pour éviter conflit UNIQUE sur membre_id)
+    await supabaseClient.from('cartes_membres').delete().neq('id', 0);
+
     const now = new Date();
     const dateStr = now.toLocaleDateString('fr-FR');
     const nouvellesCartes = [];
@@ -273,14 +273,7 @@ async function genererCartes() {
       const codeCarte = `${m.id}_${codeAleatoire}`;
       const qrData = `AFRICA21:${m.id}:${codeAleatoire}:DIRECTION`;
 
-      // Vérifier que le code n'existe pas déjà (très rare mais on vérifie)
-      const { data: existant } = await supabaseClient.from('cartes_membres').select('id').eq('code_carte', codeCarte).single();
-      if (existant) {
-        // Si collision, on regénère
-        return genererCartes();
-      }
-
-      const carte = {
+      nouvellesCartes.push({
         membre_id: m.id,
         membre_nom: m.nom,
         code_carte: codeCarte,
@@ -288,11 +281,9 @@ async function genererCartes() {
         actif: true,
         date_emission: dateStr,
         timestamp: Date.now()
-      };
-      nouvellesCartes.push(carte);
+      });
     }
 
-    // Insérer en batch
     const { error } = await supabaseClient.from('cartes_membres').insert(nouvellesCartes);
     if (error) throw error;
 
@@ -307,7 +298,7 @@ async function genererCartes() {
   }
 }
 
-// Charge les cartes actives depuis Supabase
+// ============ AFFICHAGE ============
 async function chargerCartes() {
   const grid = document.getElementById('cartesGrid');
   grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-spinner fa-spin"></i><p>Chargement...</p></div>';
@@ -336,7 +327,7 @@ async function chargerCartes() {
       div.innerHTML = `
         <div class="membre-nom">${carte.membre_nom}</div>
         <div class="membre-id">${carte.membre_id}</div>
-        <canvas id="qr-${carte.id}" width="240" height="240"></canvas>
+        <div class="qr-wrapper" id="qrwrap-${carte.id}"></div>
         <div class="code-carte">${carte.code_carte}</div>
         <div class="actions">
           <button onclick="telechargerQR('${carte.id}', '${carte.membre_nom.replace(/'/g, "\\'")}')">
@@ -346,12 +337,14 @@ async function chargerCartes() {
       `;
       grid.appendChild(div);
 
-      // Générer le QR code sur le canvas
-      await QRCode.toCanvas(document.getElementById('qr-' + carte.id), carte.qr_data, {
+      // Génération avec qrcodejs
+      new QRCode(document.getElementById('qrwrap-' + carte.id), {
+        text: carte.qr_data,
         width: 240,
-        margin: 2,
-        color: { dark: '#000000', light: '#ffffff' },
-        errorCorrectionLevel: 'H'  // Niveau élevé pour impression
+        height: 240,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
       });
     }
 
@@ -360,34 +353,59 @@ async function chargerCartes() {
   }
 }
 
-// Télécharge un QR code en PNG haute qualité
+// ============ TÉLÉCHARGEMENT ============
 async function telechargerQR(carteId, nomMembre) {
   try {
     const { data: carte } = await supabaseClient.from('cartes_membres').select('*').eq('id', carteId).single();
     if (!carte) throw new Error('Carte introuvable');
 
-    // Créer un canvas haute résolution
-    const canvasHQ = document.createElement('canvas');
-    await QRCode.toCanvas(canvasHQ, carte.qr_data, {
+    // Générer un QR haute qualité dans un div invisible
+    const tempDiv = document.createElement('div');
+    tempDiv.style.position = 'absolute';
+    tempDiv.style.left = '-9999px';
+    document.body.appendChild(tempDiv);
+
+    new QRCode(tempDiv, {
+      text: carte.qr_data,
       width: 1200,
-      margin: 4,
-      color: { dark: '#000000', light: '#ffffff' },
-      errorCorrectionLevel: 'H'
+      height: 1200,
+      colorDark: '#000000',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H
     });
 
-    // Télécharger
+    await new Promise(r => setTimeout(r, 200));
+
+    // Récupérer le canvas
+    const canvas = tempDiv.querySelector('canvas');
+    if (!canvas) {
+      // qrcodejs utilise parfois img à la place
+      const img = tempDiv.querySelector('img');
+      if (img) {
+        const link = document.createElement('a');
+        link.download = `QR_${carte.membre_id}_${nomMembre.replace(/\s+/g, '_')}.png`;
+        link.href = img.src;
+        link.click();
+        document.body.removeChild(tempDiv);
+        showToast('✅ QR téléchargé : ' + carte.membre_id, 'success');
+        return;
+      }
+      throw new Error('Impossible de générer le QR');
+    }
+
+    // Télécharger depuis le canvas
     const link = document.createElement('a');
     link.download = `QR_${carte.membre_id}_${nomMembre.replace(/\s+/g, '_')}.png`;
-    link.href = canvasHQ.toDataURL('image/png');
+    link.href = canvas.toDataURL('image/png');
     link.click();
 
+    document.body.removeChild(tempDiv);
     showToast('✅ QR téléchargé : ' + carte.membre_id, 'success');
   } catch (e) {
     showToast('❌ Erreur : ' + e.message, 'error');
   }
 }
 
-// Télécharge tous les QR codes d'un coup (avec délai pour éviter le blocage)
 async function telechargerTout() {
   const btn = document.getElementById('btnDownloadAll');
   btn.disabled = true;
@@ -399,7 +417,7 @@ async function telechargerTout() {
 
     for (let i = 0; i < data.length; i++) {
       await telechargerQR(data[i].id, data[i].membre_nom);
-      await new Promise(r => setTimeout(r, 600));  // Pause 600ms entre chaque
+      await new Promise(r => setTimeout(r, 800));
     }
 
     showToast('✅ ' + data.length + ' QR codes téléchargés !', 'success');
