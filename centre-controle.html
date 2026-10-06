@@ -1321,13 +1321,11 @@ function drawGraph() {
   if (w < 10 || h < 10) return;
   graphCtx.clearRect(0, 0, w, h);
 
-  // Grille
   graphCtx.strokeStyle = 'rgba(0,240,255,0.08)';
   graphCtx.lineWidth = 1;
   for (let i = 0; i < w; i += 40) { graphCtx.beginPath(); graphCtx.moveTo(i, 0); graphCtx.lineTo(i, h); graphCtx.stroke(); }
   for (let i = 0; i < h; i += 20) { graphCtx.beginPath(); graphCtx.moveTo(0, i); graphCtx.lineTo(w, i); graphCtx.stroke(); }
 
-  // Température
   if (graphDataTemp.length > 1) {
     graphCtx.strokeStyle = '#ff0033'; graphCtx.lineWidth = 2;
     graphCtx.beginPath();
@@ -1339,7 +1337,6 @@ function drawGraph() {
     graphCtx.stroke();
   }
 
-  // Courant
   if (graphDataCourant.length > 1) {
     graphCtx.strokeStyle = '#00f0ff'; graphCtx.lineWidth = 2;
     graphCtx.beginPath();
@@ -1351,7 +1348,6 @@ function drawGraph() {
     graphCtx.stroke();
   }
 
-  // Légende
   graphCtx.fillStyle = '#ff0033';
   graphCtx.font = 'bold 10px "Orbitron"';
   graphCtx.textAlign = 'left';
@@ -1401,7 +1397,6 @@ function genererLabyrinthe(niveau) {
   }
   creuser(1, 1);
 
-  // Boucles (chemins alternatifs) selon niveau
   const nbBoucles = niveau === 1 ? 35 : niveau === 2 ? 15 : 0;
   let boucles = 0;
   let securite = 0;
@@ -1420,12 +1415,29 @@ function genererLabyrinthe(niveau) {
     }
   }
 
-  // Garantir l'accès à la sortie
   maze[size-2][size-3] = 0;
   maze[size-3][size-2] = 0;
   maze[size-2][size-2] = 2;
 
   return maze;
+}
+
+// ⬇️ FONCTION initSim AJOUTÉE (elle manquait)
+function initSim() {
+  simCanvas = document.getElementById('simCanvas');
+  if (!simCanvas) return;
+  const w = simCanvas.offsetWidth;
+  if (w < 10) return;
+  if (simCanvas.width !== w) {
+    simCanvas.width = w;
+    simCanvas.height = 600;
+    simCtx = simCanvas.getContext('2d');
+  }
+  if (!window._simRendering) {
+    window._simRendering = true;
+    demarrerNiveau(1);
+    simLoop();
+  }
 }
 
 function demarrerNiveau(niveau) {
@@ -1465,11 +1477,6 @@ function demarrerNiveau(niveau) {
 
   parler(`Niveau ${niveau} — ${niveauInfo.nom}. Bonne chance.`, true);
   showToast(`🎮 Niveau ${niveau} — ${niveauInfo.nom}`, 'success');
-
-  if (!window._simRendering) {
-    window._simRendering = true;
-    simLoop();
-  }
 }
 
 function collisionMur(nx, ny) {
@@ -1488,7 +1495,6 @@ function simLoop() {
   const rayon = 12;
   let collision = false;
 
-  // Déplacement X
   const nx = simX + simDirX * vitesse;
   if (!collisionMur(nx + Math.sign(simDirX)*rayon, simY)) {
     simX = nx;
@@ -1496,7 +1502,6 @@ function simLoop() {
     collision = true;
   }
 
-  // Déplacement Y
   const ny = simY - simDirY * vitesse;
   if (!collisionMur(simX, ny - Math.sign(simDirY)*rayon)) {
     simY = ny;
@@ -1504,7 +1509,6 @@ function simLoop() {
     collision = true;
   }
 
-  // Compter collisions (anti-spam)
   if (collision) {
     if (!window._lastCollisionTime || Date.now() - window._lastCollisionTime > 500) {
       simCollisions++;
@@ -1517,12 +1521,10 @@ function simLoop() {
     }
   }
 
-  // Angle
   if (Math.abs(simDirX) > 0.05 || Math.abs(simDirY) > 0.05) {
     simAngle = Math.atan2(-simDirY, simDirX);
   }
 
-  // Sortie atteinte ?
   const cellX = Math.floor(simX / CELL_SIZE_BASE);
   const cellY = Math.floor(simY / CELL_SIZE_BASE);
   if (simLabyrinthe[cellY] && simLabyrinthe[cellY][cellX] === 2) {
@@ -1532,7 +1534,6 @@ function simLoop() {
     }
   }
 
-  // Rendu
   if (simCtx && simCanvas) dessinerLabyrinthe(simCtx, simCanvas.width, simCanvas.height);
   if (mazeCtx && mazeCanvas) dessinerLabyrinthe(mazeCtx, mazeCanvas.width, mazeCanvas.height);
 
@@ -1556,11 +1557,9 @@ function dessinerLabyrinthe(ctx, w, h) {
   ctx.save();
   ctx.translate(offsetX, offsetY);
 
-  // Fond
   ctx.fillStyle = '#050510';
   ctx.fillRect(0, 0, cellSize * size, cellSize * size);
 
-  // Dessiner le labyrinthe
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       const cell = simLabyrinthe[y][x];
@@ -1588,7 +1587,6 @@ function dessinerLabyrinthe(ctx, w, h) {
     }
   }
 
-  // Robot
   const scale = cellSize / CELL_SIZE_BASE;
   const rx = simX * scale;
   const ry = simY * scale;
@@ -1680,7 +1678,6 @@ function ouvrirPleinEcran() {
     mazeCanvas.height = mazeCanvas.offsetHeight;
     mazeCtx = mazeCanvas.getContext('2d');
     if (!simLabyrinthe.length) demarrerNiveau(1);
-    initSim();
   }, 100);
 }
 function fermerPleinEcran() {
