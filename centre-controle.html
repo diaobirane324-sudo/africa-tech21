@@ -1367,11 +1367,9 @@ const NIVEAUX = {
   3: { nom: 'EXTRÊME', couleur: '#b300ff' }
 };
 function genererLabyrinthe(niveau) {
-  // Génère un labyrinthe PARFAIT (toujours une solution) avec l'algorithme DFS
   const size = LABY_SIZE;
   const maze = Array(size).fill().map(() => Array(size).fill(1));
 
-  // Algorithme DFS : chaque cellule a un chemin garanti
   function creuser(cx, cy) {
     maze[cy][cx] = 0;
     const dirs = [[0,-2],[0,2],[-2,0],[2,0]].sort(() => Math.random() - 0.5);
@@ -1385,51 +1383,34 @@ function genererLabyrinthe(niveau) {
   }
   creuser(1, 1);
 
-  // Élargir certains passages selon le niveau (pour rendre plus difficile)
-  // Niveau 1 : élargir quelques passages (plus facile)
-  // Niveau 2 : élargir peu
-  // Niveau 3 : aucun élargissement (couloirs serrés)
-  if (niveau === 1) {
-    // Ajoute 30 boucles (chemins alternatifs)
-    let boucles = 0;
-    while (boucles < 30) {
-      const x = 2 + Math.floor(Math.random() * (size - 4));
-      const y = 2 + Math.floor(Math.random() * (size - 4));
-      if (maze[y][x] === 1) {
-        const voisinsVides = [[0,1],[0,-1],[1,0],[-1,0]].filter(([dx,dy]) =>
-          maze[y+dy] && maze[y+dy][x+dx] === 0
-        ).length;
-        if (voisinsVides >= 2) {
-          maze[y][x] = 0;
-          boucles++;
-        }
-      }
-    }
-  } else if (niveau === 2) {
-    let boucles = 0;
-    while (boucles < 12) {
-      const x = 2 + Math.floor(Math.random() * (size - 4));
-      const y = 2 + Math.floor(Math.random() * (size - 4));
-      if (maze[y][x] === 1) {
-        const voisinsVides = [[0,1],[0,-1],[1,0],[-1,0]].filter(([dx,dy]) =>
-          maze[y+dy] && maze[y+dy][x+dx] === 0
-        ).length;
-        if (voisinsVides >= 2) {
-          maze[y][x] = 0;
-          boucles++;
-        }
+  // Boucles (chemins alternatifs) selon niveau
+  const nbBoucles = niveau === 1 ? 35 : niveau === 2 ? 15 : 0;
+  let boucles = 0;
+  let securite = 0;
+  while (boucles < nbBoucles && securite < 500) {
+    securite++;
+    const x = 2 + Math.floor(Math.random() * (size - 4));
+    const y = 2 + Math.floor(Math.random() * (size - 4));
+    if (maze[y][x] === 1) {
+      const voisinsVides = [[0,1],[0,-1],[1,0],[-1,0]].filter(([dx,dy]) =>
+        maze[y+dy] && maze[y+dy][x+dx] === 0
+      ).length;
+      if (voisinsVides >= 2) {
+        maze[y][x] = 0;
+        boucles++;
       }
     }
   }
-  // Niveau 3 : aucun élargissement = chemin unique, très dur
 
+  // OBLIGER la cellule (size-3, size-2) et (size-2, size-3) à être un chemin
+  // pour garantir que la sortie soit accessible
+  maze[size-2][size-3] = 0;
+  maze[size-3][size-2] = 0;
   // Sortie en bas à droite
   maze[size-2][size-2] = 2;
 
-  // S'assurer que le chemin vers la sortie existe (le DFS garantit déjà, mais au cas où)
   return maze;
 }
-
 function demarrerNiveau(niveau) {
   simNiveau = niveau;
   simLabyrinthe = genererLabyrinthe(niveau);
