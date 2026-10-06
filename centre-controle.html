@@ -1462,36 +1462,40 @@ function simLoop() {
   const vitesse = Math.sqrt(simDirX*simDirX + simDirY*simDirY) * 4;
   if (vitesse > 0.1) simCommandes++;
 
+  const rayon = 10; // rayon du robot pour collision
+  let collision = false;
+
+  // Essayer de bouger en X
   const nx = simX + simDirX * vitesse;
+  if (!collisionMur(nx + Math.sign(simDirX)*rayon, simY)) {
+    simX = nx;
+  } else {
+    collision = true;
+  }
+
+  // Essayer de bouger en Y
   const ny = simY - simDirY * vitesse;
+  if (!collisionMur(simX, ny - Math.sign(simDirY)*rayon)) {
+    simY = ny;
+  } else {
+    collision = true;
+  }
 
-  // Détection collision (marge de sécurité)
-  const marge = 12;
-  const testX = nx + (simDirX > 0 ? marge : simDirX < 0 ? -marge : 0);
-  const testY = ny + (simDirY < 0 ? marge : simDirY > 0 ? -marge : 0);
-
-  if (collisionMur(nx, simY) || collisionMur(simX, ny)) {
-    if (Math.random() < 0.1) {
+  // Compter la collision UNE SEULE FOIS
+  if (collision) {
+    if (!window._lastCollisionTime || Date.now() - window._lastCollisionTime > 500) {
       simCollisions++;
+      window._lastCollisionTime = Date.now();
       document.getElementById('simCollisions').textContent = simCollisions;
-      if (simCollisions % 5 === 0) {
+      if (simCollisions % 3 === 0) {
         parler('Attention, vous êtes trop près du mur. Ralentissez.', true);
       }
     }
-  } else {
-    simX = nx; simY = ny;
-    if (Math.abs(simDirX) > 0.05 || Math.abs(simDirY) > 0.05) {
-      simAngle = Math.atan2(-simDirY, simDirX);
-    }
   }
 
-  // Collision parfaite avec un mur
-  if (collisionMur(simX, simY)) {
-    simCollisions++;
-    simX -= simDirX * vitesse;
-    simY += simDirY * vitesse;
-    document.getElementById('simCollisions').textContent = simCollisions;
-    simDirX *= 0.5; simDirY *= 0.5;
+  // Angle du robot
+  if (Math.abs(simDirX) > 0.05 || Math.abs(simDirY) > 0.05) {
+    simAngle = Math.atan2(-simDirY, simDirX);
   }
 
   // Vérifier sortie
