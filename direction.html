@@ -195,8 +195,6 @@
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
             font-size: 0.9rem;
         }
-
-        /* ===== MODAL SCAN ===== */
         .modal-overlay {
             display: flex;
             position: fixed; top: 0; left: 0;
@@ -235,8 +233,6 @@
             margin-bottom: 1.5rem;
             font-size: 0.9rem;
         }
-
-        /* CAMÉRA SCAN */
         .camera-container {
             position: relative;
             width: 100%;
@@ -311,7 +307,6 @@
             border-color: #ff0033;
             color: #ff0033;
         }
-
         .btn-access {
             width: 100%;
             padding: 1rem 2rem;
@@ -332,9 +327,6 @@
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
         }
-        .btn-access:disabled {
-            opacity: 0.5; cursor: not-allowed; transform: none;
-        }
         .btn-secondary {
             width: 100%;
             padding: 0.9rem 2rem;
@@ -349,9 +341,7 @@
             text-transform: uppercase;
             letter-spacing: 1.5px;
         }
-        .btn-secondary:hover {
-            background: rgba(255, 215, 0, 0.2);
-        }
+        .btn-secondary:hover { background: rgba(255, 215, 0, 0.2); }
         .admin-row { display: flex; gap: 0.6rem; }
         .admin-row .btn-secondary { flex: 1; }
         .admin-input {
@@ -398,8 +388,8 @@
     <div class="modal-overlay" id="accessModal">
         <div class="modal-content">
             <i class="fas fa-crown" style="font-size: 2.5rem; color: var(--gold); margin-bottom: 0.8rem; display: block;"></i>
-            <h2>SCAN CARTE MEMBRE</h2>
-            <p>Présentez le QR code de votre carte membre devant la caméra</p>
+            <h2>ACCÈS DIRECTION</h2>
+            <p>Scannez votre carte membre ou utilisez le code admin</p>
 
             <div class="camera-container" id="cameraContainer" style="display:none;">
                 <video id="video" autoplay muted playsinline></video>
@@ -468,7 +458,7 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const CODE_ADMIN = 'BIRANE-MASTER-AT21-2026';
 
-// ==================== BASE DES MEMBRES (avec leurs postes) ====================
+// ==================== BASE DES MEMBRES ====================
 const MEMBRES_DIRECTION = {
     'AT21_006': {
         id: 'AT21_006',
@@ -664,9 +654,10 @@ function boucleScan() {
 
             if (code && code.data) {
                 const data = code.data.trim();
-                if (data.startsWith('AFRICA21:')) {
+                // Accepter lien direct OU ancien format
+                if (data.includes('carte=') || data.startsWith('AFRICA21:')) {
                     scanning = false;
-                    verifierQR(data);
+                    traiterQR(data);
                     return;
                 }
             }
@@ -675,15 +666,36 @@ function boucleScan() {
     if (scanning) requestAnimationFrame(boucleScan);
 }
 
-// ==================== VÉRIFICATION QR ====================
-async function verifierQR(qrData) {
+// ==================== TRAITEMENT QR ====================
+async function traiterQR(qrData) {
+    // Extraire le code carte depuis le lien ou l'ancien format
+    let codeCarte = '';
+    if (qrData.includes('carte=')) {
+        // Format lien : direction.html?carte=AT21_006_XXXX
+        codeCarte = qrData.split('carte=')[1].split('&')[0];
+    } else if (qrData.startsWith('AFRICA21:')) {
+        // Ancien format : AFRICA21:AT21_006:XXXX:DIRECTION
+        const parts = qrData.split(':');
+        codeCarte = parts[1] + '_' + parts[2];
+    }
+
+    if (!codeCarte) {
+        setStatus('❌ QR code invalide', 'error');
+        return;
+    }
+
+    await connecterMembreViaCarte(codeCarte);
+}
+
+// ==================== CONNEXION MEMBRE ====================
+async function connecterMembreViaCarte(codeCarte) {
     setStatus('<i class="fas fa-spinner fa-spin"></i> Vérification en cours...', '');
 
     try {
         const { data, error } = await supabaseClient
             .from('cartes_membres')
             .select('*')
-            .eq('qr_data', qrData)
+            .eq('code_carte', codeCarte)
             .eq('actif', true)
             .single();
 
@@ -706,24 +718,19 @@ async function verifierQR(qrData) {
 
         setStatus('✅ ACCÈS AUTORISÉ — ' + data.membre_nom, 'success');
 
-        // Vérifier que le membre est dans la base locale
         const membre = MEMBRES_DIRECTION[data.membre_id];
         if (!membre) {
             setStatus('❌ Membre non reconnu dans la base', 'error');
             return;
         }
 
-        // Stopper la caméra
         if (stream) {
             stream.getTracks().forEach(t => t.stop());
             stream = null;
         }
         scanning = false;
-
-        // Charger le membre
         membreActuel = membre;
 
-        // Rediriger après 1.2 secondes
         setTimeout(() => {
             document.getElementById('accessModal').classList.add('hidden');
             document.getElementById('mainContent').style.display = 'block';
@@ -800,8 +807,58 @@ function afficherPostes() {
     });
 }
 
+// ==================== AUTO-CONNEXION VIA URL ====================
+async function verifierURL() {
+    const params = new URLSearchParams(window.location.search);
+    const codeCarte = params.get('carte');
+
+    if (!codeCarte) return;  // Pas de paramètre → laisser le modal s'afficher
+
+    // Masquer le modal, montrer un état de chargement
+    setStatus('<i class="fas fa-spinner fa-spin"></i> Connexion automatique...', '');
+
+    try {
+        const { data, error } = await supabaseClient
+            .from('cartes_membres')
+            .select('*')
+            .eq('code_carte', codeCarte)
+            .eq('actif', true)
+            .single();
+
+        if (error || !data) {
+            setStatus('❌ CARTE INVALIDE', 'error');
+            return;  // Laisser le modal avec le scan
+        }
+
+        // Mettre à jour la dernière utilisation
+        await supabaseClient.from('cartes_membres').update({
+            derniere_utilisation: new Date().toLocaleString('fr-FR')
+        }).eq('id', data.id);
+
+        setStatus('✅ BIENVENUE ' + data.membre_nom, 'success');
+
+        const membre = MEMBRES_DIRECTION[data.membre_id];
+        if (!membre) {
+            setStatus('❌ Membre non reconnu', 'error');
+            return;
+        }
+
+        membreActuel = membre;
+
+        setTimeout(() => {
+            document.getElementById('accessModal').classList.add('hidden');
+            document.getElementById('mainContent').style.display = 'block';
+            afficherPostes();
+        }, 800);
+
+    } catch (e) {
+        setStatus('❌ Erreur : ' + e.message, 'error');
+    }
+}
+
 // ==================== INIT ====================
 createParticles();
+verifierURL();  // <-- Exécuté au chargement pour détecter ?carte=...
 </script>
 </body>
 </html>
