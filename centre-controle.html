@@ -1545,25 +1545,33 @@ function dessinerLabyrinthe(ctx, w, h, fullscreen=false) {
   ctx.save();
   ctx.translate(offsetX, offsetY);
 
+  // Fond
+  ctx.fillStyle = '#050510';
+  ctx.fillRect(0, 0, cellSize * size, cellSize * size);
+
   // Dessiner le labyrinthe
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       const cell = simLabyrinthe[y][x];
       if (cell === 1) {
-        ctx.fillStyle = 'rgba(0,240,255,0.15)';
+        // Mur
+        ctx.fillStyle = 'rgba(0,240,255,0.2)';
         ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
         ctx.strokeStyle = '#00f0ff';
         ctx.lineWidth = 1;
         ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
       } else if (cell === 2) {
         // Sortie
-        ctx.fillStyle = 'rgba(0,255,136,0.4)';
+        ctx.fillStyle = 'rgba(0,255,136,0.5)';
         ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
         ctx.strokeStyle = '#00ff88';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 3;
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = '#00ff88';
         ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
+        ctx.shadowBlur = 0;
         ctx.fillStyle = '#00ff88';
-        ctx.font = 'bold ' + Math.round(cellSize * 0.5) + 'px "Orbitron"';
+        ctx.font = 'bold ' + Math.round(cellSize * 0.6) + 'px "Orbitron"';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('S', x * cellSize + cellSize/2, y * cellSize + cellSize/2);
@@ -1571,22 +1579,24 @@ function dessinerLabyrinthe(ctx, w, h, fullscreen=false) {
     }
   }
 
-  // Dessiner le robot
-  const robotScale = cellSize / CELL_SIZE_BASE;
-  const rx = simX * robotScale;
-  const ry = simY * robotScale;
+  // Dessiner le robot (position en pixels du labyrinthe)
+  const scale = cellSize / CELL_SIZE_BASE;
+  const rx = simX * scale;
+  const ry = simY * scale;
+  const radius = cellSize * 0.38;
+
   ctx.save();
   ctx.translate(rx, ry);
   ctx.rotate(simAngle);
   ctx.fillStyle = '#00f0ff';
-  ctx.shadowBlur = 20;
+  ctx.shadowBlur = 25;
   ctx.shadowColor = '#00f0ff';
   ctx.beginPath();
-  ctx.arc(0, 0, cellSize * 0.35, 0, Math.PI*2);
+  ctx.arc(0, 0, radius, 0, Math.PI*2);
   ctx.fill();
   ctx.fillStyle = '#050510';
   ctx.beginPath();
-  ctx.arc(cellSize * 0.2, 0, cellSize * 0.1, 0, Math.PI*2);
+  ctx.arc(radius * 0.4, 0, radius * 0.35, 0, Math.PI*2);
   ctx.fill();
   ctx.restore();
 
