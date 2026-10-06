@@ -1311,36 +1311,53 @@ function initGraph() {
   if (!graphCanvas) return;
   const w = graphCanvas.offsetWidth;
   if (w < 10) return;
-  graphCanvas.width = w; graphCanvas.height = 140;
+  graphCanvas.width = w;
+  graphCanvas.height = 140;
   graphCtx = graphCanvas.getContext('2d');
 }
 function drawGraph() {
   if (!graphCtx) return;
   const w = graphCanvas.width, h = graphCanvas.height;
+  if (w < 10 || h < 10) return;
   graphCtx.clearRect(0, 0, w, h);
+
+  // Grille
   graphCtx.strokeStyle = 'rgba(0,240,255,0.08)';
+  graphCtx.lineWidth = 1;
   for (let i = 0; i < w; i += 40) { graphCtx.beginPath(); graphCtx.moveTo(i, 0); graphCtx.lineTo(i, h); graphCtx.stroke(); }
   for (let i = 0; i < h; i += 20) { graphCtx.beginPath(); graphCtx.moveTo(0, i); graphCtx.lineTo(w, i); graphCtx.stroke(); }
+
+  // Température
   if (graphDataTemp.length > 1) {
     graphCtx.strokeStyle = '#ff0033'; graphCtx.lineWidth = 2;
     graphCtx.beginPath();
     graphDataTemp.forEach((v, i) => {
       const x = (i/(graphDataTemp.length-1))*w;
-      const y = h - (v/100)*h;
+      const y = h - Math.min(1, Math.max(0, v/100))*h;
       if (i === 0) graphCtx.moveTo(x, y); else graphCtx.lineTo(x, y);
     });
     graphCtx.stroke();
   }
+
+  // Courant
   if (graphDataCourant.length > 1) {
     graphCtx.strokeStyle = '#00f0ff'; graphCtx.lineWidth = 2;
     graphCtx.beginPath();
     graphDataCourant.forEach((v, i) => {
       const x = (i/(graphDataCourant.length-1))*w;
-      const y = h - (v/6)*h;
+      const y = h - Math.min(1, Math.max(0, v/6))*h;
       if (i === 0) graphCtx.moveTo(x, y); else graphCtx.lineTo(x, y);
     });
     graphCtx.stroke();
   }
+
+  // Légende
+  graphCtx.fillStyle = '#ff0033';
+  graphCtx.font = 'bold 10px "Orbitron"';
+  graphCtx.textAlign = 'left';
+  graphCtx.fillText('TEMPÉRATURE', 10, 15);
+  graphCtx.fillStyle = '#00f0ff';
+  graphCtx.fillText('COURANT', 130, 15);
 }
 setInterval(() => {
   majCapteurs();
@@ -1358,7 +1375,7 @@ let simNiveau = 1, simTemps = 0, simCollisions = 0, simCommandes = 0;
 let simLabyrinthe = [];
 let simTermine = false;
 let simInterval = null;
-const LABY_SIZE = 21; // grille 21x21
+const LABY_SIZE = 21;
 const CELL_SIZE_BASE = 30;
 
 const NIVEAUX = {
@@ -1366,6 +1383,7 @@ const NIVEAUX = {
   2: { nom: 'TRÈS DIFFICILE', couleur: '#ff0033' },
   3: { nom: 'EXTRÊME', couleur: '#b300ff' }
 };
+
 function genererLabyrinthe(niveau) {
   const size = LABY_SIZE;
   const maze = Array(size).fill().map(() => Array(size).fill(1));
@@ -1402,15 +1420,14 @@ function genererLabyrinthe(niveau) {
     }
   }
 
-  // OBLIGER la cellule (size-3, size-2) et (size-2, size-3) à être un chemin
-  // pour garantir que la sortie soit accessible
+  // Garantir l'accès à la sortie
   maze[size-2][size-3] = 0;
   maze[size-3][size-2] = 0;
-  // Sortie en bas à droite
   maze[size-2][size-2] = 2;
 
   return maze;
 }
+
 function demarrerNiveau(niveau) {
   simNiveau = niveau;
   simLabyrinthe = genererLabyrinthe(niveau);
@@ -1421,21 +1438,28 @@ function demarrerNiveau(niveau) {
   simCollisions = 0;
   simCommandes = 0;
   simTermine = false;
-  simDirX = 0; simDirY = 0;
+  simDirX = 0;
+  simDirY = 0;
 
   const niveauInfo = NIVEAUX[niveau];
-  document.getElementById('simLevel').textContent = niveau;
-  document.getElementById('fsLevel').textContent = `Niveau ${niveau} — ${niveauInfo.nom}`;
-  document.getElementById('fsLevel').style.color = niveauInfo.couleur;
+  const elLevel = document.getElementById('simLevel');
+  const elFsLevel = document.getElementById('fsLevel');
+  if (elLevel) elLevel.textContent = niveau;
+  if (elFsLevel) {
+    elFsLevel.textContent = `Niveau ${niveau} — ${niveauInfo.nom}`;
+    elFsLevel.style.color = niveauInfo.couleur;
+  }
 
   if (simInterval) clearInterval(simInterval);
   simInterval = setInterval(() => {
     if (!simTermine) {
       simTemps++;
-      document.getElementById('simTime').textContent = simTemps + 's';
+      const elT = document.getElementById('simTime');
+      const elF = document.getElementById('fsTime');
+      if (elT) elT.textContent = simTemps + 's';
       const m = Math.floor(simTemps/60);
       const s = simTemps % 60;
-      document.getElementById('fsTime').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      if (elF) elF.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     }
   }, 1000);
 
@@ -1449,23 +1473,22 @@ function demarrerNiveau(niveau) {
 }
 
 function collisionMur(nx, ny) {
-  // Utilise le vrai CELL_SIZE du rendu courant
-  const cw = mazeCtx ? (mazeCtx.canvas.width / LABY_SIZE) : CELL_SIZE_BASE;
   const cellX = Math.floor(nx / CELL_SIZE_BASE);
   const cellY = Math.floor(ny / CELL_SIZE_BASE);
   if (cellX < 0 || cellX >= LABY_SIZE || cellY < 0 || cellY >= LABY_SIZE) return true;
   return simLabyrinthe[cellY][cellX] === 1;
 }
+
 function simLoop() {
-  if (!simCtx) return;
+  if (!simCtx && !mazeCtx) { requestAnimationFrame(simLoop); return; }
 
   const vitesse = Math.sqrt(simDirX*simDirX + simDirY*simDirY) * 4;
   if (vitesse > 0.1) simCommandes++;
 
-  const rayon = 10; // rayon du robot pour collision
+  const rayon = 12;
   let collision = false;
 
-  // Essayer de bouger en X
+  // Déplacement X
   const nx = simX + simDirX * vitesse;
   if (!collisionMur(nx + Math.sign(simDirX)*rayon, simY)) {
     simX = nx;
@@ -1473,7 +1496,7 @@ function simLoop() {
     collision = true;
   }
 
-  // Essayer de bouger en Y
+  // Déplacement Y
   const ny = simY - simDirY * vitesse;
   if (!collisionMur(simX, ny - Math.sign(simDirY)*rayon)) {
     simY = ny;
@@ -1481,24 +1504,25 @@ function simLoop() {
     collision = true;
   }
 
-  // Compter la collision UNE SEULE FOIS
+  // Compter collisions (anti-spam)
   if (collision) {
     if (!window._lastCollisionTime || Date.now() - window._lastCollisionTime > 500) {
       simCollisions++;
       window._lastCollisionTime = Date.now();
-      document.getElementById('simCollisions').textContent = simCollisions;
+      const el = document.getElementById('simCollisions');
+      if (el) el.textContent = simCollisions;
       if (simCollisions % 3 === 0) {
         parler('Attention, vous êtes trop près du mur. Ralentissez.', true);
       }
     }
   }
 
-  // Angle du robot
+  // Angle
   if (Math.abs(simDirX) > 0.05 || Math.abs(simDirY) > 0.05) {
     simAngle = Math.atan2(-simDirY, simDirX);
   }
 
-  // Vérifier sortie
+  // Sortie atteinte ?
   const cellX = Math.floor(simX / CELL_SIZE_BASE);
   const cellY = Math.floor(simY / CELL_SIZE_BASE);
   if (simLabyrinthe[cellY] && simLabyrinthe[cellY][cellX] === 2) {
@@ -1509,17 +1533,19 @@ function simLoop() {
   }
 
   // Rendu
-  dessinerLabyrinthe(simCtx, simCanvas.width, simCanvas.height);
-  if (mazeCtx) dessinerLabyrinthe(mazeCtx, mazeCanvas.width, mazeCanvas.height, true);
+  if (simCtx && simCanvas) dessinerLabyrinthe(simCtx, simCanvas.width, simCanvas.height);
+  if (mazeCtx && mazeCanvas) dessinerLabyrinthe(mazeCtx, mazeCanvas.width, mazeCanvas.height);
 
   const ps = document.getElementById('simPos');
   if (ps) ps.textContent = Math.round(simX) + ', ' + Math.round(simY);
-  document.getElementById('simCmds').textContent = Math.floor(simCommandes/10);
+  const pc = document.getElementById('simCmds');
+  if (pc) pc.textContent = Math.floor(simCommandes/10);
 
   requestAnimationFrame(simLoop);
 }
 
-function dessinerLabyrinthe(ctx, w, h, fullscreen=false) {
+function dessinerLabyrinthe(ctx, w, h) {
+  if (!ctx || w < 10 || h < 10) return;
   ctx.clearRect(0, 0, w, h);
 
   const size = LABY_SIZE;
@@ -1539,14 +1565,12 @@ function dessinerLabyrinthe(ctx, w, h, fullscreen=false) {
     for (let x = 0; x < size; x++) {
       const cell = simLabyrinthe[y][x];
       if (cell === 1) {
-        // Mur
         ctx.fillStyle = 'rgba(0,240,255,0.2)';
         ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
         ctx.strokeStyle = '#00f0ff';
         ctx.lineWidth = 1;
         ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
       } else if (cell === 2) {
-        // Sortie
         ctx.fillStyle = 'rgba(0,255,136,0.5)';
         ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
         ctx.strokeStyle = '#00ff88';
@@ -1564,7 +1588,7 @@ function dessinerLabyrinthe(ctx, w, h, fullscreen=false) {
     }
   }
 
-  // Dessiner le robot (position en pixels du labyrinthe)
+  // Robot
   const scale = cellSize / CELL_SIZE_BASE;
   const rx = simX * scale;
   const ry = simY * scale;
@@ -1591,7 +1615,6 @@ function dessinerLabyrinthe(ctx, w, h, fullscreen=false) {
 function terminerNiveau() {
   if (simInterval) clearInterval(simInterval);
 
-  // Calcul du score
   const tempsMin = simNiveau === 1 ? 30 : simNiveau === 2 ? 45 : 60;
   const penaliteTemps = Math.max(0, (simTemps - tempsMin) * 0.5);
   const penaliteCollisions = simCollisions * 2;
@@ -1606,13 +1629,21 @@ function terminerNiveau() {
   else if (note >= 8) mention = 'PASSABLE';
   else mention = 'INSUFFISANT';
 
-  document.getElementById('noteFinale').textContent = note + '/20';
-  document.getElementById('mentionFinale').textContent = mention;
-  document.getElementById('statTemps').textContent = simTemps + 's';
-  document.getElementById('statCollisions').textContent = simCollisions;
-  document.getElementById('statCmd').textContent = Math.floor(simCommandes/10);
-  document.getElementById('statNiveau').textContent = simNiveau;
-  document.getElementById('modalScore').classList.add('active');
+  const elN = document.getElementById('noteFinale');
+  const elM = document.getElementById('mentionFinale');
+  const elT = document.getElementById('statTemps');
+  const elC = document.getElementById('statCollisions');
+  const elCmd = document.getElementById('statCmd');
+  const elLvl = document.getElementById('statNiveau');
+  if (elN) elN.textContent = note + '/20';
+  if (elM) elM.textContent = mention;
+  if (elT) elT.textContent = simTemps + 's';
+  if (elC) elC.textContent = simCollisions;
+  if (elCmd) elCmd.textContent = Math.floor(simCommandes/10);
+  if (elLvl) elLvl.textContent = simNiveau;
+
+  const modal = document.getElementById('modalScore');
+  if (modal) modal.classList.add('active');
 
   parler(`Félicitations ! Niveau ${simNiveau} terminé en ${simTemps} secondes. Votre note : ${note} sur 20. Mention ${mention}.`, true);
 }
@@ -1628,7 +1659,8 @@ function niveauSuivant() {
 }
 
 function fermerModalScore() {
-  document.getElementById('modalScore').classList.remove('active');
+  const modal = document.getElementById('modalScore');
+  if (modal) modal.classList.remove('active');
 }
 
 function resetSim() {
@@ -1642,10 +1674,12 @@ function resetSim() {
 function ouvrirPleinEcran() {
   document.getElementById('fsOverlay').classList.add('active');
   setTimeout(() => {
-    const mc = document.getElementById('mazeCanvas');
-    mc.width = mc.offsetWidth;
-    mc.height = mc.offsetHeight;
-    mazeCtx = mc.getContext('2d');
+    mazeCanvas = document.getElementById('mazeCanvas');
+    if (!mazeCanvas) return;
+    mazeCanvas.width = mazeCanvas.offsetWidth;
+    mazeCanvas.height = mazeCanvas.offsetHeight;
+    mazeCtx = mazeCanvas.getContext('2d');
+    if (!simLabyrinthe.length) demarrerNiveau(1);
     initSim();
   }, 100);
 }
@@ -1712,12 +1746,16 @@ function combatAction(action, joueur) {
   }
 }
 function updateHP() {
-  document.getElementById('hp1').style.width = hp1 + '%';
-  document.getElementById('hp2').style.width = hp2 + '%';
-  document.getElementById('hp1Val').textContent = hp1;
-  document.getElementById('hp2Val').textContent = hp2;
-  document.getElementById('hp1').classList.toggle('low', hp1 < 30);
-  document.getElementById('hp2').classList.toggle('low', hp2 < 30);
+  const el1 = document.getElementById('hp1');
+  const el2 = document.getElementById('hp2');
+  if (el1) el1.style.width = hp1 + '%';
+  if (el2) el2.style.width = hp2 + '%';
+  const v1 = document.getElementById('hp1Val');
+  const v2 = document.getElementById('hp2Val');
+  if (v1) v1.textContent = hp1;
+  if (v2) v2.textContent = hp2;
+  if (el1) el1.classList.toggle('low', hp1 < 30);
+  if (el2) el2.classList.toggle('low', hp2 < 30);
 }
 function resetCombat() {
   hp1 = 100; hp2 = 100; updateHP();
@@ -1736,13 +1774,26 @@ document.addEventListener('DOMContentLoaded', () => {
   }, 1000);
 
   window.addEventListener('resize', () => {
-    if (simCanvas) { simCanvas.width = simCanvas.offsetWidth; simCanvas.height = 600; }
+    if (simCanvas && simCanvas.offsetWidth > 10) {
+      simCanvas.width = simCanvas.offsetWidth;
+      simCanvas.height = 600;
+      simCtx = simCanvas.getContext('2d');
+    }
     if (mazeCanvas && document.getElementById('fsOverlay').classList.contains('active')) {
       mazeCanvas.width = mazeCanvas.offsetWidth;
       mazeCanvas.height = mazeCanvas.offsetHeight;
+      mazeCtx = mazeCanvas.getContext('2d');
     }
-    if (indusCanvas) { indusCanvas.width = indusCanvas.offsetWidth; indusCanvas.height = 400; }
-    if (graphCanvas) { graphCanvas.width = graphCanvas.offsetWidth; graphCanvas.height = 140; }
+    if (indusCanvas && indusCanvas.offsetWidth > 10) {
+      indusCanvas.width = indusCanvas.offsetWidth;
+      indusCanvas.height = 400;
+      indusCtx = indusCanvas.getContext('2d');
+    }
+    if (graphCanvas && graphCanvas.offsetWidth > 10) {
+      graphCanvas.width = graphCanvas.offsetWidth;
+      graphCanvas.height = 140;
+      graphCtx = graphCanvas.getContext('2d');
+    }
   });
 });
 </script>
