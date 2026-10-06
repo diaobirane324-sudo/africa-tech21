@@ -227,7 +227,7 @@ body {
   background:#050510; border:2px solid var(--border);
   border-radius:15px; padding:1rem; position:relative;
 }
-#simCanvas { width:100%; height:500px; background:radial-gradient(circle,#0a0a1a,#050510); border-radius:10px; display:block; }
+#simCanvas { width:100%; height:600px; background:radial-gradient(circle,#0a0a1a,#050510); border-radius:10px; display:block; }
 .sim-stats { display:flex; gap:1.5rem; justify-content:center; margin-top:1rem; flex-wrap:wrap; }
 .sim-stat { background:rgba(0,240,255,0.08); border:1px solid var(--border); padding:0.5rem 1rem; border-radius:10px; font-family:'Orbitron',sans-serif; font-size:0.8rem; color:var(--cyan); }
 .combat-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
@@ -279,10 +279,7 @@ body {
   border:1px solid var(--yellow);
   border-radius:12px; padding:0.8rem 1.2rem; margin-bottom:1rem;
 }
-.vocal-status i.mic {
-  font-size:1.5rem; color:var(--yellow);
-  animation:pulseDot 1.5s infinite;
-}
+.vocal-status i.mic { font-size:1.5rem; color:var(--yellow); animation:pulseDot 1.5s infinite; }
 .vocal-status .text { flex:1; font-size:0.9rem; color:#fff; }
 .vocal-status .text strong { color:var(--yellow); }
 .btn-vocal {
@@ -293,7 +290,7 @@ body {
 }
 .btn-vocal:hover { transform:scale(1.05); }
 
-/* ===== GRILLE CAPTEURS ÉTENDUE ===== */
+/* ===== SENSORS ===== */
 .sensor-grid {
   display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
   gap:0.8rem; margin-bottom:1rem;
@@ -308,9 +305,132 @@ body {
 .sensor-card.warn .value { color:var(--yellow); }
 .sensor-card.danger .value { color:var(--red); animation:pulseDot 0.8s infinite; }
 .sensor-card.ok .value { color:var(--green); }
-
-/* ===== GRAPHE ===== */
 #graphCanvas { width:100%; height:140px; background:#050510; border:1px solid var(--border); border-radius:10px; display:block; }
+
+/* ===== VIDÉO ===== */
+.video-container {
+  position:relative; width:100%; aspect-ratio:16/9;
+  background:#000; border:2px solid var(--border); border-radius:15px;
+  overflow:hidden; margin-bottom:1rem;
+}
+.video-container video { width:100%; height:100%; object-fit:cover; }
+.video-container .placeholder {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  color:var(--text2); gap:0.8rem; text-align:center; padding:1rem;
+}
+.video-container .placeholder i { font-size:3rem; color:rgba(0,240,255,0.3); }
+.video-container .live-badge {
+  position:absolute; top:10px; left:10px;
+  background:rgba(255,0,51,0.9); color:#fff;
+  padding:0.3rem 0.8rem; border-radius:20px;
+  font-family:'Orbitron',sans-serif; font-size:0.7rem;
+  letter-spacing:1.5px; display:none;
+}
+.video-container .live-badge.active { display:block; animation:pulseDot 1.5s infinite; }
+
+/* ===== PLEIN ÉCRAN SIMULATION ===== */
+.fullscreen-overlay {
+  display:none; position:fixed; top:0; left:0;
+  width:100vw; height:100vh;
+  background:radial-gradient(circle at center, #0a0a1a, #000);
+  z-index:99999;
+  flex-direction:column;
+}
+.fullscreen-overlay.active { display:flex; }
+.fullscreen-overlay .fs-header {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:1rem 1.5rem;
+  background:rgba(0,0,0,0.8);
+  border-bottom:1px solid var(--border);
+}
+.fullscreen-overlay .fs-header h2 {
+  font-family:'Orbitron',sans-serif; color:var(--cyan);
+  font-size:1.2rem; letter-spacing:2px;
+}
+.fullscreen-overlay .fs-header .fs-info {
+  display:flex; gap:1rem; align-items:center;
+  font-family:'Orbitron',sans-serif; font-size:0.85rem;
+}
+.fullscreen-overlay .fs-header .fs-info .badge {
+  padding:0.3rem 0.9rem; border-radius:20px;
+  background:rgba(0,240,255,0.1);
+  border:1px solid var(--cyan); color:var(--cyan);
+}
+.fullscreen-overlay .fs-info .badge.level { border-color:var(--red); color:var(--red); background:rgba(255,0,51,0.1); }
+.fullscreen-overlay .fs-info .badge.time { border-color:var(--yellow); color:var(--yellow); background:rgba(255,215,0,0.1); }
+.fullscreen-overlay .fs-info .badge.score { border-color:var(--green); color:var(--green); background:rgba(0,255,136,0.1); }
+.fullscreen-overlay .fs-body {
+  flex:1; position:relative; overflow:hidden;
+}
+#mazeCanvas {
+  width:100%; height:100%; display:block;
+  background:#050510;
+}
+.fullscreen-overlay .fs-footer {
+  padding:1rem 1.5rem;
+  background:rgba(0,0,0,0.8);
+  border-top:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between; gap:1rem;
+  flex-wrap:wrap;
+}
+.fullscreen-overlay .joystick-fs {
+  width:130px; height:130px; background:radial-gradient(circle, #1a1a2e, #0a0a14);
+  border:2px solid var(--cyan); border-radius:50%;
+  position:relative; cursor:pointer; touch-action:none;
+  box-shadow:0 0 20px rgba(0,240,255,0.3);
+}
+.fullscreen-overlay .joy-knob-fs {
+  width:46px; height:46px;
+  background:radial-gradient(circle, #00f0ff, #0088aa);
+  border-radius:50%; position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%); box-shadow:0 0 15px var(--cyan);
+  pointer-events:none;
+}
+.fullscreen-overlay .fs-btns {
+  display:flex; gap:0.6rem; align-items:center;
+}
+
+/* MODAL SCORE */
+.modal-score {
+  display:none; position:fixed; top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.95); backdrop-filter:blur(15px);
+  z-index:100001; align-items:center; justify-content:center; padding:2rem;
+}
+.modal-score.active { display:flex; }
+.modal-score .box {
+  background:linear-gradient(135deg, #0a0014, #14002a);
+  border:2px solid var(--gold); border-radius:25px;
+  padding:2.5rem; max-width:500px; width:100%; text-align:center;
+  box-shadow:0 0 60px rgba(255,215,0,0.4);
+  animation:modalAppear 0.4s ease;
+}
+@keyframes modalAppear { from{opacity:0;transform:scale(0.9);} to{opacity:1;transform:scale(1);} }
+.modal-score h2 {
+  font-family:'Orbitron',sans-serif; color:var(--gold);
+  font-size:1.6rem; margin-bottom:1.5rem; text-shadow:var(--gold-glow);
+}
+.modal-score .note {
+  font-family:'Orbitron',sans-serif; font-size:4rem;
+  color:var(--green); text-shadow:0 0 30px var(--green);
+  margin-bottom:1rem;
+}
+.modal-score .mention {
+  font-family:'Orbitron',sans-serif; font-size:1.2rem;
+  color:var(--gold); margin-bottom:1.5rem;
+  letter-spacing:3px;
+}
+.modal-score .stats {
+  display:grid; grid-template-columns:1fr 1fr; gap:0.8rem;
+  margin-bottom:1.5rem;
+}
+.modal-score .stat-line {
+  background:rgba(0,240,255,0.08); border:1px solid var(--border);
+  border-radius:10px; padding:0.6rem;
+}
+.modal-score .stat-line .label { color:var(--text2); font-size:0.7rem; text-transform:uppercase; }
+.modal-score .stat-line .val { font-family:'Orbitron',sans-serif; color:var(--cyan); font-size:1rem; margin-top:0.2rem; }
 
 @media (max-width:768px) {
   body { padding:0.8rem; font-size:13px; }
@@ -338,7 +458,8 @@ body {
     <div class="tab" onclick="switchTab('simple')"><i class="fas fa-gamepad"></i> MANETTE SIMPLE</div>
     <div class="tab" onclick="switchTab('xbox')"><i class="fas fa-gamepad"></i> MANETTE XBOX</div>
     <div class="tab" onclick="switchTab('industriel')"><i class="fas fa-sliders-h"></i> PANNEAU INDUSTRIEL</div>
-    <div class="tab" onclick="switchTab('simulation')"><i class="fas fa-cube"></i> SIMULATION</div>
+    <div class="tab" onclick="switchTab('simulation')"><i class="fas fa-cube"></i> LABYRINTHE</div>
+    <div class="tab" onclick="switchTab('video')"><i class="fas fa-video"></i> RETOUR VIDÉO</div>
     <div class="tab" onclick="switchTab('combat')"><i class="fas fa-crosshairs"></i> COMBAT</div>
   </div>
 
@@ -358,22 +479,13 @@ body {
             <option value="Autre">Autre</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Adresse IP</label>
-          <input type="text" id="appIp" placeholder="192.168.1.100">
-        </div>
-        <div class="form-group">
-          <label>Port</label>
-          <input type="text" id="appPort" placeholder="80" value="80">
-        </div>
-        <div class="form-group">
-          <label>Nombre de moteurs</label>
-          <input type="number" id="appMoteurs" min="1" max="8" value="4">
-        </div>
+        <div class="form-group"><label>Adresse IP</label><input type="text" id="appIp" placeholder="192.168.1.100"></div>
+        <div class="form-group"><label>Port</label><input type="text" id="appPort" placeholder="80" value="80"></div>
+        <div class="form-group"><label>Nombre de moteurs</label><input type="number" id="appMoteurs" min="1" max="8" value="4"></div>
       </div>
       <div class="form-group" style="margin-bottom:0.8rem;">
         <label>Capteurs disponibles (séparés par des virgules)</label>
-        <input type="text" id="appCapteurs" placeholder="température, humidité, ultrason, voltage, courant, gaz, vibration, GPS">
+        <input type="text" id="appCapteurs" placeholder="température, humidité, ultrason...">
       </div>
       <div class="form-group" style="margin-bottom:1rem;">
         <label>Description (optionnel)</label>
@@ -395,17 +507,15 @@ body {
   <div class="section" id="sectionSimple">
     <div class="card-box">
       <h2><i class="fas fa-gamepad"></i> MANETTE SIMPLE</h2>
-      <p style="color:var(--text2); margin-bottom:1rem; font-size:0.85rem;">Choisissez un appareil actif, puis utilisez le joystick et les boutons.</p>
       <select id="simpleAppareil" class="input-full" onchange="majAppareilActif('simple')">
         <option value="">-- Aucun appareil --</option>
       </select>
-
       <div class="manette-simple" style="margin-top:1.5rem;">
         <div style="text-align:center;">
           <div class="joy-pad" id="joySimple"><div class="joy-knob" id="joySimpleKnob"></div></div>
           <div style="color:var(--text2); font-size:0.75rem; margin-top:0.5rem;">DÉPLACEMENT</div>
         </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; justify-content:center;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem;">
           <button class="btn-big btn-A" onclick="envoyer('A')">A</button>
           <button class="btn-big btn-B" onclick="envoyer('B')">B</button>
           <button class="btn-big btn-X" onclick="envoyer('X')">X</button>
@@ -415,7 +525,6 @@ body {
           <button class="btn-big btn-STOP" onclick="envoyer('STOP')" style="width:100%;">STOP</button>
         </div>
       </div>
-
       <div class="sim-stats" style="margin-top:1.5rem;">
         <div class="sim-stat">X: <span id="simpleX">0</span></div>
         <div class="sim-stat">Y: <span id="simpleY">0</span></div>
@@ -431,7 +540,6 @@ body {
       <select id="xboxAppareil" class="input-full" onchange="majAppareilActif('xbox')">
         <option value="">-- Aucun appareil --</option>
       </select>
-
       <div class="manette-xbox" style="margin-top:1.5rem;">
         <div class="xbox-side">
           <div class="joy-pad" id="joyLeft"><div class="joy-knob" id="joyLeftKnob"></div></div>
@@ -453,21 +561,11 @@ body {
           <button class="btn-big btn-STOP" onclick="envoyer('STOP')" style="margin-top:1rem; width:200px;">STOP URGENCE</button>
         </div>
       </div>
-
-      <div class="sim-stats" style="margin-top:1.5rem;">
-        <div class="sim-stat">L-X: <span id="lxVal">0</span></div>
-        <div class="sim-stat">L-Y: <span id="lyVal">0</span></div>
-        <div class="sim-stat">R-X: <span id="rxVal">0</span></div>
-        <div class="sim-stat">R-Y: <span id="ryVal">0</span></div>
-        <div class="sim-stat">L2: <span id="l2Val">0</span></div>
-        <div class="sim-stat">R2: <span id="r2Val">0</span></div>
-      </div>
     </div>
   </div>
 
   <!-- PANNEAU INDUSTRIEL -->
   <div class="section" id="sectionIndustriel">
-    <!-- ASSISTANT VOCAL -->
     <div class="card-box" style="padding:1rem 1.5rem;">
       <div class="vocal-status">
         <i class="fas fa-microphone mic"></i>
@@ -478,103 +576,43 @@ body {
       </div>
     </div>
 
-    <!-- SÉLECTION APPAREIL -->
     <div class="card-box">
       <h2><i class="fas fa-sliders-h"></i> PANNEAU INDUSTRIEL MAJOR</h2>
       <select id="indusAppareil" class="input-full" onchange="majAppareilActif('indus')">
         <option value="">-- Aucun appareil --</option>
       </select>
-
-      <!-- SCHÉMA ANIMÉ COMPLET -->
       <div style="background:#050510; border:2px solid var(--border); border-radius:15px; padding:1rem; margin:1rem 0; position:relative; overflow:hidden;">
-        <div style="position:absolute; top:8px; left:12px; color:var(--cyan); font-family:'Orbitron',sans-serif; font-size:0.75rem; letter-spacing:1px; z-index:2;">
-          <i class="fas fa-microchip"></i> VUE SYSTÈME TEMPS RÉEL — 4 MOTEURS + 8 CAPTEURS
-        </div>
         <canvas id="indusCanvas" style="width:100%; height:400px; display:block; border-radius:10px;"></canvas>
       </div>
 
-      <!-- GRILLE CAPTEURS ÉTENDUE -->
       <h2 style="margin-top:1.5rem;"><i class="fas fa-heartbeat"></i> SANTÉ SYSTÈME — 8 CAPTEURS</h2>
       <div class="sensor-grid">
-        <div class="sensor-card" id="sc-temp">
-          <div class="name"><i class="fas fa-thermometer-half"></i> Température</div>
-          <div class="value" id="val-temp">0<span class="unit">°C</span></div>
-          <div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-temp" style="width:0%;"></div></div>
-        </div>
-        <div class="sensor-card" id="sc-hum">
-          <div class="name"><i class="fas fa-tint"></i> Humidité</div>
-          <div class="value" id="val-hum">0<span class="unit">%</span></div>
-          <div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-hum" style="width:0%;"></div></div>
-        </div>
-        <div class="sensor-card" id="sc-volt">
-          <div class="name"><i class="fas fa-bolt"></i> Voltage</div>
-          <div class="value" id="val-volt">0<span class="unit">V</span></div>
-          <div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-volt" style="width:0%;"></div></div>
-        </div>
-        <div class="sensor-card" id="sc-courant">
-          <div class="name"><i class="fas fa-plug"></i> Courant</div>
-          <div class="value" id="val-courant">0<span class="unit">A</span></div>
-          <div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-courant" style="width:0%;"></div></div>
-        </div>
-        <div class="sensor-card" id="sc-dist">
-          <div class="name"><i class="fas fa-ruler"></i> Distance</div>
-          <div class="value" id="val-dist">0<span class="unit">cm</span></div>
-          <div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-dist" style="width:0%;"></div></div>
-        </div>
-        <div class="sensor-card" id="sc-gaz">
-          <div class="name"><i class="fas fa-wind"></i> Gaz</div>
-          <div class="value" id="val-gaz">0<span class="unit">ppm</span></div>
-          <div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-gaz" style="width:0%;"></div></div>
-        </div>
-        <div class="sensor-card" id="sc-vib">
-          <div class="name"><i class="fas fa-wave-square"></i> Vibration</div>
-          <div class="value" id="val-vib">0<span class="unit">Hz</span></div>
-          <div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-vib" style="width:0%;"></div></div>
-        </div>
-        <div class="sensor-card" id="sc-gps">
-          <div class="name"><i class="fas fa-map-marker-alt"></i> GPS Fix</div>
-          <div class="value" id="val-gps">0<span class="unit">sat</span></div>
-          <div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-gps" style="width:0%;"></div></div>
-        </div>
+        <div class="sensor-card" id="sc-temp"><div class="name"><i class="fas fa-thermometer-half"></i> Température</div><div class="value" id="val-temp">0<span class="unit">°C</span></div><div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-temp" style="width:0%;"></div></div></div>
+        <div class="sensor-card" id="sc-hum"><div class="name"><i class="fas fa-tint"></i> Humidité</div><div class="value" id="val-hum">0<span class="unit">%</span></div><div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-hum" style="width:0%;"></div></div></div>
+        <div class="sensor-card" id="sc-volt"><div class="name"><i class="fas fa-bolt"></i> Voltage</div><div class="value" id="val-volt">0<span class="unit">V</span></div><div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-volt" style="width:0%;"></div></div></div>
+        <div class="sensor-card" id="sc-courant"><div class="name"><i class="fas fa-plug"></i> Courant</div><div class="value" id="val-courant">0<span class="unit">A</span></div><div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-courant" style="width:0%;"></div></div></div>
+        <div class="sensor-card" id="sc-dist"><div class="name"><i class="fas fa-ruler"></i> Distance</div><div class="value" id="val-dist">0<span class="unit">cm</span></div><div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-dist" style="width:0%;"></div></div></div>
+        <div class="sensor-card" id="sc-gaz"><div class="name"><i class="fas fa-wind"></i> Gaz</div><div class="value" id="val-gaz">0<span class="unit">ppm</span></div><div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-gaz" style="width:0%;"></div></div></div>
+        <div class="sensor-card" id="sc-vib"><div class="name"><i class="fas fa-wave-square"></i> Vibration</div><div class="value" id="val-vib">0<span class="unit">Hz</span></div><div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-vib" style="width:0%;"></div></div></div>
+        <div class="sensor-card" id="sc-gps"><div class="name"><i class="fas fa-map-marker-alt"></i> GPS Fix</div><div class="value" id="val-gps">0<span class="unit">sat</span></div><div class="jauge" style="height:6px;"><div class="jauge-fill" id="jauge-gps" style="width:0%;"></div></div></div>
       </div>
 
-      <!-- GRAPHE TEMPS RÉEL -->
-      <h2 style="margin-top:1.5rem;"><i class="fas fa-chart-line"></i> GRAPHE TEMPS RÉEL — Température & Courant</h2>
+      <h2 style="margin-top:1.5rem;"><i class="fas fa-chart-line"></i> GRAPHE TEMPS RÉEL</h2>
       <canvas id="graphCanvas"></canvas>
     </div>
 
-    <!-- CONTRÔLES -->
     <div class="card-box">
       <h2><i class="fas fa-cogs"></i> CONTRÔLES AVANCÉS</h2>
       <div class="control-panel">
         <div class="io-box">
           <h4><i class="fas fa-toggle-on"></i> SYSTÈMES</h4>
-          <div class="switch-row">
-            <span class="label">SYSTÈME PRINCIPAL</span>
-            <button class="switch-btn switch-off" id="swSystem" onclick="toggleSwitch('swSystem','SYSTEME')">OFF</button>
-          </div>
-          <div class="switch-row">
-            <span class="label">MOTEURS</span>
-            <button class="switch-btn switch-off" id="swMoteurs" onclick="toggleSwitch('swMoteurs','MOTEURS')">OFF</button>
-          </div>
-          <div class="switch-row">
-            <span class="label">CAPTEURS</span>
-            <button class="switch-btn switch-off" id="swCapteurs" onclick="toggleSwitch('swCapteurs','CAPTEURS')">OFF</button>
-          </div>
-          <div class="switch-row">
-            <span class="label">ALARME</span>
-            <button class="switch-btn switch-off" id="swAlarme" onclick="toggleSwitch('swAlarme','ALARME')">OFF</button>
-          </div>
-          <div class="switch-row">
-            <span class="label">ÉCLAIRAGE</span>
-            <button class="switch-btn switch-off" id="swLumiere" onclick="toggleSwitch('swLumiere','LUMIERE')">OFF</button>
-          </div>
-          <div class="switch-row">
-            <span class="label">VENTILATION</span>
-            <button class="switch-btn switch-off" id="swVentil" onclick="toggleSwitch('swVentil','VENTILATION')">OFF</button>
-          </div>
+          <div class="switch-row"><span class="label">SYSTÈME PRINCIPAL</span><button class="switch-btn switch-off" id="swSystem" onclick="toggleSwitch('swSystem','SYSTEME')">OFF</button></div>
+          <div class="switch-row"><span class="label">MOTEURS</span><button class="switch-btn switch-off" id="swMoteurs" onclick="toggleSwitch('swMoteurs','MOTEURS')">OFF</button></div>
+          <div class="switch-row"><span class="label">CAPTEURS</span><button class="switch-btn switch-off" id="swCapteurs" onclick="toggleSwitch('swCapteurs','CAPTEURS')">OFF</button></div>
+          <div class="switch-row"><span class="label">ALARME</span><button class="switch-btn switch-off" id="swAlarme" onclick="toggleSwitch('swAlarme','ALARME')">OFF</button></div>
+          <div class="switch-row"><span class="label">ÉCLAIRAGE</span><button class="switch-btn switch-off" id="swLumiere" onclick="toggleSwitch('swLumiere','LUMIERE')">OFF</button></div>
+          <div class="switch-row"><span class="label">VENTILATION</span><button class="switch-btn switch-off" id="swVentil" onclick="toggleSwitch('swVentil','VENTILATION')">OFF</button></div>
         </div>
-
         <div class="io-box">
           <h4><i class="fas fa-cog"></i> MODE OPÉRATOIRE</h4>
           <button class="switch-btn switch-off" id="modeAuto" onclick="setMode('AUTO')" style="width:100%; margin-bottom:0.5rem; padding:0.8rem;">AUTO</button>
@@ -582,53 +620,21 @@ body {
           <button class="switch-btn switch-off" id="modeBypass" onclick="setMode('BYPASS')" style="width:100%; margin-bottom:0.5rem; padding:0.8rem;">BYPASS</button>
           <button class="switch-btn switch-off" id="modeUrgence" onclick="setMode('URGENCE')" style="width:100%; padding:0.8rem;">ARRÊT URGENCE</button>
         </div>
-
         <div class="io-box">
           <h4><i class="fas fa-tachometer-alt"></i> MOTEURS — VITESSE</h4>
-          <div class="slider-row">
-            <span style="font-size:0.7rem; color:var(--text2); min-width:50px;">MOTEUR 1</span>
-            <input type="range" id="sliderM1" min="0" max="100" value="0" oninput="majMoteur(1, this.value)">
-            <span class="val" id="m1Val">0%</span>
-          </div>
-          <div class="slider-row">
-            <span style="font-size:0.7rem; color:var(--text2); min-width:50px;">MOTEUR 2</span>
-            <input type="range" id="sliderM2" min="0" max="100" value="0" oninput="majMoteur(2, this.value)">
-            <span class="val" id="m2Val">0%</span>
-          </div>
-          <div class="slider-row">
-            <span style="font-size:0.7rem; color:var(--text2); min-width:50px;">MOTEUR 3</span>
-            <input type="range" id="sliderM3" min="0" max="100" value="0" oninput="majMoteur(3, this.value)">
-            <span class="val" id="m3Val">0%</span>
-          </div>
-          <div class="slider-row">
-            <span style="font-size:0.7rem; color:var(--text2); min-width:50px;">MOTEUR 4</span>
-            <input type="range" id="sliderM4" min="0" max="100" value="0" oninput="majMoteur(4, this.value)">
-            <span class="val" id="m4Val">0%</span>
-          </div>
+          <div class="slider-row"><span style="font-size:0.7rem; color:var(--text2); min-width:50px;">M1</span><input type="range" id="sliderM1" min="0" max="100" value="0" oninput="majMoteur(1, this.value)"><span class="val" id="m1Val">0%</span></div>
+          <div class="slider-row"><span style="font-size:0.7rem; color:var(--text2); min-width:50px;">M2</span><input type="range" id="sliderM2" min="0" max="100" value="0" oninput="majMoteur(2, this.value)"><span class="val" id="m2Val">0%</span></div>
+          <div class="slider-row"><span style="font-size:0.7rem; color:var(--text2); min-width:50px;">M3</span><input type="range" id="sliderM3" min="0" max="100" value="0" oninput="majMoteur(3, this.value)"><span class="val" id="m3Val">0%</span></div>
+          <div class="slider-row"><span style="font-size:0.7rem; color:var(--text2); min-width:50px;">M4</span><input type="range" id="sliderM4" min="0" max="100" value="0" oninput="majMoteur(4, this.value)"><span class="val" id="m4Val">0%</span></div>
         </div>
-
         <div class="io-box">
           <h4><i class="fas fa-sliders-h"></i> GLOBAL</h4>
-          <div class="slider-row">
-            <span style="font-size:0.7rem; color:var(--text2); min-width:70px;">VITESSE</span>
-            <input type="range" id="sliderVitesse" min="0" max="100" value="0" oninput="majVitesse(this.value)">
-            <span class="val" id="vitesseVal">0%</span>
-          </div>
-          <div class="slider-row">
-            <span style="font-size:0.7rem; color:var(--text2); min-width:70px;">PUISSANCE</span>
-            <input type="range" id="sliderPuissance" min="0" max="100" value="0" oninput="majPuissance(this.value)">
-            <span class="val" id="puissanceVal">0%</span>
-          </div>
-          <div class="slider-row">
-            <span style="font-size:0.7rem; color:var(--text2); min-width:70px;">TEMP CIBLE</span>
-            <input type="range" id="sliderTemp" min="20" max="80" value="45" oninput="majTempCible(this.value)">
-            <span class="val" id="tempVal">45°C</span>
-          </div>
+          <div class="slider-row"><span style="font-size:0.7rem; color:var(--text2); min-width:70px;">VITESSE</span><input type="range" id="sliderVitesse" min="0" max="100" value="0" oninput="majVitesse(this.value)"><span class="val" id="vitesseVal">0%</span></div>
+          <div class="slider-row"><span style="font-size:0.7rem; color:var(--text2); min-width:70px;">PUISSANCE</span><input type="range" id="sliderPuissance" min="0" max="100" value="0" oninput="majPuissance(this.value)"><span class="val" id="puissanceVal">0%</span></div>
         </div>
       </div>
     </div>
 
-    <!-- DIAGNOSTIC -->
     <div class="card-box">
       <h2><i class="fas fa-stethoscope"></i> DIAGNOSTIC SYSTÈME</h2>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
@@ -652,18 +658,20 @@ body {
       </div>
     </div>
 
-    <!-- TERMINAL -->
     <div class="card-box">
       <h2><i class="fas fa-terminal"></i> JOURNAL DES COMMANDES</h2>
       <div class="terminal" id="terminalLog"></div>
     </div>
   </div>
 
-  <!-- SIMULATION -->
+  <!-- SIMULATION / LABYRINTHE -->
   <div class="section" id="sectionSimulation">
     <div class="card-box">
-      <h2><i class="fas fa-cube"></i> SIMULATION</h2>
-      <p style="color:var(--text2); margin-bottom:1rem; font-size:0.85rem;">Pilotez le robot virtuel avec le joystick. Les commandes sont envoyées à l'appareil sélectionné.</p>
+      <h2><i class="fas fa-cube"></i> LABYRINTHE — 3 NIVEAUX</h2>
+      <p style="color:var(--text2); margin-bottom:1rem; font-size:0.9rem;">
+        <strong>Niveau 1 : Difficile — Niveau 2 : Très difficile — Niveau 3 : Extrême</strong><br>
+        Conduis le robot jusqu'à la sortie verte. Le score dépend du temps, des collisions et des commandes.
+      </p>
       <select id="simAppareil" class="input-full" onchange="majAppareilActif('sim')">
         <option value="">-- Mode simulation uniquement --</option>
       </select>
@@ -671,9 +679,10 @@ body {
       <div class="sim-area" style="margin-top:1.5rem;">
         <canvas id="simCanvas"></canvas>
         <div class="sim-stats">
+          <div class="sim-stat">Niveau: <span id="simLevel">1</span></div>
           <div class="sim-stat">Position: <span id="simPos">0, 0</span></div>
-          <div class="sim-stat">Vitesse: <span id="simVit">0</span></div>
-          <div class="sim-stat">Direction: <span id="simDir">0°</span></div>
+          <div class="sim-stat">Temps: <span id="simTime">0s</span></div>
+          <div class="sim-stat">Collisions: <span id="simCollisions">0</span></div>
           <div class="sim-stat">Commandes: <span id="simCmds">0</span></div>
         </div>
       </div>
@@ -684,11 +693,40 @@ body {
           <div style="color:var(--text2); font-size:0.75rem; margin-top:0.5rem;">DÉPLACEMENT</div>
         </div>
         <div style="text-align:center;">
-          <button class="btn-big btn-STOP" onclick="resetSim()">RESET</button>
+          <button class="btn-big btn-STOP" onclick="resetSim()" style="width:100%;">RESET</button>
         </div>
         <div style="text-align:center;">
-          <button class="btn-big btn-A" onclick="simBoost()">BOOST</button>
+          <button class="btn-big btn-A" onclick="ouvrirPleinEcran()" style="width:100%;">
+            <i class="fas fa-expand"></i> PLEIN ÉCRAN
+          </button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RETOUR VIDÉO -->
+  <div class="section" id="sectionVideo">
+    <div class="card-box">
+      <h2><i class="fas fa-video"></i> RETOUR VIDÉO</h2>
+      <p style="color:var(--text2); margin-bottom:1rem; font-size:0.9rem;">
+        Test avec la webcam du PC. Sur un vrai robot, l'ESP32-CAM enverra le flux ici.
+      </p>
+      <div class="video-container">
+        <video id="videoLive" autoplay muted playsinline></video>
+        <div class="placeholder" id="videoPlaceholder">
+          <i class="fas fa-video-slash"></i>
+          <p><strong>CAMÉRA HORS LIGNE</strong></p>
+          <p style="font-size:0.8rem;">Clique sur "ACTIVER WEBCAM" pour tester</p>
+        </div>
+        <div class="live-badge" id="liveBadge">● LIVE</div>
+      </div>
+      <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+        <button class="btn btn-green" id="btnCamStart" onclick="demarrerWebcam()">
+          <i class="fas fa-camera"></i> ACTIVER WEBCAM
+        </button>
+        <button class="btn btn-red" id="btnCamStop" onclick="arreterWebcam()" style="display:none;">
+          <i class="fas fa-stop"></i> ARRÊTER
+        </button>
       </div>
     </div>
   </div>
@@ -719,12 +757,52 @@ body {
           </div>
         </div>
       </div>
-
       <div class="terminal" id="combatLog" style="margin-top:1.5rem;"></div>
-
       <div style="text-align:center; margin-top:1rem;">
         <button class="btn btn-orange" onclick="resetCombat()"><i class="fas fa-redo"></i> NOUVEAU COMBAT</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- PLEIN ÉCRAN LABYRINTHE -->
+<div class="fullscreen-overlay" id="fsOverlay">
+  <div class="fs-header">
+    <h2><i class="fas fa-cube"></i> LABYRINTHE — PLEIN ÉCRAN</h2>
+    <div class="fs-info">
+      <span class="badge level" id="fsLevel">Niveau 1 — Difficile</span>
+      <span class="badge time" id="fsTime">00:00</span>
+      <span class="badge score" id="fsScore">Score: --</span>
+      <button class="btn btn-red" onclick="fermerPleinEcran()"><i class="fas fa-times"></i> QUITTER</button>
+    </div>
+  </div>
+  <div class="fs-body">
+    <canvas id="mazeCanvas"></canvas>
+  </div>
+  <div class="fs-footer">
+    <div class="joystick-fs" id="joyFs"><div class="joy-knob-fs" id="joyFsKnob"></div></div>
+    <div class="fs-btns">
+      <button class="btn btn-orange" onclick="resetSim()"><i class="fas fa-redo"></i> RECOMMENCER</button>
+      <button class="btn btn-red" onclick="envoyer('STOP')"><i class="fas fa-hand-paper"></i> ARRÊT</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SCORE FINAL -->
+<div class="modal-score" id="modalScore">
+  <div class="box">
+    <h2><i class="fas fa-trophy"></i> MISSION TERMINÉE</h2>
+    <div class="note" id="noteFinale">--</div>
+    <div class="mention" id="mentionFinale">--</div>
+    <div class="stats">
+      <div class="stat-line"><div class="label">Temps</div><div class="val" id="statTemps">--</div></div>
+      <div class="stat-line"><div class="label">Collisions</div><div class="val" id="statCollisions">--</div></div>
+      <div class="stat-line"><div class="label">Commandes</div><div class="val" id="statCmd">--</div></div>
+      <div class="stat-line"><div class="label">Niveau</div><div class="val" id="statNiveau">--</div></div>
+    </div>
+    <div style="display:flex; gap:0.6rem; justify-content:center; flex-wrap:wrap;">
+      <button class="btn btn-gold" onclick="niveauSuivant()"><i class="fas fa-arrow-right"></i> NIVEAU SUIVANT</button>
+      <button class="btn btn-dark" onclick="fermerModalScore()">FERMER</button>
     </div>
   </div>
 </div>
@@ -781,36 +859,29 @@ function switchTab(name) {
 // ============ ASSISTANT VOCAL ============
 let vocalActive = true;
 let dernieresAlertes = {};
-
-function parler(texte) {
+function parler(texte, force=false) {
   if (!vocalActive) return;
   if (!('speechSynthesis' in window)) return;
-  // Éviter de répéter la même alerte en 20s
   const now = Date.now();
-  if (dernieresAlertes[texte] && (now - dernieresAlertes[texte]) < 20000) return;
+  if (!force && dernieresAlertes[texte] && (now - dernieresAlertes[texte]) < 15000) return;
   dernieresAlertes[texte] = now;
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(texte);
-  u.lang = 'fr-FR';
-  u.rate = 1.05;
-  u.pitch = 1.0;
+  u.lang = 'fr-FR'; u.rate = 1.05; u.pitch = 1.0;
   window.speechSynthesis.speak(u);
   majVocalText(texte);
 }
-
 function majVocalText(texte) {
   const el = document.getElementById('vocalText');
   if (el) el.innerHTML = `🎙️ <strong>${texte}</strong>`;
 }
-
 function toggleVocal() {
   vocalActive = !vocalActive;
   const btn = document.getElementById('btnVocal');
   const txt = document.getElementById('vocalBtnText');
   if (vocalActive) {
-    btn.classList.remove('switch-off');
     txt.textContent = 'ACTIVÉ';
-    parler('Assistant vocal activé.');
+    parler('Assistant vocal activé.', true);
   } else {
     txt.textContent = 'COUPÉ';
     window.speechSynthesis.cancel();
@@ -820,7 +891,6 @@ function toggleVocal() {
 
 // ============ APPAREILS ============
 let appareilsCache = [];
-
 async function loadAppareils() {
   const grid = document.getElementById('appareilGrid');
   grid.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
@@ -837,7 +907,6 @@ async function loadAppareils() {
           <div class="meta">🔧 ${a.type} — IP: ${a.ip}:${a.port}</div>
           <div class="meta">⚙️ ${a.nb_moteurs} moteur(s)</div>
           <div class="meta">📡 ${a.capteurs || 'Aucun capteur'}</div>
-          ${a.description ? `<div class="meta">📝 ${a.description}</div>` : ''}
           <div class="actions">
             <button onclick="testerConnexion('${a.id}')"><i class="fas fa-wifi"></i> Tester</button>
             <button onclick="voirAppareil('${a.id}')"><i class="fas fa-eye"></i> Info</button>
@@ -851,10 +920,8 @@ async function loadAppareils() {
     grid.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>';
   }
 }
-
 function majListesAppareils() {
-  const selects = ['simpleAppareil','xboxAppareil','indusAppareil','simAppareil'];
-  selects.forEach(id => {
+  ['simpleAppareil','xboxAppareil','indusAppareil','simAppareil'].forEach(id => {
     const sel = document.getElementById(id);
     if (!sel) return;
     const cur = sel.value;
@@ -870,7 +937,6 @@ function majListesAppareils() {
     if (cur) sel.value = cur;
   });
 }
-
 async function ajouterAppareil() {
   const nom = document.getElementById('appNom').value.trim();
   const type = document.getElementById('appType').value;
@@ -879,89 +945,65 @@ async function ajouterAppareil() {
   const nb_moteurs = parseInt(document.getElementById('appMoteurs').value) || 4;
   const capteurs = document.getElementById('appCapteurs').value.trim();
   const description = document.getElementById('appDesc').value.trim();
-
   if (!nom || !ip) { showToast('⚠️ Nom et IP obligatoires.', 'error'); return; }
-
   try {
     const { error } = await supabaseClient.from('appareils').insert([{
       nom, type, ip, port, nb_moteurs, capteurs, description,
-      statut: 'hors_ligne',
-      proprietaire_id: memberId,
-      timestamp: Date.now()
+      statut: 'hors_ligne', proprietaire_id: memberId, timestamp: Date.now()
     }]);
     if (error) throw error;
     showToast('✅ Appareil ajouté !', 'success');
-    log(`Ajout appareil: ${nom} (${ip})`);
     document.getElementById('appNom').value = '';
     document.getElementById('appIp').value = '';
-    document.getElementById('appCapteurs').value = '';
-    document.getElementById('appDesc').value = '';
     loadAppareils();
   } catch (e) { showToast('❌ ' + e.message, 'error'); }
 }
-
 async function supprimerAppareil(id) {
   if (!confirm('Supprimer cet appareil ?')) return;
   try {
     const { error } = await supabaseClient.from('appareils').delete().eq('id', id);
     if (error) throw error;
     showToast('🗑️ Appareil supprimé.', 'success');
-    log('Appareil supprimé: ' + id);
     loadAppareils();
   } catch (e) { showToast('❌ ' + e.message, 'error'); }
 }
-
 function voirAppareil(id) {
   const a = appareilsCache.find(x => x.id === id);
   if (!a) return;
-  alert(`NOM: ${a.nom}\nTYPE: ${a.type}\nIP: ${a.ip}:${a.port}\nMOTEURS: ${a.nb_moteurs}\nCAPTEURS: ${a.capteurs || 'aucun'}\nDESCRIPTION: ${a.description || '-'}`);
+  alert(`NOM: ${a.nom}\nTYPE: ${a.type}\nIP: ${a.ip}:${a.port}\nMOTEURS: ${a.nb_moteurs}\nCAPTEURS: ${a.capteurs || 'aucun'}`);
 }
-
 async function testerConnexion(id) {
   const a = appareilsCache.find(x => x.id === id);
   if (!a) return;
-  showToast('🔍 Test de connexion...', '');
+  showToast('🔍 Test...', '');
   log(`Ping ${a.ip}:${a.port}`);
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 3000);
     await fetch(`http://${a.ip}:${a.port}/ping`, { signal: controller.signal, mode: 'no-cors' });
     clearTimeout(timeout);
-    showToast('✅ Réponse reçue (voir journal)', 'success');
+    showToast('✅ Réponse reçue', 'success');
     await supabaseClient.from('appareils').update({ statut: 'en_ligne' }).eq('id', id);
-    log(`✅ ${a.nom} répond`);
   } catch (e) {
-    showToast('⚠️ Pas de réponse (normal si robot éteint)', '');
-    log(`⚠️ ${a.nom} - pas de réponse`);
+    showToast('⚠️ Pas de réponse', '');
   }
   loadAppareils();
 }
 
-// ============ ENVOI DE COMMANDES ============
+// ============ ENVOI ============
 let appareilActif = null;
-
 function majAppareilActif(mode) {
   const map = { simple: 'simpleAppareil', xbox: 'xboxAppareil', indus: 'indusAppareil', sim: 'simAppareil' };
   const id = document.getElementById(map[mode]).value;
   appareilActif = appareilsCache.find(a => a.id === id) || null;
-  if (appareilActif) {
-    showToast('🎯 Appareil actif: ' + appareilActif.nom, 'success');
-    log('Appareil actif: ' + appareilActif.nom);
-  }
 }
-
 async function envoyer(cmd, val=null) {
   const payload = { cmd, val, ts: Date.now() };
-  const sl = document.getElementById('simpleLast');
-  if (sl) sl.textContent = cmd;
-  log(`➡️ CMD: ${cmd}${val !== null ? ' (' + JSON.stringify(val) + ')' : ''}`);
-
+  log(`➡️ CMD: ${cmd}`);
   if (!appareilActif) return;
-
   try {
     await fetch(`http://${appareilActif.ip}:${appareilActif.port}/cmd`, {
-      method: 'POST',
-      mode: 'no-cors',
+      method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
@@ -975,27 +1017,21 @@ function setupJoystick(padId, knobId, onMove, onEnd) {
   if (!pad) return;
   let active = false;
   const rect = () => pad.getBoundingClientRect();
-
   function move(e) {
     if (!active) return;
     const r = rect();
-    const cx = r.left + r.width/2;
-    const cy = r.top + r.height/2;
+    const cx = r.left + r.width/2, cy = r.top + r.height/2;
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    let dx = clientX - cx;
-    let dy = clientY - cy;
+    let dx = clientX - cx, dy = clientY - cy;
     const maxR = r.width/2 - 25;
     const dist = Math.sqrt(dx*dx + dy*dy);
     if (dist > maxR) { dx = dx/dist*maxR; dy = dy/dist*maxR; }
     knob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
-    const xPct = Math.round(dx / maxR * 100);
-    const yPct = Math.round(-dy / maxR * 100);
-    onMove(xPct, yPct);
+    onMove(Math.round(dx/maxR*100), Math.round(-dy/maxR*100));
   }
   function start(e) { active = true; e.preventDefault(); move(e); }
   function end() { if (!active) return; active = false; knob.style.transform = 'translate(-50%,-50%)'; if (onEnd) onEnd(); }
-
   pad.addEventListener('mousedown', start);
   pad.addEventListener('touchstart', start, {passive:false});
   document.addEventListener('mousemove', move);
@@ -1003,29 +1039,15 @@ function setupJoystick(padId, knobId, onMove, onEnd) {
   document.addEventListener('mouseup', end);
   document.addEventListener('touchend', end);
 }
-
 setupJoystick('joySimple', 'joySimpleKnob', (x,y) => {
   document.getElementById('simpleX').textContent = x;
   document.getElementById('simpleY').textContent = y;
   envoyer('MOVE', {x, y});
 });
-
-setupJoystick('joyLeft', 'joyLeftKnob', (x,y) => {
-  document.getElementById('lxVal').textContent = x;
-  document.getElementById('lyVal').textContent = y;
-  envoyer('JOY_L', {x, y});
-});
-
-setupJoystick('joyRight', 'joyRightKnob', (x,y) => {
-  document.getElementById('rxVal').textContent = x;
-  document.getElementById('ryVal').textContent = y;
-  envoyer('JOY_R', {x, y});
-});
-
-setupJoystick('joySim', 'joySimKnob', (x,y) => {
-  simDirX = x/100;
-  simDirY = y/100;
-});
+setupJoystick('joyLeft', 'joyLeftKnob', (x,y) => envoyer('JOY_L', {x, y}));
+setupJoystick('joyRight', 'joyRightKnob', (x,y) => envoyer('JOY_R', {x, y}));
+setupJoystick('joySim', 'joySimKnob', (x,y) => { simDirX = x/100; simDirY = y/100; });
+setupJoystick('joyFs', 'joyFsKnob', (x,y) => { simDirX = x/100; simDirY = y/100; });
 
 function setupGachette(id, fillId, onChange) {
   const el = document.getElementById(id);
@@ -1048,11 +1070,13 @@ function setupGachette(id, fillId, onChange) {
   document.addEventListener('mouseup', () => { if (active) { active = false; fill.style.height = '0%'; onChange(0); } });
   document.addEventListener('touchend', () => { if (active) { active = false; fill.style.height = '0%'; onChange(0); } });
 }
-setupGachette('gachetteL', 'gachetteLFill', v => { document.getElementById('l2Val').textContent = v; envoyer('L2', v); });
-setupGachette('gachetteR', 'gachetteRFill', v => { document.getElementById('r2Val').textContent = v; envoyer('R2', v); });
+setupGachette('gachetteL', 'gachetteLFill', v => envoyer('L2', v));
+setupGachette('gachetteR', 'gachetteRFill', v => envoyer('R2', v));
 
 // ============ PANNEAU INDUSTRIEL ============
-let moteursVitesse = [0, 0, 0, 0]; // M1, M2, M3, M4
+let moteursVitesse = [0, 0, 0, 0];
+let ventilationActive = false;
+let alarmeActive = false;
 
 function toggleSwitch(id, label) {
   const btn = document.getElementById(id);
@@ -1064,11 +1088,15 @@ function toggleSwitch(id, label) {
     btn.classList.remove('switch-off'); btn.classList.add('switch-on'); btn.textContent = 'ON';
   }
   log(`Switch ${label}: ${!isOn ? 'ON' : 'OFF'}`);
-  if (label === 'SYSTEME' && !isOn) parler('Système principal activé.');
-  if (label === 'ALARME' && !isOn) parler('Alarme déclenchée.');
+  if (label === 'SYSTEME' && !isOn) parler('Système principal activé.', true);
+  if (label === 'ALARME' && !isOn) parler('Alarme déclenchée.', true);
+  if (label === 'VENTILATION') {
+    ventilationActive = !isOn;
+    if (ventilationActive) parler('Ventilation activée. Refroidissement en cours.', true);
+    else parler('Ventilation coupée.', true);
+  }
   envoyer('SWITCH', { cible: label, etat: !isOn });
 }
-
 function setMode(m) {
   ['modeAuto','modeManuel','modeBypass','modeUrgence'].forEach(id => {
     const b = document.getElementById(id);
@@ -1076,75 +1104,91 @@ function setMode(m) {
   });
   const b = document.getElementById('mode' + m.charAt(0) + m.slice(1).toLowerCase());
   if (b) { b.classList.remove('switch-off'); b.classList.add('switch-on'); }
-  log(`Mode: ${m}`);
-  if (m === 'URGENCE') parler('Arrêt d\'urgence activé. Moteurs stoppés.');
-  else parler('Mode ' + m + ' sélectionné.');
+  if (m === 'URGENCE') {
+    parler('Arrêt d\'urgence activé. Tous les moteurs sont stoppés.', true);
+    moteursVitesse = [0,0,0,0];
+    [1,2,3,4].forEach(n => {
+      const s = document.getElementById('sliderM'+n);
+      if (s) s.value = 0;
+      const l = document.getElementById('m'+n+'Val');
+      if (l) l.textContent = '0%';
+    });
+  } else parler('Mode ' + m + ' sélectionné.', true);
   envoyer('MODE', m);
 }
-
 function majMoteur(num, val) {
   moteursVitesse[num-1] = parseInt(val);
   document.getElementById('m' + num + 'Val').textContent = val + '%';
-  if (val > 80) {
-    parler('Attention, moteur ' + num + ' tourne très vite. Ralentissez.');
+  // Alerte intelligente : seulement si la ventilation est OFF
+  if (val > 85 && !ventilationActive) {
+    parler('Attention, moteur ' + num + ' tourne très vite. Risque de surchauffe. Activez la ventilation.', true);
   }
   envoyer('MOTEUR_' + num, parseInt(val));
 }
+function majVitesse(v) { document.getElementById('vitesseVal').textContent = v + '%'; envoyer('VITESSE', parseInt(v)); }
+function majPuissance(v) { document.getElementById('puissanceVal').textContent = v + '%'; envoyer('PUISSANCE', parseInt(v)); }
 
-function majVitesse(v) {
-  document.getElementById('vitesseVal').textContent = v + '%';
-  envoyer('VITESSE', parseInt(v));
-}
-function majPuissance(v) {
-  document.getElementById('puissanceVal').textContent = v + '%';
-  envoyer('PUISSANCE', parseInt(v));
-}
-function majTempCible(v) {
-  document.getElementById('tempVal').textContent = v + '°C';
-}
-
-// ============ CAPTEURS SIMULÉS ============
+// ============ CAPTEURS INTELLIGENTS ============
 const capteursEtat = {
-  temp: 35, hum: 55, volt: 12, courant: 2.5,
-  dist: 150, gaz: 200, vib: 10, gps: 8
+  temp: 32, hum: 50, volt: 12, courant: 1.5,
+  dist: 200, gaz: 100, vib: 2, gps: 10
 };
 
 function majCapteurs() {
-  // Fluctuations
-  capteursEtat.temp += (Math.random() - 0.5) * 2 + (moteursVitesse.reduce((a,b)=>a+b,0)/400);
-  capteursEtat.hum += (Math.random() - 0.5) * 2;
-  capteursEtat.volt += (Math.random() - 0.5) * 0.3;
-  capteursEtat.courant = 2 + (moteursVitesse.reduce((a,b)=>a+b,0)/100);
-  capteursEtat.dist = Math.max(10, capteursEtat.dist + (Math.random() - 0.5) * 20);
-  capteursEtat.gaz += (Math.random() - 0.5) * 5;
-  capteursEtat.vib = 5 + (moteursVitesse.reduce((a,b)=>a+b,0)/20) + Math.random()*5;
-  capteursEtat.gps = Math.min(12, capteursEtat.gps + (Math.random()-0.4));
+  const totalVitesse = moteursVitesse.reduce((a,b)=>a+b,0);
+  const puissanceMoteurs = totalVitesse / 400; // 0 à 1
+
+  // Température RÉALISTE
+  // - Monte proportionnellement à la vitesse des moteurs
+  // - Descend si la ventilation est active
+  const monteeTemp = puissanceMoteurs * 0.8;
+  const refroidissement = ventilationActive ? 2.5 : 0.2;
+  capteursEtat.temp += monteeTemp - refroidissement;
+  capteursEtat.temp += (Math.random() - 0.5) * 0.5;
+
+  // Humidité monte avec la ventilation (air brassé)
+  capteursEtat.hum += (ventilationActive ? 0.3 : -0.2) + (Math.random() - 0.5) * 0.8;
+  capteursEtat.hum = Math.max(20, Math.min(95, capteursEtat.hum));
+
+  // Voltage / Courant
+  capteursEtat.volt = 12 - puissanceMoteurs * 1.5 + (Math.random() - 0.5) * 0.2;
+  capteursEtat.courant = 1 + puissanceMoteurs * 4 + (Math.random() - 0.5) * 0.2;
+
+  // Distance, gaz, vib, gps
+  capteursEtat.dist = Math.max(10, capteursEtat.dist + (Math.random() - 0.5) * 15);
+  capteursEtat.gaz = 100 + (Math.random() - 0.5) * 40;
+  capteursEtat.vib = 1 + puissanceMoteurs * 30 + Math.random() * 2;
+  capteursEtat.gps = Math.max(6, Math.min(12, capteursEtat.gps + (Math.random() - 0.4)));
 
   // Bornes
-  capteursEtat.temp = Math.max(20, Math.min(90, capteursEtat.temp));
-  capteursEtat.hum = Math.max(20, Math.min(95, capteursEtat.hum));
-  capteursEtat.volt = Math.max(10, Math.min(14, capteursEtat.volt));
-  capteursEtat.gaz = Math.max(0, Math.min(1000, capteursEtat.gaz));
-  capteursEtat.gps = Math.max(0, Math.min(12, capteursEtat.gps));
+  capteursEtat.temp = Math.max(20, Math.min(95, capteursEtat.temp));
+  capteursEtat.volt = Math.max(9, Math.min(13, capteursEtat.volt));
 
   // Affichage
-  majCapteurUI('temp', capteursEtat.temp.toFixed(1), '%', capteursEtat.temp/90*100, 60, 75);
+  majCapteurUI('temp', capteursEtat.temp.toFixed(1), '°C', capteursEtat.temp, 60, 78);
   majCapteurUI('hum', capteursEtat.hum.toFixed(1), '%', capteursEtat.hum, 70, 85);
-  majCapteurUI('volt', capteursEtat.volt.toFixed(1), 'V', capteursEtat.volt/14*100, 15, 90);
-  majCapteurUI('courant', capteursEtat.courant.toFixed(2), 'A', capteursEtat.courant/5*100, 70, 85);
-  majCapteurUI('dist', capteursEtat.dist.toFixed(0), 'cm', Math.min(100, capteursEtat.dist/200*100), 0, 90);
-  majCapteurUI('gaz', capteursEtat.gaz.toFixed(0), 'ppm', capteursEtat.gaz/1000*100, 60, 80);
-  majCapteurUI('vib', capteursEtat.vib.toFixed(1), 'Hz', capteursEtat.vib/50*100, 60, 80);
+  majCapteurUI('volt', capteursEtat.volt.toFixed(1), 'V', capteursEtat.volt/13*100, 20, 90);
+  majCapteurUI('courant', capteursEtat.courant.toFixed(2), 'A', capteursEtat.courant/6*100, 70, 88);
+  majCapteurUI('dist', capteursEtat.dist.toFixed(0), 'cm', Math.min(100, capteursEtat.dist/250*100), 0, 90);
+  majCapteurUI('gaz', capteursEtat.gaz.toFixed(0), 'ppm', capteursEtat.gaz/500*100, 50, 80);
+  majCapteurUI('vib', capteursEtat.vib.toFixed(1), 'Hz', capteursEtat.vib/40*100, 60, 85);
   majCapteurUI('gps', capteursEtat.gps.toFixed(0), 'sat', capteursEtat.gps/12*100, 0, 100);
 
-  // Alertes vocales
-  if (capteursEtat.temp > 75) parler('Alerte : température élevée à ' + capteursEtat.temp.toFixed(0) + ' degrés. Risque de surchauffe.');
-  if (capteursEtat.gaz > 600) parler('Alerte : fuite de gaz détectée. Évacuation recommandée.');
-  if (capteursEtat.volt < 10.5) parler('Attention : tension batterie faible. Rechargez le système.');
-  if (capteursEtat.dist < 20) parler('Obstacle détecté à ' + capteursEtat.dist.toFixed(0) + ' centimètres.');
-  if (capteursEtat.hum > 85) parler('Humidité élevée. Risque de corrosion des composants.');
+  // VOIX INTELLIGENTE (avec logique)
+  if (capteursEtat.temp > 78) {
+    if (ventilationActive) {
+      parler('Surchauffe détectée. Ventilation en cours, température en baisse.', true);
+    } else {
+      parler('Température critique à ' + capteursEtat.temp.toFixed(0) + ' degrés. Activez la ventilation immédiatement.', true);
+    }
+  } else if (capteursEtat.temp > 65 && !ventilationActive) {
+    parler('Température élevée. Pensez à activer la ventilation.', true);
+  }
+  if (capteursEtat.volt < 10) parler('Batterie critique. Arrêtez les moteurs non essentiels.', true);
+  if (capteursEtat.courant > 5) parler('Surconsommation électrique détectée.', true);
+  if (capteursEtat.gaz > 400) parler('Présence de gaz détectée. Vérifiez le système.', true);
+  if (capteursEtat.vib > 30) parler('Vibrations anormales. Moteur peut-être déséquilibré.', true);
 
-  // Mise à jour alertes
   majAlertes();
 }
 
@@ -1172,13 +1216,12 @@ function majAlertes() {
   const liste = document.getElementById('alertesList');
   if (!liste) return;
   const alertes = [];
-  if (capteursEtat.temp > 75) alertes.push({sev:'danger', txt:'🌡️ Surchauffe : ' + capteursEtat.temp.toFixed(0) + '°C'});
+  if (capteursEtat.temp > 78) alertes.push({sev:'danger', txt:'🌡️ Surchauffe : ' + capteursEtat.temp.toFixed(0) + '°C'});
   else if (capteursEtat.temp > 60) alertes.push({sev:'warn', txt:'🌡️ Température élevée : ' + capteursEtat.temp.toFixed(0) + '°C'});
-  if (capteursEtat.gaz > 600) alertes.push({sev:'danger', txt:'💨 Gaz détecté : ' + capteursEtat.gaz.toFixed(0) + ' ppm'});
-  if (capteursEtat.volt < 10.5) alertes.push({sev:'warn', txt:'🔋 Batterie faible : ' + capteursEtat.volt.toFixed(1) + 'V'});
-  if (capteursEtat.dist < 20) alertes.push({sev:'warn', txt:'📏 Obstacle proche : ' + capteursEtat.dist.toFixed(0) + ' cm'});
-  if (capteursEtat.hum > 85) alertes.push({sev:'warn', txt:'💧 Humidité élevée : ' + capteursEtat.hum.toFixed(0) + '%'});
-  if (moteursVitesse.some(v => v > 80)) alertes.push({sev:'warn', txt:'⚙️ Moteur rapide détecté'});
+  if (capteursEtat.gaz > 400) alertes.push({sev:'warn', txt:'💨 Gaz : ' + capteursEtat.gaz.toFixed(0) + ' ppm'});
+  if (capteursEtat.volt < 10) alertes.push({sev:'danger', txt:'🔋 Batterie faible : ' + capteursEtat.volt.toFixed(1) + 'V'});
+  if (capteursEtat.courant > 5) alertes.push({sev:'warn', txt:'⚡ Surconsommation'});
+  if (moteursVitesse.some(v => v > 85) && !ventilationActive) alertes.push({sev:'warn', txt:'⚙️ Moteur rapide sans ventilation'});
 
   if (alertes.length === 0) {
     liste.innerHTML = '<div style="color:var(--green);">✅ Aucune alerte active</div>';
@@ -1189,9 +1232,8 @@ function majAlertes() {
   }
 }
 
-// ============ SCHÉMA INDUSTRIEL ANIMÉ ============
+// ============ SCHÉMA INDUSTRIEL ============
 let indusCanvas, indusCtx, indusFrame = 0;
-
 function initIndusCanvas() {
   indusCanvas = document.getElementById('indusCanvas');
   if (!indusCanvas) return;
@@ -1207,54 +1249,31 @@ function initIndusCanvas() {
     drawIndus();
   }
 }
-
 function drawIndus() {
   if (!indusCtx) return;
   const w = indusCanvas.width, h = indusCanvas.height;
   indusCtx.clearRect(0, 0, w, h);
   indusFrame += 0.05;
-
-  // Grille
   indusCtx.strokeStyle = 'rgba(0,240,255,0.06)';
-  indusCtx.lineWidth = 1;
   for (let i = 0; i < w; i += 30) { indusCtx.beginPath(); indusCtx.moveTo(i,0); indusCtx.lineTo(i,h); indusCtx.stroke(); }
   for (let i = 0; i < h; i += 30) { indusCtx.beginPath(); indusCtx.moveTo(0,i); indusCtx.lineTo(w,i); indusCtx.stroke(); }
 
   const cx = w/2, cy = h/2;
-  const pulse = Math.sin(indusFrame) * 0.5 + 0.5;
   const totalVitesse = moteursVitesse.reduce((a,b)=>a+b,0);
-
-  // Châssis
   indusCtx.save();
-  indusCtx.shadowBlur = 20 + pulse * 15;
-  indusCtx.shadowColor = totalVitesse > 0 ? '#00ff88' : '#00f0ff';
+  indusCtx.shadowBlur = 20; indusCtx.shadowColor = totalVitesse > 0 ? '#00ff88' : '#00f0ff';
   indusCtx.strokeStyle = totalVitesse > 0 ? '#00ff88' : '#00f0ff';
   indusCtx.lineWidth = 2;
   indusCtx.fillStyle = 'rgba(0,240,255,0.08)';
   indusCtx.beginPath();
   indusCtx.roundRect(cx - 110, cy - 70, 220, 140, 14);
-  indusCtx.fill();
-  indusCtx.stroke();
+  indusCtx.fill(); indusCtx.stroke();
   indusCtx.restore();
-
-  // Écran central
-  indusCtx.fillStyle = 'rgba(0,255,136,0.15)';
-  indusCtx.strokeStyle = '#00ff88';
-  indusCtx.lineWidth = 1.5;
-  indusCtx.beginPath();
-  indusCtx.roundRect(cx - 55, cy - 40, 110, 60, 6);
-  indusCtx.fill();
-  indusCtx.stroke();
   indusCtx.fillStyle = '#00ff88';
-  indusCtx.font = 'bold 11px "Courier New"';
-  indusCtx.textAlign = 'center';
-  indusCtx.fillText('AFRICA.TECH21', cx, cy - 22);
   indusCtx.font = 'bold 14px "Courier New"';
-  indusCtx.fillText('V=' + Math.round(totalVitesse/4) + '%', cx, cy - 2);
-  indusCtx.font = '10px "Courier New"';
-  indusCtx.fillText('T=' + capteursEtat.temp.toFixed(0) + '°C', cx, cy + 14);
+  indusCtx.textAlign = 'center';
+  indusCtx.fillText('V=' + Math.round(totalVitesse/4) + '%', cx, cy);
 
-  // 4 MOTEURS / ROUES — vitesse proportionnelle
   const wheelPos = [
     {x: cx - 120, y: cy - 85, m: 0},
     {x: cx + 120, y: cy - 85, m: 1},
@@ -1269,148 +1288,60 @@ function drawIndus() {
     indusCtx.rotate(rot);
     indusCtx.strokeStyle = vitesse > 50 ? '#00ff88' : (vitesse > 0 ? '#ffd700' : '#666');
     indusCtx.lineWidth = 3;
-    indusCtx.shadowBlur = vitesse > 0 ? 15 : 5;
-    indusCtx.shadowColor = indusCtx.strokeStyle;
     indusCtx.beginPath();
     indusCtx.arc(0, 0, 20, 0, Math.PI*2);
     indusCtx.stroke();
-    // Rayons (tournent avec)
     for (let a = 0; a < 6; a++) {
       indusCtx.beginPath();
       indusCtx.moveTo(0, 0);
-      indusCtx.lineTo(Math.cos(a * Math.PI/3) * 18, Math.sin(a * Math.PI/3) * 18);
+      indusCtx.lineTo(Math.cos(a*Math.PI/3)*18, Math.sin(a*Math.PI/3)*18);
       indusCtx.stroke();
     }
     indusCtx.restore();
-
-    // Label moteur
-    indusCtx.fillStyle = '#00f0ff';
-    indusCtx.font = 'bold 9px "Orbitron"';
-    indusCtx.textAlign = 'center';
-    indusCtx.fillText('M' + (p.m+1) + ' ' + vitesse + '%', p.x, p.y + 38);
   });
-
-  // 8 CAPTEURS AUTOUR
-  const sensors = [
-    {label:'TEMP', x: cx - 200, y: cy - 100, val: capteursEtat.temp.toFixed(0) + '°', color:'#00ff88'},
-    {label:'HUM', x: cx + 200, y: cy - 100, val: capteursEtat.hum.toFixed(0) + '%', color:'#00f0ff'},
-    {label:'VOLT', x: cx - 200, y: cy, val: capteursEtat.volt.toFixed(1) + 'V', color:'#ffd700'},
-    {label:'AMP', x: cx + 200, y: cy, val: capteursEtat.courant.toFixed(1) + 'A', color:'#ff8c00'},
-    {label:'DIST', x: cx - 200, y: cy + 100, val: capteursEtat.dist.toFixed(0) + 'cm', color:'#00f0ff'},
-    {label:'GAZ', x: cx + 200, y: cy + 100, val: capteursEtat.gaz.toFixed(0), color:'#ff0033'},
-    {label:'VIB', x: cx, y: cy - 145, val: capteursEtat.vib.toFixed(0) + 'Hz', color:'#b300ff'},
-    {label:'GPS', x: cx, y: cy + 145, val: capteursEtat.gps.toFixed(0) + 'sat', color:'#00ff88'}
-  ];
-  sensors.forEach((s, i) => {
-    const blink = Math.sin(indusFrame * 3 + i) > 0;
-    indusCtx.save();
-    indusCtx.shadowBlur = blink ? 18 : 6;
-    indusCtx.shadowColor = s.color;
-    indusCtx.fillStyle = blink ? s.color : 'rgba(0,0,0,0.6)';
-    indusCtx.strokeStyle = s.color;
-    indusCtx.lineWidth = 2;
-    indusCtx.beginPath();
-    indusCtx.arc(s.x, s.y, 12, 0, Math.PI*2);
-    indusCtx.fill();
-    indusCtx.stroke();
-    indusCtx.restore();
-
-    indusCtx.fillStyle = s.color;
-    indusCtx.font = 'bold 9px "Orbitron"';
-    indusCtx.textAlign = 'center';
-    indusCtx.fillText(s.label, s.x, s.y - 18);
-    indusCtx.font = 'bold 10px "Orbitron"';
-    indusCtx.fillText(s.val, s.x, s.y + 26);
-
-    // Ligne + flux
-    indusCtx.strokeStyle = 'rgba(0,240,255,0.15)';
-    indusCtx.setLineDash([3, 3]);
-    indusCtx.beginPath();
-    indusCtx.moveTo(s.x, s.y);
-    indusCtx.lineTo(cx, cy);
-    indusCtx.stroke();
-    indusCtx.setLineDash([]);
-
-    const t = (indusFrame * 1.5 + i * 0.15) % 1;
-    const fx = s.x + (cx - s.x) * t;
-    const fy = s.y + (cy - s.y) * t;
-    indusCtx.fillStyle = s.color;
-    indusCtx.shadowBlur = 12;
-    indusCtx.shadowColor = s.color;
-    indusCtx.beginPath();
-    indusCtx.arc(fx, fy, 3, 0, Math.PI*2);
-    indusCtx.fill();
-  });
-
-  // Ondes radar
-  indusCtx.strokeStyle = `rgba(0,240,255,${0.3 - (indusFrame % 2) * 0.15})`;
-  indusCtx.lineWidth = 1;
-  indusCtx.beginPath();
-  indusCtx.arc(cx, cy, 140 + (indusFrame * 40) % 100, 0, Math.PI*2);
-  indusCtx.stroke();
 
   requestAnimationFrame(drawIndus);
 }
 
 // ============ GRAPHE ============
 let graphCanvas, graphCtx;
-let graphDataTemp = [];
-let graphDataCourant = [];
-
+let graphDataTemp = [], graphDataCourant = [];
 function initGraph() {
   graphCanvas = document.getElementById('graphCanvas');
   if (!graphCanvas) return;
   const w = graphCanvas.offsetWidth;
   if (w < 10) return;
-  graphCanvas.width = w;
-  graphCanvas.height = 140;
+  graphCanvas.width = w; graphCanvas.height = 140;
   graphCtx = graphCanvas.getContext('2d');
 }
-
 function drawGraph() {
   if (!graphCtx) return;
   const w = graphCanvas.width, h = graphCanvas.height;
   graphCtx.clearRect(0, 0, w, h);
-
-  // Grille
   graphCtx.strokeStyle = 'rgba(0,240,255,0.08)';
   for (let i = 0; i < w; i += 40) { graphCtx.beginPath(); graphCtx.moveTo(i, 0); graphCtx.lineTo(i, h); graphCtx.stroke(); }
   for (let i = 0; i < h; i += 20) { graphCtx.beginPath(); graphCtx.moveTo(0, i); graphCtx.lineTo(w, i); graphCtx.stroke(); }
-
-  // Température (rouge)
   if (graphDataTemp.length > 1) {
-    graphCtx.strokeStyle = '#ff0033';
-    graphCtx.lineWidth = 2;
+    graphCtx.strokeStyle = '#ff0033'; graphCtx.lineWidth = 2;
     graphCtx.beginPath();
     graphDataTemp.forEach((v, i) => {
-      const x = (i / (graphDataTemp.length - 1)) * w;
-      const y = h - (v / 100) * h;
+      const x = (i/(graphDataTemp.length-1))*w;
+      const y = h - (v/100)*h;
       if (i === 0) graphCtx.moveTo(x, y); else graphCtx.lineTo(x, y);
     });
     graphCtx.stroke();
   }
-
-  // Courant (cyan)
   if (graphDataCourant.length > 1) {
-    graphCtx.strokeStyle = '#00f0ff';
-    graphCtx.lineWidth = 2;
+    graphCtx.strokeStyle = '#00f0ff'; graphCtx.lineWidth = 2;
     graphCtx.beginPath();
     graphDataCourant.forEach((v, i) => {
-      const x = (i / (graphDataCourant.length - 1)) * w;
-      const y = h - (v / 5) * h;
+      const x = (i/(graphDataCourant.length-1))*w;
+      const y = h - (v/6)*h;
       if (i === 0) graphCtx.moveTo(x, y); else graphCtx.lineTo(x, y);
     });
     graphCtx.stroke();
   }
-
-  // Légende
-  graphCtx.fillStyle = '#ff0033';
-  graphCtx.font = 'bold 10px "Orbitron"';
-  graphCtx.fillText('🌡️ TEMPÉRATURE', 10, 15);
-  graphCtx.fillStyle = '#00f0ff';
-  graphCtx.fillText('⚡ COURANT', 140, 15);
 }
-
 setInterval(() => {
   majCapteurs();
   graphDataTemp.push(capteursEtat.temp);
@@ -1420,56 +1351,62 @@ setInterval(() => {
   drawGraph();
 }, 1000);
 
-// ============ SIMULATION CANVAS ============
-let simCanvas, simCtx;
-let simX = 0, simY = 0, simAngle = 0, simVitesse = 0, simCmds = 0;
-let simDirX = 0, simDirY = 0;
-let simBoosted = false;
+// ============ LABYRINTHE ============
+let simCanvas, simCtx, mazeCanvas, mazeCtx;
+let simX, simY, simAngle, simDirX = 0, simDirY = 0;
+let simNiveau = 1, simTemps = 0, simCollisions = 0, simCommandes = 0;
+let simLabyrinthe = [];
+let simTermine = false;
+let simInterval = null;
+const LABY_SIZE = 21; // grille 21x21
+const CELL_SIZE_BASE = 30;
 
-function simLoop() {
-  if (!simCtx) return;
-  simVitesse = Math.sqrt(simDirX*simDirX + simDirY*simDirY) * (simBoosted ? 8 : 4);
-  simX += simDirX * simVitesse;
-  simY -= simDirY * simVitesse;
-  if (Math.abs(simDirX) > 0.05 || Math.abs(simDirY) > 0.05) {
-    simAngle = Math.atan2(-simDirY, simDirX);
-    if (Math.random() < 0.3) {
-      simCmds++;
-      const el = document.getElementById('simCmds');
-      if (el) el.textContent = simCmds;
+const NIVEAUX = {
+  1: { nom: 'DIFFICILE', couleur: '#ff8c00' },
+  2: { nom: 'TRÈS DIFFICILE', couleur: '#ff0033' },
+  3: { nom: 'EXTRÊME', couleur: '#b300ff' }
+};
+
+function genererLabyrinthe(niveau) {
+  // Génère un labyrinthe avec plus ou moins d'obstacles selon le niveau
+  const size = LABY_SIZE;
+  const maze = Array(size).fill().map(() => Array(size).fill(1)); // 1 = mur, 0 = chemin
+
+  // Algorithme simple de génération
+  const stack = [];
+  const start = [1, 1];
+  maze[1][1] = 0;
+  stack.push(start);
+
+  const dirs = [[0,2],[2,0],[0,-2],[-2,0]];
+  while (stack.length > 0) {
+    const [x, y] = stack[stack.length-1];
+    const possibles = dirs
+      .map(([dx, dy]) => [x+dx, y+dy, dx, dy])
+      .filter(([nx, ny]) => nx > 0 && nx < size-1 && ny > 0 && ny < size-1 && maze[ny][nx] === 1);
+    if (possibles.length === 0) {
+      stack.pop();
+    } else {
+      const [nx, ny, dx, dy] = possibles[Math.floor(Math.random() * possibles.length)];
+      maze[ny][nx] = 0;
+      maze[y + dy/2][x + dx/2] = 0;
+      stack.push([nx, ny]);
     }
   }
-  const w = simCanvas.width, h = simCanvas.height;
-  simX = Math.max(30, Math.min(w-30, simX));
-  simY = Math.max(30, Math.min(h-30, simY));
 
-  simCtx.clearRect(0, 0, w, h);
-  simCtx.strokeStyle = 'rgba(0,240,255,0.08)';
-  simCtx.lineWidth = 1;
-  for (let i = 0; i < w; i += 40) { simCtx.beginPath(); simCtx.moveTo(i,0); simCtx.lineTo(i,h); simCtx.stroke(); }
-  for (let i = 0; i < h; i += 40) { simCtx.beginPath(); simCtx.moveTo(0,i); simCtx.lineTo(w,i); simCtx.stroke(); }
-  simCtx.save();
-  simCtx.translate(simX, simY);
-  simCtx.rotate(simAngle);
-  simCtx.fillStyle = '#00f0ff';
-  simCtx.shadowBlur = 20; simCtx.shadowColor = '#00f0ff';
-  simCtx.beginPath();
-  simCtx.roundRect(-20, -15, 40, 30, 6);
-  simCtx.fill();
-  simCtx.fillStyle = '#050510';
-  simCtx.beginPath();
-  simCtx.arc(10, 0, 4, 0, Math.PI*2);
-  simCtx.fill();
-  simCtx.restore();
+  // Ajouter des obstacles supplémentaires selon le niveau
+  const nbObstacles = niveau * 15;
+  for (let i = 0; i < nbObstacles; i++) {
+    const x = 1 + Math.floor(Math.random() * (size - 2));
+    const y = 1 + Math.floor(Math.random() * (size - 2));
+    if ((x === 1 && y === 1) || (x === size-2 && y === size-2)) continue;
+    maze[y][x] = 1;
+  }
 
-  const ps = document.getElementById('simPos');
-  const pv = document.getElementById('simVit');
-  const pd = document.getElementById('simDir');
-  if (ps) ps.textContent = Math.round(simX) + ', ' + Math.round(simY);
-  if (pv) pv.textContent = Math.round(simVitesse);
-  if (pd) pd.textContent = Math.round(simAngle * 180 / Math.PI) + '°';
+  // Sortie en bas à droite
+  maze[size-2][size-2] = 2; // 2 = sortie
 
-  requestAnimationFrame(simLoop);
+  return maze;
 }
 
 function initSim() {
@@ -1477,31 +1414,276 @@ function initSim() {
   if (!simCanvas) return;
   const w = simCanvas.offsetWidth;
   if (w < 10) return;
-  if (simCanvas.width !== w) {
-    simCanvas.width = w;
-    simCanvas.height = 500;
-    simCtx = simCanvas.getContext('2d');
-    simX = simCanvas.width / 2;
-    simY = simCanvas.height / 2;
+  simCanvas.width = w;
+  simCanvas.height = 600;
+  simCtx = simCanvas.getContext('2d');
+
+  mazeCanvas = document.getElementById('mazeCanvas');
+  if (mazeCanvas) {
+    mazeCanvas.width = mazeCanvas.offsetWidth;
+    mazeCanvas.height = mazeCanvas.offsetHeight;
+    mazeCtx = mazeCanvas.getContext('2d');
   }
+
   if (!window._simLoopStarted) {
     window._simLoopStarted = true;
-    requestAnimationFrame(simLoop);
+    demarrerNiveau(1);
   }
+}
+
+function demarrerNiveau(niveau) {
+  simNiveau = niveau;
+  simLabyrinthe = genererLabyrinthe(niveau);
+  simX = 1.5 * CELL_SIZE_BASE;
+  simY = 1.5 * CELL_SIZE_BASE;
+  simAngle = 0;
+  simTemps = 0;
+  simCollisions = 0;
+  simCommandes = 0;
+  simTermine = false;
+  simDirX = 0; simDirY = 0;
+
+  const niveauInfo = NIVEAUX[niveau];
+  document.getElementById('simLevel').textContent = niveau;
+  document.getElementById('fsLevel').textContent = `Niveau ${niveau} — ${niveauInfo.nom}`;
+  document.getElementById('fsLevel').style.color = niveauInfo.couleur;
+
+  if (simInterval) clearInterval(simInterval);
+  simInterval = setInterval(() => {
+    if (!simTermine) {
+      simTemps++;
+      document.getElementById('simTime').textContent = simTemps + 's';
+      const m = Math.floor(simTemps/60);
+      const s = simTemps % 60;
+      document.getElementById('fsTime').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
+  }, 1000);
+
+  parler(`Niveau ${niveau} — ${niveauInfo.nom}. Bonne chance.`, true);
+  showToast(`🎮 Niveau ${niveau} — ${niveauInfo.nom}`, 'success');
+
+  if (!window._simRendering) {
+    window._simRendering = true;
+    simLoop();
+  }
+}
+
+function collisionMur(nx, ny) {
+  const cellX = Math.floor(nx / CELL_SIZE_BASE);
+  const cellY = Math.floor(ny / CELL_SIZE_BASE);
+  if (cellX < 0 || cellX >= LABY_SIZE || cellY < 0 || cellY >= LABY_SIZE) return true;
+  return simLabyrinthe[cellY][cellX] === 1;
+}
+
+function simLoop() {
+  if (!simCtx) return;
+
+  const vitesse = Math.sqrt(simDirX*simDirX + simDirY*simDirY) * 4;
+  if (vitesse > 0.1) simCommandes++;
+
+  const nx = simX + simDirX * vitesse;
+  const ny = simY - simDirY * vitesse;
+
+  // Détection collision (marge de sécurité)
+  const marge = 12;
+  const testX = nx + (simDirX > 0 ? marge : simDirX < 0 ? -marge : 0);
+  const testY = ny + (simDirY < 0 ? marge : simDirY > 0 ? -marge : 0);
+
+  if (collisionMur(nx, simY) || collisionMur(simX, ny)) {
+    if (Math.random() < 0.1) {
+      simCollisions++;
+      document.getElementById('simCollisions').textContent = simCollisions;
+      if (simCollisions % 5 === 0) {
+        parler('Attention, vous êtes trop près du mur. Ralentissez.', true);
+      }
+    }
+  } else {
+    simX = nx; simY = ny;
+    if (Math.abs(simDirX) > 0.05 || Math.abs(simDirY) > 0.05) {
+      simAngle = Math.atan2(-simDirY, simDirX);
+    }
+  }
+
+  // Collision parfaite avec un mur
+  if (collisionMur(simX, simY)) {
+    simCollisions++;
+    simX -= simDirX * vitesse;
+    simY += simDirY * vitesse;
+    document.getElementById('simCollisions').textContent = simCollisions;
+    simDirX *= 0.5; simDirY *= 0.5;
+  }
+
+  // Vérifier sortie
+  const cellX = Math.floor(simX / CELL_SIZE_BASE);
+  const cellY = Math.floor(simY / CELL_SIZE_BASE);
+  if (simLabyrinthe[cellY] && simLabyrinthe[cellY][cellX] === 2) {
+    if (!simTermine) {
+      simTermine = true;
+      terminerNiveau();
+    }
+  }
+
+  // Rendu
+  dessinerLabyrinthe(simCtx, simCanvas.width, simCanvas.height);
+  if (mazeCtx) dessinerLabyrinthe(mazeCtx, mazeCanvas.width, mazeCanvas.height, true);
+
+  const ps = document.getElementById('simPos');
+  if (ps) ps.textContent = Math.round(simX) + ', ' + Math.round(simY);
+  document.getElementById('simCmds').textContent = Math.floor(simCommandes/10);
+
+  requestAnimationFrame(simLoop);
+}
+
+function dessinerLabyrinthe(ctx, w, h, fullscreen=false) {
+  ctx.clearRect(0, 0, w, h);
+
+  const size = LABY_SIZE;
+  const cellSize = Math.min(w, h) / size;
+  const offsetX = (w - cellSize * size) / 2;
+  const offsetY = (h - cellSize * size) / 2;
+
+  ctx.save();
+  ctx.translate(offsetX, offsetY);
+
+  // Dessiner le labyrinthe
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const cell = simLabyrinthe[y][x];
+      if (cell === 1) {
+        ctx.fillStyle = 'rgba(0,240,255,0.15)';
+        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+        ctx.strokeStyle = '#00f0ff';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
+      } else if (cell === 2) {
+        // Sortie
+        ctx.fillStyle = 'rgba(0,255,136,0.4)';
+        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+        ctx.strokeStyle = '#00ff88';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
+        ctx.fillStyle = '#00ff88';
+        ctx.font = 'bold ' + Math.round(cellSize * 0.5) + 'px "Orbitron"';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('S', x * cellSize + cellSize/2, y * cellSize + cellSize/2);
+      }
+    }
+  }
+
+  // Dessiner le robot
+  const robotScale = cellSize / CELL_SIZE_BASE;
+  const rx = simX * robotScale;
+  const ry = simY * robotScale;
+  ctx.save();
+  ctx.translate(rx, ry);
+  ctx.rotate(simAngle);
+  ctx.fillStyle = '#00f0ff';
+  ctx.shadowBlur = 20;
+  ctx.shadowColor = '#00f0ff';
+  ctx.beginPath();
+  ctx.arc(0, 0, cellSize * 0.35, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle = '#050510';
+  ctx.beginPath();
+  ctx.arc(cellSize * 0.2, 0, cellSize * 0.1, 0, Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+
+  ctx.restore();
+}
+
+function terminerNiveau() {
+  if (simInterval) clearInterval(simInterval);
+
+  // Calcul du score
+  const tempsMin = simNiveau === 1 ? 30 : simNiveau === 2 ? 45 : 60;
+  const penaliteTemps = Math.max(0, (simTemps - tempsMin) * 0.5);
+  const penaliteCollisions = simCollisions * 2;
+  const penaliteCommandes = Math.floor(simCommandes / 100);
+  let note = 20 - penaliteTemps - penaliteCollisions - penaliteCommandes;
+  note = Math.max(0, Math.min(20, Math.round(note)));
+
+  let mention = '';
+  if (note >= 18) mention = 'EXCELLENT';
+  else if (note >= 15) mention = 'TRÈS BIEN';
+  else if (note >= 12) mention = 'BIEN';
+  else if (note >= 8) mention = 'PASSABLE';
+  else mention = 'INSUFFISANT';
+
+  document.getElementById('noteFinale').textContent = note + '/20';
+  document.getElementById('mentionFinale').textContent = mention;
+  document.getElementById('statTemps').textContent = simTemps + 's';
+  document.getElementById('statCollisions').textContent = simCollisions;
+  document.getElementById('statCmd').textContent = Math.floor(simCommandes/10);
+  document.getElementById('statNiveau').textContent = simNiveau;
+  document.getElementById('modalScore').classList.add('active');
+
+  parler(`Félicitations ! Niveau ${simNiveau} terminé en ${simTemps} secondes. Votre note : ${note} sur 20. Mention ${mention}.`, true);
+}
+
+function niveauSuivant() {
+  fermerModalScore();
+  if (simNiveau < 3) {
+    demarrerNiveau(simNiveau + 1);
+  } else {
+    parler('Félicitations ! Vous avez terminé les 3 niveaux. Vous êtes un MAJOR accompli.', true);
+    showToast('🏆 Tous les niveaux terminés !', 'success');
+  }
+}
+
+function fermerModalScore() {
+  document.getElementById('modalScore').classList.remove('active');
 }
 
 function resetSim() {
-  simX = simCanvas.width / 2; simY = simCanvas.height / 2;
-  simAngle = 0; simVitesse = 0; simCmds = 0;
-  simDirX = 0; simDirY = 0;
-  const el = document.getElementById('simCmds');
-  if (el) el.textContent = 0;
-  showToast('🔄 Simulation réinitialisée', 'success');
+  if (simInterval) clearInterval(simInterval);
+  simTermine = false;
+  demarrerNiveau(simNiveau);
+  showToast('🔄 Niveau recommencé', 'success');
 }
 
-function simBoost() {
-  simBoosted = !simBoosted;
-  showToast(simBoosted ? '⚡ BOOST activé' : 'BOOST désactivé', 'success');
+// ============ PLEIN ÉCRAN ============
+function ouvrirPleinEcran() {
+  document.getElementById('fsOverlay').classList.add('active');
+  setTimeout(() => {
+    const mc = document.getElementById('mazeCanvas');
+    mc.width = mc.offsetWidth;
+    mc.height = mc.offsetHeight;
+    mazeCtx = mc.getContext('2d');
+    initSim();
+  }, 100);
+}
+function fermerPleinEcran() {
+  document.getElementById('fsOverlay').classList.remove('active');
+}
+
+// ============ RETOUR VIDÉO ============
+let webcamStream = null;
+async function demarrerWebcam() {
+  try {
+    webcamStream = await navigator.mediaDevices.getUserMedia({ video: true });
+    const video = document.getElementById('videoLive');
+    video.srcObject = webcamStream;
+    document.getElementById('videoPlaceholder').style.display = 'none';
+    document.getElementById('liveBadge').classList.add('active');
+    document.getElementById('btnCamStart').style.display = 'none';
+    document.getElementById('btnCamStop').style.display = 'block';
+    showToast('✅ Webcam activée', 'success');
+    parler('Retour vidéo activé.', true);
+  } catch (e) {
+    showToast('❌ Webcam refusée : ' + e.message, 'error');
+  }
+}
+function arreterWebcam() {
+  if (webcamStream) {
+    webcamStream.getTracks().forEach(t => t.stop());
+    webcamStream = null;
+  }
+  document.getElementById('videoPlaceholder').style.display = 'flex';
+  document.getElementById('liveBadge').classList.remove('active');
+  document.getElementById('btnCamStart').style.display = 'block';
+  document.getElementById('btnCamStop').style.display = 'none';
 }
 
 // ============ COMBAT ============
@@ -1512,15 +1694,15 @@ function combatAction(action, joueur) {
   let msg = '';
   if (action === 'ATTACK') {
     const dmg = 5 + Math.floor(Math.random() * 20);
-    if (joueur === 1) { hp2 = Math.max(0, hp2 - dmg); msg = `⚔️ Robot 1 attaque → -${dmg} HP au Robot 2`; }
-    else { hp1 = Math.max(0, hp1 - dmg); msg = `⚔️ Robot 2 attaque → -${dmg} HP au Robot 1`; }
+    if (joueur === 1) { hp2 = Math.max(0, hp2 - dmg); msg = `⚔️ Robot 1 → -${dmg} HP`; }
+    else { hp1 = Math.max(0, hp1 - dmg); msg = `⚔️ Robot 2 → -${dmg} HP`; }
   } else if (action === 'DEFEND') {
-    msg = `🛡️ Robot ${joueur} se défend (+5 HP)`;
+    msg = `🛡️ Robot ${joueur} défend (+5 HP)`;
     if (joueur === 1) hp1 = Math.min(100, hp1 + 5); else hp2 = Math.min(100, hp2 + 5);
   } else if (action === 'SPECIAL') {
     const dmg = 15 + Math.floor(Math.random() * 25);
-    if (joueur === 1) { hp2 = Math.max(0, hp2 - dmg); msg = `💥 SPÉCIAL Robot 1 → -${dmg} HP au Robot 2`; }
-    else { hp1 = Math.max(0, hp1 - dmg); msg = `💥 SPÉCIAL Robot 2 → -${dmg} HP au Robot 1`; }
+    if (joueur === 1) { hp2 = Math.max(0, hp2 - dmg); msg = `💥 SPÉCIAL Robot 1 → -${dmg} HP`; }
+    else { hp1 = Math.max(0, hp1 - dmg); msg = `💥 SPÉCIAL Robot 2 → -${dmg} HP`; }
   }
   const line = document.createElement('div');
   line.className = 'log-line';
@@ -1530,12 +1712,8 @@ function combatAction(action, joueur) {
   updateHP();
   if (hp1 === 0 || hp2 === 0) {
     const winner = hp1 === 0 ? 'Robot 2' : 'Robot 1';
-    const l = document.createElement('div');
-    l.className = 'log-line';
-    l.innerHTML = `<span class="ts">[${now}]</span> 🏆 <strong>${winner} GAGNE !</strong>`;
-    logE.appendChild(l);
-    showToast('🏆 ' + winner + ' remporte le combat !', 'success');
-    parler(winner + ' remporte le combat.');
+    showToast('🏆 ' + winner + ' gagne !', 'success');
+    parler(winner + ' remporte le combat.', true);
   }
 }
 function updateHP() {
@@ -1549,7 +1727,6 @@ function updateHP() {
 function resetCombat() {
   hp1 = 100; hp2 = 100; updateHP();
   document.getElementById('combatLog').innerHTML = '';
-  showToast('🔄 Nouveau combat', 'success');
 }
 
 // ============ INIT ============
@@ -1559,14 +1736,16 @@ document.addEventListener('DOMContentLoaded', () => {
   majCapteurs();
   log('Centre de contrôle MAJOR initialisé');
   log('Utilisateur: ' + memberPrenom + ' ' + memberNom);
-  log('Assistant vocal: ACTIVÉ', 'warn');
-
   setTimeout(() => {
-    parler('Centre de contrôle initialisé. Bienvenue MAJOR ' + memberPrenom + '.');
+    parler('Centre de contrôle initialisé. Bienvenue MAJOR ' + memberPrenom + '.', true);
   }, 1000);
 
   window.addEventListener('resize', () => {
-    if (simCanvas) { simCanvas.width = simCanvas.offsetWidth; simCanvas.height = 500; simX = simCanvas.width / 2; simY = simCanvas.height / 2; }
+    if (simCanvas) { simCanvas.width = simCanvas.offsetWidth; simCanvas.height = 600; }
+    if (mazeCanvas && document.getElementById('fsOverlay').classList.contains('active')) {
+      mazeCanvas.width = mazeCanvas.offsetWidth;
+      mazeCanvas.height = mazeCanvas.offsetHeight;
+    }
     if (indusCanvas) { indusCanvas.width = indusCanvas.offsetWidth; indusCanvas.height = 400; }
     if (graphCanvas) { graphCanvas.width = graphCanvas.offsetWidth; graphCanvas.height = 140; }
   });
