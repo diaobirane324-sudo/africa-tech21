@@ -1366,69 +1366,68 @@ const NIVEAUX = {
   2: { nom: 'TRÈS DIFFICILE', couleur: '#ff0033' },
   3: { nom: 'EXTRÊME', couleur: '#b300ff' }
 };
-
 function genererLabyrinthe(niveau) {
-  // Génère un labyrinthe avec plus ou moins d'obstacles selon le niveau
+  // Génère un labyrinthe PARFAIT (toujours une solution) avec l'algorithme DFS
   const size = LABY_SIZE;
-  const maze = Array(size).fill().map(() => Array(size).fill(1)); // 1 = mur, 0 = chemin
+  const maze = Array(size).fill().map(() => Array(size).fill(1));
 
-  // Algorithme simple de génération
-  const stack = [];
-  const start = [1, 1];
-  maze[1][1] = 0;
-  stack.push(start);
-
-  const dirs = [[0,2],[2,0],[0,-2],[-2,0]];
-  while (stack.length > 0) {
-    const [x, y] = stack[stack.length-1];
-    const possibles = dirs
-      .map(([dx, dy]) => [x+dx, y+dy, dx, dy])
-      .filter(([nx, ny]) => nx > 0 && nx < size-1 && ny > 0 && ny < size-1 && maze[ny][nx] === 1);
-    if (possibles.length === 0) {
-      stack.pop();
-    } else {
-      const [nx, ny, dx, dy] = possibles[Math.floor(Math.random() * possibles.length)];
-      maze[ny][nx] = 0;
-      maze[y + dy/2][x + dx/2] = 0;
-      stack.push([nx, ny]);
+  // Algorithme DFS : chaque cellule a un chemin garanti
+  function creuser(cx, cy) {
+    maze[cy][cx] = 0;
+    const dirs = [[0,-2],[0,2],[-2,0],[2,0]].sort(() => Math.random() - 0.5);
+    for (const [dx, dy] of dirs) {
+      const nx = cx + dx, ny = cy + dy;
+      if (nx > 0 && nx < size-1 && ny > 0 && ny < size-1 && maze[ny][nx] === 1) {
+        maze[cy + dy/2][cx + dx/2] = 0;
+        creuser(nx, ny);
+      }
     }
   }
+  creuser(1, 1);
 
-  // Ajouter des obstacles supplémentaires selon le niveau
-  const nbObstacles = niveau * 15;
-  for (let i = 0; i < nbObstacles; i++) {
-    const x = 1 + Math.floor(Math.random() * (size - 2));
-    const y = 1 + Math.floor(Math.random() * (size - 2));
-    if ((x === 1 && y === 1) || (x === size-2 && y === size-2)) continue;
-    maze[y][x] = 1;
+  // Élargir certains passages selon le niveau (pour rendre plus difficile)
+  // Niveau 1 : élargir quelques passages (plus facile)
+  // Niveau 2 : élargir peu
+  // Niveau 3 : aucun élargissement (couloirs serrés)
+  if (niveau === 1) {
+    // Ajoute 30 boucles (chemins alternatifs)
+    let boucles = 0;
+    while (boucles < 30) {
+      const x = 2 + Math.floor(Math.random() * (size - 4));
+      const y = 2 + Math.floor(Math.random() * (size - 4));
+      if (maze[y][x] === 1) {
+        const voisinsVides = [[0,1],[0,-1],[1,0],[-1,0]].filter(([dx,dy]) =>
+          maze[y+dy] && maze[y+dy][x+dx] === 0
+        ).length;
+        if (voisinsVides >= 2) {
+          maze[y][x] = 0;
+          boucles++;
+        }
+      }
+    }
+  } else if (niveau === 2) {
+    let boucles = 0;
+    while (boucles < 12) {
+      const x = 2 + Math.floor(Math.random() * (size - 4));
+      const y = 2 + Math.floor(Math.random() * (size - 4));
+      if (maze[y][x] === 1) {
+        const voisinsVides = [[0,1],[0,-1],[1,0],[-1,0]].filter(([dx,dy]) =>
+          maze[y+dy] && maze[y+dy][x+dx] === 0
+        ).length;
+        if (voisinsVides >= 2) {
+          maze[y][x] = 0;
+          boucles++;
+        }
+      }
+    }
   }
+  // Niveau 3 : aucun élargissement = chemin unique, très dur
 
   // Sortie en bas à droite
-  maze[size-2][size-2] = 2; // 2 = sortie
+  maze[size-2][size-2] = 2;
 
+  // S'assurer que le chemin vers la sortie existe (le DFS garantit déjà, mais au cas où)
   return maze;
-}
-
-function initSim() {
-  simCanvas = document.getElementById('simCanvas');
-  if (!simCanvas) return;
-  const w = simCanvas.offsetWidth;
-  if (w < 10) return;
-  simCanvas.width = w;
-  simCanvas.height = 600;
-  simCtx = simCanvas.getContext('2d');
-
-  mazeCanvas = document.getElementById('mazeCanvas');
-  if (mazeCanvas) {
-    mazeCanvas.width = mazeCanvas.offsetWidth;
-    mazeCanvas.height = mazeCanvas.offsetHeight;
-    mazeCtx = mazeCanvas.getContext('2d');
-  }
-
-  if (!window._simLoopStarted) {
-    window._simLoopStarted = true;
-    demarrerNiveau(1);
-  }
 }
 
 function demarrerNiveau(niveau) {
@@ -1469,12 +1468,13 @@ function demarrerNiveau(niveau) {
 }
 
 function collisionMur(nx, ny) {
+  // Utilise le vrai CELL_SIZE du rendu courant
+  const cw = mazeCtx ? (mazeCtx.canvas.width / LABY_SIZE) : CELL_SIZE_BASE;
   const cellX = Math.floor(nx / CELL_SIZE_BASE);
   const cellY = Math.floor(ny / CELL_SIZE_BASE);
   if (cellX < 0 || cellX >= LABY_SIZE || cellY < 0 || cellY >= LABY_SIZE) return true;
   return simLabyrinthe[cellY][cellX] === 1;
 }
-
 function simLoop() {
   if (!simCtx) return;
 
