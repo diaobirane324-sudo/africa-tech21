@@ -165,7 +165,8 @@ body {
       1. Cette page génère <strong>UNE SEULE FOIS</strong> les QR codes officiels pour les 6 membres de la direction.<br>
       2. Une fois générés, ces codes sont <strong>enregistrés dans Supabase</strong> et ne peuvent plus être modifiés.<br>
       3. Si tu recliques sur "Générer", les anciens codes seront <strong>désactivés</strong> et de nouveaux créés — les anciennes cartes imprimées ne fonctionneront plus.<br>
-      4. <strong>Ne génère qu'UNE FOIS.</strong>
+      4. <strong>Ne génère qu'UNE FOIS.</strong><br>
+      5. Les QR contiennent un <strong>lien direct</strong> vers ton espace — tu peux scanner avec l'appareil photo du téléphone.
     </p>
   </div>
 
@@ -216,7 +217,10 @@ const memberNom = localStorage.getItem('memberNom') || '';
 const memberPrenom = localStorage.getItem('memberPrenom') || '';
 document.getElementById('userInfo').innerHTML = `<i class="fas fa-user-shield"></i> ${memberPrenom} ${memberNom}`;
 
-// Liste des membres de la direction (sans Bintou)
+// URL du site
+const SITE_URL = 'https://diaobirane324-sudo.github.io/africa-tech21';
+
+// Liste des membres de la direction
 const MEMBRES_DIRECTION = [
   { id: 'AT21_006',  nom: 'DIAO BIRANE' },
   { id: 'AT21_0016', nom: 'DRAMÉ AICHA' },
@@ -261,7 +265,7 @@ async function genererCartes() {
     // Désactiver toutes les anciennes cartes
     await supabaseClient.from('cartes_membres').update({ actif: false }).eq('actif', true);
 
-    // Supprimer toutes les cartes (pour éviter conflit UNIQUE sur membre_id)
+    // Supprimer toutes les cartes (pour éviter conflit UNIQUE)
     await supabaseClient.from('cartes_membres').delete().neq('id', 0);
 
     const now = new Date();
@@ -271,7 +275,8 @@ async function genererCartes() {
     for (const m of MEMBRES_DIRECTION) {
       const codeAleatoire = genererCodeAleatoire();
       const codeCarte = `${m.id}_${codeAleatoire}`;
-      const qrData = `AFRICA21:${m.id}:${codeAleatoire}:DIRECTION`;
+      // QR contient maintenant un LIEN DIRECT
+      const qrData = `${SITE_URL}/direction.html?carte=${codeCarte}`;
 
       nouvellesCartes.push({
         membre_id: m.id,
@@ -337,7 +342,6 @@ async function chargerCartes() {
       `;
       grid.appendChild(div);
 
-      // Génération avec qrcodejs
       new QRCode(document.getElementById('qrwrap-' + carte.id), {
         text: carte.qr_data,
         width: 240,
@@ -359,7 +363,6 @@ async function telechargerQR(carteId, nomMembre) {
     const { data: carte } = await supabaseClient.from('cartes_membres').select('*').eq('id', carteId).single();
     if (!carte) throw new Error('Carte introuvable');
 
-    // Générer un QR haute qualité dans un div invisible
     const tempDiv = document.createElement('div');
     tempDiv.style.position = 'absolute';
     tempDiv.style.left = '-9999px';
@@ -376,10 +379,8 @@ async function telechargerQR(carteId, nomMembre) {
 
     await new Promise(r => setTimeout(r, 200));
 
-    // Récupérer le canvas
     const canvas = tempDiv.querySelector('canvas');
     if (!canvas) {
-      // qrcodejs utilise parfois img à la place
       const img = tempDiv.querySelector('img');
       if (img) {
         const link = document.createElement('a');
@@ -393,7 +394,6 @@ async function telechargerQR(carteId, nomMembre) {
       throw new Error('Impossible de générer le QR');
     }
 
-    // Télécharger depuis le canvas
     const link = document.createElement('a');
     link.download = `QR_${carte.membre_id}_${nomMembre.replace(/\s+/g, '_')}.png`;
     link.href = canvas.toDataURL('image/png');
