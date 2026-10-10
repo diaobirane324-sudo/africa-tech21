@@ -20,8 +20,6 @@
             --deep-space: #050510;
             --text-primary: #ffffff;
             --text-secondary: #a0a8c0;
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
         }
         body {
             background: 
@@ -389,7 +387,7 @@
         <div class="modal-content">
             <i class="fas fa-crown" style="font-size: 2.5rem; color: var(--gold); margin-bottom: 0.8rem; display: block;"></i>
             <h2>ACCÈS DIRECTION</h2>
-            <p>Scannez votre carte membre ou utilisez le code admin</p>
+            <p>Scannez votre carte membre OU entrez votre ID</p>
 
             <div class="camera-container" id="cameraContainer" style="display:none;">
                 <video id="video" autoplay muted playsinline></video>
@@ -400,7 +398,7 @@
             </div>
 
             <div class="status-text" id="statusText">
-                <i class="fas fa-info-circle"></i> Cliquez sur "ACTIVER CAMÉRA" pour commencer
+                <i class="fas fa-info-circle"></i> Cliquez sur "ACTIVER CAMÉRA" pour scanner
             </div>
 
             <button class="btn-access" id="btnStart" onclick="demarrerCamera()">
@@ -409,6 +407,19 @@
             <button class="btn-access" id="btnStop" onclick="arreterCamera()" style="display:none;">
                 <i class="fas fa-stop"></i> ARRÊTER
             </button>
+
+            <!-- IDENTIFICATION PAR ID (nouveau) -->
+            <div id="idSection" style="display:none; margin-top:1rem;">
+                <div style="color:var(--gold); font-family:'Orbitron',sans-serif; font-size:0.85rem; margin-bottom:0.6rem; letter-spacing:1px;">
+                    <i class="fas fa-id-card"></i> ENTREZ VOTRE ID
+                </div>
+                <input type="text" class="admin-input" id="inputMemberId" placeholder="Ex: AT21_006" autocomplete="off">
+                <div class="admin-row">
+                    <button class="btn-access" onclick="verifierIdMembre()">
+                        <i class="fas fa-unlock"></i> VALIDER
+                    </button>
+                </div>
+            </div>
 
             <button class="btn-secondary" onclick="ouvrirModalAdmin()" style="margin-top:0.6rem;">
                 <i class="fas fa-key"></i> CODE ADMINISTRATEUR (SECOURS)
@@ -654,9 +665,11 @@ function boucleScan() {
 
             if (code && code.data) {
                 const data = code.data.trim();
-                // Accepter lien direct OU ancien format
                 if (data.includes('carte=') || data.startsWith('AFRICA21:')) {
                     scanning = false;
+                    // ===== NOUVEAU COMPORTEMENT =====
+                    // On ne connecte PLUS automatiquement
+                    // On affiche le champ ID
                     traiterQR(data);
                     return;
                 }
@@ -666,81 +679,65 @@ function boucleScan() {
     if (scanning) requestAnimationFrame(boucleScan);
 }
 
-// ==================== TRAITEMENT QR ====================
-async function traiterQR(qrData) {
-    // Extraire le code carte depuis le lien ou l'ancien format
-    let codeCarte = '';
-    if (qrData.includes('carte=')) {
-        // Format lien : direction.html?carte=AT21_006_XXXX
-        codeCarte = qrData.split('carte=')[1].split('&')[0];
-    } else if (qrData.startsWith('AFRICA21:')) {
-        // Ancien format : AFRICA21:AT21_006:XXXX:DIRECTION
-        const parts = qrData.split(':');
-        codeCarte = parts[1] + '_' + parts[2];
+// ==================== TRAITEMENT QR (NOUVEAU) ====================
+function traiterQR(qrData) {
+    // Stopper la caméra
+    if (stream) {
+        stream.getTracks().forEach(t => t.stop());
+        stream = null;
     }
+    scanning = false;
+    document.getElementById('cameraContainer').style.display = 'none';
+    document.getElementById('btnStart').style.display = 'block';
+    document.getElementById('btnStop').style.display = 'none';
 
-    if (!codeCarte) {
-        setStatus('❌ QR code invalide', 'error');
+    // Message de confirmation du scan
+    setStatus('✅ CARTE SCANNÉE — Entrez maintenant votre ID personnel', 'success');
+
+    // Afficher le champ ID
+    document.getElementById('idSection').style.display = 'block';
+    document.getElementById('inputMemberId').value = '';
+    document.getElementById('inputMemberId').focus();
+}
+
+// ==================== VÉRIFICATION ID (NOUVEAU) ====================
+function verifierIdMembre() {
+    const id = document.getElementById('inputMemberId').value.trim();
+    const errEl = document.getElementById('errorMsg');
+
+    if (!id) {
+        errEl.textContent = '⚠️ Entrez votre ID';
         return;
     }
 
-    await connecterMembreViaCarte(codeCarte);
-}
-
-// ==================== CONNEXION MEMBRE ====================
-async function connecterMembreViaCarte(codeCarte) {
-    setStatus('<i class="fas fa-spinner fa-spin"></i> Vérification en cours...', '');
-
-    try {
-        const { data, error } = await supabaseClient
-            .from('cartes_membres')
-            .select('*')
-            .eq('code_carte', codeCarte)
-            .eq('actif', true)
-            .single();
-
-        if (error || !data) {
-            setStatus('❌ CARTE INVALIDE — Accès refusé', 'error');
-            setTimeout(() => {
-                if (stream) {
-                    scanning = true;
-                    setStatus('<i class="fas fa-qrcode"></i> Présentez le QR code de votre carte', '');
-                    requestAnimationFrame(boucleScan);
-                }
-            }, 2500);
-            return;
-        }
-
-        // Mettre à jour la dernière utilisation
-        await supabaseClient.from('cartes_membres').update({
-            derniere_utilisation: new Date().toLocaleString('fr-FR')
-        }).eq('id', data.id);
-
-        setStatus('✅ ACCÈS AUTORISÉ — ' + data.membre_nom, 'success');
-
-        const membre = MEMBRES_DIRECTION[data.membre_id];
-        if (!membre) {
-            setStatus('❌ Membre non reconnu dans la base', 'error');
-            return;
-        }
-
-        if (stream) {
-            stream.getTracks().forEach(t => t.stop());
-            stream = null;
-        }
-        scanning = false;
-        membreActuel = membre;
-
-        setTimeout(() => {
-            document.getElementById('accessModal').classList.add('hidden');
-            document.getElementById('mainContent').style.display = 'block';
-            afficherPostes();
-        }, 1200);
-
-    } catch (e) {
-        setStatus('❌ Erreur : ' + e.message, 'error');
+    // Vérifier si l'ID est dans la base
+    const membre = MEMBRES_DIRECTION[id];
+    if (!membre) {
+        errEl.textContent = '❌ ID non reconnu. Vérifiez votre identifiant.';
+        document.getElementById('inputMemberId').value = '';
+        return;
     }
+
+    // ID valide → connecter
+    setStatus('✅ BIENVENUE ' + membre.prenom + ' ' + membre.nom, 'success');
+    membreActuel = membre;
+
+    setTimeout(() => {
+        document.getElementById('accessModal').classList.add('hidden');
+        document.getElementById('mainContent').style.display = 'block';
+        afficherPostes();
+    }, 800);
 }
+
+// Touche Entrée pour le champ ID
+document.addEventListener('DOMContentLoaded', () => {
+    const inputId = document.getElementById('inputMemberId');
+    if (inputId) {
+        inputId.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') verifierIdMembre();
+        });
+    }
+});
 
 // ==================== CODE ADMIN ====================
 function ouvrirModalAdmin() {
@@ -807,58 +804,25 @@ function afficherPostes() {
     });
 }
 
-// ==================== AUTO-CONNEXION VIA URL ====================
+// ==================== AUTO-CONNEXION VIA URL (DÉSACTIVÉE) ====================
+// ⚠️ On ne connecte PLUS automatiquement via le paramètre ?carte=...
+// À la place, si on détecte le paramètre, on affiche directement le champ ID
 async function verifierURL() {
     const params = new URLSearchParams(window.location.search);
     const codeCarte = params.get('carte');
 
-    if (!codeCarte) return;  // Pas de paramètre → laisser le modal s'afficher
+    if (!codeCarte) return;  // Pas de paramètre → laisser le modal s'afficher normalement
 
-    // Masquer le modal, montrer un état de chargement
-    setStatus('<i class="fas fa-spinner fa-spin"></i> Connexion automatique...', '');
-
-    try {
-        const { data, error } = await supabaseClient
-            .from('cartes_membres')
-            .select('*')
-            .eq('code_carte', codeCarte)
-            .eq('actif', true)
-            .single();
-
-        if (error || !data) {
-            setStatus('❌ CARTE INVALIDE', 'error');
-            return;  // Laisser le modal avec le scan
-        }
-
-        // Mettre à jour la dernière utilisation
-        await supabaseClient.from('cartes_membres').update({
-            derniere_utilisation: new Date().toLocaleString('fr-FR')
-        }).eq('id', data.id);
-
-        setStatus('✅ BIENVENUE ' + data.membre_nom, 'success');
-
-        const membre = MEMBRES_DIRECTION[data.membre_id];
-        if (!membre) {
-            setStatus('❌ Membre non reconnu', 'error');
-            return;
-        }
-
-        membreActuel = membre;
-
-        setTimeout(() => {
-            document.getElementById('accessModal').classList.add('hidden');
-            document.getElementById('mainContent').style.display = 'block';
-            afficherPostes();
-        }, 800);
-
-    } catch (e) {
-        setStatus('❌ Erreur : ' + e.message, 'error');
-    }
+    // Le QR a été scanné (externe) → on affiche directement le champ ID
+    setStatus('✅ CARTE SCANNÉE — Entrez maintenant votre ID personnel', 'success');
+    document.getElementById('idSection').style.display = 'block';
+    document.getElementById('inputMemberId').value = '';
+    setTimeout(() => document.getElementById('inputMemberId').focus(), 200);
 }
 
 // ==================== INIT ====================
 createParticles();
-verifierURL();  // <-- Exécuté au chargement pour détecter ?carte=...
+verifierURL();
 </script>
 </body>
 </html>
