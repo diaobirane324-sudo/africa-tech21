@@ -3,41 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hikmah's Club - Dashboard Administration</title>
+    <title>Hikmah's Club - Dashboard Administration 2026-2027</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #1a1a2e;
-            --secondary: #16213e;
-            --accent: #0f3460;
-            --highlight: #e94560;
-            --success: #2ecc71;
-            --warning: #f39c12;
-            --danger: #e74c3c;
-            --info: #3498db;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --card-bg: #ffffff;
-            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --accent: #ec4899;
+            --accent-light: #f472b6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #06b6d4;
+            --violet: #8b5cf6;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --card-bg: rgba(255,255,255,0.08);
+            --glass-border: rgba(255,255,255,0.15);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0a0a1a;
             min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
         }
 
+        /* ===== FONDS ANIMÉS ===== */
+        .bg-animated {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -3;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(99, 102, 241, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(236, 72, 153, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 60% 90%, rgba(139, 92, 246, 0.35) 0%, transparent 50%),
+                radial-gradient(ellipse at 10% 80%, rgba(6, 182, 212, 0.25) 0%, transparent 50%),
+                linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+        }
+
+        .bg-grid {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -2;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            animation: floatOrb 15s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        .orb-1 { width: 400px; height: 400px; background: #6366f1; top: -150px; right: -100px; animation-delay: 0s; }
+        .orb-2 { width: 350px; height: 350px; background: #ec4899; bottom: -150px; left: -100px; animation-delay: 5s; }
+        .orb-3 { width: 300px; height: 300px; background: #8b5cf6; top: 40%; left: 40%; animation-delay: 10s; }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(60px, -60px) scale(1.15); }
+        }
+
+        /* ===== HEADER ===== */
         .glass-header {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-            padding: 1rem 2rem;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1.2rem 2rem;
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
 
         .header-content {
@@ -57,111 +113,140 @@
         }
 
         .logo-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             color: white;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5);
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5); }
+            50% { box-shadow: 0 10px 40px rgba(236, 72, 153, 0.7); }
         }
 
         .logo-text h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.5rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
             color: white;
             font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
-        .logo-text span {
-            font-size: 0.8rem;
-            opacity: 0.8;
-            display: block;
+        .logo-text h1 span {
+            background: linear-gradient(135deg, #818cf8, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text .year-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(236,72,153,0.3));
+            border: 1px solid var(--glass-border);
+            color: #c7d2fe;
+            font-size: 0.7rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-top: 4px;
+            letter-spacing: 1px;
+            font-weight: 600;
         }
 
         .admin-section {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
 
         .admin-profile {
             display: flex;
             align-items: center;
             gap: 12px;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.08);
+            border: 1px solid var(--glass-border);
             padding: 8px 20px;
             border-radius: 50px;
             color: white;
+            backdrop-filter: blur(10px);
         }
 
         .admin-avatar {
-            width: 35px;
-            height: 35px;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(236, 72, 153, 0.4);
         }
 
         .logout-btn {
-            background: rgba(233, 69, 96, 0.8);
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             color: white;
             border: none;
-            padding: 10px 25px;
+            padding: 12px 25px;
             border-radius: 25px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(239, 68, 68, 0.4);
         }
 
         .logout-btn:hover {
-            background: var(--highlight);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.6);
         }
 
+        /* ===== NAVIGATION ===== */
         .nav-container {
             max-width: 1600px;
-            margin: 20px auto;
+            margin: 25px auto;
             padding: 0 2rem;
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
         .nav-tab {
-            background: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.06);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            color: #cbd5e1;
+            padding: 14px 28px;
+            border-radius: 15px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            font-size: 0.95rem;
         }
 
         .nav-tab:hover {
-            background: rgba(255,255,255,0.25);
-            transform: translateY(-2px);
+            background: rgba(255,255,255,0.12);
+            transform: translateY(-3px);
+            color: white;
         }
 
         .nav-tab.active {
-            background: white;
-            color: var(--primary);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5);
         }
 
+        /* ===== STATS ===== */
         .stats-grid {
             max-width: 1600px;
             margin: 0 auto 30px;
@@ -172,69 +257,90 @@
         }
 
         .stat-card {
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 20px;
-            padding: 25px;
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 22px;
+            padding: 28px;
             color: white;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 4px;
+            background: linear-gradient(90deg, #6366f1, #ec4899);
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.4);
+            border-color: rgba(99, 102, 241, 0.5);
         }
 
         .stat-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            display: block;
         }
 
         .stat-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            font-family: 'Montserrat', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            font-family: 'Space Grotesk', sans-serif;
+            background: linear-gradient(135deg, #fff, #c7d2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
         }
 
         .stat-label {
-            opacity: 0.8;
-            font-size: 0.9rem;
+            opacity: 0.7;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            letter-spacing: 0.5px;
         }
 
+        /* ===== SEARCH BAR ===== */
         .filters-container {
             max-width: 1600px;
-            margin: 0 auto 20px;
+            margin: 0 auto 25px;
             padding: 0 2rem;
         }
 
         .search-bar {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.06);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 20px;
-            padding: 20px;
+            border: 1px solid var(--glass-border);
+            border-radius: 22px;
+            padding: 22px;
             margin-bottom: 20px;
         }
 
         .search-input {
             width: 100%;
-            padding: 15px 20px;
-            border: 2px solid rgba(255,255,255,0.3);
+            padding: 16px 22px;
+            border: 2px solid rgba(255,255,255,0.1);
             border-radius: 15px;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.06);
             color: white;
             font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
         }
 
-        .search-input::placeholder {
-            color: rgba(255,255,255,0.7);
-        }
+        .search-input::placeholder { color: rgba(255,255,255,0.5); }
 
         .search-input:focus {
             outline: none;
-            border-color: white;
-            background: rgba(255,255,255,0.3);
+            border-color: #6366f1;
+            background: rgba(255,255,255,0.1);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
         }
 
         .filter-group {
@@ -245,28 +351,33 @@
         }
 
         .filter-btn {
-            padding: 10px 20px;
-            border: 2px solid rgba(255,255,255,0.3);
+            padding: 10px 22px;
+            border: 1px solid var(--glass-border);
             border-radius: 25px;
-            background: rgba(255,255,255,0.1);
-            color: white;
+            background: rgba(255,255,255,0.05);
+            color: #cbd5e1;
             cursor: pointer;
             font-weight: 500;
             transition: all 0.3s ease;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
+            font-family: 'Poppins', sans-serif;
         }
 
         .filter-btn:hover {
-            background: rgba(255,255,255,0.2);
+            background: rgba(99, 102, 241, 0.2);
+            border-color: #6366f1;
+            color: white;
         }
 
         .filter-btn.active {
-            background: white;
-            color: var(--primary);
-            border-color: white;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border-color: transparent;
             font-weight: 600;
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
         }
 
+        /* ===== STUDENTS ===== */
         .students-container {
             max-width: 1600px;
             margin: 0 auto;
@@ -284,26 +395,28 @@
         }
 
         .section-title {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 1.8rem;
             font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         .add-btn {
-            background: white;
-            color: var(--primary);
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
             border: none;
-            padding: 12px 30px;
+            padding: 14px 30px;
             border-radius: 25px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            font-family: 'Poppins', sans-serif;
         }
 
         .add-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 12px 30px rgba(16, 185, 129, 0.6);
         }
 
         .students-grid {
@@ -314,154 +427,148 @@
 
         .student-card {
             background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
+            border-radius: 22px;
             padding: 25px;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
+
+        .student-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 6px; height: 100%;
+            background: linear-gradient(180deg, #f59e0b, #ef4444);
+        }
+
+        .student-card.status-selected::before { background: linear-gradient(180deg, #10b981, #059669); }
+        .student-card.status-excluded::before { background: linear-gradient(180deg, #ef4444, #dc2626); }
 
         .student-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-        }
-
-        .student-card.status-excluded {
-            border-left: 5px solid var(--danger);
-        }
-
-        .student-card.status-selected {
-            border-left: 5px solid var(--success);
-        }
-
-        .student-card.status-waiting {
-            border-left: 5px solid var(--warning);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(99, 102, 241, 0.3);
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .student-avatar {
             width: 60px;
             height: 60px;
-            border-radius: 15px;
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: white;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
-        .student-avatar.bourguiba {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        }
-
-        .student-avatar.mbao {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
+        .student-avatar.bourguiba { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .student-avatar.mbao { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
 
         .status-badge {
-            padding: 6px 15px;
+            padding: 7px 16px;
             border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
-        .status-badge.selected {
-            background: rgba(46, 204, 113, 0.2);
-            color: #27ae60;
-        }
-
-        .status-badge.waiting {
-            background: rgba(243, 156, 18, 0.2);
-            color: #f39c12;
-        }
-
-        .status-badge.excluded {
-            background: rgba(231, 76, 60, 0.2);
-            color: #e74c3c;
-        }
+        .status-badge.selected { background: rgba(16, 185, 129, 0.15); color: #059669; }
+        .status-badge.waiting { background: rgba(245, 158, 11, 0.15); color: #d97706; }
+        .status-badge.excluded { background: rgba(239, 68, 68, 0.15); color: #dc2626; }
 
         .student-name {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 1.3rem;
             font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 5px;
+            color: #0f172a;
+            margin-bottom: 8px;
         }
 
         .student-class {
-            background: linear-gradient(135deg, #667eea20, #764ba220);
-            color: var(--accent);
+            background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.15));
+            color: #6366f1;
             font-weight: 600;
             margin-bottom: 15px;
-            padding: 5px 10px;
-            border-radius: 8px;
+            padding: 6px 12px;
+            border-radius: 10px;
             display: inline-block;
+            font-size: 0.85rem;
         }
 
         .info-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin: 15px 0;
+            gap: 14px;
+            margin: 18px 0;
         }
 
         .info-item .info-label {
-            color: #7f8c8d;
-            font-size: 0.8rem;
-            margin-bottom: 2px;
-        }
-
-        .info-item .info-value {
-            color: var(--dark);
+            color: #64748b;
+            font-size: 0.75rem;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             font-weight: 600;
         }
 
+        .info-item .info-value {
+            color: #0f172a;
+            font-weight: 600;
+            font-size: 0.92rem;
+        }
+
         .points-section {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 15px;
-            margin: 15px 0;
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            border-radius: 15px;
+            padding: 18px;
+            margin: 18px 0;
         }
 
         .points-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            font-weight: 600;
+            margin-bottom: 12px;
+            font-weight: 700;
+            color: #334155;
+            font-size: 0.9rem;
         }
 
         .points-bar {
-            height: 8px;
-            background: #e9ecef;
-            border-radius: 4px;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
             overflow: hidden;
         }
 
         .points-fill {
             height: 100%;
-            border-radius: 4px;
-            transition: width 0.5s ease;
+            border-radius: 5px;
+            transition: width 0.6s ease;
         }
 
-        .points-fill.danger { background: var(--danger); }
-        .points-fill.warning { background: var(--warning); }
-        .points-fill.success { background: var(--success); }
+        .points-fill.danger { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .points-fill.warning { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .points-fill.success { background: linear-gradient(90deg, #10b981, #059669); }
 
         .exclusion-warning {
-            background: rgba(231, 76, 60, 0.1);
-            border-left: 3px solid var(--danger);
-            padding: 8px 12px;
-            border-radius: 5px;
-            font-size: 0.85rem;
-            color: var(--danger);
-            font-weight: 600;
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            color: #dc2626;
+            font-weight: 700;
             margin-top: 10px;
         }
 
@@ -473,60 +580,65 @@
 
         .card-btn {
             flex: 1;
-            padding: 10px;
+            padding: 12px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 0.9rem;
-            text-align: center;
+            font-size: 0.88rem;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
         .btn-edit {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
             color: white;
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
         }
 
-        .btn-edit:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
+        .btn-edit:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5); }
 
         .btn-delete {
-            background: rgba(231, 76, 60, 0.1);
-            color: var(--danger);
-            border: 2px solid var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+            border: 2px solid rgba(239, 68, 68, 0.3);
         }
 
-        .btn-delete:hover {
-            background: var(--danger);
-            color: white;
-        }
+        .btn-delete:hover { background: #ef4444; color: white; }
 
+        /* ===== MODALS ===== */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 2000;
+            padding: 20px;
         }
 
         .modal {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 500px;
-            width: 95%;
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            border-radius: 25px;
+            padding: 35px;
+            max-width: 520px;
+            width: 100%;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+            animation: modalAppear 0.3s ease;
+        }
+
+        @keyframes modalAppear {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .modal-header {
@@ -534,186 +646,240 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 18px;
+            border-bottom: 2px solid #f1f5f9;
         }
 
         .modal-title {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 1.5rem;
-            color: var(--primary);
+            color: #0f172a;
+            font-weight: 700;
         }
 
         .modal-close {
             background: none;
             border: none;
-            font-size: 1.8rem;
+            font-size: 2rem;
             cursor: pointer;
-            color: #7f8c8d;
+            color: #94a3b8;
             transition: all 0.3s ease;
+            line-height: 1;
         }
 
-        .modal-close:hover {
-            color: var(--danger);
-            transform: rotate(90deg);
-        }
+        .modal-close:hover { color: #ef4444; transform: rotate(90deg); }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 20px; }
 
         .form-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: var(--dark);
+            color: #334155;
+            font-size: 0.9rem;
         }
 
         .form-group input, .form-group select {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
             font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
+            font-size: 0.95rem;
             transition: all 0.3s ease;
+            background: white;
         }
 
         .form-group input:focus, .form-group select:focus {
             outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
         }
 
         .points-editor {
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: #f8f9fa;
+            gap: 8px;
+            background: #f8fafc;
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 12px;
+            flex-wrap: wrap;
         }
 
         .points-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
             border: none;
-            background: var(--accent);
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
             color: white;
-            font-size: 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .points-btn:hover {
-            background: var(--primary);
-            transform: scale(1.1);
-        }
+        .points-btn:hover { transform: scale(1.1); box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4); }
 
         .points-display {
             flex: 1;
             text-align: center;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
-            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #6366f1;
+            font-family: 'Space Grotesk', sans-serif;
+            min-width: 80px;
         }
 
         .modal-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             margin-top: 25px;
         }
 
         .modal-btn {
             flex: 1;
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border-radius: 10px;
-            font-weight: 600;
+            border-radius: 12px;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 1rem;
+            font-size: 0.95rem;
+            font-family: 'Poppins', sans-serif;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
             color: white;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
         }
 
-        .btn-primary:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(99, 102, 241, 0.6); }
 
         .btn-cancel {
-            background: #ecf0f1;
-            color: var(--dark);
+            background: #f1f5f9;
+            color: #475569;
         }
 
-        .btn-cancel:hover {
-            background: #bdc3c7;
-        }
+        .btn-cancel:hover { background: #e2e8f0; }
 
+        /* ===== SYNC INDICATOR ===== */
         .sync-indicator {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(46, 204, 113, 0.9);
+            bottom: 25px;
+            left: 25px;
+            background: linear-gradient(135deg, #10b981, #059669);
             color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 0.9rem;
+            padding: 12px 22px;
+            border-radius: 30px;
+            font-size: 0.88rem;
             backdrop-filter: blur(10px);
             z-index: 9999;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .no-results {
             text-align: center;
-            padding: 50px;
+            padding: 80px 40px;
             color: white;
-            font-size: 1.2rem;
             grid-column: 1 / -1;
         }
 
+        .no-results i {
+            font-size: 5rem;
+            margin-bottom: 25px;
+            opacity: 0.3;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .no-results h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .no-results p { opacity: 0.6; }
+
         .loading-spinner {
             position: fixed;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             z-index: 3000;
-            background: rgba(255,255,255,0.95);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background: rgba(15, 23, 42, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.5);
             text-align: center;
             display: none;
+            border: 1px solid var(--glass-border);
         }
 
         .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid var(--accent);
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(99, 102, 241, 0.2);
+            border-top: 5px solid #6366f1;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+            margin: 0 auto 20px;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .loading-spinner p { color: white; font-weight: 600; }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 100px 40px;
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .empty-state i {
+            font-size: 6rem;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.6;
+        }
+
+        .empty-state h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .empty-state p {
+            opacity: 0.7;
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto 30px;
         }
 
         @media (max-width: 768px) {
             .header-content { flex-direction: column; }
             .students-grid { grid-template-columns: 1fr; }
             .stats-grid { grid-template-columns: 1fr 1fr; }
+            .logo-text h1 { font-size: 1.3rem; }
         }
     </style>
 </head>
 <body>
+    <div class="bg-animated"></div>
+    <div class="bg-grid"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
     <header class="glass-header">
         <div class="header-content">
             <div class="logo-section">
@@ -721,8 +887,8 @@
                     <i class="fas fa-graduation-cap"></i>
                 </div>
                 <div class="logo-text">
-                    <h1>HIKMAH'S CLUB</h1>
-                    <span>Dashboard Administration</span>
+                    <h1>HIKMAH'S <span>CLUB</span></h1>
+                    <div class="year-badge"><i class="fas fa-calendar"></i> ANNÉE 2026-2027</div>
                 </div>
             </div>
             <div class="admin-section">
@@ -730,7 +896,7 @@
                     <div class="admin-avatar" id="adminInitials">AD</div>
                     <div>
                         <div style="font-weight: 600;" id="adminNameDisplay">Admin</div>
-                        <div style="font-size: 0.8rem; opacity: 0.8;" id="adminEmailDisplay">admin@hikmah.com</div>
+                        <div style="font-size: 0.75rem; opacity: 0.7;" id="adminEmailDisplay">admin@hikmah.com</div>
                     </div>
                 </div>
                 <button class="logout-btn" onclick="logout()">
@@ -754,22 +920,22 @@
 
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="stat-icon">👥</div>
+            <span class="stat-icon">👥</span>
             <div class="stat-value" id="totalStudents">0</div>
             <div class="stat-label">Total Élèves</div>
         </div>
         <div class="stat-card">
-            <div class="stat-icon">✅</div>
+            <span class="stat-icon">✅</span>
             <div class="stat-value" id="selectedStudents">0</div>
             <div class="stat-label">Sélectionnés</div>
         </div>
         <div class="stat-card">
-            <div class="stat-icon">⏳</div>
+            <span class="stat-icon">⏳</span>
             <div class="stat-value" id="waitingStudents">0</div>
             <div class="stat-label">En Attente</div>
         </div>
         <div class="stat-card">
-            <div class="stat-icon">🚫</div>
+            <span class="stat-icon">🚫</span>
             <div class="stat-value" id="excludedStudents">0</div>
             <div class="stat-label">Exclus (≤25 pts)</div>
         </div>
@@ -839,7 +1005,7 @@
             <div class="form-group">
                 <label>Code Administrateur</label>
                 <input type="password" id="editAdminCode" placeholder="Code requis">
-                <div id="codeError" style="color: #e74c3c; font-size: 0.9rem; margin-top: 5px; display: none;">
+                <div id="codeError" style="color: #ef4444; font-size: 0.9rem; margin-top: 5px; display: none;">
                     ⚠️ Code incorrect
                 </div>
             </div>
@@ -919,18 +1085,23 @@
 
     <div class="loading-spinner" id="loadingSpinner">
         <div class="spinner"></div>
-        <p style="color: #2c3e50; font-weight: 600;">Chargement...</p>
+        <p>Chargement...</p>
     </div>
 
     <div class="sync-indicator" id="syncStatus">
-        <i class="fas fa-cloud"></i> Synchronisé
+        <i class="fas fa-cloud"></i> Synchronisé Supabase
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         // ============ CONFIGURATION ============
-const ADMIN_CODE = "194019602026";
-const EXCLUSION_THRESHOLD = 25;
-let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
+        const ADMIN_CODE = "194019602026";
+        const EXCLUSION_THRESHOLD = 25;
+        const ANNEE_SCOLAIRE = "2026-2027";
+
+        const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // ============ ÉTAT GLOBAL ============
         let allStudents = [];
@@ -939,23 +1110,19 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
         let currentEditStudent = null;
         let editingPoints = 0;
         let editingAbsences = 0;
-        let nextId = 1;
 
         // ============ INITIALISATION ============
-       document.addEventListener('DOMContentLoaded', async function() {
-    console.log('🚀 Démarrage Dashboard Hikmah...');
-    showLoading(true);
-    
-    loadAdminInfo();
-    await loadStudents(); // ATTENTION: ajouter "await"
-    renderAll();
-    updateStats();
-    
-    showLoading(false);
-    updateSyncStatus(true);
-    
-    console.log(`✅ Dashboard prêt - ${allStudents.length} élèves chargés`);
-});
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 Démarrage Dashboard Hikmah 2026-2027...');
+            showLoading(true);
+            loadAdminInfo();
+            await loadStudents();
+            renderAll();
+            updateStats();
+            showLoading(false);
+            updateSyncStatus(true);
+            console.log(`✅ Dashboard prêt - ${allStudents.length} élèves`);
+        });
 
         // ============ GESTION ADMIN ============
         function loadAdminInfo() {
@@ -987,108 +1154,125 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
             }
         }
 
-        // ============ PERSISTANCE DES DONNÉES ============
+        // ============ CHARGEMENT SUPABASE ============
         async function loadStudents() {
-    // 1. Essayer le cloud d'abord
-    if (API_BIN_ID) {
-        try {
-            const response = await fetch(`https://api.jsonbin.io/v3/b/${API_BIN_ID}/latest`, {
-                headers: { 'X-Master-Key': '$2a$10$2jyOWfoKpbEu21W6h6xGdOVjfvkE5IyZJ5Td/Liyc1ttgPhtVTafe' }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                allStudents = data.record;
-                console.log('☁️ Données chargées depuis le cloud');
-            }
-        } catch (e) {
-            console.log('⚠️ Cloud inaccessible, fallback localStorage');
-        }
-    }
-    
-    // 2. Fallback localStorage
-    if (allStudents.length === 0) {
-        const saved = localStorage.getItem('hikmah_students');
-        if (saved) {
-            allStudents = JSON.parse(saved);
-            console.log('💾 Données chargées depuis localStorage');
-        }
-    }
-    
-    // 3. Données par défaut
-    if (allStudents.length === 0) {
-        console.log('📦 Initialisation avec données par défaut');
-        allStudents = getDefaultStudents();
-        await saveStudents();
-    }
-    
-    if (allStudents.length > 0) {
-        nextId = Math.max(...allStudents.map(s => s.id || 0)) + 1;
-    }
-}
-        async function saveStudents() {
-    // Sauvegarde locale
-    localStorage.setItem('hikmah_students', JSON.stringify(allStudents));
-    
-    // Sauvegarde cloud
-    try {
-        let response;
-        if (API_BIN_ID) {
-            // Mettre à jour le bin existant
-            response = await fetch(`https://api.jsonbin.io/v3/b/${API_BIN_ID}`, {
-                method: 'PUT',
-               headers: {
-                    'Content-Type': 'application/json',
-                    'X-Master-Key': '$2a$10$2jyOWfoKpbEu21W6h6xGdOVjfvkE5IyZJ5Td/Liyc1ttgPhtVTafe'
-                },
-                body: JSON.stringify(allStudents)
-            });
-        } else {
-            // Créer un nouveau bin
-            response = await fetch('https://api.jsonbin.io/v3/b', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Master-Key': '$2a$10$2jyOWfoKpbEu21W6h6xGdOVjfvkE5IyZJ5Td/Liyc1ttgPhtVTafe'
-                },
-                body: JSON.stringify(allStudents)
-            });
-            
-            if (response.ok) {
-                const data = await response.json();
-                API_BIN_ID = data.metadata.id;
-                localStorage.setItem('hikmah_bin_id', API_BIN_ID);
-                console.log('🆕 Nouveau bin créé:', API_BIN_ID);
+            try {
+                const { data, error } = await supabaseClient
+                    .from('hikmah_eleves')
+                    .select('*')
+                    .order('id', { ascending: true });
+
+                if (error) throw error;
+                allStudents = data || [];
+                console.log(`☁️ ${allStudents.length} élèves chargés depuis Supabase`);
+            } catch (e) {
+                console.error('❌ Erreur Supabase:', e.message);
+                allStudents = [];
+                updateSyncStatus(false);
             }
         }
-        
-        if (response.ok) {
-            updateSyncStatus(true);
-            console.log('☁️ Cloud synchronisé');
+
+        // ============ SAUVEGARDE SUPABASE ============
+        async function saveStudent(student) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('hikmah_eleves')
+                    .insert([{
+                        nom: student.nom,
+                        prenom: student.prenom,
+                        classe: student.classe,
+                        club: student.club,
+                        statut: student.statut,
+                        points: student.points,
+                        absences: student.absences || 0,
+                        ecole: student.ecole,
+                        mandat: ANNEE_SCOLAIRE,
+                        timestamp: Date.now()
+                    }])
+                    .select();
+
+                if (error) throw error;
+                updateSyncStatus(true);
+                return data[0];
+            } catch (e) {
+                console.error('❌ Erreur insert:', e.message);
+                updateSyncStatus(false);
+                throw e;
+            }
         }
-    } catch (error) {
-        updateSyncStatus(false);
-        console.log('⚠️ Synchronisation cloud échouée, sauvegardé en local');
-    }
-}
-    function updateSyncStatus(synced) {
-    const status = document.getElementById('syncStatus');
-    if (synced) {
-        status.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Synchronisé Cloud + Local';
-        status.style.background = 'rgba(46, 204, 113, 0.9)';
-    } else {
-        status.innerHTML = '<i class="fas fa-save"></i> Sauvegardé Local uniquement';
-        status.style.background = 'rgba(243, 156, 18, 0.9)';
-    }
-}
+
+        async function updateStudentSupabase(student) {
+            try {
+                const { error } = await supabaseClient
+                    .from('hikmah_eleves')
+                    .update({
+                        nom: student.nom,
+                        prenom: student.prenom,
+                        classe: student.classe,
+                        club: student.club,
+                        statut: student.statut,
+                        points: student.points,
+                        absences: student.absences || 0,
+                        ecole: student.ecole,
+                        mandat: ANNEE_SCOLAIRE
+                    })
+                    .eq('id', student.id);
+
+                if (error) throw error;
+                updateSyncStatus(true);
+            } catch (e) {
+                console.error('❌ Erreur update:', e.message);
+                updateSyncStatus(false);
+                throw e;
+            }
+        }
+
+        async function deleteStudentSupabase(id) {
+            try {
+                const { error } = await supabaseClient
+                    .from('hikmah_eleves')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) throw error;
+                updateSyncStatus(true);
+            } catch (e) {
+                console.error('❌ Erreur delete:', e.message);
+                updateSyncStatus(false);
+                throw e;
+            }
+        }
+
+        function updateSyncStatus(synced) {
+            const status = document.getElementById('syncStatus');
+            if (synced) {
+                status.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Synchronisé Supabase';
+                status.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+            } else {
+                status.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erreur Supabase';
+                status.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+            }
+        }
 
         // ============ RENDU ============
         function renderAll() {
             let students = getFilteredStudents();
-            
-            if (students.length === 0) {
+
+            if (allStudents.length === 0) {
+                document.getElementById('studentsGrid').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h2>Nouvelle Année Scolaire 2026-2027</h2>
+                        <p>Aucun élève enregistré pour le moment. Commencez par ajouter les nouveaux élèves du club.</p>
+                        <button class="add-btn" onclick="openAddModal()" style="padding: 16px 40px; font-size: 1.05rem;">
+                            <i class="fas fa-plus"></i> Ajouter le premier élève
+                        </button>
+                    </div>
+                `;
+            } else if (students.length === 0) {
                 document.getElementById('studentsGrid').innerHTML = `
                     <div class="no-results">
-                        <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                        <i class="fas fa-search"></i>
                         <h3>Aucun élève trouvé</h3>
                         <p>Ajustez vos filtres de recherche</p>
                     </div>
@@ -1096,7 +1280,7 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
             } else {
                 document.getElementById('studentsGrid').innerHTML = students.map(s => createStudentCard(s)).join('');
             }
-            
+
             updateStats();
         }
 
@@ -1111,17 +1295,17 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
             const statusText = isExcluded ? 'EXCLU' : student.statut;
             const pointsColor = student.points <= EXCLUSION_THRESHOLD ? 'danger' : 
                                student.points <= 50 ? 'warning' : 'success';
-            
+
             return `
                 <div class="student-card ${statusClass}">
                     <div class="card-header">
                         <div class="student-avatar ${student.ecole}">${initials}</div>
                         <span class="status-badge ${statusBadgeClass}">${statusText}</span>
                     </div>
-                    
+
                     <h3 class="student-name">${fullName}</h3>
                     <div class="student-class">📚 ${student.classe}</div>
-                    
+
                     <div class="info-grid">
                         <div class="info-item">
                             <div class="info-label">Club</div>
@@ -1133,18 +1317,18 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
                         </div>
                         <div class="info-item">
                             <div class="info-label">Mandat</div>
-                            <div class="info-value">${student.mandat || 'Non défini'}</div>
+                            <div class="info-value">${student.mandat || ANNEE_SCOLAIRE}</div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">École</div>
                             <div class="info-value">${student.ecole === 'bourguiba' ? '🏫 Bourguiba' : '🏫 Mbao'}</div>
                         </div>
                     </div>
-                    
+
                     <div class="points-section">
                         <div class="points-header">
                             <span>Points</span>
-                            <span style="color: ${student.points <= EXCLUSION_THRESHOLD ? '#e74c3c' : '#2ecc71'}">
+                            <span style="color: ${student.points <= EXCLUSION_THRESHOLD ? '#ef4444' : '#10b981'}">
                                 ${student.points}/100
                             </span>
                         </div>
@@ -1157,7 +1341,7 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
                             </div>` : ''
                         }
                     </div>
-                    
+
                     <div class="card-actions">
                         <button class="card-btn btn-edit" onclick="openEditModal(${student.id})">
                             <i class="fas fa-edit"></i> Modifier
@@ -1173,15 +1357,15 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
         // ============ FILTRES ============
         function getFilteredStudents() {
             let students = [...allStudents];
-            
+
             if (currentSchool !== 'all') {
                 students = students.filter(s => s.ecole === currentSchool);
             }
-            
+
             if (currentClassFilter !== 'all') {
                 students = students.filter(s => s.classe && s.classe.toString().includes(currentClassFilter));
             }
-            
+
             const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
             if (searchTerm) {
                 students = students.filter(s => 
@@ -1191,7 +1375,7 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
                     (s.club && s.club.toLowerCase().includes(searchTerm))
                 );
             }
-            
+
             return students;
         }
 
@@ -1211,14 +1395,14 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
             document.querySelectorAll('.nav-tab').forEach(tab => {
                 tab.classList.toggle('active', tab.dataset.school === school);
             });
-            
+
             const titles = {
                 'all': '👥 Tous les Élèves',
                 'bourguiba': '🏫 École Bourguiba',
                 'mbao': '🏫 École Mbao'
             };
             document.getElementById('sectionTitle').textContent = titles[school] || '👥 Tous les Élèves';
-            
+
             renderAll();
         }
 
@@ -1235,17 +1419,17 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
         function openEditModal(studentId) {
             currentEditStudent = allStudents.find(s => s.id === studentId);
             if (!currentEditStudent) return;
-            
+
             editingPoints = currentEditStudent.points;
             editingAbsences = currentEditStudent.absences || 0;
-            
+
             document.getElementById('editStudentName').value = `${currentEditStudent.prenom} ${currentEditStudent.nom}`;
             document.getElementById('editPoints').textContent = editingPoints;
             document.getElementById('editAbsences').value = editingAbsences;
             document.getElementById('editStatus').value = currentEditStudent.statut;
             document.getElementById('editAdminCode').value = '';
             document.getElementById('codeError').style.display = 'none';
-            
+
             document.getElementById('editModal').style.display = 'flex';
         }
 
@@ -1254,35 +1438,38 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
             document.getElementById('editPoints').textContent = editingPoints;
         }
 
-       async function saveStudentChanges() {
+        async function saveStudentChanges() {
             const adminCode = document.getElementById('editAdminCode').value;
-            
+
             if (adminCode !== ADMIN_CODE) {
                 document.getElementById('codeError').style.display = 'block';
                 return;
             }
-            
+
             if (!currentEditStudent) return;
-            
+
             showLoading(true);
-            
+
             editingAbsences = parseInt(document.getElementById('editAbsences').value) || 0;
             if (editingAbsences < 0) editingAbsences = 0;
-            
+
             currentEditStudent.points = editingPoints;
             currentEditStudent.absences = editingAbsences;
             currentEditStudent.statut = document.getElementById('editStatus').value;
-            
+
             if (editingPoints <= EXCLUSION_THRESHOLD) {
                 currentEditStudent.statut = 'Exclu';
             }
-            
-            await saveStudents();
-            closeModal('editModal');
-            renderAll();
+
+            try {
+                await updateStudentSupabase(currentEditStudent);
+                closeModal('editModal');
+                renderAll();
+                alert(`✅ Élève mis à jour !\nPoints: ${editingPoints}\nAbsences: ${editingAbsences}\nStatut: ${currentEditStudent.statut}`);
+            } catch (e) {
+                alert('❌ Erreur de sauvegarde : ' + e.message);
+            }
             showLoading(false);
-            
-            alert(`✅ Élève mis à jour !\nPoints: ${editingPoints}\nAbsences: ${editingAbsences}\nStatut: ${currentEditStudent.statut}`);
         }
 
         // ============ AJOUT ÉLÈVE ============
@@ -1297,14 +1484,15 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
             const classe = document.getElementById('addClasse').value;
             const club = document.getElementById('addClub').value;
             const status = document.getElementById('addStatus').value;
-            
+
             if (!nom || !prenom || !classe || !club) {
                 alert('Veuillez remplir tous les champs');
                 return;
             }
-            
+
+            showLoading(true);
+
             const newStudent = {
-                id: nextId++,
                 nom,
                 prenom,
                 classe,
@@ -1313,40 +1501,48 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
                 points: 100,
                 absences: 0,
                 ecole: school,
-                mandat: '2024-2025'
+                mandat: ANNEE_SCOLAIRE
             };
-            
-            allStudents.push(newStudent);
-            await saveStudents();
-            closeModal('addModal');
-            renderAll();
-            
-            document.getElementById('addNom').value = '';
-            document.getElementById('addPrenom').value = '';
-            document.getElementById('addClasse').value = '';
-            document.getElementById('addClub').value = '';
-            
-            alert('✅ Élève ajouté avec succès !');
+
+            try {
+                const saved = await saveStudent(newStudent);
+                allStudents.push(saved);
+                closeModal('addModal');
+                renderAll();
+
+                document.getElementById('addNom').value = '';
+                document.getElementById('addPrenom').value = '';
+                document.getElementById('addClasse').value = '';
+                document.getElementById('addClub').value = '';
+
+                alert('✅ Élève ajouté avec succès !');
+            } catch (e) {
+                alert('❌ Erreur : ' + e.message);
+            }
+            showLoading(false);
         }
 
         // ============ SUPPRESSION ÉLÈVE ============
         async function deleteStudent(studentId) {
             const code = prompt('🔐 Code administrateur pour supprimer:');
-            
+
             if (code !== ADMIN_CODE) {
                 alert('❌ Code incorrect.');
                 return;
             }
-            
+
             if (!confirm('⚠️ Supprimer définitivement cet élève ?')) return;
-            
+
             showLoading(true);
-            allStudents = allStudents.filter(s => s.id !== studentId);
-            await saveStudents();
-            renderAll();
+            try {
+                await deleteStudentSupabase(studentId);
+                allStudents = allStudents.filter(s => s.id !== studentId);
+                renderAll();
+                alert('✅ Élève supprimé');
+            } catch (e) {
+                alert('❌ Erreur : ' + e.message);
+            }
             showLoading(false);
-            
-            alert('✅ Élève supprimé');
         }
 
         // ============ UTILITAIRES ============
@@ -1355,7 +1551,7 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
         }
 
         function showLoading(show) {
-            document.getElementById('loadingSpinner').style.display = show ? 'flex' : 'none';
+            document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
         }
 
         window.addEventListener('click', function(e) {
@@ -1369,413 +1565,6 @@ let API_BIN_ID = localStorage.getItem('hikmah_bin_id') || '';
                 document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
             }
         });
-
-              // ============ DONNÉES PAR DÉFAUT ============
-        function getDefaultStudents() {
-            const allStudents = [];
-            let idCounter = 1;
-            
-            // Fonction de conversion
-            function convertToStudent(s, ecole) {
-                const totaux = s.totaux || 0;
-                let points = 0;
-                
-                if (s.statut === "Sélectionné" || s.statut === "Sélectionner") {
-                    points = Math.floor((totaux / 20) * 100);
-                } else if (s.statut === "Refusé") {
-                    points = Math.floor((totaux / 20) * 100);
-                } else if (s.statut === "En attente") {
-                    points = totaux > 0 ? Math.floor((totaux / 20) * 100) : 0;
-                }
-                
-                let statut = s.statut;
-                if (statut === "Sélectionner") statut = "Sélectionné";
-                if (statut === "Impolitesse" || statut === "Absent" || statut === "Absente") statut = "Exclu";
-                if (statut === "Refusé" && points <= 25) statut = "Exclu";
-                if (points <= 25) statut = "Exclu";
-                
-                return {
-                    id: idCounter++,
-                    nom: s.nom.trim(),
-                    prenom: s.prenom.trim(),
-                    classe: s.classe,
-                    club: s.club || "Non défini",
-                    statut: statut,
-                    points: points,
-                    absences: 0,
-                    ecole: ecole,
-                    mandat: s.mandat || ""
-                };
-            }
-            
-         // ==================== DONNÉES MBAO ====================
-const mbaoData = [
-    { nom: "Fall", prenom: "Mouhamed Saliou", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 8, mandat: "" },
-    { nom: "Ba", prenom: "Mouhamed Woury", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Soumaré", prenom: "Mouhamed", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 7, mandat: "" },
-    { nom: "Ndiaye", prenom: "Mouhamed Al Bachir", classe: "6éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
-    { nom: "Ndiaye", prenom: "Mouhamed Al Bachir", classe: "6éme B", club: "Anglais", statut: "Sélectionné", totaux: 10, mandat: "2024-2025" },
-    { nom: "Paye", prenom: "Ahmad Imran", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 9, mandat: "" },
-    { nom: "Sako", prenom: "Yoba Moussa", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Sako", prenom: "Yoba Moussa", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 9, mandat: "" },
-    { nom: "Ba", prenom: "Abdoul Aziz", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Ba", prenom: "Abdoul Aziz", classe: "6éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 10, mandat: "" },
-    { nom: "Coulibaly", prenom: "Mouhamed Abdallah", classe: "6éme B", club: "Sport", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Coulibaly", prenom: "Mouhamed Abdallah", classe: "6éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Wilson", prenom: "Aboubacry Sadikh", classe: "6éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Maiga", prenom: "Abdourahmane", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Maiga", prenom: "Abdourahmane", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 9, mandat: "" },
-    { nom: "Niang", prenom: "Mouhamed", classe: "6éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 10, mandat: "" },
-    { nom: "Niang", prenom: "Mouhamed", classe: "6éme B", club: "Arabe", statut: "Sélectionné", totaux: 10, mandat: "2024-2025" },
-    { nom: "Niang", prenom: "Mouhamed Sakhir", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Niang", prenom: "Mouhamed Sakhir", classe: "6éme B", club: "Arabe", statut: "Sélectionné", totaux: 10, mandat: "2024-2025" },
-    { nom: "Tine", prenom: "Ahmad Fatih", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 9, mandat: "" },
-    { nom: "Ka", prenom: "Mangoné", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Ka", prenom: "Mangoné", classe: "6éme B", club: "Anglais", statut: "Sélectionné", totaux: 9, mandat: "2024-2025" },
-    { nom: "Touré", prenom: "Mouhamed Salih", classe: "6éme B", club: "Sport", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Sow", prenom: "Issa", classe: "6éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
-    { nom: "Ba", prenom: "Mouhamadou Aminy", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Fall", prenom: "Mouhamed", classe: "6éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Ba", prenom: "Amadou Tidiane", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Diouf", prenom: "Cheikhou", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Diouf", prenom: "Cheikhou", classe: "6éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 8, mandat: "" },
-    { nom: "Gueye", prenom: "Cheikh Matsarr", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Gueye", prenom: "Cheikh Matsarr", classe: "6éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
-    { nom: "Diol", prenom: "Yaye Aminata", classe: "5éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 10, mandat: "" },
-    { nom: "Diol", prenom: "Yaye Aminata", classe: "5éme B", club: "Anglais", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
-    { nom: "Fall", prenom: "Fatima", classe: "5éme B", club: "Sport / Taekwondo", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Fall", prenom: "Fatima", classe: "5éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 6, mandat: "" },
-    { nom: "Have", prenom: "Ndeye Arame Fatima", classe: "5éme B", club: "Sport / Taekwondo", statut: "En attente", totaux: 1, mandat: "" },
-    { nom: "Have", prenom: "Ndeye Arame Fatima", classe: "5éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Séne", prenom: "Aby", classe: "5éme B", club: "Sport / Basket", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Séne", prenom: "Aby", classe: "5éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 5, mandat: "" },
-    { nom: "Sylla", prenom: "Fatima Tamar", classe: "5éme B", club: "Anglais", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Sylla", prenom: "Fatima Tamar", classe: "5éme B", club: "Biochimie", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Diop", prenom: "Aida mbéne", classe: "5éme B", club: "Anglais", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Diop", prenom: "Aida Mbéne", classe: "5éme B", club: "CLAP", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Dieng", prenom: "Aminata Manoumbé", classe: "5éme B", club: "Anglais", statut: "Sélectionné", totaux: 11, mandat: "2024-2025" },
-    { nom: "Dieng", prenom: "Aminata Manoumbé", classe: "5éme B", club: "Physique", statut: "Sélectionné", totaux: 9, mandat: "2024-2025" },
-    { nom: "Diaw", prenom: "Aboubacar", classe: "5éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Diaw", prenom: "Aboubacar", classe: "5éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Mboup", prenom: "Mouhamed Moustapha", classe: "5éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Niang", prenom: "Maryam", classe: "5éme B", club: "CLAP", statut: "Refusé", totaux: 4, mandat: "" },
-    { nom: "Niang", prenom: "Maryam", classe: "5éme B", club: "Sport / Karaté", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Paye", prenom: "Fatimata Bintou", classe: "5éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 6, mandat: "" },
-    { nom: "Hussein", prenom: "Souad Omar El backry", classe: "5éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 10, mandat: "" },
-    { nom: "Sy", prenom: "Oumou Kalsoum", classe: "5éme B", club: "Sport / Basket", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Sy", prenom: "Oumou Kalsoum", classe: "5éme B", club: "Anglais", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Touré", prenom: "Adjia Yacine", classe: "5éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "NDOUR", prenom: "Coumba", classe: "5éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
-    { nom: "NDOUR", prenom: "Coumba", classe: "5éme B", club: "Anglais", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
-    { nom: "Hane", prenom: "Diamilatou", classe: "5éme B", club: "CLAP", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Hane", prenom: "Diamilatou", classe: "5éme B", club: "Physique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Séne", prenom: "pape Daouda", classe: "5éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Séne", prenom: "pape Daouda", classe: "5éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
-    { nom: "Kébé", prenom: "Fatima", classe: "5éme B", club: "Anglais", statut: "Sélectionné", totaux: 10, mandat: "2024-2025" },
-    { nom: "Manga", prenom: "Mouhamed", classe: "5éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
-    { nom: "Manga", prenom: "Mouhamed", classe: "5éme B", club: "Physique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
-    { nom: "Diop", prenom: "Ndeye Aby", classe: "5éme B", club: "Sport", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Diop", prenom: "Ndeye Aby", classe: "5éme B", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Sow", prenom: "Rougui", classe: "5éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
-    { nom: "Sow", prenom: "Rougui", classe: "5éme B", club: "Biochimie", statut: "Sélectionné", totaux: 8, mandat: "2024-2025" },
-    { nom: "Jaiteh", prenom: "Matidah", classe: "5éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
-    { nom: "Jaiteh", prenom: "Maidah", classe: "5éme B", club: "Biochimie", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Diallo", prenom: "Diamilatou", classe: "5éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
-    { nom: "Diallo", prenom: "Diamilatou", classe: "5éme B", club: "Physique", statut: "Sélectionné", totaux: 10, mandat: "2024-2025" },
-    { nom: "Loum", prenom: "Abdallah", classe: "5éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Loum", prenom: "Abdallah", classe: "5éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 9, mandat: "" },
-    { nom: "Ba", prenom: "Alpha El Makhtar", classe: "5éme B", club: "Informatique-Robotique", statut: "En attente", totaux: 10, mandat: "" },
-    { nom: "Ba", prenom: "Alpha El Makhtar", classe: "5éme B", club: "Anglais", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
-    { nom: "Dia", prenom: "Mariéme Arame", classe: "5éme B", club: "Sport / Volle ball", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Dia", prenom: "Mariéme Arame", classe: "5éme B", club: "Informatique-Robotique", statut: "Refusé", totaux: 9, mandat: "" },
-    { nom: "Diallo", prenom: "Abdou Raouf Khatab", classe: "5éme B", club: "CLAP", statut: "Refusé", totaux: 4, mandat: "" },
-    { nom: "Diallo", prenom: "Abdou Raouf Khatab", classe: "5éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Thioune", prenom: "Fatimatou", classe: "5éme B", club: "CLAP", statut: "Sélectionné", totaux: 7, mandat: "2024-2025" },
-    { nom: "Thioune", prenom: "Fatimatou", classe: "5éme B", club: "Arabe", statut: "Sélectionné", totaux: 7, mandat: "2024-2025" },
-    { nom: "Ba", prenom: "Oumy", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Ba", prenom: "Oumy", classe: "6éme A", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Loum", prenom: "Awa", classe: "6éme A", club: "Physique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Loum", prenom: "Awa", classe: "6éme A", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Siaman", prenom: "Khadja", classe: "6éme A", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Siaman", prenom: "Khadja", classe: "6éme A", club: "Physique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Sarr", prenom: "Oumou Khairy", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Sarr", prenom: "Oumou Khairy", classe: "6éme A", club: "Arabe", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Séne", prenom: "Amina", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Séne", prenom: "Amina", classe: "6éme A", club: "CLAP", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Seck", prenom: "Ndeye Mama", classe: "6éme A", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Seck", prenom: "Ndeye Mama", classe: "6éme A", club: "Physique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Ba", prenom: "Fatimata", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Barry", prenom: "Fatimata", classe: "6éme A", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Barry", prenom: "Fatimata", classe: "6éme A", club: "physique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Baldé", prenom: "Awa", classe: "6éme A", club: "Arabe", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Baldé", prenom: "Awa", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Fall", prenom: "Madjiguéne", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Fall", prenom: "Madjiguéne", classe: "6éme A", club: "Physique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Diouf", prenom: "Bitty", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Mballo", prenom: "Fatoumata", classe: "6éme A", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Mballo", prenom: "Fatoumata", classe: "6éme A", club: "Physique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Sagna", prenom: "Fatoumata", classe: "6éme A", club: "Biochimie", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Sagna", prenom: "Fatoumata", classe: "6éme A", club: "Physique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Diop", prenom: "Ramatoulahi", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Talla", prenom: "Aissatou", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 19, mandat: "2024-2025" },
-    { nom: "Ndiaye", prenom: "Mariame", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Ndiaye", prenom: "Fatou Kiné", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Ndiaye", prenom: "Fatou Kiné", classe: "6éme A", club: "Arabe", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Kébé", prenom: "Boury", classe: "6éme A", club: "CLAP", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
-    { nom: "Djialéne", prenom: "Awa", classe: "6éme A", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Ndiaye", prenom: "Aicha", classe: "6éme A", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Ndiaye", prenom: "Aicha", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Djialéne", prenom: "Awa", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Ndiaye", prenom: "Mariame", classe: "6éme A", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Basse", prenom: "Aissata", classe: "6éme A", club: "Biochimie", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Basse", prenom: "Aissata", classe: "6éme A", club: "CLAP", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Pouye", prenom: "Abdourahmane", classe: "4éme", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Pouye", prenom: "Abdourahmane", classe: "4éme", club: "Biochimie", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Diop", prenom: "Ndeye Anta", classe: "4éme", club: "CLAP", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Diop", prenom: "Ndeye Anta", classe: "4éme", club: "Physique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Seydi", prenom: "Mariama", classe: "4éme", club: "Anglais", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Diao", prenom: "Fatima", classe: "4éme", club: "CLAP", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
-    { nom: "Gning", prenom: "Coumba Malick", classe: "4éme", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Seck", prenom: "Adjia Awa", classe: "4éme", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
-    { nom: "Baldé", prenom: "Al hassan", classe: "4éme", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Ngom", prenom: "Daouda", classe: "4éme", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
-    { nom: "Ba", prenom: "Dieynaba", classe: "4éme", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Ba", prenom: "Halimatou", classe: "4éme", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
-    { nom: "Pouye", prenom: "Penda", classe: "4éme", club: "CLAP", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "sow", prenom: "Fatima", classe: "4éme", club: "Sport", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Sow", prenom: "Hafsatou", classe: "4éme", club: "Biochimie", statut: "Sélectionné", totaux: 10, mandat: "2024-2025" },
-    { nom: "Badji", prenom: "Abdoulaye", classe: "4éme", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Dieng", prenom: "Fatou", classe: "4éme", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Dieng", prenom: "Fatou", classe: "4éme", club: "CLAP", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Maiga", prenom: "Khadja", classe: "2nde S", club: "Physique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Siaman", prenom: "Oufaly", classe: "2nde S", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Basse", prenom: "Cheikh Habibou", classe: "2nde S", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Diop", prenom: "Maman Aissatou Fassa", classe: "2nde S", club: "CLAP", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Diop", prenom: "Maman Aissatou Fassa", classe: "2nde S", club: "Physique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Lô", prenom: "Amina", classe: "2nde S", club: "Biochimie", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
-    { nom: "Lô", prenom: "Amina", classe: "2nde S", club: "Anglais", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
-    { nom: "Tine", prenom: "Sokhna Moumy Mbacké", classe: "2nde S", club: "Anglais", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
-    { nom: "Tine", prenom: "Sokhna Moumy Mbacké", classe: "2nde S", club: "Informatique-robotique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
-    { nom: "Kane", prenom: "Ibrahima", classe: "2nde S", club: "Informatique-robotique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Bane", prenom: "Malick", classe: "2nde S", club: "Informatique-robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Kane", prenom: "Mame Anna", classe: "2nde S", club: "Anglais", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
-    { nom: "Kane", prenom: "Mame Anna", classe: "2nde S", club: "Physique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
-    { nom: "Barry", prenom: "Mariama", classe: "2nde S", club: "Anglais", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Diaby", prenom: "Aboubacar", classe: "2nde S", club: "Informatique-robotique", statut: "En attente", totaux: 11, mandat: "" },
-    { nom: "Diaby", prenom: "Aboubacar", classe: "2nde S", club: "Physique", statut: "Sélectionné", totaux: 11, mandat: "2024-2025" },
-    { nom: "Badji", prenom: "Aminata", classe: "2nde S", club: "Biologie", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Bâ", prenom: "Awa Sadikhatou", classe: "2nde S", club: "Physique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
-    { nom: "Bâ", prenom: "Awa Sadikhatou", classe: "2nde S", club: "Anglais", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
-    { nom: "Badji", prenom: "Nassiroudine", classe: "2nde S", club: "Informatique-robotique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
-    { nom: "Badji", prenom: "Nassiroudine", classe: "2nde S", club: "Arabe", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
-    { nom: "Loum", prenom: "Aboubacar", classe: "2nde S", club: "Informatique-robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Loum", prenom: "Aboubacar", classe: "2nde S", club: "Sport / FOOTBALL", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Sow", prenom: "Ousmane", classe: "2nde S", club: "Informatique-robotique", statut: "En attente", totaux: 11, mandat: "" },
-    { nom: "Sow", prenom: "Ousmane", classe: "2nde S", club: "Sport / FOOTBALL", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Thiam", prenom: "Fatimatou", classe: "1ére S2", club: "Biochimie", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Thiam", prenom: "Fatimatou", classe: "1ére S2", club: "Anglais", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Diop", prenom: "Sokhna Momy Mbacké", classe: "1ére S2", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
-    { nom: "Diop", prenom: "Sokhna Momy Mbacké", classe: "1ére S2", club: "Biochimie", statut: "Sélectionné", totaux: 11, mandat: "2024-2025" },
-    { nom: "Diouf", prenom: "Abdoul Malick", classe: "1ére S2", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
-    { nom: "Ba", prenom: "Maryam", classe: "1ére S2", club: "Biochimie", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
-    { nom: "Ba", prenom: "Maryam", classe: "1ére S2", club: "Physique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
-    { nom: "Touré", prenom: "Babacar", classe: "1ére S2", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Diol", prenom: "Mouhamed Nabi", classe: "1ére S2", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Diaby", prenom: "Ansoumane Taha", classe: "1ére S2", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
-    { nom: "Clédjio", prenom: "Yaye AÏcha", classe: "1er S2", club: "Biochimie", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Pouye", prenom: "Mouhamed Aboubakr", classe: "1er S2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Diallo", prenom: "Thierno Abass", classe: "1er S2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Have", prenom: "Mouhamed Ngoné", classe: "1er S2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
-    { nom: "Diouf", prenom: "Mouhamadou Al Amine", classe: "1er S2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Diamé", prenom: "Mouhamed", classe: "1er S2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
-    { nom: "Sagna", prenom: "Mariama", classe: "1er S2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Diop", prenom: "Mouhamadoul Moustapha", classe: "1er S2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Baldé", prenom: "Pape Dicory", classe: "4éme", club: "Anglais", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Baldé", prenom: "Ppe Dicory", classe: "4éme", club: "Sport / FOOTBALL", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Diouf", prenom: "Tening", classe: "4éme", club: "Sport / Taekwondo", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Diouf", prenom: "Tening", classe: "4éme", club: "Informatique-robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Sarr", prenom: "Asmar", classe: "4éme", club: "CLAP", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Sarr", prenom: "Asmar", classe: "4éme", club: "Sport / Athlétisme", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Niang", prenom: "Ahmad", classe: "4éme", club: "Sport / FOOTBALL", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Niang", prenom: "Ahmad", classe: "4éme", club: "Anglais", statut: "Sélectionné", totaux: 11, mandat: "2024-2025" },
-    { nom: "Cissé", prenom: "Aby", classe: "4éme", club: "Informatique-robotique", statut: "En attente", totaux: 10, mandat: "" },
-    { nom: "Cissé", prenom: "Aby", classe: "4éme", club: "Physique", statut: "Sélectionné", totaux: 8, mandat: "2024-2025" },
-    { nom: "Coulibaly", prenom: "Aicha", classe: "4éme", club: "Arabe", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Bah", prenom: "Fatoumata Binta", classe: "4éme", club: "Clap", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Bah", prenom: "Fatoumata", classe: "4éme", club: "Sport / Athlétisme", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Dièdhiou", prenom: "Pape Ousmane", classe: "4éme", club: "Anglais", statut: "Sélectionné", totaux: 10, mandat: "2024-2025" },
-    { nom: "Dièdhiou", prenom: "Pape Ousmane", classe: "4éme", club: "Physique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
-    { nom: "Loum", prenom: "Rokhaya", classe: "4éme", club: "Clap", statut: "Sélectionné", totaux: 10, mandat: "2024-2025" },
-    { nom: "Clédjo", prenom: "Mouhamed Moustapha", classe: "4éme", club: "Informatique-robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Loum", prenom: "Moussa Ibn Abdallah", classe: "4éme", club: "Informatique-robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Loum", prenom: "Moussa Ibn Abdallah", classe: "4éme", club: "sport / Basket-ball", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Senghor", prenom: "Babacar", classe: "4éme", club: "sport / Taekwondo", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Senghor", prenom: "Babacar", classe: "4éme", club: "Informatique-robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Touré", prenom: "Abocar", classe: "4éme", club: "Informatique-robotique", statut: "Refusé", totaux: 8, mandat: "" },
-    { nom: "Touré", prenom: "Abocar", classe: "4eme", club: "Sport / FOOTBALL", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Pouye", prenom: "Penda Sago", classe: "4éme", club: "Clap", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
-    { nom: "Diallo", prenom: "Mariama", classe: "TL2", club: "Sport/ Athlétisme", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Ciss", prenom: "Oumou", classe: "TL2", club: "Sport/karaté", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Sy Seck", prenom: "El hadj Abdoul aziz", classe: "TL2", club: "CLAP", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Badji", prenom: "Ndeye Yacine", classe: "TL2", club: "Biochimie", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Loum", prenom: "Oumoul Khayri", classe: "TL2", club: "Biochimie", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Fall", prenom: "Mouhamadou", classe: "TL2", club: "Sport/ basket", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Cissé", prenom: "Sérigne Babacar", classe: "TL2", club: "Informatique-robotique", statut: "Refusé", totaux: 9, mandat: "" },
-    { nom: "Bane", prenom: "Cheikh Ibrahima", classe: "TL2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
-    { nom: "Diallo", prenom: "Mariama", classe: "TL2", club: "Informatique-robotique", statut: "Refusé", totaux: 9, mandat: "" },
-    { nom: "Fall", prenom: "Mouhamadou", classe: "TL2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Ciss", prenom: "Oumou", classe: "TL2", club: "Informatique-robotique", statut: "En attente", totaux: 10, mandat: "" },
-    { nom: "Seck", prenom: "El hadji Abdoul Aziz sy", classe: "TL2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Badji", prenom: "Ndeye Yacine", classe: "TL2", club: "Informatique-robotique", statut: "En attente", totaux: 10, mandat: "" },
-    { nom: "Loum", prenom: "Oumoul Khayri", classe: "TL2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Ndao", prenom: "Mouhammad", classe: "TS2", club: "Sport/basket", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Sow", prenom: "Mouhamed", classe: "TS2", club: "Physique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Ba", prenom: "Racky Gassama", classe: "TS2", club: "Physique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Fall", prenom: "Adja Nogaye", classe: "TS2", club: "Biochimie", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Gning", prenom: "Fama Malick", classe: "TS2", club: "Biochimie", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Séne", prenom: "Khadija", classe: "TS2", club: "Physique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Diéne", prenom: "Mariama", classe: "TS2", club: "Biochimie", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Baldé", prenom: "Assietou", classe: "TS2", club: "Biochimie", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Daffé", prenom: "Mouhamed Moustapha", classe: "TS2", club: "Informatique-robotique", statut: "En attente", totaux: 11, mandat: "" },
-    { nom: "Diaby", prenom: "Mouhamed", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Ndao", prenom: "Mouhamed", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Sow", prenom: "Mouhamed", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Lo", prenom: "Mouhamed Abdallah", classe: "TS2", club: "Informatique-robotique", statut: "Refusé", totaux: 9, mandat: "" },
-    { nom: "Ba", prenom: "Racky Gassama", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Fall", prenom: "Adja Nogaye", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Kanouté", prenom: "Issa", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
-    { nom: "Gning", prenom: "Fama Malick", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Ba", prenom: "Mouhamed Boye", classe: "TS2", club: "Sport / Football", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Niasse", prenom: "Mouhamed", classe: "TS2", club: "Sport / Football", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Séne", prenom: "Khadija", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Kane", prenom: "Khadijatou", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Ba", prenom: "Aminata", classe: "TS2", club: "Physique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Diéne", prenom: "Mariama", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Baldé", prenom: "Assiétou", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Loum", prenom: "Abdoul Hamid", classe: "TS2", club: "Informatique-robotique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Baldé", prenom: "Mouhamed Yacine", classe: "TS2", club: "Informatique-robotique", statut: "En attente", totaux: 10, mandat: "" },
-    { nom: "Ndiaye", prenom: "El hadj cheikh", classe: "5ème", club: "Sport / Taekwondo", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Djigal", prenom: "Aissatou", classe: "5ème", club: "Sport / Taekwondo", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Diamé", prenom: "Mouhamad", classe: "1er S2", club: "Sport / Basket-ball", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Diol", prenom: "Mouhamed Nabi", classe: "1er S2", club: "Sport / Basket-ball", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Diop", prenom: "Mouhamadoul Moustapha", classe: "1er S2", club: "Sport / Basket-ball", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Have", prenom: "Mouhamad Ngoné", classe: "1er S2", club: "Sport / Basket-ball", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Clédjo", prenom: "Yaye AÏcha", classe: "1er S2", club: "Sport / Basket-ball", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Diallo", prenom: "Abass", classe: "1er S2", club: "Sport / Football", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Coulibaly", prenom: "Abdallah", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Diouf", prenom: "Cheikhou", classe: "6émé B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Ba", prenom: "Mouhamed Woury", classe: "6émé B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Ndiaye", prenom: "Mouhamed", classe: "6éme", club: "Sport / Karaté", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Bah", prenom: "Amadou Tidiane", classe: "6eme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Sall", prenom: "Omar Bayo", classe: "6éme B", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Maiga", prenom: "Abdourahmane", classe: "6éme", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Siaman", prenom: "Oufaly", classe: "2nd S", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Bane", prenom: "Malick", classe: "2nd S", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Mballo", prenom: "Aliou", classe: "2nd S", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Basse", prenom: "Cheikh hadjibou", classe: "2nd S", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Barry", prenom: "Maryam", classe: "2nd S", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Maiga", prenom: "Sokhna Khady", classe: "2nd S", club: "Sport / Football", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Badji", prenom: "Aminatou", classe: "2nd S", club: "Informatique-robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Niang", prenom: "Aicha", classe: "6éme", club: "Biochimie", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Niang", prenom: "Aicha", classe: "6éme", club: "CLAP", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Sarr", prenom: "Oumou khari", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 10, mandat: "2024-2025" }
-];
-
-// ==================== DONNÉES BOURGUIBA ====================
-const bourguibaData = [
-    { nom: "Diouf", prenom: "Mouhamed", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Wagué", prenom: "Ablaye", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Diallo", prenom: "Saliou", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Kanté", prenom: "Makhtar Abdou Aziz", classe: "1ére L2", club: "Sport (Football)", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Madiara", prenom: "Moustapha", classe: "1ére L2", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Ba", prenom: "Nogaye", classe: "1ére L2", club: "Anglais", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Ba", prenom: "Nogaye", classe: "1ére L2", club: "CLAP (Littérature, Arts et Philosophie)", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Diagne", prenom: "Seynabou", classe: "2nde L2", club: "Informatique-Robotique", statut: "En attente", totaux: 10, mandat: "" },
-    { nom: "Kane", prenom: "Mouhamed M.", classe: "2nde L2", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Diouf", prenom: "Pape omar", classe: "2nde L2", club: "Sport", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Diouf", prenom: "Pape omar", classe: "2nde L2", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
-    { nom: "Rawe", prenom: "pape moustapha", classe: "2nde L2", club: "Sport", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Rawe", prenom: "pape moustapha", classe: "2nde L2", club: "Informatique-Robotique", statut: "Absent", totaux: 0, mandat: "" },
-    { nom: "Gassaam", prenom: "Aminatou", classe: "1ére S1", club: "Informatique-Robotique", statut: "Absent", totaux: 0, mandat: "" },
-    { nom: "Safaouly", prenom: "Ndiaye", classe: "1ére S1", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Safaouly", prenom: "Ndiaye", classe: "1ére S1", club: "Anglais", statut: "Sélectionné", totaux: 0, mandat: "2024-2025" },
-    { nom: "Khaïry", prenom: "oumou", classe: "1ére S1", club: "Anglais", statut: "Absent", totaux: 0, mandat: "" },
-    { nom: "Gueye Hanne", prenom: "oumou", classe: "1ére S1", club: "Informatique-Robotique", statut: "Absent", totaux: 0, mandat: "" },
-    { nom: "Sow ", prenom: "Meissa", classe: "1ére S1", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 0, mandat: "2025-2026" },
-    { nom: "Thiam", prenom: "Serigne Saliou Mbacké", classe: "5éme B", club: "Informatique-Robotique", statut: "Absent", totaux: 0, mandat: "" },
-    { nom: "Sy", prenom: "Mouhamed Abdoul Rachid", classe: "2nde SB", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Bah", prenom: "Mamadou Saliou", classe: "2nde SB", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
-    { nom: "Bâ", prenom: "mamadou khaly", classe: "2nde SB", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Bocoum", prenom: "Mouhamad El Hamine", classe: "2nde SB", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
-    { nom: "Bocoum", prenom: "Mouhamed El Hamine", classe: "2nde SB", club: "CLAP (Littérature, Arts et Philosophie)", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Marone", prenom: "El hadji gorgui", classe: "2nde SB", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Diop", prenom: "Mouhamad", classe: "2nde SB", club: "Sport (Football)", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Diop", prenom: "Mouhamad", classe: "2nde SB", club: "Anglais", statut: "Sélectionné", totaux: 15, mandat: "2024-2025" },
-    { nom: "Diaw", prenom: "shams Eddine", classe: "2nde Sb", club: "Sport (Football)", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Diaw", prenom: "Chams Eddine", classe: "2nde SB", club: "Anglais", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
-    { nom: "Dieng", prenom: "Muhamed Al Hussein", classe: "2nde SB", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Doumbouya", prenom: "Ahmad Abdallah", classe: "2nde SB", club: "Anglais", statut: "Absent", totaux: 0, mandat: "" },
-    { nom: "Doumbouya", prenom: "Ahmad Abdallah", classe: "2nde SB", club: "Informatique-Robotique", statut: "Absent", totaux: 0, mandat: "" },
-    { nom: "Diagne", prenom: "Abdourahmane", classe: "2nde SB", club: "Arabe", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Diagne", prenom: "Abdou Rahman", classe: "2nde SB", club: "Anglais", statut: "Refusé", totaux: 9, mandat: "" },
-    { nom: "Barry", prenom: "Abdou Razak", classe: "2nde SB", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Barry", prenom: "Abdou Razak", classe: "2nde SB", club: "Anglais", statut: "Refusé", totaux: 7, mandat: "" },
-    { nom: "Ndiaye", prenom: "Mouhamad Rassoul", classe: "2nde SB", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 18, mandat: "2024-2025" },
-    { nom: "Ndiaye", prenom: "Mouhamed Rassoul", classe: "2nde SB", club: "Anglais", statut: "Sélectionné", totaux: 19, mandat: "2024-2025" },
-    { nom: "Diop", prenom: "Babacar Ben", classe: "2nde SB", club: "Sport (Football)", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Dia", prenom: "Oumsmane", classe: "2nde SB", club: "Sport (Football)", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Diallo", prenom: "Abdou Salami", classe: "2nde SB", club: "Sport (Football)", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Niang", prenom: "Amar", classe: "2nde SB", club: "Sport (Football)", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Niang", prenom: "Amar", classe: "2nde SB", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
-    { nom: "Diallo", prenom: "Seydina mouhamaed massamba", classe: "2nde SB", club: "Sport (Football)", statut: "En attente", totaux: 0, mandat: "" },
-    { nom: "Diallo", prenom: "Seydina mouhamaed massamba", classe: "2nde SB", club: "Arabe", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Lo", prenom: "Cheikh", classe: "2nde SB", club: "Biochimie", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Lo", prenom: "Cheikh", classe: "2nde SB", club: "Informatique-Robotique", statut: "En attente", totaux: 11, mandat: "" },
-    { nom: "Sylla", prenom: "Mouhamed Arona", classe: "2nde SB", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Dieng", prenom: "Mouhamed AL Housseyn", classe: "2nde SB", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 13, mandat: "2024-2025" },
-    { nom: "Ndiaye", prenom: "Souleymane Ka", classe: "2nde SB", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 12, mandat: "2024-2025" },
-    { nom: "Romodon", prenom: "Sankora Ichom Honi", classe: "2nde SB", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 11, mandat: "2025-2026" },
-    { nom: "Diakhaby", prenom: "Abdoul Khadre", classe: "2nde SB", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 17, mandat: "2024-2025" },
-    { nom: "Gaye", prenom: "Cheikh Ahmad Ibrahim Khalil", classe: "2nde SB", club: "Informatique-Robotique", statut: "Sélectionné", totaux: 14, mandat: "2024-2025" },
-    { nom: "Gaye", prenom: "Cheikh Ahmad Ibrahim Khalil", classe: "2nde SB", club: "Physique", statut: "Sélectionné", totaux: 16, mandat: "2024-2025" },
-    { nom: "Fall", prenom: "Khadijatou", classe: "4éme A", club: "Sport (Handball)", statut: "Absent", totaux: 0, mandat: "" },
-    { nom: "Gueye", prenom: "Khadija", classe: "4éme A", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Diouf", prenom: "Mame Diama", classe: "4éme A", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Dia", prenom: "Khadija", classe: "4éme A", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Diallo", prenom: "Issagha", classe: "4éme A", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Diallo", prenom: "Aminatou Bintou Wahab Kane", classe: "4éme A", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Diallo", prenom: "Adja Ousmane Tanou", classe: "4éme A", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Ba", prenom: "Soumaya Barack", classe: "5éme A", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Dieng", prenom: "Khady", classe: "5éme A", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Diarra", prenom: "Aissatou Bintou Ramatoulaye", classe: "5éme A", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Cissé", prenom: "Tacko", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Diakhaby", prenom: "Zahra", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Camara", prenom: "Fatimatou Bintou", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Fall", prenom: "Mouhamed Al Mahdi", classe: "6éme B", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Camara", prenom: "Mouhamed Mbaye", classe: "6éme B", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" }, 
-    { nom: "Gningue", prenom: "Pape Issa", classe: "4éme B", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" }, 
-    { nom: "Doumbouya", prenom: "Ahmad Abdallah", classe: "2nde SB", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Diaw", prenom: "Chams Eddine", classe: "2nde SB", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Diallo", prenom: "Fatimatou", classe: "5éme C", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Diallo", prenom: "Habibatou", classe: "6éme C", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Diawara", prenom: "Aissatou", classe: "6éme C", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Coulibaly", prenom: "Zaynab", classe: "6éme C", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Ka", prenom: "Fatimatou", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Ndour", prenom: "Ciga", classe: "4éme C", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Camara", prenom: "Mainmouna", classe: "6éme C", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Touré", prenom: "Mariama", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Leye", prenom: "Ndeye Binta", classe: "6éme C", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Faye", prenom: "Ndeye Astou", classe: "6éme C", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Diakhaby", prenom: "Zahra", classe: "6éme A", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Dieng", prenom: "Khady", classe: "5éme A", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Macalou", prenom: "Aboubacar", classe: "6éme B", club: "Anglais", statut: "Sélectionné", totaux: 20, mandat: "2025-2026" },
-    { nom: "Doumbiya", prenom: "Ahmad Abdallah", classe: "2nd S", club: "Informatique-Robotique", statut: "Sélectionner", totaux: 0, mandat: "2024-2025" }
-];
-            // Conversion BOURGUIBA
-            bourguibaData.forEach(s => allStudents.push(convertToStudent(s, 'bourguiba')));
-            
-            return allStudents;
-        }
     </script>
 </body>
 </html>
