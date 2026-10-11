@@ -1,204 +1,515 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Générateur QR Cartes | AFRICA.TECH21</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Exo 2',sans-serif; }
-:root {
-  --cyan:#00f0ff; --green:#00ff88; --red:#ff0033;
-  --purple:#7b2cbf; --gold:#ffd700;
-  --dark:#050510; --panel:#0a0a1a;
-  --border:rgba(0,240,255,0.25); --glow:0 0 25px rgba(0,240,255,0.3);
-  --text:#fff; --text2:#a0a8c0;
-}
-body {
-  background:
-    radial-gradient(circle at 20% 20%, rgba(0,240,255,0.08) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(123,44,191,0.1) 0%, transparent 50%),
-    linear-gradient(135deg,#050510,#0a0a1a 50%,#0f0f1f);
-  color:var(--text); min-height:100vh; padding:2rem;
-}
-.hologram-grid {
-  position:fixed; top:0; left:0; width:100%; height:100%;
-  background:
-    linear-gradient(90deg, rgba(0,240,255,0.02) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(0,240,255,0.02) 1px, transparent 1px);
-  background-size:40px 40px; animation:gridScan 25s linear infinite;
-  pointer-events:none; z-index:-1;
-}
-@keyframes gridScan { 0%{transform:translate(0,0);} 100%{transform:translate(40px,40px);} }
-.back-btn {
-  display:inline-block; padding:0.7rem 1.6rem; margin-bottom:1.5rem;
-  background:rgba(0,240,255,0.1); border:1px solid var(--cyan);
-  border-radius:10px; color:var(--cyan); text-decoration:none;
-  font-weight:600; font-size:0.85rem; transition:all 0.3s;
-}
-.back-btn:hover { background:rgba(0,240,255,0.2); box-shadow:var(--glow); }
-.page-container { max-width:1400px; margin:0 auto; }
-.page-header {
-  background:linear-gradient(135deg, rgba(0,240,255,0.08), rgba(123,44,191,0.08));
-  backdrop-filter:blur(15px); border:1px solid var(--border);
-  border-radius:22px; padding:2rem; margin-bottom:1.5rem; text-align:center;
-  box-shadow:var(--glow);
-}
-.page-header h1 {
-  font-family:'Orbitron',sans-serif; font-size:2rem;
-  background:linear-gradient(45deg,var(--cyan),var(--green));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  background-clip:text; letter-spacing:2px;
-}
-.page-header .subtitle { color:var(--text2); margin-top:0.4rem; font-size:0.85rem; letter-spacing:1.5px; text-transform:uppercase; }
-.user-info { margin-top:1rem; display:inline-block; background:rgba(0,255,136,0.1); border:1px solid var(--green); padding:0.5rem 1.5rem; border-radius:15px; color:var(--green); font-size:0.85rem; font-weight:600; }
-.card-box {
-  background:linear-gradient(135deg, rgba(16,16,40,0.85), rgba(10,10,26,0.85));
-  backdrop-filter:blur(15px); border:1px solid var(--border);
-  border-radius:18px; padding:1.5rem; margin-bottom:1.5rem;
-}
-.card-box h2 {
-  font-family:'Orbitron',sans-serif; font-size:1.15rem;
-  color:var(--cyan); margin-bottom:1.2rem;
-  display:flex; align-items:center; gap:0.7rem;
-}
-.warn-box {
-  background:linear-gradient(135deg, rgba(255,0,51,0.15), rgba(139,0,0,0.15));
-  border:2px solid var(--red); border-radius:15px;
-  padding:1.5rem; margin-bottom:1.5rem;
-}
-.warn-box h3 {
-  font-family:'Orbitron',sans-serif; color:var(--red);
-  font-size:1.1rem; margin-bottom:0.8rem;
-  display:flex; align-items:center; gap:0.6rem;
-}
-.warn-box p { color:var(--text); line-height:1.7; font-size:0.9rem; }
-.btn {
-  padding:0.8rem 1.6rem; border:none; border-radius:10px;
-  font-weight:700; cursor:pointer; transition:all 0.3s;
-  text-transform:uppercase; letter-spacing:1px; font-size:0.85rem;
-}
-.btn-cyan { background:linear-gradient(135deg,#0088aa,var(--cyan)); color:#050510; }
-.btn-cyan:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,240,255,0.5); }
-.btn-green { background:linear-gradient(135deg,#008844,var(--green)); color:#050510; }
-.btn-green:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,255,136,0.5); }
-.btn-red { background:linear-gradient(135deg,#8b0000,var(--red)); color:#fff; }
-.btn-red:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(255,0,51,0.5); }
-.btn-gold { background:linear-gradient(135deg,#b8860b,var(--gold)); color:#1a0033; }
-.btn-gold:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(255,215,0,0.5); }
-.btn-dark { background:rgba(255,255,255,0.05); color:var(--text2); border:1px solid var(--border); }
-.btn-dark:hover { background:rgba(255,255,255,0.1); color:#fff; }
-.btn:disabled { opacity:0.5; cursor:not-allowed; transform:none!important; }
-.cartes-grid {
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
-  gap:1.5rem; margin-top:1.5rem;
-}
-.carte-item {
-  background:rgba(0,0,0,0.4); border:1px solid var(--border);
-  border-radius:15px; padding:1.2rem; text-align:center;
-  transition:all 0.3s;
-}
-.carte-item:hover { border-color:var(--cyan); box-shadow:var(--glow); transform:translateY(-4px); }
-.carte-item .membre-nom {
-  font-family:'Orbitron',sans-serif; color:var(--cyan);
-  font-size:1rem; font-weight:700; margin-bottom:0.3rem;
-}
-.carte-item .membre-id {
-  color:var(--text2); font-size:0.8rem; letter-spacing:1px; margin-bottom:1rem;
-}
-.qr-wrapper {
-  display:flex; justify-content:center; margin-bottom:1rem;
-}
-.qr-wrapper img, .qr-wrapper canvas {
-  background:#fff; padding:12px; border-radius:10px;
-  box-shadow:0 0 20px rgba(0,240,255,0.3);
-}
-.carte-item .code-carte {
-  font-family:'Courier New',monospace;
-  font-size:0.7rem; color:var(--text2);
-  background:rgba(0,0,0,0.5); padding:0.4rem 0.6rem;
-  border-radius:6px; margin-bottom:0.8rem;
-  word-break:break-all;
-}
-.carte-item .actions { display:flex; gap:0.4rem; justify-content:center; flex-wrap:wrap; }
-.carte-item .actions button {
-  padding:0.4rem 0.9rem; font-size:0.72rem; border-radius:8px;
-  border:1px solid var(--border); background:rgba(0,240,255,0.1);
-  color:var(--cyan); cursor:pointer; font-weight:700; transition:0.3s;
-}
-.carte-item .actions button:hover { background:rgba(0,240,255,0.25); }
-.toast {
-  position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%);
-  background:rgba(0,240,255,0.95); color:#050510;
-  padding:0.9rem 1.8rem; border-radius:12px; font-weight:700;
-  z-index:10001; animation:fadeInUp 0.3s;
-}
-.toast.error { background:rgba(255,0,51,0.95); color:#fff; }
-.toast.success { background:rgba(0,255,136,0.95); color:#050510; }
-.toast.warn { background:rgba(255,215,0,0.95); color:#050510; }
-@keyframes fadeInUp { from{opacity:0;transform:translateX(-50%) translateY(20px);} to{opacity:1;transform:translateX(-50%) translateY(0);} }
-.empty-state { text-align:center; color:var(--text2); padding:2.5rem; }
-.empty-state i { font-size:3rem; color:rgba(0,240,255,0.2); margin-bottom:1rem; display:block; }
-@media (max-width:768px) {
-  body { padding:1rem; }
-  .page-header h1 { font-size:1.5rem; }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Direction | AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Exo 2', 'Segoe UI', sans-serif; }
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-purple: #7b2cbf;
+            --neon-pink: #ff00ff;
+            --neon-green: #00ff88;
+            --gold: #ffd700;
+            --gold-glow: 0 0 30px rgba(255, 215, 0, 0.5);
+            --dark-space: #0a0a12;
+            --deep-space: #050510;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a8c0;
+        }
+        body {
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255, 215, 0, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(123, 44, 191, 0.08) 0%, transparent 50%),
+                linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .hologram-grid {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(255, 215, 0, 0.02) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(255, 215, 0, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridScan 25s linear infinite;
+            pointer-events: none; z-index: -2;
+        }
+        @keyframes gridScan { 0% { transform: translate(0, 0); } 100% { transform: translate(60px, 60px); } }
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
+        .particle {
+            position: absolute; width: 3px; height: 3px;
+            background: var(--gold); border-radius: 50%;
+            animation: float 15s infinite linear;
+            box-shadow: 0 0 10px var(--gold);
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-100px) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+        .back-btn {
+            display: inline-block; padding: 0.8rem 2rem; margin-bottom: 2rem;
+            background: rgba(255, 215, 0, 0.1); border: 1px solid var(--gold);
+            border-radius: 10px; color: var(--gold); text-decoration: none;
+            font-weight: 600; transition: all 0.3s ease;
+        }
+        .back-btn:hover { background: rgba(255, 215, 0, 0.2); box-shadow: var(--gold-glow); }
+        .page-container { max-width: 1400px; margin: 0 auto; }
+        .page-header {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.08), rgba(123, 44, 191, 0.08));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 30px;
+            padding: 3.5rem 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header::before {
+            content: '';
+            position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.05) 0%, transparent 60%);
+            animation: rotateGlow 20s linear infinite;
+        }
+        @keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .crown-icon {
+            font-size: 4rem; color: var(--gold);
+            margin-bottom: 1rem; text-shadow: var(--gold-glow);
+            animation: pulseCrown 2s ease-in-out infinite;
+            position: relative; z-index: 1;
+        }
+        @keyframes pulseCrown {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px var(--gold)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 30px var(--gold)); }
+        }
+        .page-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            background: linear-gradient(45deg, var(--gold), #ffffff, var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+            font-weight: 900;
+            position: relative; z-index: 1;
+        }
+        .page-header .subtitle {
+            color: var(--text-secondary);
+            margin-top: 0.8rem;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative; z-index: 1;
+        }
+        .user-info {
+            margin-top: 1.5rem; display: inline-block;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 0.8rem 2rem; border-radius: 20px;
+            color: var(--gold); font-weight: 600;
+            position: relative; z-index: 1;
+        }
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem; color: var(--gold);
+            margin-bottom: 2rem;
+            display: flex; align-items: center; gap: 1rem;
+            letter-spacing: 2px;
+        }
+        .section-title i { color: var(--neon-green); }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+        }
+        .feature-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.03), rgba(123, 44, 191, 0.03));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 25px;
+            padding: 3rem 2.5rem;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.08), transparent);
+            transition: 0.6s;
+        }
+        .feature-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: var(--gold);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.3);
+        }
+        .feature-card:hover::before { left: 100%; }
+        .feature-icon {
+            font-size: 4rem; color: var(--gold);
+            margin-bottom: 2rem; text-align: center;
+            text-shadow: var(--gold-glow);
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 25px var(--gold));
+        }
+        .feature-title {
+            font-size: 1.7rem; color: var(--gold);
+            margin-bottom: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+        .feature-status {
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            font-size: 0.9rem;
+        }
+        .modal-overlay {
+            display: flex;
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 9999;
+            align-items: center; justify-content: center;
+            padding: 2rem;
+        }
+        .modal-overlay.hidden { display: none; }
+        .modal-content {
+            background: linear-gradient(135deg, #0a0a12 0%, #050510 100%);
+            border: 2px solid var(--gold);
+            border-radius: 30px;
+            max-width: 500px;
+            width: 100%;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: 0 0 80px rgba(255, 215, 0, 0.3);
+            animation: modalAppear 0.4s ease;
+        }
+        @keyframes modalAppear {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-content h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--gold);
+            font-size: 1.6rem;
+            margin-bottom: 0.8rem;
+            text-shadow: var(--gold-glow);
+        }
+        .modal-content p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        .camera-container {
+            position: relative;
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #000;
+            aspect-ratio: 1/1;
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            margin-bottom: 1rem;
+        }
+        #video {
+            width: 100%; height: 100%; object-fit: cover;
+            display: block;
+        }
+        .scan-overlay {
+            position: absolute; inset: 0;
+            pointer-events: none;
+        }
+        .scan-frame {
+            position: absolute; top: 15%; left: 15%; right: 15%; bottom: 15%;
+            border: 3px solid var(--gold);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), inset 0 0 30px rgba(255, 215, 0, 0.2);
+            animation: pulseFrame 1.5s infinite;
+        }
+        @keyframes pulseFrame {
+            0%,100% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), inset 0 0 30px rgba(255, 215, 0, 0.2); }
+            50% { box-shadow: 0 0 50px rgba(255, 215, 0, 1), inset 0 0 50px rgba(255, 215, 0, 0.4); }
+        }
+        .scan-frame::before {
+            content:''; position:absolute; top:-3px; left:-3px;
+            width:40px; height:40px;
+            border-top:5px solid var(--neon-green); border-left:5px solid var(--neon-green);
+            border-radius:15px 0 0 0;
+        }
+        .scan-frame::after {
+            content:''; position:absolute; bottom:-3px; right:-3px;
+            width:40px; height:40px;
+            border-bottom:5px solid var(--neon-green); border-right:5px solid var(--neon-green);
+            border-radius:0 0 15px 0;
+        }
+        .scan-line {
+            position: absolute; left: 15%; right: 15%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            animation: scanLine 2s linear infinite;
+            box-shadow: 0 0 15px var(--gold);
+        }
+        @keyframes scanLine {
+            0% { top: 15%; }
+            100% { top: 85%; }
+        }
+        .status-text {
+            text-align: center;
+            padding: 0.9rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: var(--gold);
+            letter-spacing: 1px;
+        }
+        .status-text.success {
+            background: rgba(0, 255, 136, 0.15);
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+        .status-text.error {
+            background: rgba(255, 0, 51, 0.15);
+            border-color: #ff0033;
+            color: #ff0033;
+        }
+        .btn-access {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--gold), #ff8c00);
+            border: none;
+            border-radius: 12px;
+            color: #0a0505;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 0.6rem;
+        }
+        .btn-access:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+        }
+        .btn-secondary {
+            width: 100%;
+            padding: 0.9rem 2rem;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            border-radius: 12px;
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .btn-secondary:hover { background: rgba(255, 215, 0, 0.2); }
+        .admin-input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            outline: none;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        .admin-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+        }
+        .error-msg {
+            color: #ff4757;
+            margin-top: 0.8rem;
+            min-height: 22px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        /* SECTION CHOIX */
+        .choix-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .btn-choix {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem 1.5rem;
+            background: rgba(255, 215, 0, 0.08);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .btn-choix:hover {
+            border-color: var(--gold);
+            background: rgba(255, 215, 0, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+        }
+        .btn-choix i {
+            font-size: 1.8rem;
+            color: var(--gold);
+            width: 40px;
+            text-align: center;
+        }
+        .btn-choix .text { flex: 1; }
+        .btn-choix .sub {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-top: 0.2rem;
+            letter-spacing: normal;
+            text-transform: none;
+        }
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .page-header { padding: 2.5rem 1.5rem; }
+            .page-header h1 { font-size: 2rem; }
+            .features-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .feature-card { padding: 2rem 1.5rem; }
+            .modal-content { padding: 1.8rem; }
+        }
+    </style>
 </head>
 <body>
-<div class="hologram-grid"></div>
+    <div class="hologram-grid"></div>
+    <div class="particles" id="particles"></div>
 
-<div class="page-container">
-  <a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD</a>
+    <!-- MODAL ACCÈS -->
+    <div class="modal-overlay" id="accessModal">
+        <div class="modal-content">
+            <i class="fas fa-crown" style="font-size: 2.5rem; color: var(--gold); margin-bottom: 0.8rem; display: block;"></i>
+            <h2>ACCÈS DIRECTION</h2>
+            <p>Choisissez votre méthode d'identification</p>
 
-  <header class="page-header">
-    <h1><i class="fas fa-qrcode"></i> GÉNÉRATEUR QR CARTES</h1>
-    <p class="subtitle">Cartes membres officiels — Accès Espace Direction</p>
-    <div class="user-info" id="userInfo"><i class="fas fa-user-shield"></i> CHARGEMENT...</div>
-  </header>
+            <!-- ÉTAPE 1 : CHOIX -->
+            <div id="etapeChoix" class="choix-section">
+                <button class="btn-choix" onclick="choisirScan()">
+                    <i class="fas fa-camera"></i>
+                    <span class="text">
+                        SCANNER MA CARTE
+                        <span class="sub">J'ai ma carte physique avec moi</span>
+                    </span>
+                </button>
+                <button class="btn-choix" onclick="choisirID()">
+                    <i class="fas fa-keyboard"></i>
+                    <span class="text">
+                        JE N'AI PAS MA CARTE
+                        <span class="sub">Entrer mon ID manuellement</span>
+                    </span>
+                </button>
+            </div>
 
-  <div class="warn-box">
-    <h3><i class="fas fa-exclamation-triangle"></i> ATTENTION — À LIRE AVANT DE GÉNÉRER</h3>
-    <p>
-      1. Cette page génère <strong>UNE SEULE FOIS</strong> les QR codes officiels pour les 6 membres de la direction.<br>
-      2. Une fois générés, ces codes sont <strong>enregistrés dans Supabase</strong> et ne peuvent plus être modifiés.<br>
-      3. Si tu recliques sur "Générer", les anciens codes seront <strong>désactivés</strong> et de nouveaux créés — les anciennes cartes imprimées ne fonctionneront plus.<br>
-      4. <strong>Ne génère qu'UNE FOIS.</strong><br>
-      5. Les QR contiennent un <strong>lien direct</strong> vers ton espace — tu peux scanner avec l'appareil photo du téléphone.
-    </p>
-  </div>
+            <!-- ÉTAPE 2 : CAMÉRA -->
+            <div id="etapeCamera" style="display:none;">
+                <div class="camera-container" id="cameraContainer" style="display:none;">
+                    <video id="video" autoplay muted playsinline></video>
+                    <div class="scan-overlay">
+                        <div class="scan-frame"></div>
+                        <div class="scan-line"></div>
+                    </div>
+                </div>
+                <div class="status-text" id="statusTextCamera">
+                    <i class="fas fa-info-circle"></i> Cliquez sur "ACTIVER CAMÉRA"
+                </div>
+                <button class="btn-access" id="btnStart" onclick="demarrerCamera()">
+                    <i class="fas fa-camera"></i> ACTIVER CAMÉRA
+                </button>
+                <button class="btn-access" id="btnStop" onclick="retourChoix()" style="display:none;">
+                    <i class="fas fa-arrow-left"></i> RETOUR
+                </button>
+                <button class="btn-secondary" onclick="retourChoix()" id="btnRetourCam" style="margin-top:0.6rem;">
+                    <i class="fas fa-arrow-left"></i> RETOUR
+                </button>
+            </div>
 
-  <div class="card-box">
-    <h2><i class="fas fa-cogs"></i> ÉTAPE 1 — GÉNÉRER LES CARTES</h2>
-    <p style="color:var(--text2); margin-bottom:1rem; font-size:0.9rem;">
-      Clique sur le bouton ci-dessous pour créer les 6 cartes membres.
-    </p>
-    <button class="btn btn-red" id="btnGenerer" onclick="genererCartes()">
-      <i class="fas fa-bolt"></i> GÉNÉRER LES 6 CARTES OFFICIELLES
-    </button>
-    <button class="btn btn-dark" onclick="chargerCartes()" style="margin-left:0.5rem;">
-      <i class="fas fa-sync"></i> RECHARGER
-    </button>
-  </div>
+            <!-- ÉTAPE 3 : ID -->
+            <div id="etapeID" style="display:none;">
+                <div class="status-text" id="statusTextID">
+                    <i class="fas fa-id-card"></i> Entrez votre ID membre
+                </div>
+                <input type="text" class="admin-input" id="inputMemberId" placeholder="Ex: AT21_006" autocomplete="off">
+                <button class="btn-access" onclick="verifierIdMembre()">
+                    <i class="fas fa-unlock"></i> VALIDER
+                </button>
+                <button class="btn-secondary" onclick="retourChoix()">
+                    <i class="fas fa-arrow-left"></i> RETOUR
+                </button>
+            </div>
 
-  <div class="card-box">
-    <h2><i class="fas fa-qrcode"></i> ÉTAPE 2 — TÉLÉCHARGER LES QR CODES</h2>
-    <p style="color:var(--text2); margin-bottom:1rem; font-size:0.9rem;">
-      Chaque QR code peut être téléchargé en PNG haute qualité pour l'impression.
-    </p>
-    <button class="btn btn-gold" id="btnDownloadAll" onclick="telechargerTout()" disabled>
-      <i class="fas fa-download"></i> TOUT TÉLÉCHARGER
-    </button>
-    <div class="cartes-grid" id="cartesGrid">
-      <div class="empty-state" style="grid-column:1/-1;">
-        <i class="fas fa-qrcode"></i>
-        <p>Aucune carte générée. Clique sur "GÉNÉRER" ci-dessus.</p>
-      </div>
+            <div class="error-msg" id="errorMsg"></div>
+        </div>
     </div>
-  </div>
-</div>
+
+    <!-- CONTENU PRINCIPAL -->
+    <div class="page-container" id="mainContent" style="display:none;">
+        <a href="dashboard.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD
+        </a>
+
+        <header class="page-header">
+            <i class="fas fa-crown crown-icon"></i>
+            <h1>ESPACE DIRECTION</h1>
+            <p class="subtitle">Postes de travail des membres officiels</p>
+            <div class="user-info" id="userInfo">
+                <i class="fas fa-user-shield"></i> CHARGEMENT...
+            </div>
+        </header>
+
+        <h2 class="section-title"><i class="fas fa-briefcase"></i> MES POSTES DE TRAVAIL</h2>
+
+        <div class="features-grid" id="featuresGrid"></div>
+    </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -206,233 +517,334 @@ const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const ALLOWED_IDS = ['AT21_006', 'Birane186@00'];
-if (localStorage.getItem('memberLoggedIn') !== 'true') window.location.href = 'espace-membres.html';
-const memberId = localStorage.getItem('memberId') || '';
-if (!ALLOWED_IDS.includes(memberId)) {
-  document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column;gap:1rem;text-align:center;padding:2rem;"><i class="fas fa-lock" style="font-size:4rem;color:#ff0033;"></i><h1 style="color:#ff0033;">ACCÈS REFUSÉ</h1><p>Cette page est réservée au Président.</p><a href="dashboard.html" style="color:#00f0ff;">Retour au Dashboard</a></div>';
-  throw new Error('Accès refusé');
+// ==================== BASE DES MEMBRES ====================
+const MEMBRES_DIRECTION = {
+    'AT21_006': {
+        id: 'AT21_006',
+        nom: 'BIRANE',
+        prenom: 'DIAO',
+        fonction: 'PRÉSIDENT DE LA COMMUNAUTÉ',
+        postes: ['espace-major', 'admin-examens', 'espace-projets', 'csiv']
+    },
+    'AT21_0016': {
+        id: 'AT21_0016',
+        nom: 'DRAMÉ',
+        prenom: 'AICHA',
+        fonction: 'SECRÉTAIRE GÉNÉRAL',
+        postes: ['secretariat']
+    },
+    'AT21-001': {
+        id: 'AT21-001',
+        nom: 'DIAKHATE',
+        prenom: 'ABDOU',
+        fonction: 'VICE PRÉSIDENT',
+        postes: ['vice-president']
+    },
+    'AT21_0011': {
+        id: 'AT21_0011',
+        nom: 'MOUHAMED',
+        prenom: 'DIALLO',
+        fonction: 'RESPONSABLE DES PROJETS',
+        postes: ['admin-examens', 'espace-projets']
+    },
+    'AT21_0036': {
+        id: 'AT21_0036',
+        nom: 'NDIAYE',
+        prenom: 'MARIE ANGÉLIQUE DABA',
+        fonction: 'RESPONSABLE COMMUNICATION',
+        postes: ['communication', 'csiv']
+    },
+    'AT21_0031': {
+        id: 'AT21_0031',
+        nom: 'WADE',
+        prenom: 'ADJA FAMA',
+        fonction: 'RESPONSABLE FINANCE',
+        postes: ['finance']
+    },
+    'AT21_0026': {
+        id: 'AT21_0026',
+        nom: 'TOURÉ',
+        prenom: 'SOKHNA BINTOU',
+        fonction: 'ADJOINTE FINANCE/GESTIONNAIRE',
+        postes: ['inventaire']
+    }
+};
+
+// ==================== DÉFINITION DES CARTES ====================
+const CARTES = {
+    'espace-major': {
+        icon: 'fa-crown',
+        title: 'ESPACE MAJOR',
+        description: 'Laboratoire technique privé. Zone de développement sécurisée.',
+        status: 'NIVEAU MAXIMUM',
+        link: 'espace-major.html'
+    },
+    'admin-examens': {
+        icon: 'fa-clipboard-list',
+        title: 'ADMIN EXAMENS',
+        description: 'Consulter, noter et commenter les travaux soumis par les membres.',
+        status: 'RÉSERVÉ MAJOR + PROJETS',
+        link: 'admin-examens.html'
+    },
+    'espace-projets': {
+        icon: 'fa-project-diagram',
+        title: 'RESPONSABLE PROJETS',
+        description: 'Rédaction des projets et évaluation des travaux des membres.',
+        status: 'RÉSERVÉ PROJETS + PRÉSIDENT',
+        link: 'espace-projets.html'
+    },
+    'csiv': {
+        icon: 'fa-crown',
+        title: 'ESPACE CSIV',
+        description: 'Cellule Stratégique d\'Innovation et de Veille. Communication, veille, cahiers des charges, rapports et équipe.',
+        status: 'RÉSERVÉ PRÉSIDENTE CSIV',
+        link: 'espace-csiv.html'
+    },
+    'secretariat': {
+        icon: 'fa-pen-fancy',
+        title: 'SECRÉTARIAT',
+        description: 'Rédaction et archivage des comptes rendus de réunions et rapports.',
+        status: 'ACCÈS RESTREINT',
+        link: 'secretariat.html'
+    },
+    'inventaire': {
+        icon: 'fa-boxes',
+        title: 'GESTION DES STOCKS',
+        description: 'Inventaire complet des composants électroniques.',
+        status: 'ACCÈS RESTREINT',
+        link: 'inventaire.html'
+    },
+    'vice-president': {
+        icon: 'fa-user-tie',
+        title: 'POSTE VICE-PRÉSIDENT',
+        description: 'Outils de gestion et supervision de la communauté.',
+        status: 'EN DÉVELOPPEMENT',
+        link: '#'
+    },
+    'communication': {
+        icon: 'fa-bullhorn',
+        title: 'COMMUNICATION',
+        description: 'Gestion de la communication et des réseaux sociaux.',
+        status: 'EN DÉVELOPPEMENT',
+        link: '#'
+    },
+    'finance': {
+        icon: 'fa-coins',
+        title: 'ESPACE FINANCE',
+        description: 'Gestion de la caisse communautaire, cotisations des 8 membres et documents économiques.',
+        status: 'ACCÈS RESTREINT',
+        link: 'espace-finance.html'
+    }
+};
+
+let membreActuel = null;
+let scanning = false, stream = null, canvas, ctx;
+
+function createParticles() {
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 60; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.animationDelay = Math.random() * 15 + 's';
+        p.style.animationDuration = (10 + Math.random() * 12) + 's';
+        const colors = ['#ffd700', '#00f0ff', '#7b2cbf'];
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.boxShadow = `0 0 10px ${p.style.background}`;
+        container.appendChild(p);
+    }
 }
-const memberNom = localStorage.getItem('memberNom') || '';
-const memberPrenom = localStorage.getItem('memberPrenom') || '';
-document.getElementById('userInfo').innerHTML = `<i class="fas fa-user-shield"></i> ${memberPrenom} ${memberNom}`;
 
-// URL du site
-const SITE_URL = 'https://diaobirane324-sudo.github.io/africa-tech21';
-
-// Liste des membres de la direction
-const MEMBRES_DIRECTION = [
-  { id: 'AT21_006',  nom: 'DIAO BIRANE' },
-  { id: 'AT21_0016', nom: 'DRAMÉ AICHA' },
-  { id: 'AT21-001',  nom: 'DIAKHATE ABDOU' },
-  { id: 'AT21_0011', nom: 'DIALLO MOUHAMED' },
-  { id: 'AT21_0036', nom: 'NDIAYE MARIE ANGÉLIQUE DABA' },
-  { id: 'AT21_0031', nom: 'WADE ADJA FAMA' }
-];
-
-function showToast(msg, type='') {
-  const old = document.querySelector('.toast'); if (old) old.remove();
-  const t = document.createElement('div');
-  t.className = 'toast ' + type;
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 4000);
+function setStatusCamera(msg, type='') {
+    const el = document.getElementById('statusTextCamera');
+    el.className = 'status-text ' + type;
+    el.innerHTML = msg;
+}
+function setStatusID(msg, type='') {
+    const el = document.getElementById('statusTextID');
+    el.className = 'status-text ' + type;
+    el.innerHTML = msg;
 }
 
-function genererCodeAleatoire() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let code = '';
-  for (let i = 0; i < 8; i++) code += chars[Math.floor(Math.random() * chars.length)];
-  return code;
+// ==================== NAVIGATION ENTRE ÉTAPES ====================
+function retourChoix() {
+    // Stopper caméra si active
+    if (stream) {
+        stream.getTracks().forEach(t => t.stop());
+        stream = null;
+    }
+    scanning = false;
+
+    document.getElementById('etapeChoix').style.display = 'flex';
+    document.getElementById('etapeCamera').style.display = 'none';
+    document.getElementById('etapeID').style.display = 'none';
+    document.getElementById('errorMsg').textContent = '';
 }
 
-// ============ GÉNÉRATION ============
-async function genererCartes() {
-  const btn = document.getElementById('btnGenerer');
-  const conf = confirm(
-    '⚠️ ATTENTION\n\n' +
-    'Tu es sur le point de GÉNÉRER les 6 cartes membres.\n\n' +
-    'Si des cartes existent déjà, elles seront DÉSACTIVÉES.\n' +
-    'Les anciennes cartes imprimées ne fonctionneront plus.\n\n' +
-    'Confirmer ?'
-  );
-  if (!conf) return;
+function choisirScan() {
+    document.getElementById('etapeChoix').style.display = 'none';
+    document.getElementById('etapeCamera').style.display = 'block';
+    document.getElementById('etapeID').style.display = 'none';
+    document.getElementById('btnStart').style.display = 'block';
+    document.getElementById('btnStop').style.display = 'none';
+    document.getElementById('btnRetourCam').style.display = 'block';
+    document.getElementById('cameraContainer').style.display = 'none';
+    setStatusCamera('<i class="fas fa-info-circle"></i> Cliquez sur "ACTIVER CAMÉRA"', '');
+}
 
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> GÉNÉRATION...';
+function choisirID() {
+    document.getElementById('etapeChoix').style.display = 'none';
+    document.getElementById('etapeCamera').style.display = 'none';
+    document.getElementById('etapeID').style.display = 'block';
+    document.getElementById('inputMemberId').value = '';
+    document.getElementById('errorMsg').textContent = '';
+    setStatusID('<i class="fas fa-id-card"></i> Entrez votre ID membre', '');
+    setTimeout(() => document.getElementById('inputMemberId').focus(), 200);
+}
 
-  try {
-    // Désactiver toutes les anciennes cartes
-    await supabaseClient.from('cartes_membres').update({ actif: false }).eq('actif', true);
+// ==================== CAMÉRA ====================
+async function demarrerCamera() {
+    document.getElementById('errorMsg').textContent = '';
+    try {
+        setStatusCamera('<i class="fas fa-spinner fa-spin"></i> Demande accès caméra...', '');
+        stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
+        });
+        const video = document.getElementById('video');
+        video.srcObject = stream;
+        await video.play();
 
-    // Supprimer toutes les cartes (pour éviter conflit UNIQUE)
-    await supabaseClient.from('cartes_membres').delete().neq('id', 0);
+        document.getElementById('cameraContainer').style.display = 'block';
+        document.getElementById('btnStart').style.display = 'none';
+        document.getElementById('btnStop').style.display = 'block';
+        document.getElementById('btnRetourCam').style.display = 'none';
 
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('fr-FR');
-    const nouvellesCartes = [];
+        setStatusCamera('<i class="fas fa-qrcode"></i> Présentez le QR code de votre carte', '');
+        scanning = true;
+        requestAnimationFrame(boucleScan);
 
-    for (const m of MEMBRES_DIRECTION) {
-      const codeAleatoire = genererCodeAleatoire();
-      const codeCarte = `${m.id}_${codeAleatoire}`;
-      // QR contient maintenant un LIEN DIRECT
-      const qrData = `${SITE_URL}/direction.html?carte=${codeCarte}`;
+    } catch (e) {
+        setStatusCamera('❌ Impossible d\'accéder à la caméra', 'error');
+        document.getElementById('errorMsg').textContent = 'Autorisez l\'accès à la caméra dans votre navigateur.';
+    }
+}
 
-      nouvellesCartes.push({
-        membre_id: m.id,
-        membre_nom: m.nom,
-        code_carte: codeCarte,
-        qr_data: qrData,
-        actif: true,
-        date_emission: dateStr,
-        timestamp: Date.now()
-      });
+// ==================== SCAN ====================
+function boucleScan() {
+    if (!scanning) return;
+    const video = document.getElementById('video');
+    if (video.readyState === video.HAVE_ENOUGH_DATA) {
+        if (!canvas) {
+            canvas = document.createElement('canvas');
+            ctx = canvas.getContext('2d', { willReadFrequently: true });
+        }
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+        try {
+            const code = jsQR(imageData.data, imageData.width, imageData.height, {
+                inversionAttempts: 'dontInvert'
+            });
+
+            if (code && code.data) {
+                const data = code.data.trim();
+                if (data.includes('direction.html')) {
+                    scanning = false;
+                    // Stopper la caméra
+                    if (stream) {
+                        stream.getTracks().forEach(t => t.stop());
+                        stream = null;
+                    }
+                    // Passer à l'étape ID
+                    setStatusCamera('✅ CARTE DÉTECTÉE', 'success');
+                    setTimeout(() => {
+                        document.getElementById('etapeCamera').style.display = 'none';
+                        document.getElementById('etapeID').style.display = 'block';
+                        document.getElementById('inputMemberId').value = '';
+                        document.getElementById('errorMsg').textContent = '';
+                        setStatusID('✅ CARTE VALIDÉE — Entrez maintenant votre ID', 'success');
+                        document.getElementById('inputMemberId').focus();
+                    }, 800);
+                    return;
+                }
+            }
+        } catch (e) {}
+    }
+    if (scanning) requestAnimationFrame(boucleScan);
+}
+
+// ==================== VÉRIFICATION ID ====================
+function verifierIdMembre() {
+    const id = document.getElementById('inputMemberId').value.trim();
+    const errEl = document.getElementById('errorMsg');
+
+    if (!id) {
+        errEl.textContent = '⚠️ Entrez votre ID';
+        return;
     }
 
-    const { error } = await supabaseClient.from('cartes_membres').insert(nouvellesCartes);
-    if (error) throw error;
-
-    showToast('✅ 6 cartes générées avec succès !', 'success');
-    await chargerCartes();
-
-  } catch (e) {
-    showToast('❌ Erreur : ' + e.message, 'error');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-bolt"></i> GÉNÉRER LES 6 CARTES OFFICIELLES';
-  }
-}
-
-// ============ AFFICHAGE ============
-async function chargerCartes() {
-  const grid = document.getElementById('cartesGrid');
-  grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-spinner fa-spin"></i><p>Chargement...</p></div>';
-
-  try {
-    const { data, error } = await supabaseClient
-      .from('cartes_membres')
-      .select('*')
-      .eq('actif', true)
-      .order('timestamp', { ascending: true });
-
-    if (error) throw error;
-
-    if (!data || data.length === 0) {
-      grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-qrcode"></i><p>Aucune carte active. Clique sur "GÉNÉRER".</p></div>';
-      document.getElementById('btnDownloadAll').disabled = true;
-      return;
+    const membre = MEMBRES_DIRECTION[id];
+    if (!membre) {
+        errEl.textContent = '❌ ID non reconnu. Vérifiez votre identifiant.';
+        document.getElementById('inputMemberId').value = '';
+        return;
     }
 
-    document.getElementById('btnDownloadAll').disabled = false;
+    setStatusID('✅ BIENVENUE ' + membre.prenom + ' ' + membre.nom, 'success');
+    membreActuel = membre;
+
+    setTimeout(() => {
+        document.getElementById('accessModal').classList.add('hidden');
+        document.getElementById('mainContent').style.display = 'block';
+        afficherPostes();
+    }, 800);
+}
+
+// Touche Entrée
+document.addEventListener('DOMContentLoaded', () => {
+    const inputId = document.getElementById('inputMemberId');
+    if (inputId) {
+        inputId.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') verifierIdMembre();
+        });
+    }
+});
+
+// ==================== AFFICHAGE DES POSTES ====================
+function afficherPostes() {
+    document.getElementById('userInfo').innerHTML = 
+        `<i class="fas fa-user-shield"></i> ${membreActuel.prenom} ${membreActuel.nom} - ${membreActuel.fonction}`;
+
+    const grid = document.getElementById('featuresGrid');
     grid.innerHTML = '';
 
-    for (const carte of data) {
-      const div = document.createElement('div');
-      div.className = 'carte-item';
-      div.innerHTML = `
-        <div class="membre-nom">${carte.membre_nom}</div>
-        <div class="membre-id">${carte.membre_id}</div>
-        <div class="qr-wrapper" id="qrwrap-${carte.id}"></div>
-        <div class="code-carte">${carte.code_carte}</div>
-        <div class="actions">
-          <button onclick="telechargerQR('${carte.id}', '${carte.membre_nom.replace(/'/g, "\\'")}')">
-            <i class="fas fa-download"></i> Télécharger
-          </button>
-        </div>
-      `;
-      grid.appendChild(div);
+    membreActuel.postes.forEach(posteKey => {
+        const carte = CARTES[posteKey];
+        if (!carte) return;
 
-      new QRCode(document.getElementById('qrwrap-' + carte.id), {
-        text: carte.qr_data,
-        width: 240,
-        height: 240,
-        colorDark: '#000000',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.H
-      });
-    }
-
-  } catch (e) {
-    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">❌ ' + e.message + '</div>';
-  }
-}
-
-// ============ TÉLÉCHARGEMENT ============
-async function telechargerQR(carteId, nomMembre) {
-  try {
-    const { data: carte } = await supabaseClient.from('cartes_membres').select('*').eq('id', carteId).single();
-    if (!carte) throw new Error('Carte introuvable');
-
-    const tempDiv = document.createElement('div');
-    tempDiv.style.position = 'absolute';
-    tempDiv.style.left = '-9999px';
-    document.body.appendChild(tempDiv);
-
-    new QRCode(tempDiv, {
-      text: carte.qr_data,
-      width: 1200,
-      height: 1200,
-      colorDark: '#000000',
-      colorLight: '#ffffff',
-      correctLevel: QRCode.CorrectLevel.H
+        const div = document.createElement('div');
+        div.className = 'feature-card';
+        div.onclick = () => {
+            if (carte.link === '#') {
+                alert('🚧 Ce poste est en cours de développement.');
+            } else {
+                window.location.href = carte.link;
+            }
+        };
+        div.innerHTML = `
+            <div class="feature-icon"><i class="fas ${carte.icon}"></i></div>
+            <h3 class="feature-title">${carte.title}</h3>
+            <p class="feature-description">${carte.description}</p>
+            <div class="feature-status"><i class="fas fa-shield-alt"></i> ${carte.status}</div>
+        `;
+        grid.appendChild(div);
     });
-
-    await new Promise(r => setTimeout(r, 200));
-
-    const canvas = tempDiv.querySelector('canvas');
-    if (!canvas) {
-      const img = tempDiv.querySelector('img');
-      if (img) {
-        const link = document.createElement('a');
-        link.download = `QR_${carte.membre_id}_${nomMembre.replace(/\s+/g, '_')}.png`;
-        link.href = img.src;
-        link.click();
-        document.body.removeChild(tempDiv);
-        showToast('✅ QR téléchargé : ' + carte.membre_id, 'success');
-        return;
-      }
-      throw new Error('Impossible de générer le QR');
-    }
-
-    const link = document.createElement('a');
-    link.download = `QR_${carte.membre_id}_${nomMembre.replace(/\s+/g, '_')}.png`;
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-
-    document.body.removeChild(tempDiv);
-    showToast('✅ QR téléchargé : ' + carte.membre_id, 'success');
-  } catch (e) {
-    showToast('❌ Erreur : ' + e.message, 'error');
-  }
 }
 
-async function telechargerTout() {
-  const btn = document.getElementById('btnDownloadAll');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> TÉLÉCHARGEMENT...';
-
-  try {
-    const { data, error } = await supabaseClient.from('cartes_membres').select('*').eq('actif', true).order('timestamp', { ascending: true });
-    if (error) throw error;
-
-    for (let i = 0; i < data.length; i++) {
-      await telechargerQR(data[i].id, data[i].membre_nom);
-      await new Promise(r => setTimeout(r, 800));
-    }
-
-    showToast('✅ ' + data.length + ' QR codes téléchargés !', 'success');
-  } catch (e) {
-    showToast('❌ Erreur : ' + e.message, 'error');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-download"></i> TOUT TÉLÉCHARGER';
-  }
-}
-
-// ============ INIT ============
-document.addEventListener('DOMContentLoaded', () => {
-  chargerCartes();
-});
+// ==================== INIT ====================
+createParticles();
 </script>
 </body>
 </html>
