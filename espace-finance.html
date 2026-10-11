@@ -110,6 +110,7 @@ body {
 }
 .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--gold); box-shadow:0 0 15px rgba(255,215,0,0.2); }
 .form-group select option { background:var(--dark); }
+.form-group textarea { resize:vertical; min-height:80px; font-family:'Exo 2',sans-serif; }
 
 /* STAT CARDS */
 .stats-grid {
@@ -149,6 +150,7 @@ body {
 .statut-paye { background:rgba(0,255,136,0.15); border:1px solid var(--green); color:var(--green); }
 .statut-attente { background:rgba(255,215,0,0.15); border:1px solid var(--gold); color:var(--gold); }
 .statut-retard { background:rgba(255,0,51,0.15); border:1px solid var(--red); color:var(--red); }
+.statut-nonpaye { background:rgba(150,150,150,0.15); border:1px solid #888; color:#aaa; }
 .membre-card .actions { display:flex; gap:0.4rem; margin-top:0.8rem; flex-wrap:wrap; }
 .membre-card .actions button {
   flex:1; padding:0.4rem 0.6rem; font-size:0.7rem; border-radius:7px;
@@ -164,12 +166,17 @@ body {
   display:flex; justify-content:space-between; align-items:center;
   flex-wrap:wrap; gap:0.6rem;
 }
+.historique-item.retrait { border-color:rgba(255,0,51,0.4); }
+.historique-item.ajout { border-color:rgba(0,255,136,0.4); }
 .historique-item .info { flex:1; min-width:200px; }
 .historique-item .nom { color:var(--gold); font-weight:700; font-size:0.95rem; }
 .historique-item .meta { color:var(--text2); font-size:0.8rem; margin-top:0.2rem; }
 .historique-item .montant {
   font-family:'Orbitron',sans-serif; font-size:1.3rem;
   color:var(--green); text-shadow:0 0 15px rgba(0,255,136,0.4);
+}
+.historique-item .montant.negatif {
+  color:var(--red); text-shadow:0 0 15px rgba(255,0,51,0.4);
 }
 .historique-item .actions { display:flex; gap:0.4rem; }
 .historique-item .actions button {
@@ -178,6 +185,35 @@ body {
   color:var(--gold); cursor:pointer; font-weight:700; transition:0.3s;
 }
 .historique-item .actions button.delete { color:var(--red); border-color:rgba(255,0,51,0.4); background:rgba(255,0,51,0.08); }
+.historique-item .actions button.voir { color:var(--blue); border-color:rgba(0,240,255,0.4); background:rgba(0,240,255,0.08); }
+
+/* UPLOAD ZONE */
+.upload-area {
+  border:2px dashed var(--border); border-radius:15px;
+  padding:2rem; text-align:center; cursor:pointer;
+  transition:all 0.3s ease; background:rgba(255,215,0,0.02);
+  margin-bottom:1rem;
+}
+.upload-area:hover { border-color:var(--gold); background:rgba(255,215,0,0.06); }
+.upload-area i { font-size:3rem; color:var(--gold); margin-bottom:0.8rem; display:block; }
+.upload-area p { color:var(--text2); font-size:0.9rem; }
+.upload-area .file-selected { color:var(--gold); font-weight:700; margin-top:0.6rem; font-size:0.9rem; }
+.upload-area input { display:none; }
+
+/* CHOIX JUSTIFICATIF */
+.choix-type {
+  display:flex; gap:0.6rem; margin-bottom:1rem; flex-wrap:wrap;
+}
+.choix-type button {
+  flex:1; min-width:140px; padding:0.8rem 1rem;
+  background:rgba(255,215,0,0.05); border:1px solid var(--border);
+  border-radius:10px; color:var(--text2); font-weight:700;
+  cursor:pointer; transition:0.3s; font-size:0.85rem;
+}
+.choix-type button.active {
+  background:linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,140,0,0.2));
+  border-color:var(--gold); color:var(--gold);
+}
 
 /* ÉDITEUR */
 .editor-toolbar {
@@ -237,10 +273,8 @@ body {
 .analyse-list li.ok { border-left-color:var(--green); background:rgba(0,255,136,0.08); color:#a0ffc0; }
 .analyse-list li strong { color:var(--gold); }
 
-/* GRAPHE */
 #graphFinance { width:100%; height:200px; background:rgba(0,0,0,0.4); border:1px solid var(--border); border-radius:10px; display:block; }
 
-/* MODAL */
 .modal-overlay {
   display:none; position:fixed; top:0; left:0;
   width:100%; height:100%;
@@ -251,7 +285,7 @@ body {
 .modal-content {
   background:linear-gradient(135deg, #0a0a14, #1a1000);
   border:2px solid var(--gold); border-radius:22px;
-  padding:2rem; max-width:550px; width:100%;
+  padding:2rem; max-width:600px; width:100%;
   max-height:90vh; overflow-y:auto;
   box-shadow:0 0 60px rgba(255,215,0,0.4);
 }
@@ -261,7 +295,6 @@ body {
   display:flex; align-items:center; gap:0.6rem;
 }
 
-/* TOAST */
 .toast {
   position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%);
   background:rgba(255,215,0,0.95); color:#1a1000;
@@ -304,7 +337,8 @@ body {
 
   <div class="tabs">
     <div class="tab active" onclick="switchTab('dashboard')"><i class="fas fa-tachometer-alt"></i> TABLEAU DE BORD</div>
-    <div class="tab" onclick="switchTab('paiement')"><i class="fas fa-plus-circle"></i> AJOUTER PAIEMENT</div>
+    <div class="tab" onclick="switchTab('paiement')"><i class="fas fa-plus-circle"></i> COTISATIONS</div>
+    <div class="tab" onclick="switchTab('mouvements')"><i class="fas fa-exchange-alt"></i> MOUVEMENTS</div>
     <div class="tab" onclick="switchTab('historique')"><i class="fas fa-history"></i> HISTORIQUE</div>
     <div class="tab" onclick="switchTab('documents')"><i class="fas fa-file-invoice"></i> DOCUMENTS</div>
     <div class="tab" onclick="switchTab('stats')"><i class="fas fa-chart-line"></i> STATISTIQUES</div>
@@ -315,7 +349,7 @@ body {
     <div class="stats-grid">
       <div class="stat-card">
         <div class="num" id="statTotalCaisse">0</div>
-        <div class="label">Caisse totale (FCFA)</div>
+        <div class="label">Caisse nette (FCFA)</div>
       </div>
       <div class="stat-card green">
         <div class="num" id="statTotalMois">0</div>
@@ -345,10 +379,10 @@ body {
     </div>
   </div>
 
-  <!-- AJOUTER PAIEMENT -->
+  <!-- COTISATIONS -->
   <div class="section" id="sectionPaiement">
     <div class="card-box">
-      <h2><i class="fas fa-plus-circle"></i> AJOUTER UN PAIEMENT</h2>
+      <h2><i class="fas fa-plus-circle"></i> AJOUTER UNE COTISATION</h2>
       <div class="form-row">
         <div class="form-group">
           <label>Membre</label>
@@ -376,6 +410,7 @@ body {
             <option value="paye">✅ Payé</option>
             <option value="attente">⏳ En attente</option>
             <option value="retard">❌ En retard</option>
+            <option value="nonpaye">⚪ Non payé</option>
           </select>
         </div>
       </div>
@@ -387,10 +422,77 @@ body {
     </div>
   </div>
 
-  <!-- HISTORIQUE -->
+  <!-- MOUVEMENTS -->
+  <div class="section" id="sectionMouvements">
+    <div class="card-box">
+      <h2><i class="fas fa-exchange-alt"></i> MOUVEMENT DE FONDS (HORS COTISATIONS)</h2>
+
+      <div class="choix-type">
+        <button class="active" id="typeAjout" onclick="choisirTypeMouvement('ajout')">
+          <i class="fas fa-plus-circle"></i> AJOUT DE FONDS
+        </button>
+        <button id="typeRetrait" onclick="choisirTypeMouvement('retrait')">
+          <i class="fas fa-minus-circle"></i> RETRAIT DE FONDS
+        </button>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Montant (FCFA)</label>
+          <input type="number" id="mouvMontant" placeholder="Ex: 5000" min="1">
+        </div>
+        <div class="form-group">
+          <label>Motif (obligatoire)</label>
+          <input type="text" id="mouvMotif" placeholder="Ex: Don, achat matériel, déplacement...">
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:1rem;">
+        <label>Type de justificatif</label>
+        <div class="choix-type">
+          <button class="active" id="justFichier" onclick="choisirJustificatif('fichier')">
+            <i class="fas fa-file-upload"></i> FICHIER (PDF/Image)
+          </button>
+          <button id="justTexte" onclick="choisirJustificatif('texte')">
+            <i class="fas fa-edit"></i> ÉCRIRE UN TEXTE
+          </button>
+        </div>
+      </div>
+
+      <!-- Upload fichier -->
+      <div id="zoneJustFichier">
+        <label class="upload-area" for="mouvFile">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p>Cliquez pour choisir un fichier</p>
+          <p style="font-size:0.8rem; margin-top:0.3rem;">PDF, JPG, PNG (max 10 Mo)</p>
+          <div class="file-selected" id="mouvFileSelected"></div>
+          <input type="file" id="mouvFile" accept=".pdf,.jpg,.jpeg,.png">
+        </label>
+      </div>
+
+      <!-- Zone texte -->
+      <div id="zoneJustTexte" style="display:none;">
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label>Justificatif écrit</label>
+          <textarea id="mouvJustTexte" rows="5" placeholder="Décrivez la raison, les détails..."></textarea>
+        </div>
+      </div>
+
+      <button class="btn btn-gold" onclick="enregistrerMouvement()"><i class="fas fa-check"></i> ENREGISTRER LE MOUVEMENT</button>
+    </div>
+
+    <div class="card-box">
+      <h2><i class="fas fa-history"></i> HISTORIQUE DES MOUVEMENTS</h2>
+      <div id="mouvementsList">
+        <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORIQUE COTISATIONS -->
   <div class="section" id="sectionHistorique">
     <div class="card-box">
-      <h2><i class="fas fa-history"></i> HISTORIQUE DES PAIEMENTS</h2>
+      <h2><i class="fas fa-history"></i> HISTORIQUE DES COTISATIONS</h2>
       <div class="form-row" style="margin-bottom:1rem;">
         <div class="form-group">
           <label>Filtrer par membre</label>
@@ -472,25 +574,36 @@ body {
     <div class="stats-grid">
       <div class="stat-card">
         <div class="num" id="statNBPaiements">0</div>
-        <div class="label">Paiements enregistrés</div>
+        <div class="label">Cotisations</div>
       </div>
       <div class="stat-card green">
-        <div class="num" id="statMoyenne">0</div>
-        <div class="label">Moyenne / membre</div>
-      </div>
-      <div class="stat-card blue">
-        <div class="num" id="statMeilleurMois">—</div>
-        <div class="label">Meilleur mois</div>
+        <div class="num" id="statTotalAjouts">0</div>
+        <div class="label">Total ajouts (FCFA)</div>
       </div>
       <div class="stat-card red">
+        <div class="num" id="statTotalRetraits">0</div>
+        <div class="label">Total retraits (FCFA)</div>
+      </div>
+      <div class="stat-card blue">
         <div class="num" id="statTauxRecouvrement">0%</div>
-        <div class="label">Taux de recouvrement</div>
+        <div class="label">Taux recouvrement</div>
       </div>
     </div>
 
     <div class="card-box">
-      <h2><i class="fas fa-chart-line"></i> ÉVOLUTION MENSUELLE</h2>
+      <h2><i class="fas fa-chart-line"></i> ÉVOLUTION MENSUELLE (COTISATIONS)</h2>
       <canvas id="graphFinance"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PREUVE -->
+<div class="modal-overlay" id="modalPreuve">
+  <div class="modal-content">
+    <h2><i class="fas fa-file-alt"></i> JUSTIFICATIF</h2>
+    <div id="preuveContenu"></div>
+    <div style="margin-top:1.5rem; text-align:center;">
+      <button class="btn btn-dark" onclick="fermerModalPreuve()">FERMER</button>
     </div>
   </div>
 </div>
@@ -526,10 +639,13 @@ const MEMBRES = [
 
 const MOIS_LISTE = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
 const MONTANT_MENSUEL = 500;
-const TOTAL_ATTENDU = MEMBRES.length * MONTANT_MENSUEL; // 4000
+const TOTAL_ATTENDU = MEMBRES.length * MONTANT_MENSUEL;
 
 let cotisationsCache = [];
 let docsCache = [];
+let mouvementsCache = [];
+let typeMouvement = 'ajout';
+let typeJustificatif = 'fichier';
 
 function showToast(msg, type='') {
   const old = document.querySelector('.toast'); if (old) old.remove();
@@ -547,58 +663,48 @@ function switchTab(name) {
   document.getElementById('section' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
   setTimeout(() => {
     if (name === 'stats') { chargerStats(); initGraphFinance(); }
+    if (name === 'mouvements') chargerMouvements();
   }, 60);
 }
 
 function initSelects() {
-  // Mois paiement
   const selMois = document.getElementById('paiementMois');
   const selFiltre = document.getElementById('filtreMois');
   const selDash = document.getElementById('selectMois');
   const moisActuelIndex = new Date().getMonth();
 
   MOIS_LISTE.forEach((m, i) => {
-    // Paiement mois
     const opt1 = document.createElement('option');
-    opt1.value = m;
-    opt1.textContent = m;
+    opt1.value = m; opt1.textContent = m;
     if (i === moisActuelIndex) opt1.selected = true;
     selMois.appendChild(opt1);
 
-    // Filtre mois
     const opt2 = document.createElement('option');
-    opt2.value = m;
-    opt2.textContent = m;
+    opt2.value = m; opt2.textContent = m;
     selFiltre.appendChild(opt2);
 
-    // Dashboard mois
     const opt3 = document.createElement('option');
-    opt3.value = m;
-    opt3.textContent = m;
+    opt3.value = m; opt3.textContent = m;
     if (i === moisActuelIndex) opt3.selected = true;
     selDash.appendChild(opt3);
   });
 
-  // Membre paiement + filtre
   const selM = document.getElementById('paiementMembre');
   const selFM = document.getElementById('filtreMembre');
   MEMBRES.forEach(m => {
     const opt1 = document.createElement('option');
-    opt1.value = m.id;
-    opt1.textContent = `${m.nom} (${m.id})`;
+    opt1.value = m.id; opt1.textContent = `${m.nom} (${m.id})`;
     selM.appendChild(opt1);
 
     const opt2 = document.createElement('option');
-    opt2.value = m.id;
-    opt2.textContent = `${m.nom} (${m.id})`;
+    opt2.value = m.id; opt2.textContent = `${m.nom} (${m.id})`;
     selFM.appendChild(opt2);
   });
 
-  // Afficher mois actuel
   document.getElementById('moisActuel').textContent = MOIS_LISTE[moisActuelIndex];
 }
 
-// ============ AJOUTER PAIEMENT ============
+// ============ COTISATIONS ============
 async function ajouterPaiement() {
   const membreId = document.getElementById('paiementMembre').value;
   const mois = document.getElementById('paiementMois').value;
@@ -631,7 +737,7 @@ async function ajouterPaiement() {
     }]);
     if (error) throw error;
 
-    showToast('✅ Paiement enregistré !', 'success');
+    showToast('✅ Cotisation enregistrée !', 'success');
     document.getElementById('paiementNote').value = '';
     await chargerCotisations();
     chargerStatutMembres();
@@ -639,7 +745,6 @@ async function ajouterPaiement() {
   } catch (e) { showToast('❌ ' + e.message, 'error'); }
 }
 
-// ============ CHARGER COTISATIONS ============
 async function chargerCotisations() {
   try {
     const { data, error } = await supabaseClient
@@ -656,7 +761,158 @@ async function chargerCotisations() {
   }
 }
 
-// ============ STATUT DES MEMBRES (dashboard) ============
+// ============ MOUVEMENTS ============
+function choisirTypeMouvement(type) {
+  typeMouvement = type;
+  document.getElementById('typeAjout').classList.toggle('active', type === 'ajout');
+  document.getElementById('typeRetrait').classList.toggle('active', type === 'retrait');
+}
+function choisirJustificatif(type) {
+  typeJustificatif = type;
+  document.getElementById('justFichier').classList.toggle('active', type === 'fichier');
+  document.getElementById('justTexte').classList.toggle('active', type === 'texte');
+  document.getElementById('zoneJustFichier').style.display = type === 'fichier' ? 'block' : 'none';
+  document.getElementById('zoneJustTexte').style.display = type === 'texte' ? 'block' : 'none';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const fileInput = document.getElementById('mouvFile');
+  if (fileInput) {
+    fileInput.addEventListener('change', (e) => {
+      const f = e.target.files[0];
+      if (f) document.getElementById('mouvFileSelected').textContent = '📄 ' + f.name + ' (' + (f.size/1024).toFixed(0) + ' Ko)';
+    });
+  }
+});
+
+async function enregistrerMouvement() {
+  const montant = parseInt(document.getElementById('mouvMontant').value);
+  const motif = document.getElementById('mouvMotif').value.trim();
+
+  if (!montant || montant <= 0) { showToast('⚠️ Montant invalide.', 'error'); return; }
+  if (!motif) { showToast('⚠️ Motif obligatoire.', 'error'); return; }
+
+  let justificatif_texte = '';
+  let justificatif_fichier_url = '';
+  let justificatif_fichier_nom = '';
+  let storage_path = '';
+
+  const btn = event.target;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENREGISTREMENT...';
+
+  try {
+    if (typeJustificatif === 'fichier') {
+      const file = document.getElementById('mouvFile').files[0];
+      if (!file) { showToast('⚠️ Choisissez un fichier.', 'error'); btn.disabled = false; btn.innerHTML = '<i class="fas fa-check"></i> ENREGISTRER LE MOUVEMENT'; return; }
+      if (file.size > 10 * 1024 * 1024) { showToast('⚠️ Fichier trop gros (max 10 Mo).', 'error'); btn.disabled = false; btn.innerHTML = '<i class="fas fa-check"></i> ENREGISTRER LE MOUVEMENT'; return; }
+
+      const timestamp = Date.now();
+      const cleanName = file.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9._-]/g, '_');
+      const fileName = `finance/${timestamp}_${cleanName}`;
+
+      const { error: upErr } = await supabaseClient.storage
+        .from('documents')
+        .upload(fileName, file);
+      if (upErr) throw upErr;
+
+      const { data: urlData } = supabaseClient.storage
+        .from('documents')
+        .getPublicUrl(fileName);
+
+      justificatif_fichier_url = urlData.publicUrl;
+      justificatif_fichier_nom = file.name;
+      storage_path = fileName;
+    } else {
+      justificatif_texte = document.getElementById('mouvJustTexte').value.trim();
+      if (!justificatif_texte) { showToast('⚠️ Écrivez un justificatif.', 'error'); btn.disabled = false; btn.innerHTML = '<i class="fas fa-check"></i> ENREGISTRER LE MOUVEMENT'; return; }
+    }
+
+    const now = new Date();
+    const { error } = await supabaseClient.from('finance_mouvements').insert([{
+      type: typeMouvement,
+      montant: montant,
+      motif: motif,
+      justificatif_texte: justificatif_texte,
+      justificatif_fichier_url: justificatif_fichier_url,
+      justificatif_fichier_nom: justificatif_fichier_nom,
+      storage_path: storage_path,
+      enregistre_par: `${memberPrenom} ${memberNom}`,
+      date_mouvement: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
+      timestamp: Date.now()
+    }]);
+    if (error) throw error;
+
+    showToast(typeMouvement === 'ajout' ? '✅ Ajout enregistré !' : '✅ Retrait enregistré !', 'success');
+    document.getElementById('mouvMontant').value = '';
+    document.getElementById('mouvMotif').value = '';
+    document.getElementById('mouvJustTexte').value = '';
+    document.getElementById('mouvFile').value = '';
+    document.getElementById('mouvFileSelected').textContent = '';
+    chargerMouvements();
+    chargerStats();
+  } catch (e) {
+    showToast('❌ ' + e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-check"></i> ENREGISTRER LE MOUVEMENT';
+  }
+}
+
+async function chargerMouvements() {
+  const cont = document.getElementById('mouvementsList');
+  cont.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
+
+  try {
+    const { data, error } = await supabaseClient
+      .from('finance_mouvements')
+      .select('*')
+      .order('timestamp', { ascending: false });
+    if (error) throw error;
+    mouvementsCache = data || [];
+
+    if (mouvementsCache.length === 0) {
+      cont.innerHTML = '<div class="empty-state"><i class="fas fa-exchange-alt"></i><p>Aucun mouvement.</p></div>';
+      return;
+    }
+
+    cont.innerHTML = mouvementsCache.map(m => `
+      <div class="historique-item ${m.type}">
+        <div class="info">
+          <div class="nom">${m.type === 'ajout' ? '➕ AJOUT' : '➖ RETRAIT'} — ${m.motif}</div>
+          <div class="meta">📅 ${m.date_mouvement} — 👤 ${m.enregistre_par}</div>
+          ${m.justificatif_texte ? `<div class="meta">📝 ${m.justificatif_texte}</div>` : ''}
+          ${m.justificatif_fichier_nom ? `<div class="meta">📎 ${m.justificatif_fichier_nom}</div>` : ''}
+        </div>
+        <div class="montant ${m.type === 'retrait' ? 'negatif' : ''}">
+          ${m.type === 'ajout' ? '+' : '-'}${m.montant} FCFA
+        </div>
+        <div class="actions">
+          ${m.justificatif_fichier_url ? `<button class="voir" onclick="window.open('${m.justificatif_fichier_url}', '_blank')"><i class="fas fa-eye"></i></button>` : ''}
+          <button class="delete" onclick="supprimerMouvement('${m.id}', '${m.storage_path || ''}')"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+    `).join('');
+  } catch (e) {
+    cont.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>';
+  }
+}
+
+async function supprimerMouvement(id, storagePath) {
+  if (!confirm('Supprimer ce mouvement ?')) return;
+  try {
+    const { error } = await supabaseClient.from('finance_mouvements').delete().eq('id', id);
+    if (error) throw error;
+    if (storagePath) {
+      await supabaseClient.storage.from('documents').remove([storagePath]);
+    }
+    showToast('🗑️ Mouvement supprimé.', 'success');
+    chargerMouvements();
+    chargerStats();
+  } catch (e) { showToast('❌ ' + e.message, 'error'); }
+}
+
+// ============ STATUT DES MEMBRES ============
 async function chargerStatutMembres() {
   const grid = document.getElementById('membresGrid');
   const mois = document.getElementById('selectMois').value;
@@ -678,9 +934,11 @@ async function chargerStatutMembres() {
     const totalPaye = paiements.filter(p => p.statut === 'paye').reduce((s,p) => s + (p.montant || 0), 0);
     const aPaiement = paiements.some(p => p.statut === 'paye');
     const enAttente = paiements.some(p => p.statut === 'attente');
+    const nonPaye = paiements.some(p => p.statut === 'nonpaye');
 
     let statutClass = 'statut-retard';
     let statutTxt = '❌ Non payé';
+
     if (aPaiement && totalPaye >= MONTANT_MENSUEL) {
       statutClass = 'statut-paye';
       statutTxt = `✅ Payé — ${totalPaye} FCFA`;
@@ -690,6 +948,9 @@ async function chargerStatutMembres() {
     } else if (enAttente) {
       statutClass = 'statut-attente';
       statutTxt = '⏳ En attente';
+    } else if (nonPaye) {
+      statutClass = 'statut-nonpaye';
+      statutTxt = '⚪ Non payé';
     } else if (!estMoisPasse && moisIndex === moisActuelIndex) {
       statutClass = 'statut-attente';
       statutTxt = '🕐 En cours';
@@ -726,15 +987,15 @@ function voirHistoriqueMembre(membreId) {
   document.getElementById('filtreMois').value = '';
   switchTab('historique');
   document.querySelectorAll('.tab').forEach((t,i) => {
-    t.classList.toggle('active', i === 2);
+    t.classList.toggle('active', i === 3);
   });
   document.querySelectorAll('.section').forEach((s,i) => {
-    s.classList.toggle('active', i === 2);
+    s.classList.toggle('active', i === 3);
   });
   chargerHistorique();
 }
 
-// ============ HISTORIQUE ============
+// ============ HISTORIQUE COTISATIONS ============
 async function chargerHistorique() {
   const cont = document.getElementById('historiqueList');
   cont.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
@@ -749,7 +1010,7 @@ async function chargerHistorique() {
   if (moisFiltre) items = items.filter(c => c.mois === moisFiltre);
 
   if (items.length === 0) {
-    cont.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>Aucun paiement enregistré.</p></div>';
+    cont.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>Aucune cotisation.</p></div>';
     return;
   }
 
@@ -763,18 +1024,18 @@ async function chargerHistorique() {
       </div>
       <div class="montant">${c.montant} FCFA</div>
       <div class="actions">
-        <button onclick="supprimerPaiement('${c.id}')" class="delete"><i class="fas fa-trash"></i></button>
+        <button class="delete" onclick="supprimerPaiement('${c.id}')"><i class="fas fa-trash"></i></button>
       </div>
     </div>
   `).join('');
 }
 
 async function supprimerPaiement(id) {
-  if (!confirm('Supprimer ce paiement ?')) return;
+  if (!confirm('Supprimer cette cotisation ?')) return;
   try {
     const { error } = await supabaseClient.from('finance_cotisations').delete().eq('id', id);
     if (error) throw error;
-    showToast('🗑️ Paiement supprimé.', 'success');
+    showToast('🗑️ Cotisation supprimée.', 'success');
     await chargerCotisations();
     chargerHistorique();
     chargerStatutMembres();
@@ -782,57 +1043,56 @@ async function supprimerPaiement(id) {
   } catch (e) { showToast('❌ ' + e.message, 'error'); }
 }
 
-// ============ STATISTIQUES ============
+// ============ STATS ============
 async function chargerStats() {
   await chargerCotisations();
+
+  // Charger mouvements
+  let mouvements = [];
+  try {
+    const { data } = await supabaseClient.from('finance_mouvements').select('*');
+    mouvements = data || [];
+  } catch(e) {}
+
+  const totalCotisations = cotisationsCache
+    .filter(c => c.statut === 'paye')
+    .reduce((s,c) => s + (c.montant || 0), 0);
+
+  const totalAjouts = mouvements
+    .filter(m => m.type === 'ajout')
+    .reduce((s,m) => s + (m.montant || 0), 0);
+
+  const totalRetraits = mouvements
+    .filter(m => m.type === 'retrait')
+    .reduce((s,m) => s + (m.montant || 0), 0);
+
+  const caisseNette = totalCotisations + totalAjouts - totalRetraits;
 
   const annee = new Date().getFullYear();
   const moisActuelIndex = new Date().getMonth();
   const moisActuel = MOIS_LISTE[moisActuelIndex];
 
-  // Total caisse
-  const totalCaisse = cotisationsCache
-    .filter(c => c.statut === 'paye')
-    .reduce((s,c) => s + (c.montant || 0), 0);
-
-  // Total ce mois
   const totalMois = cotisationsCache
     .filter(c => c.statut === 'paye' && c.mois === moisActuel && c.annee === annee)
     .reduce((s,c) => s + (c.montant || 0), 0);
 
-  // Membres en retard (pas de paiement ce mois)
   const retard = MEMBRES.filter(m => {
     return !cotisationsCache.some(c =>
       c.membre_id === m.id && c.mois === moisActuel && c.annee === annee && c.statut === 'paye'
     );
   }).length;
 
-  document.getElementById('statTotalCaisse').textContent = totalCaisse.toLocaleString('fr-FR');
+  document.getElementById('statTotalCaisse').textContent = caisseNette.toLocaleString('fr-FR');
   document.getElementById('statTotalMois').textContent = totalMois.toLocaleString('fr-FR');
   document.getElementById('statAttendu').textContent = TOTAL_ATTENDU.toLocaleString('fr-FR');
   document.getElementById('statRetard').textContent = retard;
 
-  // Stats supplémentaires
   document.getElementById('statNBPaiements').textContent = cotisationsCache.length;
-  const moy = cotisationsCache.length > 0 ? Math.round(totalCaisse / MEMBRES.length) : 0;
-  document.getElementById('statMoyenne').textContent = moy.toLocaleString('fr-FR');
+  document.getElementById('statTotalAjouts').textContent = totalAjouts.toLocaleString('fr-FR');
+  document.getElementById('statTotalRetraits').textContent = totalRetraits.toLocaleString('fr-FR');
 
-  // Taux recouvrement du mois
   const taux = TOTAL_ATTENDU > 0 ? Math.round((totalMois / TOTAL_ATTENDU) * 100) : 0;
   document.getElementById('statTauxRecouvrement').textContent = taux + '%';
-
-  // Meilleur mois
-  const totauxParMois = {};
-  cotisationsCache.filter(c => c.statut === 'paye').forEach(c => {
-    const key = `${c.mois} ${c.annee}`;
-    totauxParMois[key] = (totauxParMois[key] || 0) + (c.montant || 0);
-  });
-  let meilleur = '—';
-  let meilleurVal = 0;
-  Object.entries(totauxParMois).forEach(([k,v]) => {
-    if (v > meilleurVal) { meilleurVal = v; meilleur = k; }
-  });
-  document.getElementById('statMeilleurMois').textContent = meilleur;
 }
 
 // ============ GRAPHE ============
@@ -853,12 +1113,10 @@ function drawGraphFinance() {
   const w = graphCanvas.width, h = graphCanvas.height;
   graphCtx.clearRect(0, 0, w, h);
 
-  // Grille
   graphCtx.strokeStyle = 'rgba(255,215,0,0.08)';
   for (let i = 0; i < w; i += 50) { graphCtx.beginPath(); graphCtx.moveTo(i, 0); graphCtx.lineTo(i, h); graphCtx.stroke(); }
   for (let i = 0; i < h; i += 30) { graphCtx.beginPath(); graphCtx.moveTo(0, i); graphCtx.lineTo(w, i); graphCtx.stroke(); }
 
-  // Calcul des totaux par mois
   const annee = new Date().getFullYear();
   const totaux = MOIS_LISTE.map(m => {
     return cotisationsCache
@@ -866,12 +1124,11 @@ function drawGraphFinance() {
       .reduce((s,c) => s + (c.montant || 0), 0);
   });
 
-  const maxVal = Math.max(TOTAL_ATTENDU, ...totaux);
+  const maxVal = Math.max(TOTAL_ATTENDU, ...totaux, 1);
   const barWidth = (w - 40) / MOIS_LISTE.length;
   const offsetX = 20;
   const baseY = h - 30;
 
-  // Ligne cible
   graphCtx.strokeStyle = 'rgba(0,240,255,0.3)';
   graphCtx.setLineDash([5,5]);
   graphCtx.beginPath();
@@ -881,7 +1138,6 @@ function drawGraphFinance() {
   graphCtx.stroke();
   graphCtx.setLineDash([]);
 
-  // Barres
   totaux.forEach((v, i) => {
     const x = offsetX + i * barWidth;
     const barH = (v / maxVal) * (h - 60);
@@ -893,17 +1149,14 @@ function drawGraphFinance() {
     graphCtx.fillStyle = grad;
     graphCtx.fillRect(x + 3, y, barWidth - 6, barH);
 
-    // Bordure
     graphCtx.strokeStyle = '#ffd700';
     graphCtx.strokeRect(x + 3, y, barWidth - 6, barH);
 
-    // Label mois
     graphCtx.fillStyle = '#c0a080';
     graphCtx.font = 'bold 10px "Orbitron"';
     graphCtx.textAlign = 'center';
     graphCtx.fillText(MOIS_LISTE[i].substring(0,3), x + barWidth/2, h - 10);
 
-    // Valeur
     if (v > 0) {
       graphCtx.fillStyle = '#00ff88';
       graphCtx.font = 'bold 9px "Orbitron"';
@@ -911,7 +1164,6 @@ function drawGraphFinance() {
     }
   });
 
-  // Légende
   graphCtx.fillStyle = '#ffd700';
   graphCtx.font = 'bold 11px "Orbitron"';
   graphCtx.textAlign = 'left';
@@ -983,7 +1235,6 @@ async function sauvegarderDoc() {
 
     let res;
     if (editId) {
-      // update dans finance_docs
       res = await supabaseClient.from('finance_docs').update(payload).eq('id', editId);
     } else {
       res = await supabaseClient.from('finance_docs').insert([payload]);
@@ -1101,7 +1352,6 @@ function analyserTexte() {
   const nbMots = texte.split(/\s+/).filter(m => m).length;
   suggestions.push({t:'ok', txt:`📊 <strong>${nbMots} mots</strong> • ${phrases.length} phrases`});
 
-  // Vérifier présence de montants
   if (!/\d/.test(texte) && nbMots > 20) {
     suggestions.push({t:'info', txt:'💡 Aucun montant détecté. Est-ce un document financier ?'});
   }
@@ -1120,6 +1370,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// ============ MODAL PREUVE ============
+function fermerModalPreuve() {
+  document.getElementById('modalPreuve').classList.remove('active');
+}
+
 // ============ INIT ============
 document.addEventListener('DOMContentLoaded', async () => {
   initSelects();
@@ -1128,6 +1383,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   chargerHistorique();
   chargerStats();
   chargerDocuments();
+  chargerMouvements();
 });
 </script>
 </body>
