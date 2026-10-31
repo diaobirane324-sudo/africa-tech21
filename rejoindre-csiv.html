@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rejoindre la CSIV | AFRICA.TECH21</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Exo 2',sans-serif; }
+:root {
+  --gold:#ffd700; --gold-dark:#b8860b; --purple:#9b30ff; --green:#00ff88; --red:#ff0033;
+  --cyan:#00f0ff;
+  --dark:#0a0014; --deeper:#050010;
+  --border:rgba(255,215,0,0.3); --glow:0 0 30px rgba(255,215,0,0.4);
+  --text:#fff; --text2:#c0a080;
+}
+body {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(155,48,255,0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255,215,0,0.08) 0%, transparent 50%),
+    linear-gradient(135deg,#050010,#0a0014 50%,#14002a);
+  color:var(--text); min-height:100vh; padding:2rem;
+  position:relative; overflow-x:hidden;
+}
+.hologram-grid {
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  background:
+    linear-gradient(90deg, rgba(255,215,0,0.02) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(155,48,255,0.02) 1px, transparent 1px);
+  background-size:60px 60px; animation:gridScan 30s linear infinite;
+  pointer-events:none; z-index:-2;
+}
+@keyframes gridScan { 0%{transform:translate(0,0);} 100%{transform:translate(60px,60px);} }
+.particles { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:-1; }
+.particle {
+  position:absolute; width:3px; height:3px;
+  border-radius:50%; animation:float 15s infinite linear;
+}
+@keyframes float {
+  0% { transform:translateY(100vh) translateX(0); opacity:0; }
+  10% { opacity:0.8; }
+  90% { opacity:0.8; }
+  100% { transform:translateY(-100px) translateX(100px); opacity:0; }
+}
+.back-btn {
+  display:inline-block; padding:0.8rem 2rem; margin-bottom:2rem;
+  background:rgba(255,215,0,0.1); border:1px solid var(--gold);
+  border-radius:10px; color:var(--gold); text-decoration:none;
+  font-weight:600; font-size:0.9rem; transition:all 0.3s;
+}
+.back-btn:hover { background:rgba(255,215,0,0.2); box-shadow:var(--glow); }
+.page-container { max-width:900px; margin:0 auto; }
+.page-header {
+  background:linear-gradient(135deg, rgba(155,48,255,0.15), rgba(255,215,0,0.08));
+  backdrop-filter:blur(20px); border:1px solid var(--border);
+  border-radius:28px; padding:3rem 2.5rem; margin-bottom:2rem;
+  text-align:center; box-shadow:var(--glow);
+}
+.crown-icon {
+  font-size:4rem; color:var(--gold);
+  margin-bottom:1rem; text-shadow:var(--glow);
+  animation:pulseCrown 2s ease-in-out infinite;
+}
+@keyframes pulseCrown {
+  0%,100% { transform:scale(1); filter:drop-shadow(0 0 15px var(--gold)); }
+  50% { transform:scale(1.05); filter:drop-shadow(0 0 30px var(--gold)); }
+}
+.page-header h1 {
+  font-family:'Orbitron',sans-serif; font-size:2.5rem;
+  background:linear-gradient(45deg,var(--gold),#fff,var(--purple));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text; letter-spacing:2px;
+}
+.page-header .subtitle { color:var(--text2); margin-top:0.5rem; font-size:0.95rem; letter-spacing:1.5px; text-transform:uppercase; }
+.card-box {
+  background:linear-gradient(135deg, rgba(20,0,40,0.85), rgba(10,0,25,0.85));
+  backdrop-filter:blur(15px); border:1px solid var(--border);
+  border-radius:22px; padding:2rem; margin-bottom:1.5rem;
+  box-shadow:0 0 40px rgba(255,215,0,0.1);
+}
+/* ONGLETS */
+.tabs {
+  display:flex; gap:0.6rem; margin-bottom:1.5rem; flex-wrap:wrap;
+}
+.tab {
+  flex:1; min-width:200px;
+  padding:1rem 1.5rem;
+  background:rgba(255,215,0,0.05);
+  border:1px solid var(--border); border-radius:12px;
+  color:var(--text2); cursor:pointer; font-weight:700;
+  text-transform:uppercase; letter-spacing:1px;
+  font-size:0.8rem; font-family:'Orbitron',sans-serif;
+  transition:all 0.3s; text-align:center;
+}
+.tab:hover { background:rgba(255,215,0,0.12); color:var(--gold); }
+.tab.active {
+  background:linear-gradient(135deg, rgba(255,215,0,0.25), rgba(155,48,255,0.2));
+  border-color:var(--gold); color:#fff; box-shadow:var(--glow);
+}
+/* FORM */
+.form-section { display:none; }
+.form-section.active { display:block; }
+.form-group { margin-bottom:1.3rem; }
+.form-group label {
+  display:block; color:var(--gold); font-weight:700;
+  margin-bottom:0.5rem; font-size:0.95rem;
+}
+.form-group label .required { color:var(--red); }
+.form-group input, .form-group textarea, .form-group select {
+  width:100%; padding:0.9rem 1.2rem;
+  background:rgba(0,0,0,0.5); border:1px solid var(--border);
+  border-radius:12px; color:#fff; font-size:1rem;
+  outline:none; transition:0.3s;
+}
+.form-group input:focus, .form-group textarea:focus {
+  border-color:var(--gold); box-shadow:0 0 20px rgba(255,215,0,0.2);
+}
+.form-group textarea { resize:vertical; min-height:100px; font-family:'Exo 2',sans-serif; }
+.form-row {
+  display:grid; grid-template-columns:1fr 1fr; gap:1rem;
+}
+/* CHECKBOX */
+.checkbox-group {
+  background:rgba(155,48,255,0.08);
+  border:1px solid rgba(155,48,255,0.3);
+  border-radius:15px; padding:1.5rem; margin-bottom:1.3rem;
+}
+.checkbox-group h4 {
+  color:var(--purple); font-family:'Orbitron',sans-serif;
+  font-size:1rem; margin-bottom:1rem;
+  display:flex; align-items:center; gap:0.6rem;
+}
+.checkbox-item {
+  display:flex; align-items:flex-start; gap:0.8rem;
+  padding:0.7rem 0; color:var(--text);
+}
+.checkbox-item input[type="checkbox"] {
+  width:20px; height:20px; accent-color:var(--gold);
+  cursor:pointer; flex-shrink:0; margin-top:2px;
+}
+.checkbox-item label { font-size:0.95rem; line-height:1.5; cursor:pointer; }
+/* BTN */
+.btn {
+  padding:1rem 2.5rem; border:none; border-radius:12px;
+  font-weight:700; font-size:1rem; cursor:pointer;
+  transition:all 0.3s; text-transform:uppercase; letter-spacing:1.5px;
+  font-family:'Orbitron',sans-serif;
+}
+.btn-gold {
+  background:linear-gradient(135deg, var(--gold-dark), var(--gold));
+  color:#0a0014; width:100%;
+}
+.btn-gold:hover:not(:disabled) { transform:translateY(-3px); box-shadow:0 10px 30px rgba(255,215,0,0.5); }
+.btn-gold:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+/* SUCCESS */
+.success-screen {
+  display:none; text-align:center; padding:3rem 2rem;
+}
+.success-screen.active { display:block; }
+.success-screen i.success-icon {
+  font-size:5rem; color:var(--green);
+  text-shadow:0 0 40px rgba(0,255,136,0.6);
+  animation:pulseCrown 2s ease-in-out infinite;
+  display:block; margin-bottom:1.5rem;
+}
+.success-screen h2 {
+  font-family:'Orbitron',sans-serif; color:var(--green);
+  font-size:1.8rem; margin-bottom:1rem;
+}
+.success-screen p { color:var(--text2); font-size:1.1rem; line-height:1.7; margin-bottom:1rem; }
+.success-screen .statut-badge {
+  display:inline-block; padding:0.8rem 2rem;
+  background:rgba(255,200,0,0.15);
+  border:2px solid #ffc800; border-radius:15px;
+  color:#ffc800; font-family:'Orbitron',sans-serif;
+  font-weight:900; letter-spacing:2px; margin:1.5rem 0;
+  font-size:1.1rem;
+}
+/* SUIVI */
+.suivi-section {
+  background:rgba(0,240,255,0.05);
+  border:1px solid rgba(0,240,255,0.3);
+  border-radius:15px; padding:1.5rem; margin-top:1.5rem;
+}
+.suivi-section h3 {
+  color:var(--cyan); font-family:'Orbitron',sans-serif;
+  font-size:1.1rem; margin-bottom:1rem;
+}
+.suivi-input-row { display:flex; gap:0.6rem; margin-bottom:1rem; flex-wrap:wrap; }
+.suivi-input-row input {
+  flex:1; min-width:200px;
+  padding:0.9rem 1.2rem; background:rgba(0,0,0,0.5);
+  border:1px solid rgba(0,240,255,0.3); border-radius:12px;
+  color:#fff; font-size:1rem; outline:none;
+}
+.suivi-input-row button {
+  padding:0.9rem 2rem; background:linear-gradient(135deg,#0088aa,var(--cyan));
+  border:none; border-radius:12px; color:#050510;
+  font-weight:700; cursor:pointer; font-size:0.9rem;
+  transition:0.3s; text-transform:uppercase;
+}
+.suivi-input-row button:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,240,255,0.4); }
+.suivi-result {
+  background:rgba(0,0,0,0.4); border-radius:12px;
+  padding:1.2rem; margin-top:1rem; display:none;
+  border-left:4px solid;
+}
+.suivi-result.active { display:block; }
+.suivi-result.en_attente { border-color:#ffc800; }
+.suivi-result.valide { border-color:var(--green); }
+.suivi-result.refuse { border-color:var(--red); }
+.toast {
+  position:fixed; bottom:2rem; left:50%; transform:translateX(-50%);
+  padding:1rem 2rem; border-radius:12px; font-weight:700;
+  z-index:10001; animation:fadeInUp 0.3s;
+}
+.toast.success { background:rgba(0,255,136,0.95); color:#050510; }
+.toast.error { background:rgba(255,0,51,0.95); color:#fff; }
+@keyframes fadeInUp {
+  from { opacity:0; transform:translateX(-50%) translateY(20px); }
+  to { opacity:1; transform:translateX(-50%) translateY(0); }
+}
+@media (max-width:768px) {
+  body { padding:1rem; }
+  .page-header h1 { font-size:1.7rem; }
+  .form-row { grid-template-columns:1fr; }
+  .tabs { flex-direction:column; }
+}
+</style>
+</head>
+<body>
+<div class="hologram-grid"></div>
+<div class="particles" id="particles"></div>
+
+<div class="page-container">
+  <a href="dashboard.html" class="back-btn">
+    <i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD
+  </a>
+
+  <header class="page-header">
+    <i class="fas fa-crown crown-icon"></i>
+    <h1>REJOINDRE LA CSIV</h1>
+    <p class="subtitle">Cellule Stratégique d'Innovation et de Veille</p>
+  </header>
+
+  <!-- TABS -->
+  <div class="tabs" id="tabsContainer">
+    <div class="tab active" onclick="switchTab('nouveau')">
+      <i class="fas fa-user-plus"></i> NOUVEAU MEMBRE
+    </div>
+    <div class="tab" onclick="switchTab('transfert')">
+      <i class="fas fa-exchange-alt"></i> TRANSFERT
+    </div>
+  </div>
+
+  <!-- FORMULAIRE NOUVEAU MEMBRE -->
+  <div class="form-section active" id="sectionNouveau">
+    <div class="card-box">
+      <h2 style="font-family:'Orbitron',sans-serif; color:var(--gold); font-size:1.2rem; margin-bottom:1.5rem;">
+        <i class="fas fa-user-plus"></i> CANDIDATURE NOUVEAU MEMBRE
+      </h2>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nom <span class="required">*</span></label>
+          <input type="text" id="nouveauNom" placeholder="Ton nom de famille">
+        </div>
+        <div class="form-group">
+          <label>Prénom <span class="required">*</span></label>
+          <input type="text" id="nouveauPrenom" placeholder="Ton prénom">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>ID Membre <span class="required">*</span></label>
+        <input type="text" id="nouveauId" placeholder="Ex: AT21_006">
+      </div>
+
+      <div class="form-group">
+        <label>Pourquoi veux-tu rejoindre la CSIV ? <span class="required">*</span></label>
+        <textarea id="nouveauMotivation" placeholder="Explique ta motivation en quelques lignes..."></textarea>
+      </div>
+
+      <div class="checkbox-group">
+        <h4><i class="fas fa-shield-alt"></i> CRITÈRES D'ENGAGEMENT (obligatoire)</h4>
+        <div class="checkbox-item">
+          <input type="checkbox" id="engageTemps">
+          <label for="engageTemps">Je m'engage à investir un <strong>temps minimum</strong> sur la CSIV chaque semaine.</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="engageImprevu">
+          <label for="engageImprevu">En cas d'imprévu urgent (absence, contrainte majeure), je <strong>signalerai immédiatement</strong> à un membre de la direction.</label>
+        </div>
+      </div>
+
+      <button class="btn btn-gold" id="btnNouveau" onclick="soumettreNouveau()">
+        <i class="fas fa-paper-plane"></i> ENVOYER MA CANDIDATURE
+      </button>
+    </div>
+  </div>
+
+  <!-- FORMULAIRE TRANSFERT -->
+  <div class="form-section" id="sectionTransfert">
+    <div class="card-box">
+      <h2 style="font-family:'Orbitron',sans-serif; color:var(--purple); font-size:1.2rem; margin-bottom:1.5rem;">
+        <i class="fas fa-exchange-alt"></i> DEMANDE DE TRANSFERT
+      </h2>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nom <span class="required">*</span></label>
+          <input type="text" id="transfertNom" placeholder="Ton nom de famille">
+        </div>
+        <div class="form-group">
+          <label>Prénom <span class="required">*</span></label>
+          <input type="text" id="transfertPrenom" placeholder="Ton prénom">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>ID Membre <span class="required">*</span></label>
+        <input type="text" id="transfertId" placeholder="Ex: AT21_0036">
+      </div>
+
+      <div class="form-group">
+        <label>Poste actuel (optionnel)</label>
+        <input type="text" id="transfertPoste" placeholder="Ex: Communication, Secrétariat...">
+      </div>
+
+      <div class="checkbox-group">
+        <h4><i class="fas fa-shield-alt"></i> CRITÈRES D'ENGAGEMENT (obligatoire)</h4>
+        <div class="checkbox-item">
+          <input type="checkbox" id="transfertEngageTemps">
+          <label for="transfertEngageTemps">Je m'engage à investir un <strong>temps minimum</strong> sur la CSIV chaque semaine.</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="transfertEngageImprevu">
+          <label for="transfertEngageImprevu">En cas d'imprévu urgent, je <strong>signalerai immédiatement</strong> à un membre de la direction.</label>
+        </div>
+      </div>
+
+      <button class="btn btn-gold" id="btnTransfert" onclick="soumettreTransfert()" style="background:linear-gradient(135deg, var(--purple), var(--gold));">
+        <i class="fas fa-paper-plane"></i> ENVOYER MA DEMANDE
+      </button>
+    </div>
+  </div>
+
+  <!-- ÉCRAN SUCCÈS -->
+  <div class="success-screen" id="successScreen">
+    <i class="fas fa-check-circle success-icon"></i>
+    <h2>CANDIDATURE ENVOYÉE !</h2>
+    <p>Ta candidature a bien été reçue par la CSIV.</p>
+    <div class="statut-badge">⏳ EN ATTENTE DE VALIDATION</div>
+    <p style="font-size:0.95rem;">Angélique (Présidente CSIV) va examiner ta demande.<br>Consulte l'état de ton dossier ci-dessous.</p>
+    <button class="btn btn-gold" onclick="retourDashboard()" style="max-width:400px; margin:1.5rem auto 0;">
+      <i class="fas fa-home"></i> RETOUR AU DASHBOARD
+    </button>
+  </div>
+
+  <!-- SUIVI -->
+  <div class="card-box" id="suiviBox">
+    <h2 style="font-family:'Orbitron',sans-serif; color:var(--cyan); font-size:1.2rem; margin-bottom:1rem;">
+      <i class="fas fa-search"></i> SUIVI DE MA CANDIDATURE
+    </h2>
+    <p style="color:var(--text2); font-size:0.95rem; margin-bottom:1rem;">
+      Entre ton ID pour consulter l'état de ta candidature.
+    </p>
+    <div class="suivi-input-row">
+      <input type="text" id="suiviId" placeholder="Ex: AT21_006">
+      <button onclick="consulterSuivi()">
+        <i class="fas fa-search"></i> CONSULTER
+      </button>
+    </div>
+    <div class="suivi-result" id="suiviResult"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+if (localStorage.getItem('memberLoggedIn') !== 'true') {
+  window.location.href = 'espace-membres.html';
+}
+const memberId = localStorage.getItem('memberId') || '';
+const memberNom = localStorage.getItem('memberNom') || '';
+const memberPrenom = localStorage.getItem('memberPrenom') || '';
+
+// PARTICULES
+function createParticles() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 40; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.animationDelay = Math.random() * 15 + 's';
+    p.style.animationDuration = (10 + Math.random() * 12) + 's';
+    const colors = ['#ffd700', '#9b30ff', '#00f0ff'];
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.boxShadow = `0 0 10px ${p.style.background}`;
+    container.appendChild(p);
+  }
+}
+
+function showToast(msg, type='success') {
+  const old = document.querySelector('.toast'); if (old) old.remove();
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 4000);
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+  event.target.closest('.tab').classList.add('active');
+  document.getElementById('section' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
+}
+
+// ============ SOUMISSION NOUVEAU MEMBRE ============
+async function soumettreNouveau() {
+  const nom = document.getElementById('nouveauNom').value.trim();
+  const prenom = document.getElementById('nouveauPrenom').value.trim();
+  const id = document.getElementById('nouveauId').value.trim();
+  const motivation = document.getElementById('nouveauMotivation').value.trim();
+  const engageTemps = document.getElementById('engageTemps').checked;
+  const engageImprevu = document.getElementById('engageImprevu').checked;
+
+  if (!nom || !prenom || !id || !motivation) {
+    showToast('⚠️ Remplis tous les champs.', 'error');
+    return;
+  }
+  if (!engageTemps || !engageImprevu) {
+    showToast('⚠️ Tu dois accepter les critères d\'engagement.', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('btnNouveau');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENVOI...';
+
+  try {
+    const now = new Date();
+    const { error } = await supabaseClient
+      .from('csiv_candidatures')
+      .insert([{
+        type: 'nouveau',
+        nom: nom,
+        prenom: prenom,
+        member_id: id,
+        motivation: motivation,
+        engagement_accepte: true,
+        statut: 'en_attente',
+        date_soumission: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
+        timestamp: Date.now()
+      }]);
+
+    if (error) throw error;
+
+    document.getElementById('tabsContainer').style.display = 'none';
+    document.getElementById('sectionNouveau').style.display = 'none';
+    document.getElementById('sectionTransfert').style.display = 'none';
+    document.getElementById('successScreen').classList.add('active');
+    document.getElementById('suiviId').value = id;
+    showToast('✅ Candidature envoyée !');
+
+  } catch (e) {
+    showToast('❌ ' + e.message, 'error');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i> ENVOYER MA CANDIDATURE';
+  }
+}
+
+// ============ SOUMISSION TRANSFERT ============
+async function soumettreTransfert() {
+  const nom = document.getElementById('transfertNom').value.trim();
+  const prenom = document.getElementById('transfertPrenom').value.trim();
+  const id = document.getElementById('transfertId').value.trim();
+  const poste = document.getElementById('transfertPoste').value.trim();
+  const engageTemps = document.getElementById('transfertEngageTemps').checked;
+  const engageImprevu = document.getElementById('transfertEngageImprevu').checked;
+
+  if (!nom || !prenom || !id) {
+    showToast('⚠️ Remplis tous les champs obligatoires.', 'error');
+    return;
+  }
+  if (!engageTemps || !engageImprevu) {
+    showToast('⚠️ Tu dois accepter les critères d\'engagement.', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('btnTransfert');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENVOI...';
+
+  try {
+    const now = new Date();
+    const { error } = await supabaseClient
+      .from('csiv_candidatures')
+      .insert([{
+        type: 'transfert',
+        nom: nom,
+        prenom: prenom,
+        member_id: id,
+        motivation: poste ? `Poste actuel : ${poste}` : '',
+        engagement_accepte: true,
+        statut: 'en_attente',
+        date_soumission: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
+        timestamp: Date.now()
+      }]);
+
+    if (error) throw error;
+
+    document.getElementById('tabsContainer').style.display = 'none';
+    document.getElementById('sectionNouveau').style.display = 'none';
+    document.getElementById('sectionTransfert').style.display = 'none';
+    document.getElementById('successScreen').classList.add('active');
+    document.getElementById('suiviId').value = id;
+    showToast('✅ Demande de transfert envoyée !');
+
+  } catch (e) {
+    showToast('❌ ' + e.message, 'error');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i> ENVOYER MA DEMANDE';
+  }
+}
+
+// ============ SUIVI ============
+async function consulterSuivi() {
+  const id = document.getElementById('suiviId').value.trim();
+  const result = document.getElementById('suiviResult');
+
+  if (!id) {
+    showToast('⚠️ Entre ton ID.', 'error');
+    return;
+  }
+
+  result.classList.remove('active', 'en_attente', 'valide', 'refuse');
+  result.innerHTML = '<div style="text-align:center; color:var(--text2);">⏳ Recherche...</div>';
+  result.classList.add('active');
+
+  try {
+    const { data, error } = await supabaseClient
+      .from('csiv_candidatures')
+      .select('*')
+      .eq('member_id', id)
+      .order('timestamp', { ascending: false })
+      .limit(1);
+
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      result.className = 'suivi-result active en_attente';
+      result.innerHTML = `
+        <div style="color:var(--text2); text-align:center;">
+          <i class="fas fa-info-circle" style="font-size:2rem; margin-bottom:0.8rem; display:block;"></i>
+          Aucune candidature trouvée pour cet ID.
+        </div>`;
+      return;
+    }
+
+    const c = data[0];
+    const typeLabel = c.type === 'nouveau' ? '🆕 Nouveau membre' : '🔄 Transfert';
+    let html = `<div style="margin-bottom:0.8rem;"><strong style="color:var(--gold);">${c.prenom} ${c.nom}</strong></div>`;
+    html += `<div style="color:var(--text2); font-size:0.85rem; margin-bottom:0.3rem;">${typeLabel}</div>`;
+    html += `<div style="color:var(--text2); font-size:0.85rem; margin-bottom:1rem;">📅 Soumis le ${c.date_soumission}</div>`;
+
+    if (c.statut === 'en_attente') {
+      result.className = 'suivi-result active en_attente';
+      html += `<div style="color:#ffc800; font-family:'Orbitron',sans-serif; font-size:1.1rem; font-weight:700;">
+        ⏳ EN ATTENTE DE VALIDATION
+      </div>`;
+    } else if (c.statut === 'valide') {
+      result.className = 'suivi-result active valide';
+      html += `<div style="color:var(--green); font-family:'Orbitron',sans-serif; font-size:1.1rem; font-weight:700;">
+        ✅ CANDIDATURE VALIDÉE
+      </div>`;
+      if (c.date_decision) {
+        html += `<div style="color:var(--text2); font-size:0.85rem; margin-top:0.5rem;">Décision le ${c.date_decision}</div>`;
+      }
+    } else if (c.statut === 'refuse') {
+      result.className = 'suivi-result active refuse';
+      html += `<div style="color:var(--red); font-family:'Orbitron',sans-serif; font-size:1.1rem; font-weight:700;">
+        ❌ CANDIDATURE REFUSÉE
+      </div>`;
+      if (c.motif_refus) {
+        html += `<div style="color:var(--text2); font-size:0.85rem; margin-top:0.5rem;">Motif : ${c.motif_refus}</div>`;
+      }
+      if (c.date_decision) {
+        html += `<div style="color:var(--text2); font-size:0.85rem; margin-top:0.3rem;">Décision le ${c.date_decision}</div>`;
+      }
+    }
+
+    result.innerHTML = html;
+
+  } catch (e) {
+    result.className = 'suivi-result active refuse';
+    result.innerHTML = `<div style="color:var(--red);">❌ ${e.message}</div>`;
+  }
+}
+
+function retourDashboard() {
+  window.location.href = 'dashboard.html';
+}
+
+// INIT
+createParticles();
+</script>
+</body>
+</html>
