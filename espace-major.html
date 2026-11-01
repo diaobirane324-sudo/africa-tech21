@@ -69,15 +69,13 @@
             10% { opacity: 1; } 90% { opacity: 1; }
             100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
         }
-        /* === SCANLINES === */
         .scanlines {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: 9998;
             background: repeating-linear-gradient(0deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(255,215,0,0.015) 3px, rgba(0,0,0,0) 4px);
             opacity: 0.6;
         }
-        /* === HEADER === */
-        .command-header {
+                .command-header {
             background: rgba(5, 5, 5, 0.9);
             backdrop-filter: blur(20px);
             border-bottom: 2px solid var(--major-gold);
@@ -90,7 +88,7 @@
             background: linear-gradient(90deg, transparent, var(--major-gold), var(--major-red), var(--major-blue), transparent);
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
         }
-        .header-content { display: flex; justify-content: space-between; align-items: center; max-width: 1800px; margin: 0 auto; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; max-width: 1800px; margin: 0 auto; flex-wrap: wrap; gap: 1rem; }
         .major-logo { display: flex; align-items: center; gap: 1.5rem; }
         .rank-badge {
             width: 60px; height: 60px;
@@ -122,7 +120,7 @@
             text-transform: uppercase; margin-top: 0.5rem;
             text-shadow: var(--glow-blue);
         }
-        .system-status { display: flex; align-items: center; gap: 1.5rem; }
+        .system-status { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
         .status-indicator { display: flex; align-items: center; gap: 0.8rem; }
         .status-dot {
             width: 12px; height: 12px; background: var(--major-green);
@@ -134,6 +132,20 @@
             font-family: 'Orbitron', sans-serif; font-size: 1.1rem;
             color: var(--major-green); text-transform: uppercase; letter-spacing: 2px;
         }
+        .info-counter-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.6rem 1.1rem; border-radius: 10px;
+            background: rgba(157, 0, 255, 0.12);
+            border: 1px solid var(--major-purple);
+            color: var(--major-purple);
+            font-family: 'Orbitron', sans-serif; font-size: 0.85rem;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .info-counter-badge:hover {
+            background: rgba(157, 0, 255, 0.25);
+            box-shadow: 0 0 25px rgba(157, 0, 255, 0.4);
+        }
+        .info-counter-badge strong { color: var(--major-gold); }
         .nav-buttons { display: flex; gap: 1rem; margin-left: 2rem; }
         .nav-btn {
             padding: 0.8rem 1.5rem; border-radius: 10px; cursor: pointer;
@@ -149,7 +161,6 @@
         .nav-btn-fermer { background: rgba(255, 0, 60, 0.1); border: 1px solid var(--major-red); color: var(--major-red); }
         .nav-btn-fermer:hover { background: rgba(255, 0, 60, 0.2); box-shadow: 0 0 30px rgba(255, 0, 60, 0.2); transform: translateY(-2px); }
         .major-container { padding: 2rem 3rem; max-width: 1800px; margin: 0 auto; }
-        /* === ÉCRAN D'ACCÈS === */
         .access-screen {
             background: var(--major-panel);
             border: 2px solid var(--major-border); border-radius: 20px;
@@ -209,7 +220,6 @@
             box-shadow: 0 15px 40px rgba(255, 215, 0, 0.5), 0 0 30px rgba(255, 0, 60, 0.5);
         }
         .access-btn:hover::before { left: 100%; }
-        /* === BOOT SCREEN === */
         .boot-screen {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 99999;
@@ -230,8 +240,7 @@
             animation: blink 0.8s steps(2) infinite;
         }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        /* === WORKSPACE === */
-        .workspace { display: none; opacity: 0; transition: opacity 0.5s ease; }
+                .workspace { display: none; opacity: 0; transition: opacity 0.5s ease; }
         .workspace.active { display: block; opacity: 1; }
         .welcome-section { text-align: center; padding: 3rem 2rem; margin-bottom: 2rem; }
         .welcome-title {
@@ -242,7 +251,6 @@
             margin-bottom: 1rem; font-weight: 900; letter-spacing: 4px;
         }
         .welcome-subtitle { font-size: 1.3rem; color: var(--text-secondary); max-width: 900px; margin: 0 auto; line-height: 1.8; }
-        /* === DEV CONTAINER === */
         .dev-container { display: grid; grid-template-columns: 320px 1fr; gap: 1.5rem; margin-top: 2rem; }
         .files-panel {
             background: rgba(5, 5, 5, 0.8);
@@ -273,7 +281,6 @@
         .file-item.active { background: rgba(255, 215, 0, 0.1); border-color: var(--major-gold); }
         .file-name { color: var(--major-gold); font-weight: 600; margin-bottom: 0.3rem; }
         .file-date { color: var(--text-secondary); font-size: 0.8rem; }
-        /* === EDITOR === */
         .editor-panel {
             background: rgba(5, 5, 5, 0.8);
             border: 2px solid var(--major-gold); border-radius: 15px;
@@ -301,7 +308,6 @@
         .editor-btn.console:hover { background: rgba(157, 0, 255, 0.2); }
         .editor-btn.danger { background: rgba(255, 0, 60, 0.1); border-color: var(--major-red); color: var(--major-red); }
         .editor-btn.danger:hover { background: rgba(255, 0, 60, 0.2); }
-        /* Toolbar raccourcis */
         .editor-toolbar {
             display: flex; gap: 0.4rem; flex-wrap: wrap;
             margin-bottom: 0.8rem; padding: 0.6rem;
@@ -335,7 +341,6 @@
             font-size: 13px; line-height: 1.6;
             resize: none; white-space: pre; overflow: auto; outline: none;
         }
-        /* Status bar */
         .editor-statusbar {
             display: flex; justify-content: space-between; align-items: center;
             margin-top: 0.8rem; padding: 0.5rem 0.8rem;
@@ -347,7 +352,6 @@
         .editor-statusbar .val { color: var(--major-blue); font-weight: 700; }
         .editor-statusbar .autosave { color: var(--major-green); }
         .editor-statusbar .autosave.off { color: var(--major-red); }
-        /* Console */
         .console-panel {
             display: none; margin-top: 1rem; padding: 1rem;
             background: #000; border: 1px solid var(--major-purple);
@@ -370,7 +374,6 @@
         .console-log { color: var(--major-green); padding: 0.2rem 0; }
         .console-error { color: var(--major-red); padding: 0.2rem 0; }
         .console-result { color: var(--major-gold); padding: 0.2rem 0; }
-        /* Fullscreen focus */
         body.focus-mode .command-header,
         body.focus-mode .files-panel,
         body.focus-mode .welcome-section,
@@ -378,7 +381,118 @@
         body.focus-mode .major-container { padding: 1rem; }
         body.focus-mode .dev-container { grid-template-columns: 1fr; }
         body.focus-mode .editor-panel { height: calc(100vh - 2rem); }
-        /* Responsive */
+                /* === OVERLAY INFO ROBOTIQUE === */
+        .info-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(10px);
+            z-index: 100000;
+            align-items: center; justify-content: center;
+            padding: 2rem;
+            animation: infoFadeIn 0.4s ease;
+        }
+        .info-overlay.active { display: flex; }
+        @keyframes infoFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .info-card {
+            position: relative;
+            max-width: 640px; width: 100%;
+            background: linear-gradient(135deg, #0a0014 0%, #14002a 60%, #1a0033 100%);
+            border: 2px solid var(--major-gold);
+            border-radius: 22px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 0 80px rgba(255, 215, 0, 0.35), inset 0 0 40px rgba(157, 0, 255, 0.1);
+            animation: infoSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+        .info-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--major-gold), var(--major-red), var(--major-purple), var(--major-blue), var(--major-gold));
+            background-size: 200% 100%;
+            animation: borderFlow 3s linear infinite;
+        }
+        @keyframes borderFlow { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+        @keyframes infoSlideIn {
+            from { opacity: 0; transform: translateY(-40px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .info-card-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.6rem;
+        }
+        .info-card-tag {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px;
+            padding: 0.4rem 1rem; border-radius: 20px;
+            background: rgba(157, 0, 255, 0.2);
+            border: 1px solid var(--major-purple);
+            color: var(--major-purple);
+            text-transform: uppercase;
+        }
+        .info-card-counter {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem; color: var(--major-gold);
+            padding: 0.4rem 0.9rem; border-radius: 15px;
+            background: rgba(255, 215, 0, 0.08);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        .info-card-alert {
+            display: flex; align-items: center; gap: 0.7rem;
+            margin-bottom: 1.2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem; letter-spacing: 1.5px;
+            color: var(--major-red); text-transform: uppercase;
+        }
+        .info-card-alert i {
+            font-size: 1.3rem;
+            animation: alertPulse 1s ease-in-out infinite;
+        }
+        @keyframes alertPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px var(--major-red)); }
+            50% { transform: scale(1.15); filter: drop-shadow(0 0 15px var(--major-red)); }
+        }
+        .info-card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem; font-weight: 900;
+            color: var(--major-gold);
+            margin-bottom: 1.2rem;
+            line-height: 1.3;
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+        }
+        .info-card-body {
+            font-size: 1.05rem;
+            color: #e0d5e2;
+            line-height: 1.75;
+            margin-bottom: 1.8rem;
+            max-height: 40vh;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+            border-left: 3px solid rgba(157, 0, 255, 0.4);
+            padding-left: 1rem;
+        }
+        .info-card-body::-webkit-scrollbar { width: 5px; }
+        .info-card-body::-webkit-scrollbar-thumb { background: var(--major-purple); border-radius: 10px; }
+        .info-card-btn {
+            width: 100%; padding: 1.1rem 2rem;
+            background: linear-gradient(135deg, var(--major-green), #00CC66);
+            color: #050510;
+            border: none; border-radius: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.05rem; font-weight: 900; letter-spacing: 2px;
+            text-transform: uppercase; cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.35);
+        }
+        .info-card-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0, 255, 136, 0.55);
+        }
+        .info-card-footer {
+            margin-top: 1rem; text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem; color: var(--text-secondary);
+        }
+
         @media (max-width: 768px) {
             .command-header { padding: 1rem; }
             .header-content { flex-direction: column; gap: 1rem; }
@@ -392,8 +506,10 @@
             .welcome-title { font-size: 2.2rem; }
             .dev-container { grid-template-columns: 1fr; }
             .files-panel, .editor-panel { height: 460px; }
+            .info-card { padding: 1.8rem 1.3rem; }
+            .info-card-title { font-size: 1.2rem; }
+            .info-card-body { font-size: 0.95rem; max-height: 45vh; }
         }
-        /* Shake */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
@@ -434,6 +550,10 @@
                     <div class="status-dot"></div>
                     <div class="status-text">SYSTÈME ACTIF</div>
                 </div>
+                <div class="info-counter-badge" onclick="afficherCompteurInfos()" title="Infos robotiques lues">
+                    <i class="fas fa-brain"></i>
+                    Infos lues : <strong id="headerInfosCount">0</strong>
+                </div>
                 <div class="nav-buttons">
                     <button onclick="retourDashboard()" class="nav-btn nav-btn-dashboard">
                         <i class="fas fa-arrow-left"></i> DASHBOARD
@@ -465,8 +585,7 @@
                 </button>
             </form>
         </section>
-
-        <!-- WORKSPACE -->
+                <!-- WORKSPACE -->
         <section class="workspace" id="workspace">
             <div class="welcome-section">
                 <h2 class="welcome-title">WELCOME, MAJOR</h2>
@@ -568,6 +687,27 @@ placeholder="// Écrivez votre code ici...
         </section>
     </main>
 
+    <!-- === OVERLAY INFO ROBOTIQUE === -->
+    <div class="info-overlay" id="infoOverlay">
+        <div class="info-card">
+            <div class="info-card-header">
+                <span class="info-card-tag" id="infoCategorie">SLAM</span>
+                <span class="info-card-counter" id="infoCompteur">Info #1 / 120</span>
+            </div>
+            <div class="info-card-alert">
+                <i class="fas fa-bell"></i> INFORMATION CRITIQUE — ROBOTIQUE AVANCÉE
+            </div>
+            <h2 class="info-card-title" id="infoTitre">Titre</h2>
+            <div class="info-card-body" id="infoContenu">Contenu...</div>
+            <button class="info-card-btn" onclick="validerInfoLue()">
+                <i class="fas fa-check-double"></i> LU — BIEN COMPRIS
+            </button>
+            <div class="info-card-footer">
+                ⚠ Cette fenêtre ne peut être fermée qu'en confirmant la lecture.
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script>
         // ==================== SUPABASE ====================
@@ -597,6 +737,29 @@ placeholder="// Écrivez votre code ici...
                 p.style.height = size + 'px';
                 container.appendChild(p);
             }
+        }
+
+        // ==================== COMPTEUR INFOS LUES (localStorage) ====================
+        const LS_KEY_INFOS = 'major_infos_lues';
+        const LS_KEY_INDEX = 'major_infos_index';
+
+        function getInfosLues() {
+            try {
+                const data = localStorage.getItem(LS_KEY_INFOS);
+                return data ? JSON.parse(data) : [];
+            } catch (e) { return []; }
+        }
+        function setInfosLues(arr) {
+            localStorage.setItem(LS_KEY_INFOS, JSON.stringify(arr));
+        }
+        function majHeaderCompteur() {
+            const lues = getInfosLues();
+            const el = document.getElementById('headerInfosCount');
+            if (el) el.textContent = lues.length;
+        }
+        function afficherCompteurInfos() {
+            const lues = getInfosLues();
+            alert(`📊 INFOS ROBOTIQUES LUES\n\nNombre total : ${lues.length}\n\n${lues.length > 0 ? 'Dernière info lue le ' + new Date(lues[lues.length-1]).toLocaleString('fr-FR') : 'Aucune info lue pour le moment.'}`);
         }
 
         // ==================== ACCÈS ====================
@@ -647,6 +810,8 @@ placeholder="// Écrivez votre code ici...
                 { tag: '[NET]', txt: 'Authentification anon-key ... OK', cls: 'ok' },
                 { tag: '[DB ]', txt: 'Synchronisation table major_fichiers...', cls: 'info' },
                 { tag: '[DB ]', txt: 'Chargement des projets existants...', cls: 'info' },
+                { tag: '[EDU]', txt: 'Chargement base robotique (120 infos)...', cls: 'info' },
+                { tag: '[EDU]', txt: 'Module de rappel pédagogique ARMÉ (10 min)', cls: 'warn' },
                 { tag: '[CRY]', txt: 'Décryptage tunnel sécurisé AES-256...', cls: 'warn' },
                 { tag: '[EDI]', txt: 'Montage éditeur enrichi (raccourcis, console)...', cls: 'info' },
                 { tag: '[OK ]', txt: 'Environnement prêt. Bienvenue Major.', cls: 'ok' }
@@ -675,21 +840,22 @@ placeholder="// Écrivez votre code ici...
             }
             nextLine();
         }
-
-        // ==================== FICHIERS ====================
+                    // ==================== FICHIERS ====================
         let fichiersMajor = [];
         let fichierActuel = null;
         let autosaveTimer = null;
         let autosaveOn = true;
-        let derniereSauvegarde = 0;
 
         async function initialiserEspaceDev() {
+            majHeaderCompteur();
             await chargerFichiers();
             if (fichiersMajor.length === 0) {
                 await creerNouveauFichier(true);
             }
             mettreAJourStats();
+            mettreAJourNumeros();
             demarrerAutosave();
+            demarrerCycleInfos();
             document.getElementById('codeEditor').focus();
         }
 
@@ -754,7 +920,6 @@ placeholder="// Écrivez votre code ici...
                 nom = saisie.trim() || `projet_${fichiersMajor.length + 1}`;
                 if (!nom.endsWith('.js')) nom += '.js';
             }
-
             const now = new Date();
             const dateStr = now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
             const contenu = `// ${nom}
@@ -767,7 +932,6 @@ function initialiserProjet() {
 
 initialiserProjet();
 `;
-
             try {
                 const { data, error } = await supabaseClient
                     .from('major_fichiers')
@@ -800,7 +964,6 @@ initialiserProjet();
             const nomFinal = saisie.trim();
             if (!nomFinal || nomFinal === ancien) return;
             const nouveauNom = nomFinal.endsWith('.js') ? nomFinal : nomFinal + '.js';
-
             try {
                 const now = new Date();
                 const dateStr = now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
@@ -835,7 +998,6 @@ initialiserProjet();
             const now = new Date();
             const dateStr = now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
             const taille = `${contenu.length} caractères`;
-
             try {
                 const { error } = await supabaseClient
                     .from('major_fichiers')
@@ -847,12 +1009,9 @@ initialiserProjet();
                     })
                     .eq('id', fichierActuel.id);
                 if (error) throw error;
-
                 fichierActuel.contenu = contenu;
                 fichierActuel.taille = taille;
                 fichierActuel.date_modif = dateStr;
-                derniereSauvegarde = Date.now();
-
                 if (!silencieux) {
                     const btn = document.querySelector('.editor-btn.save');
                     const orig = btn.innerHTML;
@@ -897,7 +1056,8 @@ initialiserProjet();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
-                    // ==================== ÉDITEUR : NUMÉROS + STATS ====================
+
+        // ==================== NUMÉROS + STATS ====================
         function mettreAJourNumeros() {
             const ta = document.getElementById('codeEditor');
             const ln = document.getElementById('lineNumbers');
@@ -927,11 +1087,9 @@ initialiserProjet();
                     }
                 }
             }, 5000);
-            document.getElementById('statAutosave').textContent = 'ON';
-            document.getElementById('statAutosave').classList.remove('off');
         }
 
-        // ==================== SNIPPETS + WRAP ====================
+        // ==================== SNIPPETS ====================
         function insertSnippet(txt) {
             const ta = document.getElementById('codeEditor');
             const start = ta.selectionStart;
@@ -956,29 +1114,12 @@ initialiserProjet();
             mettreAJourNumeros(); mettreAJourStats();
         }
 
-        // ==================== RACCOURCIS CLAVIER ====================
+        // ==================== RACCOURCIS ====================
         document.getElementById('codeEditor').addEventListener('keydown', function(e) {
             const ctrl = e.ctrlKey || e.metaKey;
-
-            // Ctrl+S — Sauvegarder
-            if (ctrl && e.key === 's') {
-                e.preventDefault();
-                sauvegarderFichier();
-                return;
-            }
-            // Ctrl+Enter — Exécuter
-            if (ctrl && e.key === 'Enter') {
-                e.preventDefault();
-                executerCodeComplet();
-                return;
-            }
-            // Ctrl+B — Commentaire bloc
-            if (ctrl && e.key === 'b') {
-                e.preventDefault();
-                wrapSelection('/* ', ' */');
-                return;
-            }
-            // Ctrl+/ — Commentaire ligne
+            if (ctrl && e.key === 's') { e.preventDefault(); sauvegarderFichier(); return; }
+            if (ctrl && e.key === 'Enter') { e.preventDefault(); executerCodeComplet(); return; }
+            if (ctrl && e.key === 'b') { e.preventDefault(); wrapSelection('/* ', ' */'); return; }
             if (ctrl && e.key === '/') {
                 e.preventDefault();
                 const ta = this;
@@ -989,26 +1130,14 @@ initialiserProjet();
                 mettreAJourNumeros(); mettreAJourStats();
                 return;
             }
-            // Ctrl+` — Console
-            if (ctrl && e.key === '`') {
-                e.preventDefault();
-                toggleConsole();
-                return;
-            }
-            // Ctrl+M — Focus
-            if (ctrl && e.key === 'm') {
-                e.preventDefault();
-                toggleFocus();
-                return;
-            }
-            // Tab — indentation 4 espaces
+            if (ctrl && e.key === '`') { e.preventDefault(); toggleConsole(); return; }
+            if (ctrl && e.key === 'm') { e.preventDefault(); toggleFocus(); return; }
             if (e.key === 'Tab') {
                 e.preventDefault();
                 const ta = this;
                 const start = ta.selectionStart;
                 const end = ta.selectionEnd;
                 if (start !== end) {
-                    // Indenter plusieurs lignes
                     const before = ta.value.substring(0, start);
                     const sel = ta.value.substring(start, end);
                     const after = ta.value.substring(end);
@@ -1025,22 +1154,18 @@ initialiserProjet();
             }
         });
 
-        // Mise à jour à chaque frappe
         document.getElementById('codeEditor').addEventListener('input', function() {
             mettreAJourNumeros();
             mettreAJourStats();
         });
-
-        // Sync scroll numéros
         document.getElementById('codeEditor').addEventListener('scroll', function() {
             document.getElementById('lineNumbers').scrollTop = this.scrollTop;
         });
 
-        // ==================== FOCUS MODE ====================
+        // ==================== FOCUS ====================
         function toggleFocus() {
             document.body.classList.toggle('focus-mode');
-            const isFocus = document.body.classList.contains('focus-mode');
-            if (isFocus) {
+            if (document.body.classList.contains('focus-mode')) {
                 document.getElementById('codeEditor').focus();
             }
         }
@@ -1049,9 +1174,7 @@ initialiserProjet();
         function toggleConsole() {
             const p = document.getElementById('consolePanel');
             p.classList.toggle('active');
-            if (p.classList.contains('active')) {
-                document.getElementById('consoleInput').focus();
-            }
+            if (p.classList.contains('active')) document.getElementById('consoleInput').focus();
         }
 
         function logConsole(msg, cls = 'console-log') {
@@ -1082,10 +1205,7 @@ initialiserProjet();
         }
 
         document.getElementById('consoleInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                execConsole();
-            }
+            if (e.key === 'Enter') { e.preventDefault(); execConsole(); }
         });
 
         function executerCodeComplet() {
@@ -1102,7 +1222,6 @@ initialiserProjet();
             }
         }
 
-        // Override console.log pour la console interne
         const _origLog = console.log;
         console.log = function(...args) {
             _origLog.apply(console, args);
@@ -1111,23 +1230,311 @@ initialiserProjet();
                 catch(e) { return String(a); }
             }).join(' '), 'console-log');
         };
+               // ==================== BASE DE DONNÉES ROBOTIQUE (120 INFOS) ====================
+        const BASE_ROBOTIQUE = [
+            { cat: 'SLAM', titre: 'SLAM — Cartographie et localisation simultanées', contenu: 'Le SLAM (Simultaneous Localization and Mapping) permet à un robot de construire une carte de son environnement tout en se localisant dedans. Algorithmes clés : Gmapping (particules), Cartographer (Google, graphes), ORB-SLAM3 (visuel). Utile quand le GPS est indisponible (intérieur, sous-marin, spatial).' },
+            { cat: 'ROS2', titre: 'ROS2 — Architecture DDS et nœuds distribués', contenu: 'ROS2 remplace le master centralisé de ROS1 par DDS (Data Distribution Service). Chaque nœud est autonome et communique via topics/services/actions. Avantages : décentralisation, temps réel, sécurité (SROS2), multi-robot natif.' },
+            { cat: 'Cinématique', titre: 'Cinématique inverse — Résolution par Jacobien', contenu: 'La cinématique inverse (IK) calcule les angles articulaires pour atteindre une position cible. Pour un bras 6-DOF, on résout J·Δq = Δx où J est le Jacobien. Méthodes : analytique (fermée), numérique (Newton-Raphson, damped least squares pour éviter les singularités).' },
+            { cat: 'Contrôle', titre: 'Contrôle PID — Réglage par Ziegler-Nichols', contenu: 'Le PID combine proportionnel (réactivité), intégral (erreur statique), dérivé (amortissement). Méthode Ziegler-Nichols : augmenter Kp jusqu\'à oscillation stable (Ku, Tu), puis Kp=0.6·Ku, Ti=0.5·Tu, Td=0.125·Tu. Essentiel pour moteurs, drones, bras.' },
+            { cat: 'Perception', titre: 'LIDAR 3D — Nuage de points et filtrage', contenu: 'Un LIDAR 3D (Velodyne, Ouster) émet des impulsions laser rotatives et mesure le temps de vol. Produit un nuage de points (x,y,z,intensité). Filtrage : voxel grid (réduction), RANSAC (détection plans), ICP (recalage entre frames). Base du SLAM LiDAR.' },
+            { cat: 'IA embarquée', titre: 'TensorRT — Optimisation GPU pour inférence', contenu: 'TensorRT (NVIDIA) optimise les modèles TensorFlow/PyTorch pour GPU embarqués (Jetson). Techniques : fusion de couches, quantification FP16/INT8, pruning. Gain typique : 2-5x plus rapide, jusqu\'à 10x avec INT8 calibré. Indispensable pour la vision temps réel.' },
+            { cat: 'Actionneurs', titre: 'Servomoteurs BLDC — Field Oriented Control', contenu: 'Le FOC (Field Oriented Control) commande les moteurs brushless en décomposant le courant en composantes d (flux) et q (couple). Utilise la transformée de Clarke puis Park. Résultat : couple constant, rendement élevé, silence — utilisé en robotique humanoïde.' },
+            { cat: 'Capteurs', titre: 'IMU — Fusion complémentaire et Madgwick', contenu: 'Une IMU (accéléromètre + gyroscope + magnéto) donne l\'orientation. Le gyroscope dérive, l\'accéléromètre est bruité. Fusion : filtre complémentaire (simple), Kalman (optimal), Madgwick (quaternion, léger pour MCU). Crucial pour drones et robots mobiles.' },
+            { cat: 'Algorithmes', titre: 'A* — Pathfinding optimal sur grille', contenu: 'A* trouve le chemin le plus court en combinant coût parcouru g(n) et heuristique h(n) (distance de Manhattan ou euclidienne). f(n)=g(n)+h(n). Optimal si h est admissible. Variantes : D* (dynamique), Hybrid A* (voitures), RRT* (espaces continus).' },
+            { cat: 'Sécurité', titre: 'Normes ISO 10218 et ISO/TS 15066 — Cobots', contenu: 'ISO 10218 régit les robots industriels, ISO/TS 15066 précise la collaboration humain-robot. Principes : limitation force/puissance, arrêt d\'urgence, vitesse réduite en présence humaine. Les cobots (UR, Franka) sont certifiés pour travailler sans cage.' },
+            { cat: 'Protocoles', titre: 'CAN Bus — Communication temps réel embarquée', contenu: 'Le bus CAN (Controller Area Network) est un protocole série différentiel robuste aux interférences. Débits : 125 kbit/s à 1 Mbit/s. Utilisé dans l\'automobile et la robotique (moteurs, capteurs). CAN-FD étend à 8 Mbit/s. Chaque trame a un ID d\'arbitrage prioritaire.' },
+            { cat: 'SLAM', titre: 'ORB-SLAM3 — SLAM visuel multi-cartes', contenu: 'ORB-SLAM3 utilise des points ORB (Oriented FAST + Rotated BRIEF) pour la vision monoculaire, stéréo ou RGB-D. Gère plusieurs cartes (atlas) et la relocalisation après perte. Référence open-source pour drones et robots mobiles sans LiDAR.' },
+            { cat: 'ROS2', titre: 'Nav2 — Navigation autonome moderne', contenu: 'Nav2 est la stack de navigation ROS2. Composants : costmap (obstacles), planner (A*, Smac), controller (DWB, TEB), behavior tree. Supporte robots différentiels, holonomiques, Ackermann. Interface standard pour tout robot mobile ROS2.' },
+            { cat: 'Cinématique', titre: 'Transformée de Denavit-Hartenberg (DH)', contenu: 'La convention DH décrit la cinématique d\'un bras via 4 paramètres par lien : θ (rotation), d (translation), a (longueur), α (torsion). Permet de calculer la matrice de transformation entre repères. Standard pour modéliser des chaînes cinématiques.' },
+            { cat: 'Contrôle', titre: 'MPC — Model Predictive Control', contenu: 'Le MPC prédit l\'évolution du système sur un horizon N et optimise la commande en minimisant un coût sous contraintes. Résout un QP (programme quadratique) à chaque pas. Puissant pour drones agiles, voitures autonomes. Coût calculatoire élevé.' },
+            { cat: 'Perception', titre: 'YOLOv8 — Détection d\'objets temps réel', contenu: 'YOLO (You Only Look Once) fait la détection en un seul passage réseau. YOLOv8 (Ultralytics) atteint ~50 FPS sur Jetson. Sortie : bounding boxes + classes + confiances. Utilisé pour tri de pièces, détection piétons, saisie d\'objets robotiques.' },
+            { cat: 'IA embarquée', titre: 'ONNX Runtime — Portabilité des modèles', contenu: 'ONNX (Open Neural Network Exchange) est un format universel d\'échange de modèles. ONNX Runtime exécute sur CPU/GPU/TPU. Avantage : entraîner sur PyTorch, déployer sur n\'importe quel robot sans réécrire. Supporte quantization et accélération matérielle.' },
+            { cat: 'Actionneurs', titre: 'Vérins hydrauliques — Servovalves proportionnelles', contenu: 'Les robots hydrauliques (Boston Dynamics BigDog, Atlas v1) utilisent des servovalves proportionnelles pour moduler le débit. Haute puissance/poids, mais complexes (fluide, entretien, fuites). Aujourd\'hui remplacés progressivement par l\'électrique.' },
+            { cat: 'Capteurs', titre: 'Caméra stéréo — Profondeur par disparité', contenu: 'Deux caméras espacées d\'une baseline B calculent la profondeur Z = f·B / d (f focale, d disparité). Précis de 0.3 m à 20 m. Utilisé en robotique mobile, manipulation. Alternative : caméra RGB-D (RealSense, Kinect) qui projette une grille infrarouge.' },
+            { cat: 'Algorithmes', titre: 'RRT* — Planification asymptotiquement optimale', contenu: 'RRT* (Rapidly-exploring Random Tree star) échantillonne aléatoirement l\'espace et améliore progressivement la solution vers l\'optimum. Contrairement à RRT, il réécâble les nœuds proches. Complexité O(n log n). Idéal pour bras 6-DOF et véhicules.' },
+            { cat: 'Sécurité', titre: 'STO — Safe Torque Off', contenu: 'STO (Safe Torque Off) coupe l\'alimentation moteur en sécurité sans couper l\'électronique de contrôle. Conforme SIL3/PLe. Utilisé dans les variateurs industriels. Combine souvent avec SBC (Safe Brake Control) pour maintenir la position à l\'arrêt.' },
+            { cat: 'Protocoles', titre: 'EtherCAT — Bus industriel temps réel', contenu: 'EtherCAT (Ethernet for Control Automation Technology) atteint des cycles de 100 µs avec une gigue < 1 µs. Topologie en chaîne sans switch. Utilisé dans les robots industriels (KUKA, ABB). Chaque esclave lit/modifie la trame en passant (processing on the fly).' },
+            { cat: 'SLAM', titre: 'Cartographer — SLAM 2D/3D par sous-cartes', contenu: 'Cartographer (Google) découpe le monde en sous-cartes et optimise les poses par graphe (SPA — Sparse Pose Adjustment). Robuste en environnement changeant. Supporte LiDAR 2D/3D et multi-robot. Open-source et très performant en intérieur.' },
+            { cat: 'ROS2', titre: 'Topics vs Services vs Actions', contenu: 'Topics : communication asynchrone (pub/sub) pour flux continus (capteurs). Services : requête/réponse synchrone (ex: calcul IK). Actions : tâches longues avec feedback et annulation (ex: navigation). Choisir le bon type évite les deadlocks en ROS2.' },
+            { cat: 'Cinématique', titre: 'Espace opérationnel vs espace articulaire', contenu: 'L\'espace articulaire (q) est l\'ensemble des configurations possibles ; l\'espace opérationnel (x) est celui des poses cartésiennes atteignables. La cinématique directe q→x est unique ; l\'inverse x→q peut avoir 0, 1 ou plusieurs solutions (bras 6-DOF : jusqu\'à 8).' },
+            { cat: 'Contrôle', titre: 'Contrôle adaptatif — MRAC', contenu: 'Le MRAC (Model Reference Adaptive Control) ajuste les gains en temps réel pour suivre un modèle de référence. Utile quand la dynamique varie (charge, usure). Loi d\'adaptation basée sur Lyapunov. Utilisé en robots manipulateurs et drones à charge variable.' },
+            { cat: 'Perception', titre: 'Segmentation sémantique — DeepLabv3+', contenu: 'La segmentation sémantique assigne une classe à chaque pixel. DeepLabv3+ utilise un encoder ResNet + ASPP (Atrous Spatial Pyramid Pooling) + décodeur. Sortie : masque par classe. Utilisé pour navigation (sol praticable), manipulation (objets).' },
+            { cat: 'IA embarquée', titre: 'Edge TPU — Accélérateur Google Coral', contenu: 'Le Edge TPU (Coral) exécute 4 TOPS à 2W, parfait pour robots autonomes. Supporte uniquement les modèles quantifiés INT8 compilés via Edge TPU Compiler. Idéal pour détection objets, pose estimation sur Raspberry Pi / Jetson Nano.' },
+            { cat: 'Actionneurs', titre: 'Muscles artificiels — Alliages à mémoire de forme', contenu: 'Les AMF (Nitinol) changent de forme par chauffage (transition martensitique). Utilisés en microrobotique, robots souples. Avantages : légers, silencieux ; inconvénients : lents, rendement faible (~5%), hystérésis. Recherche active pour robots bio-inspirés.' },
+            { cat: 'Capteurs', titre: 'Encodeurs absolus vs incrémentaux', contenu: 'Incrémental : compte les impulsions depuis une origine (dérive si coupure). Absolu : donne la position exacte via code Gray (SSI, BiSS, EnDat). Les robots de précision utilisent des encodeurs absolus multi-tours. Résolution typique : 17-23 bits.' },
+            { cat: 'Algorithmes', titre: 'Réseaux de neurones pour commande — DRL', contenu: 'Le Deep Reinforcement Learning permet d\'apprendre des politiques de commande (ex: locomotion quadruped). Algorithmes : PPO, SAC, TD3. Sim2Real : entraîner en simulation (Isaac Sim, MuJoCo) puis transférer. Boston Dynamics Spot utilise ces techniques.' },
+            { cat: 'Sécurité', titre: 'Zones de sécurité dynamiques — Speed & Separation Monitoring', contenu: 'Le SSM (Speed and Separation Monitoring) réduit la vitesse du robot quand un humain approche. Utilise des scanners laser de sécurité (SICK, Pilz) certifiés PLe. Alternative au ralentissement statique. Requis par ISO/TS 15066 pour cobots.' },
+            { cat: 'Protocoles', titre: 'MQTT — IoT et robots connectés', contenu: 'MQTT est un protocole publish/subscribe léger (basé TCP). Broker central (Mosquitto), topics hiérarchiques. QoS 0/1/2. Idéal pour flottes de robots (télémétrie, commandes cloud). Standard de facto pour l\'IoT industriel et la robotique distribuée.' },
+            { cat: 'SLAM', titre: 'LIO-SAM — LiDAR + IMU tight coupling', contenu: 'LIO-SAM fusionne LiDAR et IMU via optimisation de graphe. Les facteurs IMU pré-intégrés guident la correspondance LiDAR. Résultat : SLAM précis même en mouvement rapide. Excellente alternative à LOAM. Open-source, ROS2 compatible.' },
+            { cat: 'ROS2', titre: 'Launch files — Orchestration modulaire', contenu: 'Les launch files ROS2 (Python) démarrent plusieurs nœuds avec paramètres, remappings, conditions. Supportent les événements (OnProcessExit). Remplacent XML de ROS1. Essentiels pour lancer une stack complète (perception + navigation + contrôle) en une commande.' },
+            { cat: 'Cinématique', titre: 'Singularités — Détection par déterminant du Jacobien', contenu: 'Une singularité survient quand le Jacobien perd son rang (det J = 0). Le robot ne peut plus bouger dans certaines directions (poignet tendu, bras aligné). Solutions : éviter la zone, utiliser DLS (Damped Least Squares), redondance articulaire.' },
+            { cat: 'Contrôle', titre: 'Contrôle en couple vs en position', contenu: 'Contrôle en position : le moteur rejoint une consigne (simple, rigide). Contrôle en couple : on commande directement l\'effort (impédance, compliance). Les cobots modernes offrent les deux modes. Le couple permet l\'interaction physique sûre avec l\'humain.' },
+            { cat: 'Perception', titre: 'Pose estimation — MediaPipe / OpenPose', contenu: 'L\'estimation de pose détecte les articulations humaines (17-33 keypoints). MediaPipe (Google) tourne en temps réel sur mobile. Utilisé pour téléopération robot, reconnaissance gestes, sécurité (détection chute). Sortie : coordonnées 2D/3D par articulation.' },
+            { cat: 'IA embarquée', titre: 'Jetson Orin — 275 TOPS pour la robotique', contenu: 'Jetson Orin (NVIDIA) offre jusqu\'à 275 TOPS à 60W. Supporte plusieurs caméras 4K, inférence multi-modèles. Utilisé en robotique autonome, drones, AGV. Architecture Ampere + Tensor Cores. Standard pour les robots IA modernes.' },
+            { cat: 'Actionneurs', titre: 'Réducteurs harmoniques — Précision zéro backlash', contenu: 'Les réducteurs harmoniques (Harmonic Drive) offrent un rapport élevé (30-320:1), zéro backlash, compacité. Utilisés dans les bras 6-DOF (UR, Franka). Principe : onde de déformation (flexspline). Rendement ~85%, précision < 1 arcmin.' },
+            { cat: 'Capteurs', titre: 'Capteurs de force/couple 6 axes', contenu: 'Un capteur 6 axes mesure forces (Fx,Fy,Fz) et moments (Mx,My,Mz). Technologie : jauges de contrainte sur structure déformable. Indispensable en manipulation fine (insertion, polissage), cobots (sécurité), robotique médicale. Résolution typique : 0.01 N.' },
+            { cat: 'Algorithmes', titre: 'Kalman étendu (EKF) — Fusion capteurs', contenu: 'L\'EKF linéarise un système non-linéaire autour de l\'état courant. Étapes : prédiction (modèle), mise à jour (mesure). Utilisé pour fusion IMU/GPS/LiDAR en robotique mobile. Variantes : UKF (Unscented, plus précis), particle filter (multi-hypothèses).' },
+            { cat: 'Sécurité', titre: 'Redondance capteurs — Vote majoritaire', contenu: 'Pour les systèmes critiques (aérospatial, médical), on triple les capteurs et on vote à la majorité. Si un capteur diverge, il est exclu. Conforme aux niveaux SIL/ASIL. Utilisé en avionique (triple redondance) et en robotique chirurgicale.' },
+            { cat: 'Protocoles', titre: 'gRPC — Communication haute performance', contenu: 'gRPC (Google) utilise HTTP/2 et Protocol Buffers. Supporte streaming bidirectionnel, multiplexage, compression. 5-10x plus rapide que REST/JSON. Adopté par ROS2 (via pont), robotique cloud (AWS RoboMaker), jeux vidéo. Idéal pour télémétrie temps réel.' },
+            { cat: 'SLAM', titre: 'VIO — Visual Inertial Odometry', contenu: 'La VIO fusionne caméra et IMU pour estimer le mouvement sans GPS. Algorithmes : VINS-Mono, OKVIS, ROVIO. Précision centimétrique sur quelques minutes. Utilisée en drones, AR/VR, robots sous-marins. Sensible aux conditions lumineuses.' },
+            { cat: 'ROS2', titre: 'Lifecycle nodes — Gestion d\'état', contenu: 'Les lifecycle nodes ROS2 ont un cycle de vie (unconfigured → inactive → active → finalized). Permettent un démarrage contrôlé, une mise en config avant activation. Essentiels pour systèmes critiques et redémarrages propres. Standard dans Nav2.' },
+            { cat: 'Cinématique', titre: 'Redondance — Bras 7-DOF', contenu: 'Un bras 7-DOF (comme le Baxter ou Panda) possède un degré de liberté redondant. Permet d\'éviter les obstacles internes sans bouger l\'effecteur. Espace nul du Jacobien utilisé pour optimiser (évitement, joints limits). Améliore la dextérité.' },
+            { cat: 'Contrôle', titre: 'Impédance control — Interaction douce', contenu: 'Le contrôle d\'impédance simule un ressort-amortisseur entre le robot et l\'environnement. Équation : F = K·(x_d - x) + B·(ẋ_d - ẋ). Permet à un cobot de s\'adapter à un humain ou à une surface inconnue. Base de la robotique collaborative.' },
+            { cat: 'Perception', titre: 'Point cloud registration — ICP', contenu: 'L\'ICP (Iterative Closest Point) aligne deux nuages de points en itérant : (1) trouver points correspondants, (2) minimiser distance (SVD), (3) transformer. Variantes : point-to-plane (plus rapide), NDT (Normal Distributions Transform). Base du SLAM LiDAR.' },
+            { cat: 'IA embarquée', titre: 'Quantization INT8 — Perte minimale', contenu: 'La quantification INT8 convertit les poids FP32 en entiers 8 bits. Réduction mémoire 4x, vitesse 2-4x. Techniques : post-training (PTQ, simple), quantization-aware training (QAT, plus précis). Perte typique < 1% en classification. Indispensable en embarqué.' },
+            { cat: 'Actionneurs', titre: 'Actionneurs série élastiques — SEA', contenu: 'Les SEA (Series Elastic Actuators) placent un ressort entre le moteur et la charge. Mesure du couple par déformation du ressort (précise, robuste). Utilisé en robots marcheurs, exosquelettes, cobots. Amortit les chocs, stocke l\'énergie. Boston Dynamics Atlas v1.' },
+            { cat: 'Capteurs', titre: 'ToF — Time of Flight cameras', contenu: 'Les caméras ToF émettent une lumière modulée et mesurent le déphasage au retour. Résolution typique 320x240, portée 0.1-5 m. Alternatives : stéréo, structuré. Utilisées en robotique mobile (évitement), interaction gestuelle. Rapides mais sensibles au soleil.' },
+            { cat: 'Algorithmes', titre: 'Optimisation — Gradient descent et variantes', contenu: 'Descente de gradient : θ ← θ - α·∇L. Variantes : SGD (bruit), Adam (moments adaptatifs), RMSprop. Learning rate α critique (trop grand : diverge, trop petit : lent). Schedulers : cosine, step decay. Base de l\'apprentissage des modèles robotiques.' },
+            { cat: 'Sécurité', titre: 'Watchdog timer — Redémarrage automatique', contenu: 'Un watchdog timer (WDT) redémarre le système si le programme principal ne le réinitialise pas périodiquement (signe de blocage). Hardware (MCU dédié) ou software. Essentiel en robotique embarquée où un crash peut être dangereux. Standard dans les systèmes temps réel.' },
+            { cat: 'Protocoles', titre: 'SPI / I2C / UART — Comparatif embarqué', contenu: 'UART : asynchrone, 2 fils, 115200 bps typique (console debug). I2C : 2 fils (SDA,SCL), multi-esclaves, 400 kbps (capteurs). SPI : 4 fils (MOSI,MISO,SCK,CS), full-duplex, >10 Mbps (écrans, mémoire flash). Choix selon débit et distance.' },
+            { cat: 'SLAM', titre: 'Occupancy grid — Cartographie probabiliste', contenu: 'Une grille d\'occupation divise l\'espace en cellules avec probabilité d\'occupation (0=libre, 1=obstacle). Mise à jour par log-odds (log p/(1-p)). Résolution typique 5 cm. Base de la navigation ROS (costmap). Fusion multi-capteurs possible.' },
+            { cat: 'ROS2', titre: 'TF2 — Arbre de transformations', contenu: 'TF2 maintient un arbre de transformations entre repères (base_link, map, odom, camera_link). Chaque nœud peut demander une transformation à un instant t. Indispensable pour la perception (positionner les capteurs). Publié via /tf et /tf_static.' },
+            { cat: 'Cinématique', titre: 'Quaternions vs matrices de rotation', contenu: 'Les quaternions (4 valeurs) évitent le gimbal lock des angles d\'Euler et sont plus compacts que les matrices (9). Interpolation (SLERP) naturelle. Multiplication rapide. Standard en robotique moderne, drones, animation 3D. Conversion facile avec matrices.' },
+            { cat: 'Contrôle', titre: 'Contrôle prédictif — MPC pour drones', contenu: 'Le MPC pour drones résout à chaque pas (50-100 Hz) un problème d\'optimisation sur 1-2 s. Contraintes : vitesse max, angle d\'attaque. Résolveurs rapides : acados, OSQP. Permet des trajectoires agressives (drones de course) tout en respectant les limites physiques.' },
+            { cat: 'Perception', titre: 'Filtre particulaire — Localisation globale', contenu: 'Le filtre particulaire (Monte Carlo) représente la distribution de pose par N particules (100-10000). Prédiction par modèle de mouvement, mise à jour par capteur. Résout le problème du "robot kidnappé" (relocalisation). Utilisé en AMCL (ROS) pour localisation globale.' },
+            { cat: 'IA embarquée', titre: 'Knowledge distillation — Modèles légers', contenu: 'La distillation compresse un gros modèle (teacher) vers un petit (student) qui apprend à imiter ses sorties. Résultat : modèle 10x plus léger, précision proche. Utilisé pour déployer BERT/GPT en embarqué, ResNet sur mobile. Très actif en recherche robotique.' },
+            { cat: 'Actionneurs', titre: 'Asservissement couple — Direct Drive', contenu: 'Les moteurs Direct Drive (sans réducteur) offrent un couple élevé à basse vitesse. Transparence de couple, zéro backlash, faible inertie réfléchie. Utilisés en cobots (Franka, Kinova) et robots de recherche (MIT Cheetah). Coût élevé, mais performances exceptionnelles en interaction.' },
+            { cat: 'Capteurs', titre: 'Ultrasons — Distance par temps de vol', contenu: 'Un capteur à ultrasons mesure la distance par écho (t = 2d/v_son). Portée 2 cm-4 m, précision ±3 mm. Insensible à la couleur, mais sensible à l\'angle, matériaux mous, vent. Utilisé en robotique mobile bas coût, park assist. HC-SR04 en DIY.' },
+            { cat: 'Algorithmes', titre: 'SVM — Classification par marge maximale', contenu: 'Le SVM (Support Vector Machine) trouve l\'hyperplan maximisant la marge entre classes. Kernel trick (RBF, polynomial) pour données non-linéaires. Robuste en petite dimension, avantageux en embarqué (peu de paramètres). Utilisé en détection défauts, classification capteurs.' },
+            { cat: 'Sécurité', titre: 'Certification CE — Marquage robotique', contenu: 'Un robot commercialisé en Europe doit porter le marquage CE, conforme aux directives Machines (2006/42/CE) + EMC + basse tension. Analyse de risque (ISO 12100), documentation technique, tests. Délai typique : 6-18 mois. Obligatoire pour vendre.' },
+            { cat: 'Protocoles', titre: 'Modbus TCP — Industrie legacy', contenu: 'Modbus TCP encapsule le protocole Modbus série dans TCP/IP (port 502). Simple (fonctions read/write coils/registers), universel. Utilisé en industrie (PLC, capteurs). Bien que vieux (1979), reste massivement déployé. Facile à implémenter, pas de sécurité native.' },
+            { cat: 'SLAM', titre: 'Loop closure — Fermeture de boucle', contenu: 'Quand un robot repasse au même endroit, le SLAM doit reconnaître le lieu et corriger la dérive accumulée. Techniques : bag-of-words (DBoW2), descripteurs globaux (NetVLAD). Optimisation par pose graph (g2o, GTSAM). Essentiel pour les grandes cartes.' },
+            { cat: 'ROS2', titre: 'DDS — QoS pour la robotique', contenu: 'DDS (Data Distribution Service) sous ROS2 offre des QoS (Quality of Service) : reliability (best effort / reliable), durability, deadline, lifespan. Permet d\'adapter le transport selon le besoin (capteurs = best effort, commandes = reliable). Choix critique pour la performance.' },
+            { cat: 'Cinématique', titre: 'Calibration — Identification des paramètres DH', contenu: 'En pratique, les paramètres DH réels diffèrent du modèle CAD (tolérances, usure). La calibration utilise un laser tracker ou des mesures externes pour identifier les 4·N paramètres DH réels. Améliore la précision de 1 cm à 0.1 mm. Indispensable en usinage robotisé.' },
+            { cat: 'Contrôle', titre: 'Contrôle force — Hybrid position/force', contenu: 'Le contrôle hybride sépare les directions où on contrôle la position (libre) et celles où on contrôle la force (contact). Utilisé pour polissage, assemblage, soudure. Raibert & Craig (1981). Combine matrice de sélection S et (I-S). Fréquent en robotique industrielle.' },
+            { cat: 'Perception', titre: 'Grasp detection — Dex-Net et GQCNN', contenu: 'La détection de prise prédit les poses de préhension (position + orientation de la pince). Dex-Net utilise l\'analyse de qualité par échantillonnage. GQCNN (réseau) prédit en temps réel. Utilisé pour le tri d\'objets, la logistique. Challenge en objets déformés.' },
+            { cat: 'IA embarquée', titre: 'TinyML — IA sur microcontrôleurs', contenu: 'TinyML exécute des réseaux de neurones sur MCU (ESP32, Arduino Nano 33 BLE). Frameworks : TensorFlow Lite Micro, Edge Impulse. Modèles < 100 Ko. Applications : détection gestes, mots-clés vocaux, anomalies capteurs. Autonomie longue, coût minimal.' },
+            { cat: 'Actionneurs', titre: 'Pneumatique — Actionneurs souples', contenu: 'Les actionneurs pneumatiques souples (McKibben, chambre à air) se déforment sous pression. Utilisés en robots souples (grippers délicats, rééducation). Avantages : légers, sûrs en interaction, peu coûteux. Inconvénients : contrôle précis difficile, compresseur nécessaire.' },
+            { cat: 'Capteurs', titre: 'Potentiomètre vs encodeur magnétique', contenu: 'Le potentiomètre (résistif) est simple mais s\'use (frottement). L\'encodeur magnétique (AS5600, TLE5012) mesure le champ d\'un aimant rotatif : sans contact, précis (12-14 bits), insensible à la poussière. Préféré en robotique moderne pour les articulations.' },
+            { cat: 'Algorithmes', titre: 'Gaussian Process — Régression non-paramétrique', contenu: 'Un GP (processus gaussien) modélise une fonction inconnue avec une distribution de probabilité. Très utilisé en robotique pour l\'apprentissage de modèles dynamiques (GPMP, PILCO). Fournit une incertitude calibrée. Complexité O(n³) limite à quelques milliers de points.' },
+            { cat: 'Sécurité', titre: 'Light curtain — Barrière immatérielle', contenu: 'Un rideau lumineux (light curtain) est composé de barres émettrices et réceptrices IR créant une zone protégée. Si un objet coupe le faisceau, le robot s\'arrête. Conforme PLe / Cat 4. Alternative aux cages physiques. Utilisé en cellules robotisées industrielles.' },
+            { cat: 'Protocoles', titre: 'OPC UA — Standard industrie 4.0', contenu: 'OPC UA (Open Platform Communications Unified Architecture) est un standard d\'échange de données industrielles (IEC 62541). Indépendant de la plateforme, sécurisé (X.509), modélisation orientée objet. Standard de l\'Industrie 4.0. Supporte TCP, HTTPS, MQTT.' },
+            { cat: 'SLAM', titre: 'Cartographie sémantique', contenu: 'Au-delà de la géométrie, la cartographie sémantique annote les objets (chaise, porte, humain) et leurs propriétés. Utilise la perception (détection) et le SLAM. Permet une navigation intelligente (interdire la zone "cuisine") et des tâches de haut niveau (robot majordome).' },
+            { cat: 'ROS2', titre: 'Rosbag2 — Enregistrement et replay', contenu: 'Les rosbags (.db3 en ROS2) enregistrent tous les topics (données capteurs, commandes) avec timestamps. Permettent le replay pour debug, dataset ML, tests régression. Supportent compression (zstd) et filtres. Outil clé pour l\'analyse post-incident.' },
+            { cat: 'Cinématique', titre: 'Parallélisme — Robots Delta', contenu: 'Les robots Delta (parallélogrammes) atteignent des vitesses et accélérations très élevées (100+ G). Utilisés pour le pick & place rapide. Cinématique inverse complexe mais fermée. Espace de travail restreint. Standard en agroalimentaire et pharma.' },
+            { cat: 'Contrôle', titre: 'Contrôle LQR — Optimal quadratique', contenu: 'Le LQR (Linear Quadratic Regulator) minimise ∫(xᵀQx + uᵀRu)dt pour un système linéaire. Résout une équation de Riccati. Fournit un retour d\'état optimal. Base du contrôle moderne. Utilisé pour stabilisation de drones, pendules inversés.' },
+            { cat: 'Perception', titre: 'Fusion multi-capteurs — Kalman', contenu: 'Fusionner LiDAR + caméra + IMU + GPS améliore la robustesse. Chaque capteur a ses forces (LiDAR précis en 3D, caméra riche sémantiquement, IMU rapide). Techniques : EKF, factor graphs, deep fusion. Essentiel pour véhicules autonomes.' },
+             { cat: 'IA embarquée', titre: 'Neural Architecture Search (NAS)', contenu: 'Le NAS automatise la conception d\'architectures. Recherche dans un espace de couches (convolutions, skip connections). Résultat : EfficientNet, MobileNetV3. Coût de calcul énorme mais modèles finaux légers. Utilisé pour optimiser la perception embarquée.' },
+            { cat: 'Actionneurs', titre: 'Moteurs piézoélectriques — Précision sub-micron', contenu: 'Les moteurs piézoélectriques utilisent la déformation d\'un cristal sous tension. Résolution sub-nanométrique, force élevée, pas de champ magnétique. Utilisés en micro-manipulation, optique, robotique médicale. Course limitée (µm), souvent avec amplificateur.' },
+            { cat: 'Capteurs', titre: 'Radar 77 GHz — Détection longue portée', contenu: 'Les radars 77 GHz (automobile) mesurent distance et vitesse par effet Doppler. Portée 250 m, insensibles au brouillard/pluie. Résolution angulaire via MIMO. Utilisés en véhicules autonomes. Complémentaires du LiDAR et caméra.' },
+            { cat: 'Algorithmes', titre: 'SLERP — Interpolation de rotations', contenu: 'SLERP (Spherical Linear Interpolation) interpole entre deux quaternions en suivant le plus court chemin sur la sphère. Formule : q(t) = (sin((1-t)θ)·q0 + sin(tθ)·q1) / sinθ. Utilisé en animation, robotique pour trajectoires fluides.' },
+            { cat: 'Sécurité', titre: 'Fonction d\'arrêt d\'urgence — Catégorie 0/1', contenu: 'Catégorie 0 : arrêt immédiat par coupure (freinage brutal). Catégorie 1 : arrêt contrôlé puis coupure (freinage puis désactivation). Catégorie 2 : arrêt contrôlé sans coupure. Choix selon inertie et sécurité. Défini par IEC 60204-1.' },
+            { cat: 'Protocoles', titre: 'TSN — Time-Sensitive Networking', contenu: 'TSN (IEEE 802.1) garantit des latences déterministes sur Ethernet. Standard pour la robotique temps réel (IEEE 802.1Qbv pour time-aware scheduling). Remplace les bus propriétaires (EtherCAT, PROFINET IRT) à terme. Adopté par l\'industrie 4.0.' },
+            { cat: 'SLAM', titre: 'NeRF-SLAM — Cartographie neuronale', contenu: 'NeRF (Neural Radiance Fields) représente une scène 3D par un réseau. NeRF-SLAM combine SLAM et NeRF pour une cartographie photoréaliste. Utilisé pour la réalité augmentée, jumeaux numériques. Très coûteux en calcul (GPU requis).' },
+            { cat: 'ROS2', titre: 'Component nodes — Composition intra-process', contenu: 'Les component nodes ROS2 (rclcpp::Node) peuvent être chargés dans un même processus (intra-process communication). Évite la sérialisation et le transport réseau. Gain de 10-100x pour les nœuds à haute fréquence. Essentiel pour la perception temps réel.' },
+            { cat: 'Cinématique', titre: 'Jacobien pseudo-inverse — Redondance', contenu: 'Pour un robot redondant, le Jacobien n\'est pas carré. On utilise la pseudo-inverse J⁺ = Jᵀ(JJᵀ)⁻¹. L\'espace nul permet d\'optimiser (éviter obstacles) sans affecter l\'effecteur. Standard en cinématique redondante.' },
+            { cat: 'Contrôle', titre: 'Contrôle par retour d\'état — Observateur de Luenberger', contenu: 'Quand certains états ne sont pas mesurés, un observateur (Luenberger, Kalman) les estime à partir des entrées/sorties. Condition : système observable. Base du contrôle moderne, drones, moteurs sans capteur (sensorless).' },
+            { cat: 'Perception', titre: 'Detectron2 — Framework détection/segmentation', contenu: 'Detectron2 (Facebook) implémente Faster R-CNN, Mask R-CNN, RetinaNet en PyTorch. Supporte détection, segmentation instance, keypoints. Modèles pré-entraînés COCO. Standard en recherche robotique pour la perception.' },
+            { cat: 'IA embarquée', titre: 'TensorFlow Lite — Mobile/embarqué', contenu: 'TF Lite optimise les modèles TF pour mobile/embarqué. Conversion via TF Lite Converter. Supporte quantization post-training, delegation GPU/NNAPI/Edge TPU. Utilisé sur Android, Raspberry Pi, MCU (TF Lite Micro).' },
+            { cat: 'Actionneurs', titre: 'Freins à manque de courant — Sécurité', contenu: 'Un frein "fail-safe" s\'active quand l\'alimentation est coupée (ressort). Empêche la chute d\'un bras à l\'arrêt. Indispensable pour robots verticaux. Force de maintien = couple statique max × sécurité. Utilisé sur axes Z de robots industriels.' },
+            { cat: 'Capteurs', titre: 'Gyroscope MEMS — Dérive et biais', contenu: 'Un gyroscope MEMS (MPU6050, BMI088) mesure la vitesse angulaire. Dérive typique : 1-10 °/h (à corriger par fusion). Biais dépend de la température. Calibration statique au démarrage. Complété par accéléromètre (fusion).' },
+            { cat: 'Algorithmes', titre: 'Particle Swarm Optimization — PSO', contenu: 'PSO optimise par essaim de particules qui se déplacent vers la meilleure position trouvée. Simple, sans gradient. Utilisé en planification de trajectoires, tuning PID. Converge vite mais peut stagner. Variantes : QPSO, DPSO.' },
+            { cat: 'Sécurité', titre: 'Bouton d\'arrêt d\'urgence — Norme ISO 13850', contenu: 'Le bouton d\'arrêt d\'urgence doit être rouge sur fond jaune, à cran (l\'arrêt reste jusqu\'à réarmement manuel). Conforme ISO 13850. Placé à portée de main. Souvent doublé (un par côté de la cellule).' },
+            { cat: 'Protocoles', titre: 'PROFINET — Bus industriel Siemens', contenu: 'PROFINET est un standard Ethernet industriel (Siemens). Trois classes : RT (temps réel, 10 ms), IRT (isochrone, 1 ms), TSN. Utilisé en automation, robotique industrielle. Support natif dans les automates Siemens S7.' },
+            { cat: 'SLAM', titre: 'TSDF — Truncated Signed Distance Function', contenu: 'Un TSDF stocke, pour chaque voxel, la distance signée à la surface (tronquée). Utilisé par KinectFusion, Voxblox. Permet la reconstruction 3D dense en temps réel. Base de la cartographie volumétrique pour drones et robots manipulateurs.' },
+            { cat: 'ROS2', titre: 'Parameters — Configuration dynamique', contenu: 'Les paramètres ROS2 sont des valeurs configurables (vitesse, seuils) déclarées par un nœud. Modifiables à chaud via services (set_parameters). Stockés en YAML. Essentiels pour tuner sans recompiler. Différents des topics (pas de flux).' },
+            { cat: 'Cinématique', titre: 'MGD — Matrice de transformation homogène', contenu: 'La matrice homogène 4x4 combine rotation (3x3) et translation (3x1) : T = [R t; 0 1]. Chaque lien du robot a sa matrice. Le MGD est le produit T0·T1·...·Tn. Base de la cinématique directe. Inversion = cinématique inverse.' },
+            { cat: 'Contrôle', titre: 'Backstepping — Contrôle non-linéaire', contenu: 'Le backstepping construit récursivement une loi de commande stabilisante pour les systèmes non-linéaires triangulaires. Utilisé pour drones à rotors basculants, robots sous-marins. Robuste mais sensible au bruit de dérivation.' },
+            { cat: 'Perception', titre: 'LiDAR-caméra calibration — Extrinsèques', contenu: 'Pour fusionner LiDAR et caméra, il faut estimer la transformation (rotation + translation) entre eux : calibration extrinsèque. Méthodes : mire (checkerboard), optimisation mutuelle (points 3D ↔ pixels). Erreur typique < 1 cm, < 0.5°.' },
+            { cat: 'IA embarquée', titre: 'Pruning — Élagage de réseaux', contenu: 'Le pruning supprime les poids/neurones peu utiles (magnitude < seuil). Réduction 50-90% des paramètres, accélération 2-3x. Techniques : structured (canaux), unstructured (poids). Combine avec quantization et distillation pour un modèle ultra-léger.' },
+            { cat: 'Actionneurs', titre: 'Câbles — Transmission Bowden', contenu: 'Les câbles Bowden transmettent un effort à distance via gaine. Utilisés en robots souples, exosquelettes, mains robotiques. Légers, flexibles, mais friction et jeu. Précontrainte nécessaire. Alternative aux transmissions rigides (arbres, courroies).' },
+            { cat: 'Capteurs', titre: 'Baromètre — Altitude et pression', contenu: 'Un baromètre MEMS (BMP280, MS5611) mesure la pression atmosphérique → altitude. Résolution ~10 cm. Utilisé en drones (stabilisation altitude). Sensible à la météo. Complémentaire du GPS (précision locale).' },
+            { cat: 'Algorithmes', titre: 'Ant Colony Optimization — ACO', contenu: 'ACO simule le comportement des fourmis pour résoudre des problèmes combinatoires (TSP, pathfinding). Phéromones renforcent les bons chemins. Utilisé en planification multi-robots. Converge lentement mais robuste.' },
+            { cat: 'Sécurité', titre: 'Mat — Détection de présence', contenu: 'Les tapis de sécurité (safety mats) détectent la présence d\'une personne par pression. Conformes PLe. Utilisés au sol autour des robots. Alternative aux scanners. Réinitialisation manuelle après déclenchement.' },
+            { cat: 'Protocoles', titre: 'WirelessHART — Industrie sans fil', contenu: 'WirelessHART (IEC 62591) est un standard sans fil pour capteurs industriels. Maillage auto-formant, 2.4 GHz, sécurité AES-128. Latence 250 ms. Utilisé en monitoring de procédés. Pas pour le contrôle temps réel strict.' },
+            { cat: 'SLAM', titre: 'Bundle Adjustment — Optimisation photogrammétrique', contenu: 'Le Bundle Adjustment optimise simultanément les poses caméra et les points 3D pour minimiser l\'erreur de reprojection. Résolu par Levenberg-Marquardt. Cœur de la SfM (Structure from Motion) et du SLAM visuel (ORB-SLAM).' },
+            { cat: 'ROS2', titre: 'rqt — Outils de visualisation', contenu: 'rqt regroupe des outils graphiques ROS2 : rqt_graph (nœuds/topics), rqt_plot (courbes), rqt_console (logs), rqt_image_view (images). Essentiels pour debugger et monitorer une stack robotique.' },
+            { cat: 'Cinématique', titre: 'Espace nul — Optimisation redondante', contenu: 'Pour un robot redondant, l\'espace nul du Jacobien N(J) permet de bouger sans affecter l\'effecteur. On y projette un objectif secondaire (éviter obstacles, respecter les limites). Formule : q̇ = J⁺ẋ + (I - J⁺J)q̇_sec.' },
+            { cat: 'Contrôle', titre: 'Contrôle en vitesse — Profil trapézoïdal', contenu: 'Un profil trapézoïdal accélère, croisière, décélère (3 phases). Alternative : S-curve (jerk limité). Utilisé en CNC et robotique pour des mouvements fluides. Vitesse max et accélération sont limitées par la mécanique.' },
+            { cat: 'Perception', titre: 'Kalman Unscented (UKF) — Non-linéarité', contenu: 'L\'UKF propage un jeu de points sigma à travers la fonction non-linéaire (au lieu de linéariser). Plus précis que l\'EKF pour les fortes non-linéarités. Utilisé en fusion IMU/GPS, localisation drone. Coût similaire à l\'EKF.' },
+            { cat: 'IA embarquée', titre: 'OpenVINO — Inférence Intel', contenu: 'OpenVINO optimise les modèles pour CPU/GPU Intel (Core, Xeon, Movidius). Conversion via Model Optimizer (ONNX, TF). Supporte quantization INT8. Utilisé sur robots industriels à base PC. Alternative gratuite à TensorRT.' },
+            { cat: 'Actionneurs', titre: 'Moteurs pas à pas — Microstepping', contenu: 'Les moteurs pas à pas se déplacent par pas discrets (1.8° typique). Le microstepping (jusqu\'à 1/256) améliore la fluidité et la précision. Pas de feedback natif → risque de perte de pas. Utilisés en imprimantes 3D, CNC, robotique légère.' },
+            { cat: 'Capteurs', titre: 'GPS RTK — Précision centimétrique', contenu: 'GPS RTK (Real-Time Kinematic) utilise une station de base pour corriger l\'erreur (ionosphère, horloge). Précision : 1-2 cm. Utilisé en agriculture de précision, drones de cartographie. Nécessite un lien radio entre base et rover.' },
+            { cat: 'Algorithmes', titre: 'Genetic Algorithm — GA', contenu: 'Un algorithme génétique fait évoluer une population de solutions (sélection, croisement, mutation). Utilisé en optimisation multi-objectifs, planification, tuning. Converge globalement mais lentement. Variantes : NSGA-II (Pareto).' },
+            { cat: 'Sécurité', titre: 'Scanner laser de sécurité — SICK microScan3', contenu: 'Un scanner laser de sécurité (SICK, Keyence) définit des zones d\'alerte/arrêt par apprentissage. Conforme PLe. Portée jusqu\'à 9 m. Détecte les intrusions dans la zone. Alternative aux barrières physiques.' },
+            { cat: 'Protocoles', titre: 'Zigbee — Réseau maillé basse consommation', contenu: 'Zigbee (IEEE 802.15.4) est un protocole maillé basse consommation. Débit 250 kbps, portée 10-100 m par nœud. Utilisé en domotique et essaims de robots. Alternative : Bluetooth Mesh, LoRa (longue portée).' },
+            { cat: 'SLAM', titre: 'MSCKF — Multi-State Constraint Kalman Filter', contenu: 'Le MSCKF (utilisé par ARCore/ARKit) fusionne caméra + IMU via un filtre de Kalman à contraintes multi-états. Rapide, précis, peu coûteux. Alternative à la VIO par optimisation. Standard en réalité augmentée mobile.' },
+            { cat: 'ROS2', titre: 'ros2_control — Framework de contrôle', contenu: 'ros2_control standardise les interfaces hardware/contrôleurs. Chaque hardware expose des interfaces (position, vitesse, effort). Les contrôleurs (joint_trajectory_controller, diff_drive_controller) s\'y connectent. Indispensable pour Nav2, MoveIt2.' },
+            { cat: 'Cinématique', titre: 'MoveIt — Planification de mouvement', contenu: 'MoveIt (ROS) est le framework de référence pour la manipulation. Intègre OMPL (planificateurs), collision, IK, contrôle. Utilisé avec UR, Franka, robots custom. Interface Python/C++. Standard académique et industriel.' },
+            { cat: 'Contrôle', titre: 'Contrôle par mode glissant — Sliding Mode', contenu: 'Le SMC force l\'état à suivre une surface glissante, robuste aux perturbations et incertitudes. Provoque du chattering (oscillations haute fréquence). Atténué par boundary layer ou higher-order SMC. Utilisé en robotique sous-marine, drones.' },
+            { cat: 'Perception', titre: 'Depth completion — Densification', contenu: 'Un capteur de profondeur (LiDAR clairsemé, stéréo bruité) donne une carte incomplète. La depth completion utilise un réseau pour densifier. Entrée : image RGB + profondeur sparse. Sortie : profondeur dense. Utilisé en navigation, manipulation.' },
+            { cat: 'IA embarquée', titre: 'Federated Learning — Apprentissage distribué', contenu: 'Le Federated Learning entraîne un modèle sur plusieurs robots sans partager les données brutes. Chaque robot calcule un gradient local, le serveur agrège. Préserve la vie privée. Utilisé en flottes de robots industriels et véhicules autonomes.' },
+            { cat: 'Actionneurs', titre: 'Embrayage — Transmission débrayable', contenu: 'Un embrayage (mécanique, électromagnétique) permet de désaccoupler moteur et charge. Utilisé en robots à plusieurs modes (libre/rigide), sécurité (décrochage). Les cobots modernes ont des embrayages sur chaque articulation.' },
+            { cat: 'Capteurs', titre: 'Microphone MEMS — Détection sonore', contenu: 'Un microphone MEMS (INMP441, SPH0645) capture le son via une membrane. Utilisé pour détection de panne (anomalie acoustique), interaction vocale (Alexa, Google Home), localisation source. Sortie I2S numérique.' },
+            { cat: 'Algorithmes', titre: 'Simulated Annealing — Recuit simulé', contenu: 'Le recuit simulé accepte parfois des solutions moins bonnes (probabilité exp(-Δ/T)) pour échapper aux minima locaux. La température T décroît lentement. Utilisé en planification, placement de composants, ordonnancement.' },
+            { cat: 'Sécurité', titre: 'AOPD — Dispositif de protection optoélectronique', contenu: 'Les AOPD (barrières immatérielles, scanners) sont certifiés selon IEC 61496. Type 4 = PLe (haut niveau). Type 2 = PLc. Essentiels pour la sécurité fonctionnelle. Doivent être testés périodiquement (test de coupure).' },
+            { cat: 'Protocoles', titre: 'LoRaWAN — IoT longue portée', contenu: 'LoRaWAN est un protocole LPWAN pour objets connectés. Portée 2-15 km, débit 0.3-50 kbps, très basse consommation. Utilisé en agriculture (capteurs), logistique, tracking. Inadapté au contrôle temps réel.' },
+            { cat: 'SLAM', titre: 'Pose graph optimization — g2o', contenu: 'Un pose graph a des nœuds (poses) et des arêtes (contraintes odométrie/loop closure). L\'optimisation minimise l\'erreur par moindres carrés (g2o, GTSAM, Ceres). Base du SLAM par graphe (Cartographer, ORB-SLAM).' },
+            { cat: 'ROS2', titre: 'Gazebo / Ignition — Simulation', contenu: 'Gazebo (Ignition en ROS2) simule physiquement robots, capteurs, environnements. Supporte la physique (ODE, Bullet), capteurs réalistes (LiDAR, caméra). Utilisé pour tests avant déploiement. Alternative : Isaac Sim (NVIDIA, GPU).' },
+            { cat: 'Cinématique', titre: 'Manipulation mobile — Base + bras', contenu: 'Un robot mobile manipulateur combine base mobile et bras. La cinématique complète = base (SE(2) ou SE(3)) + bras. Planification : TAMP (Task and Motion Planning). Exemple : PR2, TIAGo, Spot + bras. Complexité accrue (coordination).' },
+            { cat: 'Contrôle', titre: 'Fuzzy control — Logique floue', contenu: 'Le contrôle flou utilise des règles linguistiques (SI vitesse est grande ALORS freiner). Pas besoin de modèle mathématique. Robuste aux incertitudes. Utilisé en robots mobiles, HVAC, électroménager. Moins précis qu\'un PID bien réglé.' },
+            { cat: 'Perception', titre: 'Tracking multi-objets — DeepSORT', contenu: 'DeepSORT combine détection (YOLO) et tracking par descripteurs d\'apparence (CNN) + filtre de Kalman. Assigne des IDs persistants aux objets à travers les frames. Utilisé pour surveillance, comptage de personnes, robotique sociale.' },
+            { cat: 'IA embarquée', titre: 'Neural Radiance Fields (NeRF) — Rendu 3D', contenu: 'NeRF représente une scène par un réseau qui prédit densité + couleur pour chaque point 3D. Rendu photoréaliste depuis n\'importe quel angle. Coûteux à entraîner (GPU heures). Utilisé en jumeaux numériques, AR/VR. Variantes rapides : Instant-NGP.' },
+            { cat: 'Actionneurs', titre: 'Moteur linéaire — Voie directe', contenu: 'Un moteur linéaire produit un mouvement rectiligne direct (sans vis ni courroie). Vitesses élevées (>5 m/s), accélérations fortes, précision µm. Utilisé en pick & place, CNC, impression 3D. Coût élevé, course limitée.' },
+            { cat: 'Capteurs', titre: 'Capteur inductif — Détection métal', contenu: 'Un capteur inductif détecte les objets métalliques à courte distance (mm). Sans contact, insensible à la poussière. Utilisé en fin de course, comptage pièces. Alternative : capacitif (tout matériau), photoélectrique (visibilité).' },
+            { cat: 'Algorithmes', titre: 'Ant Colony — Planification essaim', contenu: 'L\'ACO (Ant Colony Optimization) résout des problèmes de routage en simulant le dépôt de phéromones. Chaque "fourmi" explore, les bons chemins sont renforcés. Utilisé en flottes de robots (livraison), pathfinding multi-agents.' },
+            { cat: 'Sécurité', titre: 'Distance de sécurité — Norme ISO 13855', contenu: 'ISO 13855 définit la distance minimale entre un obstacle et un détecteur : S = K·T + C (K vitesse humaine, T temps réponse, C distance de pénétration). Critique pour placer barrières/scanners. Calcul obligatoire pour la conformité.' },
+            { cat: 'Protocoles', titre: 'BLE — Bluetooth Low Energy', contenu: 'BLE (Bluetooth 4.0+) est optimisé pour la basse consommation. Débit 1-2 Mbps, portée 10-100 m. Utilisé pour appairage de capteurs, balises (beacons), télécommande robot. Alternative : Zigbee, LoRa.' },
+            { cat: 'SLAM', titre: 'Structure from Motion — SfM', contenu: 'La SfM reconstruit une scène 3D à partir de plusieurs images (features + matching + bundle adjustment). Utilisée pour cartographie offline, drones photogrammétriques, jumeaux numériques. Distincte du SLAM (offline vs temps réel).' },
+            { cat: 'ROS2', titre: 'Micro-ROS — ROS sur MCU', contenu: 'Micro-ROS permet d\'exécuter ROS2 sur microcontrôleurs (STM32, ESP32). Un agent (micro-ROS agent) fait le pont avec le réseau ROS2. Utilisé pour capteurs/actionneurs embarqués. Réduit le poids d\'un nœud complet.' },
+            { cat: 'Cinématique', titre: 'Robot Delta — Cinématique parallèle', contenu: 'Les robots Delta ont 3 bras parallèles, formant un triangle. Ils offrent une grande vitesse et précision, mais un espace de travail restreint. Cinématique inverse analytique. Utilisés en pick & place, pharma, agroalimentaire.' },
+            { cat: 'Contrôle', titre: 'Contrôle adaptatif — STC', contenu: 'Le STC (Self-Tuning Control) ajuste les paramètres du régulateur en ligne. Identification en temps réel du modèle, puis recalcul des gains. Utilisé pour moteurs à charge variable, robots de soudure. Plus complexe qu\'un PID, plus robuste.' },
+            { cat: 'Perception', titre: 'SLAM visuel-inertiel — VINS-Mono', contenu: 'VINS-Mono fusionne caméra monoculaire et IMU par optimisation de graphe (fenêtre glissante). Précision centimétrique, robuste aux mouvements rapides. Open-source, très utilisé en drones et AR. Base de nombreux SLAM modernes.' },
+            { cat: 'IA embarquée', titre: 'Deep Learning sur microcontrôleur — MCUNet', contenu: 'MCUNet (MIT) optimise l\'architecture et le moteur d\'inférence pour MCU. Modèles < 1 Mo, 10-100 FPS sur STM32. Applications : détection mots-clés, reconnaissance visuelle simple. Prépare le TinyML avancé.' },
+            { cat: 'Actionneurs', titre: 'Actionneur à câble — Transmission légère', contenu: 'Un actionneur à câble transmet l\'effort via des câbles et poulies. Réduit l\'inertie (moteur déporté), permet des formes complexes. Utilisé en mains robotiques (Shadow), robots souples. Friction et usure à gérer.' },
+            { cat: 'Capteurs', titre: 'IMU 9 axes — Magnéto et orientation', contenu: 'Une IMU 9 axes (accéléro + gyro + magnéto) donne l\'orientation absolue via la fusion. La magnéto apporte le cap (nord). Sensible aux perturbations ferromagnétiques. Utilisée en drones, boussoles électroniques, robotique mobile.' },
+            { cat: 'Algorithmes', titre: 'Alpha-Beta — Recherche adversariale', contenu: 'Alpha-Beta élague l\'arbre de recherche en ignorant les branches inutiles. Base de l\'IA aux jeux (échecs, Go). Utilisé en planification multi-agents, robotique de jeu. Complexité O(b^(d/2)).' },
+            { cat: 'Sécurité', titre: 'Contrôle de vitesse sûre — SLS', contenu: 'Le SLS (Safely Limited Speed) garantit qu\'un robot ne dépasse pas une vitesse sûre quand un humain est présent. Utilise des variateurs certifiés + capteurs de sécurité. Conforme PLd. Requis par ISO/TS 15066.' },
+            { cat: 'Protocoles', titre: 'I2S — Audio numérique', contenu: 'I2S (Inter-IC Sound) est un bus pour l\'audio numérique. 3 fils : SCK (horloge), WS (word select), SD (données). Utilisé pour connecter microphones et DAC. Alternative : PDM (1 bit). Fréquent en robotique vocale.' },
+            { cat: 'SLAM', titre: 'Visual SLAM — Caméra monoculaire', contenu: 'Le SLAM monoculaire utilise une seule caméra pour estimer la pose. Problème : échelle non observable (il faut un repère ou une IMU). Algorithmes : ORB-SLAM, DSO, SVO. Moins précis que stéréo/RGB-D mais moins cher.' },
+            { cat: 'ROS2', titre: 'rviz2 — Visualisation 3D', contenu: 'rviz2 affiche la carte, les poses, les nuages de points, les trajectoires d\'un robot ROS2. Indispensable pour debugger la perception et la navigation. Supporte les plugins personnalisés. Interface standard du diagnostic robotique.' },
+            { cat: 'Cinématique', titre: 'Repère de l\'effecteur — Tool Center Point', contenu: 'Le TCP (Tool Center Point) est le point de référence de l\'outil (pince, caméra). Toutes les commandes sont données par rapport à lui. Sa position dépend de la cinématique directe. Calibration TCP essentielle pour la précision.' },
+            { cat: 'Contrôle', titre: 'Contrôle prédictif — Résolution QP', contenu: 'Le MPC résout un QP (Quadratic Program) à chaque pas. Solveurs : OSQP, acados, qpOASES. Performances temps réel (1 kHz) possibles avec code optimisé. Utilisé en drones, véhicules autonomes, robots marcheurs.' },
+            { cat: 'Perception', titre: 'Structure from Motion — Reconstruction', contenu: 'La SfM reconstruit une scène 3D à partir d\'images multiples (features + matching + BA). Pipeline : détection, appariement, poses, triangulation, BA. Utilisée en photogrammétrie, cartographie drone. Base des jumeaux numériques.' },
+            { cat: 'IA embarquée', titre: 'TensorFlow Lite Micro — MCU', contenu: 'TFLite Micro exécute des réseaux (int8) sur MCU. Modèles < 100 Ko. Support : Arduino, ESP32, STM32. Applications : détection gestes, mots-clés. Complémentaire à Edge Impulse pour la chaîne complète.' },
+            { cat: 'Actionneurs', titre: 'Moteur à réluctance variable', contenu: 'Un moteur à réluctance variable utilise les variations de réluctance magnétique pour produire le couple. Sans aimant permanent (robuste, peu coûteux). Inconvénients : couple pulsatoire, bruit. Utilisé en robotique industrielle, véhicules électriques.' },
+            { cat: 'Capteurs', titre: 'Capteur de couple — Jauges de contrainte', contenu: 'Un capteur de couple utilise des jauges de contrainte sur un arbre. Mesure la déformation → couple. Précision 0.1-1%. Utilisé en cobots (sécurité, compliance), robotique chirurgicale. Alternative : mesure par courant moteur (moins précis).' },
+            { cat: 'Algorithmes', titre: 'Apprentissage par renforcement — PPO', contenu: 'PPO (Proximal Policy Optimization) est un algorithme DRL stable et efficace. Utilisé pour locomotion (Spot, ANYmal), manipulation. Entraînement en simulation (Isaac Sim, MuJoCo). Transfert Sim2Real via domain randomization.' },
+            { cat: 'Sécurité', titre: 'Analyse de risque — ISO 12100', contenu: 'ISO 12100 définit la démarche d\'analyse de risque : identifier les dangers, évaluer, réduire (conception, protection, information). Obligatoire pour la certification CE. Documente chaque risque et sa mitigation.' },
+            { cat: 'Protocoles', titre: 'USB — Universal Serial Bus', contenu: 'USB (2.0, 3.0, 4) est un bus série universel. USB 2.0 : 480 Mbps ; USB 3.0 : 5 Gbps. Utilisé pour caméras (UVC), capteurs, alimentation. USB-C supporte l\'alimentation (PD) et les données. Standard en robotique DIY et industrielle.' },
+            { cat: 'SLAM', titre: 'Cartographie hybride — Métrique + topologique', contenu: 'Une carte hybride combine la carte métrique (grille fine, précise) et topologique (nœuds/arêtes pour la planification). Permet une navigation hiérarchique : planification grossière topologique, puis fine métrique. Utilisée en grands environnements.' },
+            { cat: 'ROS2', titre: 'Composition de nœuds — Intra-process', contenu: 'Les composants ROS2 peuvent être chargés dans un même processus. La communication intra-process évite la sérialisation et le réseau. Gain 10-100x pour les nœuds haute fréquence. Essentiel pour la perception temps réel.' },
+            { cat: 'Cinématique', titre: 'Transformation SE(3) — Poses 3D', contenu: 'SE(3) est le groupe des transformations rigides 3D (rotation + translation). Représenté par une matrice 4x4 ou un twist (6D). Utilisé en SLAM, planification, contrôle. Opérations : composition, inverse, exponentielle (exp).' },
+            { cat: 'Contrôle', titre: 'Contrôle en effort — Compliance passive', contenu: 'La compliance passive utilise des ressorts mécaniques (SEA). La compliance active utilise un contrôle de couple. Permet au robot d\'absorber les chocs, de s\'adapter. Base de la sécurité en cobotique.' },
+            { cat: 'Perception', titre: 'Reconnaissance de scène — PointNet', contenu: 'PointNet traite directement les nuages de points (pas de voxelisation). Architecture : MLP + max pooling + features globales. Utilisé pour classification, segmentation sémantique de scènes 3D. Variantes : PointNet++, RandLA-Net.' },
+            { cat: 'IA embarquée', titre: 'NVIDIA DeepStream — Pipeline vision', contenu: 'DeepStream est un SDK pour pipelines de vision temps réel (NVIDIA). Supporte décodage, inférence, tracking, sortie. Utilisé en surveillance, AGV. Optimisé pour Jetson. Alternative : GStreamer + plugins.' },
+                        { cat: 'Actionneurs', titre: 'Vérin électrique — Remplacement hydraulique', contenu: 'Les vérins électriques (vis à billes, courroie) remplacent les vérins hydrauliques. Plus propres, silencieux, précis. Limités en force (< 50 kN). Utilisés en robotique médicale, agroalimentaire, presses. Contrôle position/couple intégré.' },
+            { cat: 'Capteurs', titre: 'Capteur de proximité — Capacitif', contenu: 'Un capteur capacitif détecte tout type de matériau (métal, plastique, liquide) à courte distance. Fonctionne par variation de capacité. Utilisé en détection de niveau, comptage, sécurité. Sensible à l\'humidité. Alternative : inductif (métal seulement).' },
+            { cat: 'Algorithmes', titre: 'RANSAC — Robustesse aux outliers', contenu: 'RANSAC (Random Sample Consensus) estime un modèle (droite, plan, transformation) en tirant aléatoirement des échantillons minimaux et en gardant le meilleur consensus. Robuste aux données aberrantes. Utilisé en vision (homographie), SLAM (plans LiDAR).' },
+            { cat: 'Sécurité', titre: 'Relais de sécurité — Catégorie 4', contenu: 'Un relais de sécurité (Pilz, SICK) redonde les contacts et surveille les circuits d\'arrêt d\'urgence. Catégorie 4 / PLe : deux contacts forcés, auto-test. Utilisé pour couper l\'alimentation des actionneurs en cas de danger. Indispensable en cellule robotisée.' },
+            { cat: 'Protocoles', titre: 'Wi-Fi 6 — Communication sans fil industrielle', contenu: 'Wi-Fi 6 (802.11ax) améliore le débit, la latence et la densité en environnements encombrés. Supporte OFDMA et MU-MIMO. Utilisé en AGV, téléopération, réalité augmentée. Latence ~2-5 ms. Alternative filaire : Ethernet Gigabit.' },
+            { cat: 'SLAM', titre: 'Visual-inertial SLAM — VINS-Fusion', contenu: 'VINS-Fusion fusionne caméra + IMU + GPS (optionnel) par optimisation de graphe. Précision centimétrique et robustesse aux mouvements rapides. Utilisé en drones, véhicules autonomes. Open-source, base de nombreuses solutions commerciales.' },
+            { cat: 'ROS2', titre: 'Action server — Tâches longues', contenu: 'Un action server ROS2 gère les tâches longues (navigation, manipulation) avec feedback continu et possibilité d\'annulation. Le client envoie un goal, reçoit des feedbacks, puis un result. Essentiel pour l\'interaction utilisateur avec un robot.' },
+            { cat: 'Cinématique', titre: 'Dynamique inverse — Calcul des couples', contenu: 'La dynamique inverse calcule les couples articulaires nécessaires pour suivre une trajectoire. Modèle : τ = M(q)q̈ + C(q,q̇)q̇ + G(q). Algorithme récursif de Newton-Euler. Utilisée en commande (feedforward), simulation, identification.' },
+            { cat: 'Contrôle', titre: 'Contrôle en cascade — Boucles imbriquées', contenu: 'Le contrôle en cascade imbrique plusieurs boucles (courant → vitesse → position). Chaque boucle a sa bande passante (facteur 5-10 entre elles). Utilisé en moteurs (FOC), drones, servo. Améliore la robustesse et la rapidité.' },
+            { cat: 'Perception', titre: 'Instance segmentation — Mask R-CNN', contenu: 'Mask R-CNN étend Faster R-CNN avec une branche de masque. Détecte et segmente chaque instance (personne 1, personne 2). Utilisé en robotique pour saisir des objets spécifiques, en surveillance. Plus précis mais plus lent que YOLO.' },
+            { cat: 'IA embarquée', titre: 'YOLO-NAS — Recherche d\'architecture pour YOLO', contenu: 'YOLO-NAS (Deci) utilise NAS pour optimiser la détection. Résultat : meilleur compromis vitesse/précision que YOLOv8. Supporté par TensorRT et ONNX. Idéal pour la détection temps réel sur Jetson. Modèle propriétaire (licence Deci).' },
+            { cat: 'Actionneurs', titre: 'Courroie crantée — Transmission précise', contenu: 'Les courroies crantées (GT2, HTD) transmettent le mouvement sans glissement. Utilisées en imprimantes 3D, CNC, robots delta. Avantages : légères, silencieuses, longue distance. Limitées en couple. Précontrainte nécessaire.' },
+            { cat: 'Capteurs', titre: 'Anémomètre — Vitesse du vent', contenu: 'Un anémomètre mesure la vitesse du vent (à godets, à hélice, ultrasonique). Utilisé en drones (sécurité), éoliennes, robotique extérieure. Ultrasonique : sans pièce mobile, précis. Complémentaire du GPS pour la navigation aérienne.' },
+            { cat: 'Algorithmes', titre: 'K-Means — Clustering non supervisé', contenu: 'K-Means partitionne les données en K clusters en minimisant la variance intra-cluster. Itératif : assignation puis mise à jour des centroïdes. Utilisé en perception (segmentation couleur), compression, analyse de données capteurs.' },
+            { cat: 'Sécurité', titre: 'Zone de travail — Marquage au sol', contenu: 'Le marquage au sol (lignes jaunes) délimite la zone de travail d\'un robot. Complémentaire aux barrières physiques. Ne protège pas activement (visuel uniquement). Associé aux capteurs de sécurité pour une protection complète.' },
+            { cat: 'Protocoles', titre: '5G — Communication ultra-faible latence', contenu: 'La 5G offre une latence < 10 ms, un débit > 1 Gbps, une densité élevée. Utilisée en téléopération robotique, AGV cloud, essaims. Network slicing : QoS dédiée. Déploiement industriel en cours (usines 4.0).' },
+            { cat: 'SLAM', titre: 'Cartographie multi-robots', contenu: 'Plusieurs robots construisent une carte commune en fusionnant leurs données. Défis : synchronisation, fusion de cartes, boucles distribuées. Algorithmes : CCM-SLAM, DOOR-SLAM. Utilisé en essaims, exploration collaborative. Gain de temps important.' },
+            { cat: 'ROS2', titre: 'Bag file — Replay et debug', contenu: 'Un bag file (.db3 en ROS2) enregistre tous les topics avec timestamps. Permet le replay pour debug, dataset ML, tests régression. Compression (zstd), filtres. Outil clé pour l\'analyse post-incident d\'un robot.' },
+            { cat: 'Cinématique', titre: 'Dynamique — Modèle de Newton-Euler', contenu: 'Le modèle de Newton-Euler calcule récursivement les vitesses, accélérations, forces et couples de chaque lien. Complexité O(n). Utilisé en dynamique inverse (commande), simulation, identification. Base du contrôle avancé.' },
+            { cat: 'Contrôle', titre: 'Contrôle par retour d\'effort — Haptique', contenu: 'Le retour d\'effort (haptique) permet à l\'opérateur de ressentir les forces exercées par le robot. Utilisé en téléopération chirurgicale, manipulation fine. Combine moteurs + capteurs de couple. Latence critique (< 10 ms).' },
+            { cat: 'Perception', titre: 'Suivi visuel — Optical Flow', contenu: 'L\'optical flow estime le mouvement des pixels entre deux images. Algorithmes : Lucas-Kanade (sparse), Farneback (dense). Utilisé pour l\'odométrie visuelle, le suivi d\'objets, la stabilisation vidéo. Base de la VIO.' },
+            { cat: 'IA embarquée', titre: 'Segment Anything Model (SAM)', contenu: 'SAM (Meta) segmente n\'importe quel objet à partir d\'un point ou d\'une boîte. Modèle géant (2.4 Go), décliné en MobileSAM (40 Mo) pour l\'embarqué. Utilisé en robotique pour la segmentation zero-shot. Révolution pour la perception.' },
+            { cat: 'Actionneurs', titre: 'Moteur DC brushed — Simple et fiable', contenu: 'Un moteur DC brushed utilise des balais pour commuter le courant. Simple, peu coûteux, contrôle facile. Usure des balais (durée 1000-5000 h). Utilisé en robotique DIY, jouets, petits robots mobiles. Alternative : BLDC (plus efficace, plus cher).' },
+            { cat: 'Capteurs', titre: 'Capteur de fin de course — Mécanique', contenu: 'Un fin de course (microswitch) détecte une position limite par contact mécanique. Simple, fiable, peu coûteux. Utilisé en sécurité, homing, détection d\'obstacle. Alternative : optique (sans contact), magnétique (Hall).' },
+            { cat: 'Algorithmes', titre: 'DBSCAN — Clustering par densité', contenu: 'DBSCAN regroupe les points proches (densité > seuil) et détecte les outliers. Pas besoin de spécifier K. Utilisé en segmentation de nuages de points (LiDAR), détection d\'objets. Variantes : HDBSCAN, OPTICS.' },
+            { cat: 'Sécurité', titre: 'Contrôleur de sécurité — Pilz PNOZ', contenu: 'Un contrôleur de sécurité (Pilz PNOZ, SICK Flexi Soft) gère les arrêts d\'urgence, barrières, scanners. Conforme PLe / SIL3. Programmable via logiciel certifié. Cœur de la sécurité fonctionnelle d\'une cellule robotisée.' },
+            { cat: 'Protocoles', titre: 'REST API — Communication cloud', contenu: 'Une API REST (HTTP + JSON) est utilisée pour la communication cloud-robot (télémétrie, commandes). Simple, universelle, mais latence élevée. Complémentaire à MQTT (temps réel) et gRPC (haute performance). Standard en robotique connectée.' }
+        ];
 
-        // ==================== NAVIGATION ====================
+        // ==================== LOGIQUE MODULE INFO ROBOTIQUE ====================
+        let infoTimer = null;
+        let infoActive = false;
+        let infoIndexActuel = 0;
+        let workspaceActif = false;
+        let audioCtx = null;
+
+        function jouerBip() {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const now = audioCtx.currentTime;
+                [0, 0.18].forEach((offset, i) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(880 + i * 220, now + offset);
+                    gain.gain.setValueAtTime(0.0001, now + offset);
+                    gain.gain.exponentialRampToValueAtTime(0.35, now + offset + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.14);
+                    osc.start(now + offset);
+                    osc.stop(now + offset + 0.15);
+                });
+            } catch(e) { console.warn('Audio:', e); }
+        }
+
+        function tirerInfoAleatoire() {
+            const lues = getInfosLues();
+            const indicesNonLus = [];
+            BASE_ROBOTIQUE.forEach((_, i) => { if (!lues.includes(i)) indicesNonLus.push(i); });
+            if (indicesNonLus.length === 0) {
+                return Math.floor(Math.random() * BASE_ROBOTIQUE.length);
+            }
+            return indicesNonLus[Math.floor(Math.random() * indicesNonLus.length)];
+        }
+
+        function afficherInfo() {
+            if (infoActive || !workspaceActif) return;
+            infoIndexActuel = tirerInfoAleatoire();
+            const info = BASE_ROBOTIQUE[infoIndexActuel];
+            const lues = getInfosLues();
+
+            document.getElementById('infoCategorie').textContent = info.cat;
+            document.getElementById('infoTitre').textContent = info.titre;
+            document.getElementById('infoContenu').textContent = info.contenu;
+            document.getElementById('infoCompteur').textContent = `Info #${lues.length + 1} / ${BASE_ROBOTIQUE.length} lues`;
+
+            document.getElementById('infoOverlay').classList.add('active');
+            infoActive = true;
+            jouerBip();
+        }
+
+        function validerInfoLue() {
+            const lues = getInfosLues();
+            if (!lues.includes(infoIndexActuel)) {
+                lues.push(infoIndexActuel);
+                setInfosLues(lues);
+            }
+            majHeaderCompteur();
+            document.getElementById('infoOverlay').classList.remove('active');
+            infoActive = false;
+        }
+
+        function demarrerCycleInfos() {
+            if (infoTimer) clearInterval(infoTimer);
+            workspaceActif = true;
+            infoTimer = setInterval(() => {
+                if (document.hidden) return;
+                if (!infoActive) afficherInfo();
+            }, 10 * 60 * 1000);
+        }
+
+        function stopperCycleInfos() {
+            if (infoTimer) { clearInterval(infoTimer); infoTimer = null; }
+            workspaceActif = false;
+            infoActive = false;
+            const ov = document.getElementById('infoOverlay');
+            if (ov) ov.classList.remove('active');
+        }
+                    // ==================== NAVIGATION ====================
         function retourDashboard() {
+            stopperCycleInfos();
             if (confirm("Retourner au Dashboard Principal ?\nVos modifications sont sauvegardées.")) {
                 window.location.href = 'dashboard.html';
+            } else {
+                demarrerCycleInfos();
             }
         }
 
         function fermerEspace() {
+            stopperCycleInfos();
             if (confirm("Fermer l'Espace MAJOR ?\nVous serez déconnecté de l'interface.")) {
                 if (window.opener) window.close();
                 else window.location.href = 'dashboard.html';
+            } else {
+                demarrerCycleInfos();
             }
         }
 
-        // Sauvegarde avant fermeture
+        // Sauvegarde avant fermeture de l'onglet + stop du timer
         window.addEventListener('beforeunload', function(e) {
+            stopperCycleInfos();
             if (fichierActuel) {
                 const contenu = document.getElementById('codeEditor').value;
                 if (contenu !== fichierActuel.contenu) {
@@ -1141,6 +1548,7 @@ initialiserProjet();
         // ==================== INIT ====================
         window.addEventListener('load', () => {
             createPowerParticles();
+            majHeaderCompteur();
             setTimeout(() => {
                 document.getElementById('accessCode').focus();
             }, 500);
