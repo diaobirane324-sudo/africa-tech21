@@ -23,7 +23,7 @@
             --glass-border: rgba(155, 48, 255, 0.2);
         }
         body {
-            background: 
+            background:
                 radial-gradient(circle at 20% 20%, rgba(106, 13, 173, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.06) 0%, transparent 50%),
                 linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #1a0033 100%);
@@ -36,7 +36,7 @@
         .hologram-grid {
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
-            background: 
+            background:
                 linear-gradient(90deg, rgba(155, 48, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(180deg, rgba(255, 215, 0, 0.02) 1px, transparent 1px);
             background-size: 55px 55px;
@@ -215,6 +215,23 @@
         #editorContent table td, #editorContent table th {
             border: 1px solid rgba(155, 48, 255, 0.4); padding: 0.5rem;
         }
+        #rapportEditorContent {
+            width: 100%; min-height: 480px; padding: 2rem;
+            background: linear-gradient(135deg, #f5f2f7 0%, #ebe5ee 50%, #e8e0ec 100%);
+            border: 1px solid rgba(155, 48, 255, 0.4);
+            border-radius: 12px; color: #1a0033;
+            font-size: 1rem; line-height: 1.8; outline: none;
+            font-family: 'Exo 2', sans-serif;
+        }
+        #rapportEditorContent:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.35);
+        }
+        #rapportEditorContent img { max-width: 100%; border-radius: 10px; margin: 1rem 0; }
+        #rapportEditorContent table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        #rapportEditorContent table td, #rapportEditorContent table th {
+            border: 1px solid rgba(106, 13, 173, 0.4); padding: 0.5rem;
+        }
 
         /* ===== PANNEAU D'ANALYSE ===== */
         .analyse-panel {
@@ -338,11 +355,29 @@
             border-radius: 15px; font-size: 0.78rem; font-weight: 700;
             letter-spacing: 1px; margin-top: 0.5rem;
         }
-        .statut-actif { background: rgba(155, 48, 255, 0.2); border: 1px solid var(--purple-light); color: var(--purple-light); }
+        .statut-brouillon { background: rgba(160, 160, 160, 0.15); border: 1px solid #a0a0a0; color: #d0d0d0; }
         .statut-transmis { background: rgba(255, 215, 0, 0.15); border: 1px solid var(--gold); color: var(--gold); }
+        .statut-lu { background: rgba(0, 160, 255, 0.15); border: 1px solid #00a0ff; color: #00a0ff; }
+        .statut-valide { background: rgba(0, 255, 136, 0.15); border: 1px solid #00ff88; color: #00ff88; }
+        .statut-rejete { background: rgba(255, 0, 51, 0.15); border: 1px solid #ff0033; color: #ff0033; }
+        .statut-actif { background: rgba(155, 48, 255, 0.2); border: 1px solid var(--purple-light); color: var(--purple-light); }
         .statut-en_attente { background: rgba(255, 200, 0, 0.15); border: 1px solid #ffc800; color: #ffc800; }
         .statut-en_cours { background: rgba(0, 160, 255, 0.15); border: 1px solid #00a0ff; color: #00a0ff; }
         .statut-termine { background: rgba(0, 255, 136, 0.15); border: 1px solid #00ff88; color: #00ff88; }
+        .retour-box {
+            margin-top: 1rem;
+            padding: 1rem 1.2rem;
+            background: rgba(0, 160, 255, 0.08);
+            border-left: 4px solid #00a0ff;
+            border-radius: 10px;
+            font-size: 0.92rem;
+            color: #cfe8ff;
+        }
+        .retour-box strong { color: #00a0ff; }
+        .retour-box.valide { background: rgba(0, 255, 136, 0.08); border-left-color: #00ff88; color: #b0ffd0; }
+        .retour-box.valide strong { color: #00ff88; }
+        .retour-box.rejete { background: rgba(255, 0, 51, 0.08); border-left-color: #ff0033; color: #ffb0b0; }
+        .retour-box.rejete strong { color: #ff0033; }
         .empty-state { text-align: center; color: var(--text-secondary); padding: 3rem; }
         .empty-state i { font-size: 3rem; color: rgba(155, 48, 255, 0.2); margin-bottom: 1rem; display: block; }
         .loading-text { text-align: center; color: var(--text-secondary); padding: 2rem; }
@@ -428,6 +463,48 @@
         }
         .equipe-item .info .nom { color: var(--gold); font-weight: 700; }
         .equipe-item .info .role { color: var(--text-secondary); font-size: 0.85rem; }
+
+        /* ===== PRINT (EXPORT PDF) ===== */
+        @media print {
+            body { background: white !important; color: black !important; padding: 0 !important; }
+            .hologram-grid, .particles, .back-btn, .page-header, .tabs,
+            .stats-grid, .card-box h2, .editor-toolbar, .editor-actions,
+            .alerte-rapport, .toast, .modal-overlay, .btn, input, select {
+                display: none !important;
+            }
+            .card-box {
+                background: white !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            #rapportEditorContent {
+                background: white !important;
+                color: black !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 2cm !important;
+                min-height: auto !important;
+                font-size: 11pt !important;
+                line-height: 1.6 !important;
+            }
+            #rapportEditorContent h1 { color: #6a0dad !important; font-size: 18pt !important; }
+            #rapportEditorContent h2 { color: #6a0dad !important; font-size: 15pt !important; }
+            #rapportEditorContent h3 { color: #6a0dad !important; font-size: 13pt !important; }
+            #rapportEditorContent table { border-collapse: collapse !important; }
+            #rapportEditorContent table td, #rapportEditorContent table th {
+                border: 1px solid #333 !important;
+                padding: 6px !important;
+            }
+            #rapportEditorContent img { max-width: 100% !important; }
+            .section { display: none !important; }
+            .section.active { display: block !important; }
+            .print-header { display: block !important; }
+            @page { size: A4; margin: 1cm; }
+        }
+        .print-header { display: none; }
+
         @media (max-width: 768px) {
             body { padding: 1rem; }
             .page-header h1 { font-size: 1.8rem; }
@@ -640,8 +717,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- SECTION RAPPORTS -->
+                <!-- SECTION RAPPORTS (NOUVELLE VERSION) -->
         <div class="section" id="sectionRapports">
             <div class="stats-grid">
                 <div class="stat-card"><div class="num" id="statVeille">0</div><div class="label">Veilles</div></div>
@@ -650,18 +726,100 @@
                 <div class="stat-card"><div class="num" id="statRapport">0</div><div class="label">Rapports</div></div>
             </div>
 
+            <!-- ÉDITEUR DE RAPPORT -->
             <div class="card-box">
-                <h2><i class="fas fa-chart-line"></i> RÉDIGER UN RAPPORT MENSUEL</h2>
-                <input type="text" id="rapportTitre" class="input-full" placeholder="Titre du rapport (ex: Rapport CSIV - Novembre 2026)...">
-                <div class="form-group" style="margin-bottom:1rem;">
-                    <label>Contenu du rapport</label>
-                    <textarea id="rapportContenu" rows="10" placeholder="Résumé des activités, avancées, blocages, résultats..."></textarea>
+                <h2><i class="fas fa-chart-line"></i> RÉDIGER UN RAPPORT CSIV</h2>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Titre du rapport</label>
+                        <input type="text" id="rapportTitre" class="input-full" placeholder="Ex: Rapport CSIV — Novembre 2026" style="margin-bottom:0;">
+                    </div>
+                    <div class="form-group">
+                        <label>Type de rapport</label>
+                        <select id="rapportType">
+                            <option value="mensuel">📅 Rapport mensuel</option>
+                            <option value="veille">🔍 Synthèse de veille</option>
+                            <option value="projet">📁 Rapport projet</option>
+                            <option value="incident">⚠️ Rapport d'incident</option>
+                            <option value="autre">📌 Autre</option>
+                        </select>
+                    </div>
                 </div>
-                <button class="btn btn-gold" onclick="saveRapport()"><i class="fas fa-save"></i> SOUMETTRE LE RAPPORT</button>
+
+                <!-- Barre d'outils éditeur riche -->
+                <div class="editor-toolbar" style="margin-top:1rem;">
+                    <button onclick="execCmd('bold')" title="Gras"><i class="fas fa-bold"></i></button>
+                    <button onclick="execCmd('italic')" title="Italique"><i class="fas fa-italic"></i></button>
+                    <button onclick="execCmd('underline')" title="Souligné"><i class="fas fa-underline"></i></button>
+                    <button onclick="execCmd('strikeThrough')" title="Barré"><i class="fas fa-strikethrough"></i></button>
+                    <span style="width:1px; height:24px; background:rgba(155,48,255,0.3); align-self:center;"></span>
+                    <button onclick="execCmd('formatBlock','h1')">H1</button>
+                    <button onclick="execCmd('formatBlock','h2')">H2</button>
+                    <button onclick="execCmd('formatBlock','h3')">H3</button>
+                    <button onclick="execCmd('formatBlock','p')">P</button>
+                    <span style="width:1px; height:24px; background:rgba(155,48,255,0.3); align-self:center;"></span>
+                    <button onclick="execCmd('insertUnorderedList')" title="Liste à puces"><i class="fas fa-list-ul"></i></button>
+                    <button onclick="execCmd('insertOrderedList')" title="Liste numérotée"><i class="fas fa-list-ol"></i></button>
+                    <button onclick="execCmd('indent')" title="Indenter"><i class="fas fa-indent"></i></button>
+                    <button onclick="execCmd('outdent')" title="Désindenter"><i class="fas fa-outdent"></i></button>
+                    <span style="width:1px; height:24px; background:rgba(155,48,255,0.3); align-self:center;"></span>
+                    <button onclick="execCmd('justifyLeft')"><i class="fas fa-align-left"></i></button>
+                    <button onclick="execCmd('justifyCenter')"><i class="fas fa-align-center"></i></button>
+                    <button onclick="execCmd('justifyRight')"><i class="fas fa-align-right"></i></button>
+                    <button onclick="execCmd('justifyFull')"><i class="fas fa-align-justify"></i></button>
+                    <span style="width:1px; height:24px; background:rgba(155,48,255,0.3); align-self:center;"></span>
+                    <button onclick="insertLink()" title="Lien"><i class="fas fa-link"></i></button>
+                    <button onclick="insertImage()" title="Image"><i class="fas fa-image"></i></button>
+                    <button onclick="insertTable()" title="Tableau"><i class="fas fa-table"></i></button>
+                    <button onclick="execCmd('insertHorizontalRule')" title="Séparateur"><i class="fas fa-minus"></i></button>
+                    <button onclick="execCmd('removeFormat')" title="Effacer format"><i class="fas fa-eraser"></i></button>
+                </div>
+
+                <!-- En-tête imprimable (visible seulement à l'impression PDF) -->
+                <div class="print-header" id="rapportPrintHeader">
+                    <div style="text-align:center; border-bottom:3px solid #6a0dad; padding-bottom:1rem; margin-bottom:2rem;">
+                        <div style="font-size:1.8rem; font-weight:900; color:#6a0dad; letter-spacing:3px;">AFRICA.TECH21</div>
+                        <div style="font-size:0.9rem; color:#6a0dad; letter-spacing:2px; text-transform:uppercase; margin-top:0.3rem;">
+                            Cellule Stratégique d'Innovation et de Veille — CSIV
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Éditeur principal -->
+                <div id="rapportEditorContent" contenteditable="true" spellcheck="true" lang="fr">
+                    <div style="text-align:center; border-bottom:2px solid #6a0dad; padding-bottom:1rem; margin-bottom:1.5rem;">
+                        <div style="font-size:1.6rem; font-weight:900; color:#6a0dad; letter-spacing:2px;">AFRICA.TECH21</div>
+                        <div style="font-size:0.85rem; color:#6a0dad; letter-spacing:1px; text-transform:uppercase;">Cellule Stratégique d'Innovation et de Veille — CSIV</div>
+                    </div>
+                    <h1 style="color:#1a0033; text-align:center; font-size:1.5rem; margin-bottom:1rem;">Titre du rapport</h1>
+                    <p style="text-align:center; color:#4a3050; font-size:0.9rem; margin-bottom:2rem;">
+                        Rédigé par : <strong id="rapportAuteurAuto">—</strong> — Date : <em id="rapportDateAuto">—</em>
+                    </p>
+                    <p style="margin-bottom:1rem;">Commencez la rédaction de votre rapport ici...</p>
+                </div>
+
+                <div class="editor-actions" style="margin-top:1rem;">
+                    <button class="btn btn-purple" onclick="saveRapportBrouillon()">
+                        <i class="fas fa-save"></i> SAUVEGARDER BROUILLON
+                    </button>
+                    <button class="btn btn-green" onclick="transmettreRapport()">
+                        <i class="fas fa-paper-plane"></i> TRANSMETTRE AU RESP. PROJETS
+                    </button>
+                    <button class="btn btn-gold" onclick="exporterRapportPDF()">
+                        <i class="fas fa-file-pdf"></i> EXPORTER PDF
+                    </button>
+                    <button class="btn btn-dark" onclick="clearRapportEditor()">
+                        <i class="fas fa-eraser"></i> EFFACER
+                    </button>
+                </div>
+                <input type="hidden" id="editRapportId" value="">
+                <input type="hidden" id="editRapportStatut" value="">
             </div>
 
+            <!-- HISTORIQUE DES RAPPORTS -->
             <div class="card-box">
-                <h2><i class="fas fa-history"></i> HISTORIQUE DES RAPPORTS</h2>
+                <h2><i class="fas fa-history"></i> MES RAPPORTS</h2>
                 <div id="rapportList">
                     <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
                 </div>
@@ -716,19 +874,22 @@
         </div>
     </div>
 
-    <!-- MODAL VIEW -->
+    <!-- MODAL VIEW GÉNÉRIQUE -->
     <div class="modal-overlay" id="viewModal">
         <div class="modal-content">
             <h2><i class="fas fa-file-alt"></i> <span id="viewTitle">Titre</span></h2>
             <div class="meta" id="viewMeta" style="color: var(--text-secondary); margin-bottom: 1.5rem;"></div>
             <div id="viewBody" style="line-height: 1.8;"></div>
-            <div style="margin-top: 2rem;">
+            <div style="margin-top: 2rem; display:flex; gap:0.8rem; flex-wrap:wrap;">
+                <button class="btn btn-gold" onclick="exportViewToPDF()">
+                    <i class="fas fa-file-pdf"></i> EXPORTER PDF
+                </button>
                 <button class="btn btn-dark" onclick="closeViewModal()">FERMER</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL TRANSMISSION -->
+    <!-- MODAL TRANSMISSION CAHIER -->
     <div class="modal-overlay" id="transModal">
         <div class="modal-content">
             <h2><i class="fas fa-paper-plane"></i> TRANSMETTRE AU RESPONSABLE PROJETS</h2>
@@ -800,7 +961,11 @@
 
         function execCmd(cmd, val=null) {
             document.execCommand(cmd, false, val);
-            document.getElementById('editorContent').focus();
+            const ed = document.getElementById('editorContent');
+            const edR = document.getElementById('rapportEditorContent');
+            const active = document.activeElement;
+            if (active === edR) edR.focus();
+            else if (ed) ed.focus();
         }
         function insertLink() { const url = prompt('URL du lien :'); if (url) execCmd('createLink', url); }
         function insertImage() { const url = prompt('URL de l\'image :'); if (url) execCmd('insertImage', url); }
@@ -821,7 +986,8 @@
                 analyserTexte();
             }
         }
-                // ==================== COMMUNICATION ====================
+
+        // ==================== COMMUNICATION ====================
         async function saveComm() {
             const title = document.getElementById('commTitle').value.trim() || 'Sans titre';
             const content = document.getElementById('editorContent').innerHTML.trim();
@@ -998,7 +1164,8 @@
                 }).join('');
             } catch (e) { c.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>'; }
         }
-                // ==================== CAHIERS ====================
+
+        // ==================== CAHIERS ====================
         async function saveCahier() {
             const titre = document.getElementById('cahierTitre').value.trim();
             const contenu = document.getElementById('cahierContenu').value.trim();
@@ -1072,6 +1239,7 @@
                     storage_path: null,
                     commentaire: contenuFull.substring(0, 500),
                     statut: 'en_attente',
+                    source_type: 'cahier_csiv',
                     date_depot: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
                     timestamp: Date.now()
                 }]);
@@ -1099,30 +1267,167 @@
             } catch (e) { showToast('❌ ' + e.message, 'error'); }
         }
 
-        // ==================== RAPPORTS ====================
-        async function saveRapport() {
-            const titre = document.getElementById('rapportTitre').value.trim();
-            const contenu = document.getElementById('rapportContenu').value.trim();
-            if (!titre || !contenu) { showToast('⚠️ Titre et contenu obligatoires.', 'error'); return; }
+        // ==================== RAPPORTS CSIV (NOUVEAU) ====================
 
+        function genererReferenceRapport() {
             const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            const h = String(now.getHours()).padStart(2, '0');
+            const mi = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            return `RAP-CSIV-${y}${m}${d}-${h}${mi}${s}`;
+        }
+
+        function remplirEnteteRapport() {
+            const dateEl = document.getElementById('rapportDateAuto');
+            const auteurEl = document.getElementById('rapportAuteurAuto');
+            if (dateEl) dateEl.textContent = new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            if (auteurEl) auteurEl.textContent = `${memberPrenom} ${memberNom}`;
+        }
+
+        function contenuRapportVide() {
+            return `
+                <div style="text-align:center; border-bottom:2px solid #6a0dad; padding-bottom:1rem; margin-bottom:1.5rem;">
+                    <div style="font-size:1.6rem; font-weight:900; color:#6a0dad; letter-spacing:2px;">AFRICA.TECH21</div>
+                    <div style="font-size:0.85rem; color:#6a0dad; letter-spacing:1px; text-transform:uppercase;">Cellule Stratégique d'Innovation et de Veille — CSIV</div>
+                </div>
+                <h1 style="color:#1a0033; text-align:center; font-size:1.5rem; margin-bottom:1rem;">Titre du rapport</h1>
+                <p style="text-align:center; color:#4a3050; font-size:0.9rem; margin-bottom:2rem;">Rédigé par : <strong>${memberPrenom} ${memberNom}</strong> — Date : <em>${new Date().toLocaleDateString('fr-FR')}</em></p>
+                <p style="margin-bottom:1rem;">Commencez la rédaction de votre rapport ici...</p>
+            `;
+        }
+
+        function clearRapportEditor() {
+            if (!confirm('Effacer le rapport en cours ?')) return;
+            document.getElementById('rapportEditorContent').innerHTML = contenuRapportVide();
+            document.getElementById('rapportTitre').value = '';
+            document.getElementById('editRapportId').value = '';
+            document.getElementById('editRapportStatut').value = '';
+        }
+
+        async function saveRapportBrouillon() {
+            const titre = document.getElementById('rapportTitre').value.trim();
+            const typeRapport = document.getElementById('rapportType').value;
+            const contenuHtml = document.getElementById('rapportEditorContent').innerHTML.trim();
+            const editId = document.getElementById('editRapportId').value;
+
+            if (!titre) { showToast('⚠️ Donnez un titre au rapport.', 'error'); return; }
+            if (!contenuHtml || contenuHtml.length < 100) {
+                showToast('⚠️ Le contenu du rapport est trop court.', 'error'); return;
+            }
+
+            const payload = {
+                titre,
+                reference: genererReferenceRapport(),
+                contenu_html: contenuHtml,
+                auteur_id: memberId,
+                auteur_nom: `${memberPrenom} ${memberNom}`,
+                statut: 'brouillon',
+                metadata: { type_rapport: typeRapport },
+                date_creation: new Date().toISOString(),
+                timestamp: Date.now()
+            };
+
             try {
-                const { error } = await supabaseClient.from('csiv_data').insert([{
-                    type: 'rapport',
-                    titre: titre,
-                    contenu: contenu,
-                    statut: 'actif',
-                    auteur: `${memberPrenom} ${memberNom}`,
-                    auteur_id: memberId,
-                    date_creation: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
+                let res;
+                if (editId) {
+                    delete payload.reference;
+                    delete payload.date_creation;
+                    res = await supabaseClient.from('csiv_rapports').update(payload).eq('id', editId);
+                } else {
+                    res = await supabaseClient.from('csiv_rapports').insert([payload]);
+                }
+                if (res.error) throw res.error;
+
+                showToast('💾 Brouillon sauvegardé !', 'success');
+                document.getElementById('editRapportId').value = '';
+                document.getElementById('editRapportStatut').value = '';
+                loadRapports();
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+        }
+
+        async function transmettreRapport() {
+            const titre = document.getElementById('rapportTitre').value.trim();
+            const contenuHtml = document.getElementById('rapportEditorContent').innerHTML.trim();
+            const typeRapport = document.getElementById('rapportType').value;
+            const editId = document.getElementById('editRapportId').value;
+
+            if (!titre) { showToast('⚠️ Donnez un titre au rapport.', 'error'); return; }
+            if (!contenuHtml || contenuHtml.length < 100) {
+                showToast('⚠️ Le contenu du rapport est trop court.', 'error'); return;
+            }
+
+            const ok = confirm(
+                `📤 TRANSMETTRE AU RESPONSABLE PROJETS\n\n` +
+                `Titre : ${titre}\n\n` +
+                `Le rapport sera envoyé à Mouhamed DIALLO (AT21_0011) et apparaîtra dans son espace.\n` +
+                `Vous pourrez suivre son statut dans "MES RAPPORTS".\n\n` +
+                `Confirmer l'envoi ?`
+            );
+            if (!ok) return;
+
+            const reference = genererReferenceRapport();
+            const now = new Date();
+            const nowIso = now.toISOString();
+
+            try {
+                let rapportId = editId;
+
+                if (editId) {
+                    const { error } = await supabaseClient.from('csiv_rapports').update({
+                        titre,
+                        contenu_html: contenuHtml,
+                        statut: 'transmis',
+                        date_transmission: nowIso,
+                        destinataire_id: 'AT21_0011',
+                        destinataire_nom: 'DIALLO MOUHAMED',
+                        metadata: { type_rapport: typeRapport }
+                    }).eq('id', editId);
+                    if (error) throw error;
+                } else {
+                    const { data, error } = await supabaseClient.from('csiv_rapports').insert([{
+                        titre,
+                        reference,
+                        contenu_html: contenuHtml,
+                        auteur_id: memberId,
+                        auteur_nom: `${memberPrenom} ${memberNom}`,
+                        statut: 'transmis',
+                        destinataire_id: 'AT21_0011',
+                        destinataire_nom: 'DIALLO MOUHAMED',
+                        date_creation: nowIso,
+                        date_transmission: nowIso,
+                        metadata: { type_rapport: typeRapport },
+                        timestamp: Date.now()
+                    }]).select();
+                    if (error) throw error;
+                    rapportId = data[0].id;
+                }
+
+                // Insertion dans travaux_membres pour la cloche de Mouhamed
+                const contenuTexte = contenuHtml.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+                const { error: errTravaux } = await supabaseClient.from('travaux_membres').insert([{
+                    membre_id: memberId,
+                    membre_nom: `${memberPrenom} ${memberNom}`,
+                    fichier_nom: `📄 RAPPORT CSIV : ${titre}`,
+                    fichier_url: 'rapport-csiv',
+                    storage_path: null,
+                    commentaire: contenuTexte.substring(0, 300),
+                    statut: 'en_attente',
+                    source_type: 'rapport_csiv',
+                    source_rapport_id: rapportId,
+                    date_depot: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
                     timestamp: Date.now()
                 }]);
-                if (error) throw error;
-                showToast('✅ Rapport soumis !', 'success');
+                if (errTravaux) throw errTravaux;
+
+                showToast('✅ Rapport transmis au Responsable Projets !', 'success');
                 document.getElementById('rapportTitre').value = '';
-                document.getElementById('rapportContenu').value = '';
+                document.getElementById('editRapportId').value = '';
+                document.getElementById('editRapportStatut').value = '';
+                document.getElementById('rapportEditorContent').innerHTML = contenuRapportVide();
                 loadRapports();
-                verifierRapportMensuel();
             } catch (e) { showToast('❌ ' + e.message, 'error'); }
         }
 
@@ -1130,35 +1435,284 @@
             const c = document.getElementById('rapportList');
             c.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
             try {
-                const { data, error } = await supabaseClient.from('csiv_data').select('*').eq('type', 'rapport').order('timestamp', {ascending: false});
+                const { data, error } = await supabaseClient
+                    .from('csiv_rapports')
+                    .select('*')
+                    .order('timestamp', { ascending: false });
                 if (error) throw error;
-                if (!data || data.length === 0) { c.innerHTML = '<div class="empty-state"><i class="fas fa-chart-line"></i><p>Aucun rapport.</p></div>'; return; }
-                c.innerHTML = data.map(r => `
-                    <div class="list-item">
-                        <div class="title">${r.titre}</div>
-                        <div class="meta">📅 ${r.date_creation} - ✍️ ${r.auteur}</div>
-                        <div class="actions">
-                            <button onclick="viewItem('${r.id}', 'rapport')"><i class="fas fa-eye"></i> Voir</button>
-                            <button class="delete" onclick="deleteItem('${r.id}', 'rapport')"><i class="fas fa-trash"></i> Supprimer</button>
+
+                if (!data || data.length === 0) {
+                    c.innerHTML = '<div class="empty-state"><i class="fas fa-chart-line"></i><p>Aucun rapport pour le moment.</p></div>';
+                    return;
+                }
+
+                c.innerHTML = data.map(r => {
+                    let meta = {};
+                    try { meta = typeof r.metadata === 'string' ? JSON.parse(r.metadata) : (r.metadata || {}); } catch(e) {}
+                    const statutLabel = {
+                        'brouillon': 'BROUILLON',
+                        'transmis': 'TRANSMIS',
+                        'lu': 'LU',
+                        'valide': 'VALIDÉ',
+                        'rejete': 'REJETÉ'
+                    }[r.statut] || r.statut.toUpperCase();
+
+                    const retourHtml = r.retour_responsable ? `
+                        <div class="retour-box ${r.statut === 'valide' ? 'valide' : (r.statut === 'rejete' ? 'rejete' : '')}">
+                            <strong>↩️ Retour du Responsable Projets :</strong><br>
+                            ${r.retour_responsable}
+                            ${r.note_responsable != null ? `<br><em>Note : ${r.note_responsable}/20</em>` : ''}
                         </div>
-                    </div>
-                `).join('');
+                    ` : '';
+
+                    return `
+                        <div class="list-item">
+                            <div class="title">${r.titre}</div>
+                            <div class="meta">
+                                🆔 ${r.reference || '—'} — 📅 ${new Date(r.date_creation).toLocaleDateString('fr-FR')}
+                                ${r.date_transmission ? ` — 📤 Transmis le ${new Date(r.date_transmission).toLocaleDateString('fr-FR')}` : ''}
+                            </div>
+                            <div class="meta">✍️ ${r.auteur_nom} ${meta.type_rapport ? ` — 📌 ${meta.type_rapport}` : ''}</div>
+                            <div class="statut-badge statut-${r.statut}">${statutLabel}</div>
+                            ${retourHtml}
+                            <div class="actions">
+                                <button onclick="viewRapport('${r.id}')"><i class="fas fa-eye"></i> Voir</button>
+                                ${r.statut === 'brouillon' || r.statut === 'rejete' ? `<button onclick="ouvrirRapportEnEdition('${r.id}')"><i class="fas fa-edit"></i> Modifier</button>` : ''}
+                                ${r.statut === 'brouillon' || r.statut === 'rejete' ? `<button class="transmettre" onclick="transmettreDepuisListe('${r.id}')"><i class="fas fa-paper-plane"></i> Transmettre</button>` : ''}
+                                <button class="delete" onclick="deleteRapport('${r.id}')"><i class="fas fa-trash"></i> Supprimer</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
             } catch (e) { c.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>'; }
         }
 
-        async function verifierRapportMensuel() {
+        async function ouvrirRapportEnEdition(id) {
+            const { data, error } = await supabaseClient.from('csiv_rapports').select('*').eq('id', id).single();
+            if (error || !data) { showToast('❌ Rapport introuvable.', 'error'); return; }
+
+            let meta = {};
+            try { meta = typeof data.metadata === 'string' ? JSON.parse(data.metadata) : (data.metadata || {}); } catch(e) {}
+
+            document.getElementById('rapportTitre').value = data.titre;
+            document.getElementById('rapportType').value = meta.type_rapport || 'mensuel';
+            document.getElementById('rapportEditorContent').innerHTML = data.contenu_html;
+            document.getElementById('editRapportId').value = id;
+            document.getElementById('editRapportStatut').value = data.statut;
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showToast('✏️ Rapport chargé en édition', 'success');
+        }
+
+        async function transmettreDepuisListe(id) {
+            const { data, error } = await supabaseClient.from('csiv_rapports').select('*').eq('id', id).single();
+            if (error || !data) { showToast('❌ Rapport introuvable.', 'error'); return; }
+
+            const ok = confirm(`📤 Transmettre "${data.titre}" au Responsable Projets ?`);
+            if (!ok) return;
+
+            const now = new Date();
+            const nowIso = now.toISOString();
+
             try {
-                const { data } = await supabaseClient.from('csiv_data').select('*').eq('type', 'rapport').order('timestamp', {ascending: false}).limit(1);
-                const alerte = document.getElementById('alerteRapport');
-                if (!data || data.length === 0) {
-                    alerte.classList.add('active');
-                    return;
-                }
-                const dernier = data[0];
-                const diffJours = (Date.now() - dernier.timestamp) / (1000 * 60 * 60 * 24);
-                if (diffJours > 30) alerte.classList.add('active');
-                else alerte.classList.remove('active');
-            } catch (e) { console.warn(e); }
+                const { error: e1 } = await supabaseClient.from('csiv_rapports').update({
+                    statut: 'transmis',
+                    date_transmission: nowIso,
+                    destinataire_id: 'AT21_0011',
+                    destinataire_nom: 'DIALLO MOUHAMED'
+                }).eq('id', id);
+                if (e1) throw e1;
+
+                const contenuTexte = (data.contenu_html || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+                const { error: e2 } = await supabaseClient.from('travaux_membres').insert([{
+                    membre_id: data.auteur_id,
+                    membre_nom: data.auteur_nom,
+                    fichier_nom: `📄 RAPPORT CSIV : ${data.titre}`,
+                    fichier_url: 'rapport-csiv',
+                    storage_path: null,
+                    commentaire: contenuTexte.substring(0, 300),
+                    statut: 'en_attente',
+                    source_type: 'rapport_csiv',
+                    source_rapport_id: id,
+                    date_depot: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
+                    timestamp: Date.now()
+                }]);
+                if (e2) throw e2;
+
+                showToast('✅ Rapport transmis !', 'success');
+                loadRapports();
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+        }
+
+        async function viewRapport(id) {
+            const { data, error } = await supabaseClient.from('csiv_rapports').select('*').eq('id', id).single();
+            if (error || !data) { showToast('❌ Rapport introuvable.', 'error'); return; }
+
+            document.getElementById('viewTitle').textContent = data.titre;
+            document.getElementById('viewMeta').innerHTML = `
+                🆔 ${data.reference || '—'} — 📅 ${new Date(data.date_creation).toLocaleDateString('fr-FR')}
+                ${data.date_transmission ? ` — 📤 Transmis le ${new Date(data.date_transmission).toLocaleDateString('fr-FR')}` : ''}<br>
+                ✍️ ${data.auteur_nom} — Statut : <strong>${data.statut.toUpperCase()}</strong>
+            `;
+            document.getElementById('viewBody').innerHTML = `
+                <div id="rapportViewPrintable" style="background:#f5f2f7; color:#1a0033; padding:2rem; border-radius:12px;">
+                    ${data.contenu_html}
+                </div>
+                ${data.retour_responsable ? `
+                    <div class="retour-box ${data.statut === 'valide' ? 'valide' : (data.statut === 'rejete' ? 'rejete' : '')}" style="margin-top:1.5rem;">
+                        <strong>↩️ Retour du Responsable Projets :</strong><br>
+                        ${data.retour_responsable}
+                        ${data.note_responsable != null ? `<br><em>Note : ${data.note_responsable}/20</em>` : ''}
+                    </div>
+                ` : ''}
+            `;
+            document.getElementById('viewModal').classList.add('active');
+        }
+
+        async function deleteRapport(id) {
+            if (!confirm('Supprimer définitivement ce rapport ?')) return;
+            try {
+                const { error } = await supabaseClient.from('csiv_rapports').delete().eq('id', id);
+                if (error) throw error;
+                showToast('🗑️ Rapport supprimé.', 'success');
+                loadRapports();
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+        }
+
+        function exporterRapportPDF() {
+            const contenu = document.getElementById('rapportEditorContent');
+            if (!contenu || !contenu.innerHTML.trim() || contenu.innerHTML.trim().length < 100) {
+                showToast('⚠️ Rédigez d\'abord le rapport.', 'error'); return;
+            }
+
+            const titre = document.getElementById('rapportTitre').value.trim() || 'Rapport CSIV';
+            const printWindow = window.open('', '_blank', 'width=900,height=700');
+            if (!printWindow) { showToast('❌ Popup bloquée. Autorisez les popups.', 'error'); return; }
+
+            const date = new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            const ref = genererReferenceRapport();
+
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="fr">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>${titre} — AFRICA.TECH21 CSIV</title>
+                    <style>
+                        @page { size: A4; margin: 2cm; }
+                        * { box-sizing: border-box; }
+                        body {
+                            font-family: 'Segoe UI', 'Exo 2', Arial, sans-serif;
+                            color: #1a0033; line-height: 1.65;
+                            padding: 0; margin: 0;
+                            font-size: 11pt;
+                        }
+                        .header {
+                            text-align: center;
+                            border-bottom: 3px solid #6a0dad;
+                            padding-bottom: 1rem;
+                            margin-bottom: 2rem;
+                        }
+                        .header .logo {
+                            font-size: 1.8rem; font-weight: 900;
+                            color: #6a0dad; letter-spacing: 3px;
+                        }
+                        .header .sub {
+                            font-size: 0.85rem; color: #6a0dad;
+                            letter-spacing: 2px; text-transform: uppercase;
+                            margin-top: 0.3rem;
+                        }
+                        h1 { color: #6a0dad; text-align: center; font-size: 1.5rem; margin: 1rem 0; }
+                        h2 { color: #6a0dad; font-size: 1.25rem; margin: 1.3rem 0 0.6rem; }
+                        h3 { color: #6a0dad; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+                        p { margin-bottom: 0.8rem; }
+                        ul, ol { padding-left: 1.8rem; margin-bottom: 0.8rem; }
+                        li { margin-bottom: 0.35rem; }
+                        table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+                        td, th { border: 1px solid #333; padding: 6px 10px; }
+                        th { background: #e8e0ec; }
+                        img { max-width: 100%; height: auto; }
+                        .footer {
+                            margin-top: 3rem;
+                            padding-top: 1rem;
+                            border-top: 1px solid #ccc;
+                            font-size: 0.8rem;
+                            color: #666;
+                            text-align: center;
+                        }
+                        .meta-info {
+                            text-align: center;
+                            color: #4a3050;
+                            font-size: 0.9rem;
+                            margin-bottom: 2rem;
+                            padding-bottom: 1rem;
+                            border-bottom: 1px dashed #b0a0b8;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="logo">AFRICA.TECH21</div>
+                        <div class="sub">Cellule Stratégique d'Innovation et de Veille — CSIV</div>
+                    </div>
+                    <div class="meta-info">
+                        <strong>Référence :</strong> ${ref} — <strong>Date :</strong> ${date}<br>
+                        <strong>Rédigé par :</strong> ${memberPrenom} ${memberNom}
+                    </div>
+                    ${contenu.innerHTML}
+                    <div class="footer">
+                        Document généré automatiquement par la plateforme AFRICA.TECH21 — CSIV<br>
+                        ${ref} — ${date}
+                    </div>
+                    <script>
+                        window.onload = function() { setTimeout(function() { window.print(); }, 300); };
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+
+        function exportViewToPDF() {
+            const viewBody = document.getElementById('viewBody');
+            const viewTitle = document.getElementById('viewTitle').textContent;
+            if (!viewBody) return;
+
+            const printWindow = window.open('', '_blank', 'width=900,height=700');
+            if (!printWindow) { showToast('❌ Popup bloquée.', 'error'); return; }
+
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="fr">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>${viewTitle} — AFRICA.TECH21 CSIV</title>
+                    <style>
+                        @page { size: A4; margin: 2cm; }
+                        body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a0033; line-height: 1.65; font-size: 11pt; }
+                        .header { text-align: center; border-bottom: 3px solid #6a0dad; padding-bottom: 1rem; margin-bottom: 2rem; }
+                        .header .logo { font-size: 1.8rem; font-weight: 900; color: #6a0dad; letter-spacing: 3px; }
+                        .header .sub { font-size: 0.85rem; color: #6a0dad; letter-spacing: 2px; text-transform: uppercase; margin-top: 0.3rem; }
+                        h1, h2, h3 { color: #6a0dad; }
+                        table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+                        td, th { border: 1px solid #333; padding: 6px 10px; }
+                        .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ccc; font-size: 0.8rem; color: #666; text-align: center; }
+                        .retour-box { padding: 1rem; margin-top: 1.5rem; border-left: 4px solid #00a0ff; background: #e8f4ff; border-radius: 6px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="logo">AFRICA.TECH21</div>
+                        <div class="sub">Cellule Stratégique d'Innovation et de Veille — CSIV</div>
+                    </div>
+                    <h1>${viewTitle}</h1>
+                    ${viewBody.innerHTML}
+                    <div class="footer">Document généré par AFRICA.TECH21 — CSIV — ${new Date().toLocaleDateString('fr-FR')}</div>
+                    <script>window.onload = function(){ setTimeout(function(){ window.print(); }, 300); };<\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
         }
 
         // ==================== ÉQUIPE ====================
@@ -1339,7 +1893,8 @@
                 chargerCandidatures();
             } catch (e) { showToast('❌ ' + e.message, 'error'); }
         }
-                // ==================== VUE / SUPPRESSION GÉNÉRIQUE ====================
+
+        // ==================== VUE / SUPPRESSION GÉNÉRIQUE ====================
         async function viewItem(id, source='csiv') {
             let data;
             if (source === 'cahier') {
@@ -1382,13 +1937,14 @@
                 if (!data) return;
                 const veille = data.filter(d => d.type === 'veille').length;
                 const prob = data.filter(d => d.type === 'probleme').length;
-                const rap = data.filter(d => d.type === 'rapport').length;
                 document.getElementById('statVeille').textContent = veille;
                 document.getElementById('statProb').textContent = prob;
-                document.getElementById('statRapport').textContent = rap;
 
                 const { data: cahiers } = await supabaseClient.from('cahiers_charges').select('*');
                 document.getElementById('statCahier').textContent = cahiers ? cahiers.length : 0;
+
+                const { data: rapports } = await supabaseClient.from('csiv_rapports').select('*');
+                document.getElementById('statRapport').textContent = rapports ? rapports.length : 0;
             } catch (e) { console.warn(e); }
         }
 
@@ -1458,18 +2014,6 @@
             const moyMots = Math.round(nbMots / nbPhrases);
             suggestions.push({ type: 'ok', txt: `📊 <strong>${nbMots} mots</strong> • ${nbPhrases} phrases • ~${moyMots} mots/phrase` });
 
-            const motsInconnus = new Set();
-            mots.forEach(m => {
-                const clean = m.replace(/[^a-zàâäéèêëîïôöùûüç]/g, '');
-                if (clean.length > 5 && !DICO_SIMPLE.some(d => d.includes(clean) || clean.includes(d))) {
-                    motsInconnus.add(clean);
-                }
-            });
-            if (motsInconnus.size > 0 && motsInconnus.size < 20) {
-                const listeMots = Array.from(motsInconnus).slice(0, 5).join(', ');
-                suggestions.push({ type: 'info', txt: `🔍 Vérifiez ces mots : <strong>${listeMots}</strong>` });
-            }
-
             if (suggestions.length === 0) {
                 liste.innerHTML = '<li class="ok">✅ Aucune erreur détectée. Excellent travail !</li>';
             } else {
@@ -1487,6 +2031,7 @@
                 });
                 editor.addEventListener('blur', analyserTexte);
             }
+            remplirEnteteRapport();
         });
 
         // ==================== INIT ====================
@@ -1501,6 +2046,34 @@
             verifierRapportMensuel();
             chargerCandidatures();
         }
+
+        async function verifierRapportMensuel() {
+            try {
+                const { data } = await supabaseClient
+                    .from('csiv_rapports')
+                    .select('*')
+                    .order('timestamp', { ascending: false })
+                    .limit(1);
+                const alerte = document.getElementById('alerteRapport');
+                if (!alerte) return;
+                if (!data || data.length === 0) {
+                    alerte.classList.add('active');
+                    return;
+                }
+                const dernier = data[0];
+                const tsDernier = typeof dernier.timestamp === 'number' ? dernier.timestamp : new Date(dernier.date_creation).getTime();
+                const diffJours = (Date.now() - tsDernier) / (1000 * 60 * 60 * 24);
+                if (diffJours > 30) alerte.classList.add('active');
+                else alerte.classList.remove('active');
+            } catch (e) { console.warn(e); }
+        }
+
+        // Auto-refresh toutes les 60s pour voir les retours du Responsable
+        setInterval(() => {
+            if (document.getElementById('sectionRapports')?.classList.contains('active')) {
+                loadRapports();
+            }
+        }, 60000);
 
         createParticles();
         loadAll();
