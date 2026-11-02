@@ -22,7 +22,7 @@
             --panel-glow: 0 0 30px rgba(255, 0, 51, 0.3);
         }
         body {
-            background: 
+            background:
                 radial-gradient(circle at 20% 20%, rgba(139, 0, 0, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(0, 26, 77, 0.2) 0%, transparent 50%),
                 linear-gradient(135deg, #0a0000 0%, #050000 50%, #000814 100%);
@@ -35,7 +35,7 @@
         .hologram-grid {
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
-            background: 
+            background:
                 linear-gradient(90deg, rgba(255, 0, 51, 0.02) 1px, transparent 1px),
                 linear-gradient(180deg, rgba(255, 0, 51, 0.02) 1px, transparent 1px);
             background-size: 50px 50px;
@@ -220,6 +220,10 @@
         .btn-dark:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
         .btn-green { background: linear-gradient(135deg, #00b894, #00ff88); color: #031a0a; }
         .btn-green:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0, 255, 136, 0.5); }
+        .btn-valider { background: linear-gradient(135deg, #00b894, #00ff88); color: #031a0a; }
+        .btn-valider:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0, 255, 136, 0.5); }
+        .btn-rejeter { background: linear-gradient(135deg, #8b0000, #ff0033); color: white; }
+        .btn-rejeter:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(255, 0, 51, 0.5); }
         .input-full {
             width: 100%;
             padding: 1rem 1.5rem;
@@ -309,6 +313,107 @@
         }
         .statut-en_attente { background: rgba(255, 200, 0, 0.15); border: 1px solid #ffc800; color: #ffc800; }
         .statut-corrige { background: rgba(0, 255, 136, 0.15); border: 1px solid #00ff88; color: #00ff88; }
+        /* ===== RAPPORTS CSIV ===== */
+        .statut-brouillon { background: rgba(160,160,160,0.15); border: 1px solid #a0a0a0; color: #d0d0d0; }
+        .statut-transmis { background: rgba(255, 215, 0, 0.15); border: 1px solid #ffd700; color: #ffd700; }
+        .statut-lu { background: rgba(0, 160, 255, 0.15); border: 1px solid #00a0ff; color: #00a0ff; }
+        .statut-valide { background: rgba(0, 255, 136, 0.15); border: 1px solid #00ff88; color: #00ff88; }
+        .statut-rejete { background: rgba(255, 0, 51, 0.15); border: 1px solid #ff0033; color: #ff0033; }
+        .rapport-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 0, 51, 0.2);
+            border-radius: 14px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .rapport-card.nouveau {
+            border-color: #ff0033;
+            box-shadow: 0 0 25px rgba(255, 0, 51, 0.3);
+            animation: pulseNouveau 1.5s infinite;
+        }
+        @keyframes pulseNouveau {
+            0%, 100% { box-shadow: 0 0 25px rgba(255, 0, 51, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(255, 0, 51, 0.6); }
+        }
+        .rapport-card .rapport-titre {
+            color: #ff0033;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .rapport-card .rapport-meta {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 0.3rem;
+        }
+        .rapport-card .rapport-apercu {
+            color: #e0d0d0;
+            font-size: 0.9rem;
+            margin-top: 0.7rem;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid rgba(255, 0, 51, 0.4);
+            border-radius: 6px;
+            font-style: italic;
+        }
+        .rapport-card .rapport-actions {
+            display: flex;
+            gap: 0.6rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .tab .badge-rapport {
+            display: inline-block;
+            background: #ff0033;
+            color: white;
+            border-radius: 50%;
+            min-width: 22px;
+            height: 22px;
+            line-height: 22px;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 900;
+            margin-left: 0.5rem;
+            animation: badgePulse 0.8s infinite;
+            box-shadow: 0 0 15px #ff0033;
+        }
+        .rapport-viewer {
+            background: #f5f2f7;
+            color: #1a0033;
+            padding: 2rem;
+            border-radius: 12px;
+            line-height: 1.7;
+        }
+        .rapport-viewer h1, .rapport-viewer h2, .rapport-viewer h3 { color: #6a0dad; }
+        .rapport-viewer table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+        .rapport-viewer td, .rapport-viewer th { border: 1px solid #333; padding: 6px 10px; }
+        .rapport-viewer img { max-width: 100%; height: auto; }
+        .rapport-viewer ul, .rapport-viewer ol { padding-left: 1.8rem; margin-bottom: 0.8rem; }
+        .decision-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        .note-slider {
+            width: 100%;
+            margin: 1rem 0;
+            height: 8px;
+            accent-color: #ff0033;
+        }
+        .note-display {
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: #ff0033;
+            text-shadow: 0 0 20px rgba(255, 0, 51, 0.5);
+            margin: 0.5rem 0;
+        }
         .empty-state { text-align: center; color: var(--text-secondary); padding: 3rem; }
         .loading-text { text-align: center; color: var(--text-secondary); padding: 2rem; }
         .loading-spinner {
@@ -481,6 +586,9 @@
             <div class="tab" onclick="switchTab('travaux')">
                 <i class="fas fa-folder-open"></i> TRAVAUX MEMBRES
             </div>
+            <div class="tab" onclick="switchTab('rapportsCsiv')" id="tabRapportsCsiv">
+                <i class="fas fa-file-signature"></i> RAPPORTS CSIV
+            </div>
         </div>
 
         <!-- SECTION RÉDACTION -->
@@ -571,8 +679,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- SECTION TRAVAUX MEMBRES -->
+                <!-- SECTION TRAVAUX MEMBRES -->
         <div class="section" id="sectionTravaux">
             <div class="card-box">
                 <h2><i class="fas fa-hourglass-half"></i> TRAVAUX EN ATTENTE</h2>
@@ -588,9 +695,29 @@
                 </div>
             </div>
         </div>
+
+        <!-- SECTION RAPPORTS CSIV -->
+        <div class="section" id="sectionRapportsCsiv">
+            <div class="card-box">
+                <h2><i class="fas fa-inbox"></i> RAPPORTS CSIV À TRAITER</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                    Rapports transmis par Angélique et son équipe CSIV. Vous pouvez les consulter, les valider ou les rejeter avec un retour.
+                </p>
+                <div id="rapportsCsivAttente">
+                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
+                </div>
+            </div>
+
+            <div class="card-box">
+                <h2><i class="fas fa-archive"></i> RAPPORTS CSIV TRAITÉS</h2>
+                <div id="rapportsCsivTraites">
+                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- MODAL VIEW PROJET -->
+    <!-- MODAL VIEW PROJET / RAPPORT -->
     <div class="modal-overlay" id="viewModal">
         <div class="modal-content">
             <h2><i class="fas fa-file-alt"></i> <span id="viewTitle">Titre</span></h2>
@@ -602,7 +729,7 @@
         </div>
     </div>
 
-    <!-- MODAL CORRECTION -->
+    <!-- MODAL CORRECTION TRAVAIL -->
     <div class="modal-overlay" id="correctionModal">
         <div class="modal-content">
             <h2><i class="fas fa-check-double"></i> CORRIGER LE TRAVAIL</h2>
@@ -626,7 +753,32 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- MODAL DÉCISION RAPPORT CSIV -->
+    <div class="modal-overlay" id="decisionRapportModal">
+        <div class="modal-content">
+            <h2><i class="fas fa-gavel"></i> <span id="decisionModalTitle">DÉCISION SUR LE RAPPORT</span></h2>
+            <div id="decisionRapportInfo" style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.7;"></div>
+
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Note du rapport (/20) — optionnel</label>
+                <div class="note-display" id="noteRapportDisplay">15</div>
+                <input type="range" id="noteRapportInput" min="0" max="20" step="1" value="15" class="note-slider" oninput="document.getElementById('noteRapportDisplay').textContent = this.value">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label>Retour / Commentaire <span style="color:#ff0033;">*</span></label>
+                <textarea id="retourRapportInput" rows="6" placeholder="Détaillez votre retour pour l'équipe CSIV..."></textarea>
+            </div>
+
+            <div class="decision-buttons">
+                <button class="btn btn-valider" onclick="validerRapportDecision()"><i class="fas fa-check"></i> VALIDER LE RAPPORT</button>
+                <button class="btn btn-rejeter" onclick="rejeterRapportDecision()"><i class="fas fa-times"></i> REJETER LE RAPPORT</button>
+                <button class="btn btn-dark" onclick="closeDecisionModal()">ANNULER</button>
+            </div>
+            <input type="hidden" id="decisionRapportId" value="">
+        </div>
+    </div>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
@@ -859,7 +1011,7 @@
             jouerBuzzer();
             intervalBuzzer = setInterval(() => {
                 if (!sonMuet) jouerBuzzer();
-            }, 5 * 60 * 1000); // 5 minutes
+            }, 5 * 60 * 1000);
         }
 
         function arreterBuzzer() {
@@ -883,11 +1035,15 @@
             }
         }
 
-        function afficherAlerte(nb) {
+        function afficherAlerte(nbTravaux, nbRapports) {
             const banner = document.getElementById('alerteBanner');
             const texte = document.getElementById('alerteTexte');
-            if (nb > 0) {
-                texte.innerHTML = `⚠️ VOUS AVEZ <strong>${nb}</strong> DOSSIER${nb > 1 ? 'S' : ''} À CORRIGER !`;
+            const total = (nbTravaux || 0) + (nbRapports || 0);
+            if (total > 0) {
+                let msg = [];
+                if (nbTravaux > 0) msg.push(`<strong>${nbTravaux}</strong> travail${nbTravaux > 1 ? 'x' : ''}`);
+                if (nbRapports > 0) msg.push(`<strong>${nbRapports}</strong> rapport${nbRapports > 1 ? 's' : ''} CSIV`);
+                texte.innerHTML = `⚠️ VOUS AVEZ ${msg.join(' + ')} À TRAITER !`;
                 banner.classList.add('active');
                 demarrerBuzzer();
             } else {
@@ -913,6 +1069,19 @@
             }
         }
 
+        function mettreAJourBadgeRapports(nb) {
+            const tabRapports = document.getElementById('tabRapportsCsiv');
+            if (!tabRapports) return;
+            const ancien = tabRapports.querySelector('.badge-rapport');
+            if (ancien) ancien.remove();
+            if (nb > 0) {
+                const badge = document.createElement('span');
+                badge.className = 'badge-rapport';
+                badge.textContent = nb;
+                tabRapports.appendChild(badge);
+            }
+        }
+
         // ==================== TRAVAUX MEMBRES ====================
         async function loadTravaux() {
             const attenteC = document.getElementById('travauxAttente');
@@ -928,10 +1097,15 @@
 
                 if (error) throw error;
 
-                const attente = (data || []).filter(t => t.statut === 'en_attente');
-                const corriges = (data || []).filter(t => t.statut === 'corrige');
+                // Exclure les rapports CSIV (ils ont leur propre onglet)
+                const dataFiltre = (data || []).filter(t => t.source_type !== 'rapport_csiv');
 
-                afficherAlerte(attente.length);
+                const attente = dataFiltre.filter(t => t.statut === 'en_attente');
+                const corriges = dataFiltre.filter(t => t.statut === 'corrige');
+
+                // Compter aussi les rapports CSIV en attente pour l'alerte globale
+                const nbRapportsAttente = await compterRapportsCsivAttente();
+                afficherAlerte(attente.length, nbRapportsAttente);
                 mettreAJourBadge(attente.length);
 
                 if (attente.length === 0) {
@@ -1030,14 +1204,260 @@
             } catch (e) { showToast('❌ ' + e.message); }
         }
 
+        // ==================== RAPPORTS CSIV (NOUVEAU) ====================
+
+        let rapportsCsivData = [];
+
+        async function compterRapportsCsivAttente() {
+            try {
+                const { data } = await supabaseClient
+                    .from('csiv_rapports')
+                    .select('id, statut')
+                    .in('statut', ['transmis', 'lu']);
+                return (data || []).length;
+            } catch (e) {
+                console.warn('Erreur comptage rapports CSIV:', e);
+                return 0;
+            }
+        }
+
+        async function loadRapportsCsiv() {
+            const attenteC = document.getElementById('rapportsCsivAttente');
+            const traitesC = document.getElementById('rapportsCsivTraites');
+            if (!attenteC || !traitesC) return;
+
+            attenteC.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
+            traitesC.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('csiv_rapports')
+                    .select('*')
+                    .order('timestamp', { ascending: false });
+
+                if (error) throw error;
+
+                rapportsCsivData = data || [];
+
+                const attente = rapportsCsivData.filter(r => r.statut === 'transmis' || r.statut === 'lu');
+                const traites = rapportsCsivData.filter(r => r.statut === 'valide' || r.statut === 'rejete');
+
+                // Badge sur l'onglet
+                const nonLus = rapportsCsivData.filter(r => r.statut === 'transmis').length;
+                mettreAJourBadgeRapports(nonLus);
+
+                // Recalculer l'alerte globale
+                const { data: travauxData } = await supabaseClient
+                    .from('travaux_membres')
+                    .select('id, statut, source_type');
+                const nbTravauxAttente = (travauxData || []).filter(t => t.statut === 'en_attente' && t.source_type !== 'rapport_csiv').length;
+                afficherAlerte(nbTravauxAttente, attente.length);
+                mettreAJourBadge(nbTravauxAttente);
+
+                // À traiter
+                if (attente.length === 0) {
+                    attenteC.innerHTML = '<div class="empty-state">📭 Aucun rapport CSIV en attente. 🎉</div>';
+                } else {
+                    attenteC.innerHTML = attente.map(r => renderRapportCard(r, true)).join('');
+                }
+
+                // Traités
+                if (traites.length === 0) {
+                    traitesC.innerHTML = '<div class="empty-state">📭 Aucun rapport traité.</div>';
+                } else {
+                    traitesC.innerHTML = traites.map(r => renderRapportCard(r, false)).join('');
+                }
+            } catch (e) {
+                attenteC.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>';
+                traitesC.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>';
+            }
+        }
+
+        function renderRapportCard(r, actif) {
+            const statutLabel = {
+                'transmis': '📤 TRANSMIS',
+                'lu': '👁️ LU',
+                'valide': '✅ VALIDÉ',
+                'rejete': '❌ REJETÉ'
+            }[r.statut] || r.statut.toUpperCase();
+
+            const dateCreation = r.date_creation ? new Date(r.date_creation).toLocaleDateString('fr-FR') : '—';
+            const dateTransmission = r.date_transmission ? new Date(r.date_transmission).toLocaleDateString('fr-FR') : '—';
+
+            const apercu = (r.contenu_html || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 200);
+
+            const retourHtml = r.retour_responsable ? `
+                <div style="margin-top:0.8rem; padding:0.8rem; background:rgba(0,160,255,0.08); border-left:3px solid #00a0ff; border-radius:6px; font-size:0.88rem; color:#cfe8ff;">
+                    <strong style="color:#00a0ff;">↩️ Votre retour :</strong><br>${r.retour_responsable}
+                    ${r.note_responsable != null ? `<br><em>Note : ${r.note_responsable}/20</em>` : ''}
+                </div>
+            ` : '';
+
+            const actionsActif = actif ? `
+                <div class="rapport-actions">
+                    <button onclick="viewRapportCsiv('${r.id}')" style="background:rgba(0,160,255,0.1); border:1px solid rgba(0,160,255,0.4); color:#00a0ff; padding:0.5rem 1rem; border-radius:8px; cursor:pointer; font-weight:600;">
+                        <i class="fas fa-eye"></i> Lire le rapport
+                    </button>
+                    <button onclick="openDecisionModal('${r.id}')" style="background:rgba(0,255,136,0.1); border:1px solid rgba(0,255,136,0.4); color:#00ff88; padding:0.5rem 1rem; border-radius:8px; cursor:pointer; font-weight:600;">
+                        <i class="fas fa-gavel"></i> Décider (valider/rejeter)
+                    </button>
+                </div>
+            ` : `
+                <div class="rapport-actions">
+                    <button onclick="viewRapportCsiv('${r.id}')" style="background:rgba(0,160,255,0.1); border:1px solid rgba(0,160,255,0.4); color:#00a0ff; padding:0.5rem 1rem; border-radius:8px; cursor:pointer; font-weight:600;">
+                        <i class="fas fa-eye"></i> Relire
+                    </button>
+                </div>
+            `;
+
+            return `
+                <div class="rapport-card ${r.statut === 'transmis' ? 'nouveau' : ''}">
+                    <div class="rapport-titre">
+                        <i class="fas fa-file-signature"></i> ${r.titre}
+                    </div>
+                    <div class="rapport-meta">
+                        🆔 ${r.reference || '—'} — 👤 ${r.auteur_nom} (${r.auteur_id})
+                    </div>
+                    <div class="rapport-meta">
+                        📅 Créé le ${dateCreation} — 📤 Transmis le ${dateTransmission}
+                    </div>
+                    <div class="statut-badge statut-${r.statut}">${statutLabel}</div>
+                    <div class="rapport-apercu">${apercu}...</div>
+                    ${retourHtml}
+                    ${actionsActif}
+                </div>
+            `;
+        }
+
+        async function viewRapportCsiv(id) {
+            const { data, error } = await supabaseClient.from('csiv_rapports').select('*').eq('id', id).single();
+            if (error || !data) { showToast('❌ Rapport introuvable.'); return; }
+
+            // Si statut = 'transmis' → passer à 'lu' automatiquement
+            if (data.statut === 'transmis') {
+                try {
+                    await supabaseClient.from('csiv_rapports').update({
+                        statut: 'lu',
+                        date_lecture: new Date().toISOString()
+                    }).eq('id', id);
+                    loadRapportsCsiv();
+                } catch (e) { console.warn('Erreur marquage lu:', e); }
+            }
+
+            document.getElementById('viewTitle').textContent = data.titre;
+            document.getElementById('viewMeta').innerHTML = `
+                🆔 ${data.reference || '—'} — 👤 ${data.auteur_nom}<br>
+                📅 Créé le ${new Date(data.date_creation).toLocaleDateString('fr-FR')}
+                ${data.date_transmission ? ` — 📤 Transmis le ${new Date(data.date_transmission).toLocaleDateString('fr-FR')}` : ''}
+                ${data.date_lecture ? ` — 👁️ Lu le ${new Date(data.date_lecture).toLocaleDateString('fr-FR')}` : ''}
+            `;
+            document.getElementById('viewBody').innerHTML = `
+                <div class="rapport-viewer">${data.contenu_html}</div>
+                ${data.retour_responsable ? `
+                    <div style="margin-top:1.5rem; padding:1rem; background:rgba(0,160,255,0.08); border-left:3px solid #00a0ff; border-radius:8px; color:#cfe8ff;">
+                        <strong style="color:#00a0ff;">↩️ Votre retour précédent :</strong><br>
+                        ${data.retour_responsable}
+                        ${data.note_responsable != null ? `<br><em>Note : ${data.note_responsable}/20</em>` : ''}
+                    </div>
+                ` : ''}
+            `;
+            document.getElementById('viewModal').classList.add('active');
+        }
+
+        function openDecisionModal(id) {
+            const rapport = rapportsCsivData.find(r => r.id === id);
+            if (!rapport) { showToast('❌ Rapport introuvable.'); return; }
+
+            document.getElementById('decisionRapportId').value = id;
+            document.getElementById('decisionRapportInfo').innerHTML = `
+                <strong style="color:#ff0033;">Titre :</strong> ${rapport.titre}<br>
+                <strong>Référence :</strong> ${rapport.reference || '—'}<br>
+                <strong>Auteur :</strong> ${rapport.auteur_nom} (${rapport.auteur_id})<br>
+                <strong>Date de transmission :</strong> ${rapport.date_transmission ? new Date(rapport.date_transmission).toLocaleDateString('fr-FR') : '—'}
+            `;
+            document.getElementById('retourRapportInput').value = '';
+            document.getElementById('noteRapportInput').value = 15;
+            document.getElementById('noteRapportDisplay').textContent = '15';
+            document.getElementById('decisionRapportModal').classList.add('active');
+        }
+
+        function closeDecisionModal() {
+            document.getElementById('decisionRapportModal').classList.remove('active');
+        }
+
+        async function validerRapportDecision() {
+            await appliquerDecision('valide');
+        }
+
+        async function rejeterRapportDecision() {
+            await appliquerDecision('rejete');
+        }
+
+        async function appliquerDecision(nouveauStatut) {
+            const id = document.getElementById('decisionRapportId').value;
+            const note = parseInt(document.getElementById('noteRapportInput').value);
+            const retour = document.getElementById('retourRapportInput').value.trim();
+
+            if (!retour || retour.length < 5) {
+                showToast('⚠️ Le retour/commentaire est obligatoire (min 5 caractères).');
+                return;
+            }
+
+            const rapport = rapportsCsivData.find(r => r.id === id);
+            if (!rapport) { showToast('❌ Rapport introuvable.'); return; }
+
+            const now = new Date();
+            const nowIso = now.toISOString();
+
+            try {
+                // 1. Mettre à jour le rapport
+                const { error: err1 } = await supabaseClient.from('csiv_rapports').update({
+                    statut: nouveauStatut,
+                    retour_responsable: retour,
+                    note_responsable: note,
+                    date_decision: nowIso
+                }).eq('id', id);
+                if (err1) throw err1;
+
+                // 2. Mettre à jour l'entrée dans travaux_membres pour refléter la décision
+                const { data: travauxExistants } = await supabaseClient
+                    .from('travaux_membres')
+                    .select('id')
+                    .eq('source_rapport_id', id);
+
+                if (travauxExistants && travauxExistants.length > 0) {
+                    await supabaseClient.from('travaux_membres').update({
+                        statut: 'corrige',
+                        note: note,
+                        correction: retour,
+                        correcteur: `${memberPrenom} ${memberNom}`,
+                        date_correction: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})
+                    }).eq('source_rapport_id', id);
+                }
+
+                const label = nouveauStatut === 'valide' ? 'validé ✅' : 'rejeté ❌';
+                showToast(`Rapport ${label} !`, 'success');
+                closeDecisionModal();
+                loadRapportsCsiv();
+            } catch (e) {
+                showToast('❌ ' + e.message);
+            }
+        }
+
         // ==================== INIT ====================
         createParticles();
         loadProjets();
         loadEvaluations();
         loadTravaux();
+        loadRapportsCsiv();
 
-        // Recharger les travaux toutes les 30s pour détecter les nouveaux dépôts
-        setInterval(loadTravaux, 30000);
+        // Recharger les travaux + rapports toutes les 30s
+        setInterval(() => {
+            loadTravaux();
+            if (document.getElementById('sectionRapportsCsiv')?.classList.contains('active')) {
+                loadRapportsCsiv();
+            }
+        }, 30000);
     </script>
 </body>
 </html>
