@@ -22,7 +22,7 @@
             --text-secondary: #a0a8c0;
         }
         body {
-            background: 
+            background:
                 radial-gradient(circle at 20% 20%, rgba(255, 215, 0, 0.05) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(123, 44, 191, 0.08) 0%, transparent 50%),
                 linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
@@ -35,7 +35,7 @@
         .hologram-grid {
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
-            background: 
+            background:
                 linear-gradient(90deg, rgba(255, 215, 0, 0.02) 1px, transparent 1px),
                 linear-gradient(180deg, rgba(255, 215, 0, 0.02) 1px, transparent 1px);
             background-size: 60px 60px;
@@ -424,14 +424,12 @@
     <div class="hologram-grid"></div>
     <div class="particles" id="particles"></div>
 
-    <!-- MODAL ACCÈS -->
     <div class="modal-overlay" id="accessModal">
         <div class="modal-content">
             <i class="fas fa-crown" style="font-size: 2.5rem; color: var(--gold); margin-bottom: 0.8rem; display: block;"></i>
             <h2>ACCÈS DIRECTION</h2>
             <p>Choisissez votre méthode d'identification</p>
 
-            <!-- ÉTAPE 1 : CHOIX -->
             <div id="etapeChoix" class="choix-section">
                 <button class="btn-choix" onclick="choisirScan()">
                     <i class="fas fa-camera"></i>
@@ -449,7 +447,6 @@
                 </button>
             </div>
 
-            <!-- ÉTAPE 2 : CAMÉRA -->
             <div id="etapeCamera" style="display:none;">
                 <div class="camera-container" id="cameraContainer" style="display:none;">
                     <video id="video" autoplay muted playsinline></video>
@@ -469,7 +466,6 @@
                 </button>
             </div>
 
-            <!-- ÉTAPE 3 : ID -->
             <div id="etapeID" style="display:none;">
                 <div class="status-text" id="statusTextID">
                     <i class="fas fa-id-card"></i> Entrez votre ID membre
@@ -487,7 +483,6 @@
         </div>
     </div>
 
-    <!-- CONTENU PRINCIPAL -->
     <div class="page-container" id="mainContent" style="display:none;">
         <a href="dashboard.html" class="back-btn">
             <i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD
@@ -520,7 +515,7 @@ const MEMBRES_DIRECTION = {
         nom: 'BIRANE',
         prenom: 'DIAO',
         fonction: 'PRÉSIDENT DE LA COMMUNAUTÉ',
-        postes: ['espace-major', 'admin-examens', 'espace-projets', 'csiv', 'secretariat', 'inventaire', 'finance', 'communication', 'vice-president']
+        postes: ['espace-major', 'admin-examens', 'espace-projets', 'csiv', 'secretariat', 'inventaire', 'finance', 'communication', 'vice-president', 'centre-diagnostic']
     },
     'AT21_0016': {
         id: 'AT21_0016',
@@ -630,6 +625,13 @@ const CARTES = {
         description: 'Gestion de la caisse communautaire, cotisations des 8 membres et documents économiques.',
         status: 'ACCÈS RESTREINT',
         link: 'espace-finance.html'
+    },
+    'centre-diagnostic': {
+        icon: 'fa-stethoscope',
+        title: 'CENTRE DE DIAGNOSTIC',
+        description: 'Diagnostic en temps réel des PC : RAM, CPU, disque, température, antivirus, réseau. Accès Président uniquement.',
+        status: 'ACCÈS PRÉSIDENT UNIQUEMENT',
+        link: 'centre-diagnostic.html'
     }
 };
 
@@ -662,7 +664,6 @@ function setStatusID(msg, type='') {
     el.innerHTML = msg;
 }
 
-// ==================== NAVIGATION ====================
 function retourChoix() {
     if (stream) {
         stream.getTracks().forEach(t => t.stop());
@@ -694,7 +695,6 @@ function choisirID() {
     setTimeout(() => document.getElementById('inputMemberId').focus(), 200);
 }
 
-// ==================== CAMÉRA ====================
 async function demarrerCamera() {
     document.getElementById('errorMsg').textContent = '';
     try {
@@ -719,7 +719,6 @@ async function demarrerCamera() {
     }
 }
 
-// ==================== SCAN ====================
 function boucleScan() {
     if (!scanning) return;
     const video = document.getElementById('video');
@@ -739,7 +738,6 @@ function boucleScan() {
             });
 
             if (code && code.data) {
-                // N'importe quel QR → accepté
                 scanning = false;
                 if (stream) {
                     stream.getTracks().forEach(t => t.stop());
@@ -761,7 +759,6 @@ function boucleScan() {
     if (scanning) requestAnimationFrame(boucleScan);
 }
 
-// ==================== VÉRIFICATION ID ====================
 function verifierIdMembre() {
     const id = document.getElementById('inputMemberId').value.trim();
     const errEl = document.getElementById('errorMsg');
@@ -781,6 +778,14 @@ function verifierIdMembre() {
     setStatusID('✅ BIENVENUE ' + membre.prenom + ' ' + membre.nom, 'success');
     membreActuel = membre;
 
+    // ⭐ NOUVEAU : Sauvegarde de l'ID Direction pour les autres pages (ex: centre-diagnostic)
+    try {
+        localStorage.setItem('directionMemberId', membre.id);
+        localStorage.setItem('directionMemberNom', membre.nom);
+        localStorage.setItem('directionMemberPrenom', membre.prenom);
+        localStorage.setItem('directionMemberFonction', membre.fonction);
+    } catch (e) { console.warn('localStorage indisponible:', e); }
+
     setTimeout(() => {
         document.getElementById('accessModal').classList.add('hidden');
         document.getElementById('mainContent').style.display = 'block';
@@ -797,9 +802,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// ==================== AFFICHAGE DES POSTES ====================
 function afficherPostes() {
-    document.getElementById('userInfo').innerHTML = 
+    document.getElementById('userInfo').innerHTML =
         `<i class="fas fa-user-shield"></i> ${membreActuel.prenom} ${membreActuel.nom} - ${membreActuel.fonction}`;
 
     const grid = document.getElementById('featuresGrid');
@@ -828,9 +832,6 @@ function afficherPostes() {
     });
 }
 
-// ==================== INIT ====================
-// ⚠️ IMPORTANT : on IGNORE complètement le paramètre ?carte=...
-// On affiche toujours l'écran de choix (Scanner / ID)
 createParticles();
 </script>
 </body>
