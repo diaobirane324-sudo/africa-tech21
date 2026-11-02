@@ -16,7 +16,6 @@
             --med-red: #ff0033;
             --med-orange: #ff8800;
             --med-yellow: #ffcc00;
-            --gold: #ffd700;
             --deep-space: #050510;
             --dark-space: #0a0a18;
             --panel-bg: rgba(10, 20, 30, 0.75);
@@ -29,7 +28,6 @@
             background:
                 radial-gradient(circle at 15% 20%, rgba(0, 255, 136, 0.08) 0%, transparent 45%),
                 radial-gradient(circle at 85% 80%, rgba(0, 212, 255, 0.08) 0%, transparent 45%),
-                radial-gradient(circle at 50% 50%, rgba(255, 0, 51, 0.03) 0%, transparent 60%),
                 linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f1520 100%);
             color: var(--text-primary);
             min-height: 100vh;
@@ -48,21 +46,11 @@
             pointer-events: none; z-index: -3;
         }
         @keyframes gridScan { 0% { transform: translate(0, 0); } 100% { transform: translate(40px, 40px); } }
-        .particles-layer {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none; z-index: -2;
-        }
-        .particle {
-            position: absolute;
-            width: 2px; height: 2px;
-            border-radius: 50%;
-            animation: floatParticle 15s infinite linear;
-        }
+        .particles-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -2; }
+        .particle { position: absolute; width: 2px; height: 2px; border-radius: 50%; animation: floatParticle 15s infinite linear; }
         @keyframes floatParticle {
             0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-            10% { opacity: 0.8; }
-            90% { opacity: 0.8; }
+            10% { opacity: 0.8; } 90% { opacity: 0.8; }
             100% { transform: translateY(-100px) translateX(60px); opacity: 0; }
         }
         .back-btn {
@@ -74,37 +62,25 @@
             text-decoration: none; font-weight: 600; font-size: 0.9rem;
             transition: all 0.3s ease;
         }
-        .back-btn:hover {
-            background: rgba(0, 255, 136, 0.18);
-            box-shadow: 0 0 25px rgba(0, 255, 136, 0.4);
-            transform: translateX(-3px);
-        }
+        .back-btn:hover { background: rgba(0, 255, 136, 0.18); box-shadow: 0 0 25px rgba(0, 255, 136, 0.4); transform: translateX(-3px); }
         .page-container { max-width: 1500px; margin: 0 auto; }
         .page-header {
             background: linear-gradient(135deg, rgba(0, 255, 136, 0.08), rgba(0, 212, 255, 0.05));
             backdrop-filter: blur(20px);
             border: 1px solid rgba(0, 255, 136, 0.3);
             border-radius: 25px;
-            padding: 3rem 2.5rem;
-            margin-bottom: 2rem;
-            text-align: center;
+            padding: 3rem 2.5rem; margin-bottom: 2rem; text-align: center;
             box-shadow: 0 0 60px rgba(0, 255, 136, 0.15), inset 0 0 40px rgba(0, 212, 255, 0.05);
-            position: relative;
-            overflow: hidden;
+            position: relative; overflow: hidden;
         }
         .page-header::before {
-            content: '';
-            position: absolute; top: -50%; left: -50%;
-            width: 200%; height: 200%;
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
             background: radial-gradient(circle, rgba(0, 255, 136, 0.08) 0%, transparent 50%);
-            animation: rotateGlow 25s linear infinite;
-            pointer-events: none;
+            animation: rotateGlow 25s linear infinite; pointer-events: none;
         }
         @keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .page-header .icon-main {
-            font-size: 3.5rem;
-            color: var(--med-green);
-            margin-bottom: 1rem;
+            font-size: 3.5rem; color: var(--med-green); margin-bottom: 1rem;
             text-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
             animation: pulseIcon 2.5s ease-in-out infinite;
             position: relative; z-index: 1;
@@ -114,139 +90,870 @@
             50% { transform: scale(1.08); filter: drop-shadow(0 0 25px var(--med-green)); }
         }
         .page-header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.8rem;
+            font-family: 'Orbitron', sans-serif; font-size: 2.8rem;
             background: linear-gradient(45deg, var(--med-green), var(--med-blue), #ffffff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 3px;
-            font-weight: 900;
-            position: relative; z-index: 1;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            letter-spacing: 3px; font-weight: 900; position: relative; z-index: 1;
         }
         .page-header .subtitle {
-            color: var(--text-secondary);
-            margin-top: 0.8rem;
-            font-size: 1rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            position: relative; z-index: 1;
+            color: var(--text-secondary); margin-top: 0.8rem; font-size: 1rem;
+            letter-spacing: 2px; text-transform: uppercase; position: relative; z-index: 1;
         }
         .page-header .user-info {
             display: inline-block; margin-top: 1.2rem;
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid rgba(0, 255, 136, 0.3);
+            background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.3);
             padding: 0.6rem 1.6rem; border-radius: 20px;
-            color: var(--med-green); font-weight: 600;
-            font-size: 0.85rem;
+            color: var(--med-green); font-weight: 600; font-size: 0.85rem;
             position: relative; z-index: 1;
         }
         .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem; margin-bottom: 2rem;
         }
         .stat-card {
-            background: var(--panel-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--panel-border);
-            border-radius: 15px;
-            padding: 1.5rem 1.2rem;
-            text-align: center;
-            transition: all 0.3s ease;
+            background: var(--panel-bg); backdrop-filter: blur(10px);
+            border: 1px solid var(--panel-border); border-radius: 15px;
+            padding: 1.5rem 1.2rem; text-align: center; transition: all 0.3s ease;
         }
-        .stat-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--med-green);
-            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.15);
-        }
-        .stat-card .stat-icon {
-            font-size: 1.8rem;
-            color: var(--med-green);
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-        .stat-card .stat-num {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            font-weight: 900;
-            color: var(--text-primary);
-            margin-bottom: 0.3rem;
-        }
-        .stat-card .stat-label {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
+        .stat-card:hover { transform: translateY(-3px); border-color: var(--med-green); box-shadow: 0 10px 30px rgba(0, 255, 136, 0.15); }
+        .stat-card .stat-icon { font-size: 1.8rem; color: var(--med-green); margin-bottom: 0.5rem; display: block; }
+        .stat-card .stat-num { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900; color: var(--text-primary); margin-bottom: 0.3rem; }
+        .stat-card .stat-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1.5px; }
         .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.4rem;
-            color: var(--med-green);
-            margin: 2rem 0 1.2rem 0;
-            display: flex; align-items: center; gap: 0.8rem;
-            letter-spacing: 2px;
-            text-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+            font-family: 'Orbitron', sans-serif; font-size: 1.4rem; color: var(--med-green);
+            margin: 2rem 0 1.2rem 0; display: flex; align-items: center; gap: 0.8rem;
+            letter-spacing: 2px; text-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
         }
         .section-title i { color: var(--med-blue); }
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .action-card {
-            background: var(--panel-bg);
-            backdrop-filter: blur(10px);
-            border: 2px solid var(--panel-border);
-            border-radius: 18px;
-            padding: 2rem 1.8rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        .action-card:hover {
-            transform: translateY(-6px);
-            border-color: var(--med-green);
-            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.25);
-        }
-        .action-card .action-icon {
-            font-size: 3rem;
-            color: var(--med-green);
-            margin-bottom: 1rem;
-            display: block;
-            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
-        }
-        .action-card h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            color: var(--med-green);
-            margin-bottom: 0.6rem;
-            letter-spacing: 1.5px;
-        }
-        .action-card p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
         .btn {
-            padding: 0.9rem 2rem;
-            border: none;
-            border-radius: 12px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
+            padding: 0.9rem 2rem; border: none; border-radius: 12px;
+            font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer;
+            transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 0.6rem;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, var(--med-green), var(--med-green-dark));
-            color: #050510
+        .btn-primary { background: linear-gradient(135deg, var(--med-green), var(--med-green-dark)); color: #050510; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0, 255, 136, 0.5); }
+        .btn-blue { background: linear-gradient(135deg, var(--med-blue), var(--med-blue-dark)); color: #050510; }
+        .btn-blue:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0, 212, 255, 0.5); }
+        .btn-red { background: linear-gradient(135deg, var(--med-red), #aa0022); color: #fff; }
+        .btn-red:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255, 0, 51, 0.5); }
+        .btn-dark { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(0, 255, 136, 0.3); color: var(--text-secondary); }
+        .btn-dark:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
+        .pc-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 1.5rem; }
+        .pc-card {
+            background: var(--panel-bg); backdrop-filter: blur(10px);
+            border: 2px solid var(--panel-border); border-radius: 18px;
+            padding: 1.8rem; transition: all 0.3s ease; position: relative; overflow: hidden;
+        }
+        .pc-card.online { border-color: var(--med-green); box-shadow: 0 0 25px rgba(0, 255, 136, 0.15); }
+        .pc-card.online::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--med-green), var(--med-blue), var(--med-green));
+            background-size: 200% 100%; animation: borderFlow 3s linear infinite;
+        }
+        @keyframes borderFlow { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+        .pc-card.offline { opacity: 0.6; border-color: rgba(255, 0, 51, 0.3); }
+        .pc-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0, 255, 136, 0.2); }
+        .pc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; gap: 1rem; flex-wrap: wrap; }
+        .pc-name { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: var(--med-green); letter-spacing: 1px; display: flex; align-items: center; gap: 0.6rem; }
+        .pc-status-badge { padding: 0.3rem 0.9rem; border-radius: 15px; font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+        .badge-online { background: rgba(0, 255, 136, 0.15); border: 1px solid var(--med-green); color: var(--med-green); animation: pulseBadge 2s infinite; }
+        @keyframes pulseBadge { 0%, 100% { box-shadow: 0 0 0 rgba(0, 255, 136, 0.5); } 50% { box-shadow: 0 0 15px rgba(0, 255, 136, 0.8); } }
+        .badge-offline { background: rgba(255, 0, 51, 0.15); border: 1px solid var(--med-red); color: var(--med-red); }
+        .pc-info { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.8; margin-bottom: 1rem; }
+        .pc-info i { color: var(--med-blue); width: 20px; }
+        .pc-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin: 1rem 0; }
+        .metric { background: rgba(0, 0, 0, 0.4); border-radius: 10px; padding: 0.7rem; }
+        .metric-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .metric-value { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 700; }
+        .metric-bar { height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 5px; overflow: hidden; margin-top: 0.4rem; }
+        .metric-bar-fill { height: 100%; border-radius: 5px; transition: width 0.6s ease; }
+        .bar-green { background: linear-gradient(90deg, var(--med-green), var(--med-green-dark)); }
+        .bar-blue { background: linear-gradient(90deg, var(--med-blue), var(--med-blue-dark)); }
+        .bar-orange { background: linear-gradient(90deg, var(--med-yellow), var(--med-orange)); }
+        .bar-red { background: linear-gradient(90deg, var(--med-orange), var(--med-red)); }
+        .pc-actions { display: flex; gap: 0.6rem; margin-top: 1rem; flex-wrap: wrap; }
+        .pc-actions .btn { padding: 0.6rem 1.2rem; font-size: 0.75rem; }
+        .empty-state { text-align: center; color: var(--text-secondary); padding: 4rem 2rem; }
+        .empty-state i { font-size: 4rem; color: rgba(0, 255, 136, 0.2); margin-bottom: 1rem; display: block; }
+        .empty-state h3 { font-family: 'Orbitron', sans-serif; color: var(--med-green); margin-bottom: 0.8rem; }
+        .loading-text { text-align: center; color: var(--text-secondary); padding: 2rem; }
+        .loading-spinner {
+            display: inline-block; width: 30px; height: 30px;
+            border: 3px solid rgba(0, 255, 136, 0.2);
+            border-top: 3px solid var(--med-green);
+            border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 1rem;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(12px); z-index: 100000;
+            align-items: center; justify-content: center; padding: 2rem;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: linear-gradient(135deg, #0a0a18 0%, #0f1520 100%);
+            border: 2px solid var(--med-green); border-radius: 25px;
+            max-width: 800px; width: 100%; padding: 2.5rem;
+            box-shadow: 0 0 80px rgba(0, 255, 136, 0.3);
+            position: relative; max-height: 90vh; overflow-y: auto;
+        }
+        .modal-header { text-align: center; margin-bottom: 2rem; }
+        .modal-header .modal-icon { font-size: 3.5rem; margin-bottom: 1rem; display: block; color: var(--med-green); text-shadow: 0 0 30px rgba(0, 255, 136, 0.6); }
+        .modal-header h2 { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; letter-spacing: 2px; color: var(--med-green); }
+        .modal-body { color: var(--text-secondary); font-size: 1rem; line-height: 1.8; }
+        .modal-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
+        .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .detail-item { background: rgba(0, 0, 0, 0.4); border-left: 3px solid var(--med-blue); border-radius: 10px; padding: 0.9rem 1rem; }
+        .detail-item .detail-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem; }
+        .detail-item .detail-value { font-family: 'JetBrains Mono', monospace; font-size: 1rem; color: var(--text-primary); word-break: break-all; }
+        .detail-item.ok { border-left-color: var(--med-green); }
+        .detail-item.warn { border-left-color: var(--med-yellow); }
+        .detail-item.danger { border-left-color: var(--med-red); }
+        .disks-table { width: 100%; border-collapse: collapse; margin: 1rem 0; background: rgba(0, 0, 0, 0.3); border-radius: 10px; overflow: hidden; }
+        .disks-table th { background: rgba(0, 255, 136, 0.1); color: var(--med-green); padding: 0.7rem; text-align: left; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; }
+        .disks-table td { padding: 0.7rem; border-top: 1px solid rgba(0, 255, 136, 0.1); font-size: 0.88rem; color: var(--text-secondary); }
+        .toast {
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+            padding: 1rem 2rem; border-radius: 12px; font-weight: 700;
+            z-index: 100001; animation: fadeInUp 0.3s ease;
+            font-family: 'Orbitron', sans-serif; letter-spacing: 1px; font-size: 0.85rem;
+        }
+        .toast.success { background: rgba(0, 255, 136, 0.95); color: #050510; }
+        .toast.error { background: rgba(255, 0, 51, 0.95); color: #fff; }
+        .toast.info { background: rgba(0, 212, 255, 0.95); color: #050510; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        .download-section {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(0, 255, 136, 0.08));
+            border: 2px solid rgba(0, 212, 255, 0.4);
+            border-radius: 20px; padding: 2rem; margin-bottom: 2rem; text-align: center;
+        }
+        .download-section .download-icon {
+            font-size: 3rem; color: var(--med-blue); margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+        .download-section h2 {
+            font-family: 'Orbitron', sans-serif; color: var(--med-blue);
+            font-size: 1.5rem; margin-bottom: 0.6rem; letter-spacing: 2px;
+        }
+        .download-section p { color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.7; }
+        .download-instructions {
+            background: rgba(0, 0, 0, 0.4); border-radius: 12px;
+            padding: 1rem 1.5rem; margin-top: 1.2rem;
+            text-align: left; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.8;
+        }
+        .download-instructions ol { padding-left: 1.5rem; }
+        .download-instructions li { margin-bottom: 0.4rem; }
+        .download-instructions strong { color: var(--med-green); }
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .page-header { padding: 2rem 1.5rem; }
+            .page-header h1 { font-size: 1.8rem; }
+            .pc-list { grid-template-columns: 1fr; }
+            .pc-metrics { grid-template-columns: 1fr; }
+            .modal-content { padding: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hologram-grid"></div>
+    <div class="particles-layer" id="particlesLayer"></div>
+
+    <div class="page-container">
+        <a href="direction.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> RETOUR ESPACE DIRECTION
+        </a>
+
+        <header class="page-header">
+            <i class="fas fa-stethoscope icon-main"></i>
+            <h1>CENTRE DE DIAGNOSTIC</h1>
+            <p class="subtitle">Diagnostic temps réel des PC — Accès Président</p>
+            <div class="user-info" id="userInfo">
+                <i class="fas fa-user-shield"></i> CHARGEMENT...
+            </div>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-desktop stat-icon"></i>
+                <div class="stat-num" id="statTotal">0</div>
+                <div class="stat-label">PC total</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-wifi stat-icon"></i>
+                <div class="stat-num" id="statOnline">0</div>
+                <div class="stat-label">En ligne</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-power-off stat-icon"></i>
+                <div class="stat-num" id="statOffline">0</div>
+                <div class="stat-label">Hors ligne</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-thermometer-half stat-icon"></i>
+                <div class="stat-num" id="statTemp">—</div>
+                <div class="stat-label">Temp. max</div>
+            </div>
+        </div>
+
+        <div class="download-section">
+            <i class="fas fa-download download-icon"></i>
+            <h2>TÉLÉCHARGER L'AGENT</h2>
+            <p>
+                Installez l'agent sur le PC à diagnostiquer. Il se connectera automatiquement à cette plateforme
+                et enverra les données en temps réel toutes les 3 secondes.
+            </p>
+            <button class="btn btn-blue" onclick="ouvrirModalTelechargement()">
+                <i class="fas fa-download"></i> TÉLÉCHARGER L'AGENT (.py)
+            </button>
+            <div class="download-instructions">
+                <strong>📋 Comment utiliser l'agent ?</strong>
+                <ol>
+                    <li>Téléchargez le fichier <strong>agent_diag.py</strong></li>
+                    <li>Installez <strong>Python 3.10+</strong> sur le PC cible (python.org)</li>
+                    <li>Double-cliquez sur <strong>agent_diag.py</strong></li>
+                    <li>L'agent se connecte automatiquement</li>
+                    <li>Le PC apparaît <strong>ici en temps réel</strong></li>
+                </ol>
+            </div>
+        </div>
+
+        <h2 class="section-title"><i class="fas fa-satellite-dish"></i> PC CONNECTÉS EN TEMPS RÉEL</h2>
+
+        <div id="pcListContainer">
+            <div class="loading-text"><div class="loading-spinner"></div> Recherche des PC connectés...</div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-desktop modal-icon"></i>
+                <h2 id="detailTitle">DÉTAILS DU PC</h2>
+            </div>
+            <div class="modal-body" id="detailBody"></div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="exporterRapportPDF()">
+                    <i class="fas fa-file-pdf"></i> EXPORTER PDF
+                </button>
+                <button class="btn btn-dark" onclick="fermerDetailModal()">
+                    <i class="fas fa-times"></i> FERMER
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="downloadModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-download modal-icon"></i>
+                <h2>TÉLÉCHARGER L'AGENT</h2>
+            </div>
+            <div class="modal-body">
+                <p>Cliquez sur le bouton ci-dessous pour télécharger <strong>agent_diag.py</strong> :</p>
+                <div class="download-instructions" style="margin-top:1rem;">
+                    <ol>
+                        <li>Le fichier <strong>agent_diag.py</strong> va se télécharger</li>
+                        <li>Copiez-le sur le PC à diagnostiquer</li>
+                        <li>Double-cliquez dessus (Python requis)</li>
+                        <li>Le PC apparaîtra dans la liste en temps réel</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="telechargerAgent()">
+                    <i class="fas fa-download"></i> TÉLÉCHARGER
+                </button>
+                <button class="btn btn-dark" onclick="fermerModalTelechargement()">
+                    <i class="fas fa-times"></i> ANNULER
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const ALLOWED_IDS = ['AT21_006', 'Birane186@00'];
+
+        function afficherAccesRefuse(raison) {
+            document.body.innerHTML = `
+                <div style="display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column;gap:1rem;background:#050510;color:#fff;font-family:'Exo 2',sans-serif;padding:2rem;text-align:center;">
+                    <i class="fas fa-lock" style="font-size:4rem;color:#00ff88;"></i>
+                    <h1 style="color:#00ff88;font-family:'Orbitron',sans-serif;letter-spacing:2px;">ACCÈS REFUSÉ</h1>
+                    <p style="color:#a0a8c0;max-width:500px;line-height:1.7;">${raison}</p>
+                    <a href="direction.html" style="color:#00d4ff;text-decoration:none;padding:0.8rem 2rem;border:1px solid #00d4ff;border-radius:10px;margin-top:1rem;">← Retour à l'Espace Direction</a>
+                </div>
+            `;
+        }
+
+        const directionMembre = localStorage.getItem('directionMemberId') || sessionStorage.getItem('directionMemberId') || '';
+        if (!ALLOWED_IDS.includes(directionMembre)) {
+            afficherAccesRefuse('Cette page est réservée au Président. Veuillez vous connecter via l\'Espace Direction avec votre ID <strong>AT21_006</strong>.');
+            throw new Error('Accès refusé');
+        }
+
+        const directionNom = localStorage.getItem('directionMemberNom') || '';
+        const directionPrenom = localStorage.getItem('directionMemberPrenom') || '';
+        const directionFonction = localStorage.getItem('directionMemberFonction') || '';
+        document.getElementById('userInfo').innerHTML = `<i class="fas fa-user-shield"></i> ${directionPrenom} ${directionNom} — ${directionFonction}`;
+
+        let pcsData = [];
+        let refreshInterval = null;
+        let pcSelectionne = null;
+
+        function showToast(msg, type='info') {
+            const old = document.querySelector('.toast'); if (old) old.remove();
+            const t = document.createElement('div');
+            t.className = 'toast ' + type;
+            t.innerHTML = msg;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 4000);
+        }
+
+        function createParticles() {
+            const container = document.getElementById('particlesLayer');
+            const colors = ['#00ff88', '#00d4ff', '#ffd700'];
+            for (let i = 0; i < 40; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.animationDelay = Math.random() * 15 + 's';
+                p.style.animationDuration = (10 + Math.random() * 10) + 's';
+                const c = colors[Math.floor(Math.random() * colors.length)];
+                p.style.background = c;
+                p.style.boxShadow = `0 0 8px ${c}`;
+                container.appendChild(p);
+            }
+        }
+
+        async function chargerPCs() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('diagnostics_pc')
+                    .select('*')
+                    .order('derniere_maj', { ascending: false });
+
+                if (error) throw error;
+                pcsData = data || [];
+
+                const now = Date.now();
+                pcsData.forEach(pc => {
+                    if (pc.derniere_maj) {
+                        const diff = now - new Date(pc.derniere_maj).getTime();
+                        pc._enLigne = diff < 15000;
+                    } else {
+                        pc._enLigne = false;
+                    }
+                });
+
+                afficherPCs();
+                majStats();
+            } catch (e) {
+                console.error(e);
+                document.getElementById('pcListContainer').innerHTML =
+                    '<div class="empty-state"><i class="fas fa-exclamation-triangle" style="color:var(--med-red);"></i><h3 style="color:var(--med-red);">Erreur de connexion</h3><p>' + e.message + '</p></div>';
+            }
+        }
+
+        function afficherPCs() {
+            const container = document.getElementById('pcListContainer');
+            if (pcsData.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <h3>Aucun PC connecté</h3>
+                        <p>Téléchargez l'agent ci-dessus et lancez-le sur un PC pour commencer le diagnostic.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '<div class="pc-list">' + pcsData.map(pc => {
+                const online = pc._enLigne;
+                const cpuPct = parseFloat(pc.cpu_utilisation_pct) || 0;
+                const ramPct = parseFloat(pc.ram_utilisation_pct) || 0;
+                const temp = parseFloat(pc.cpu_temperature_c) || 0;
+
+                let cpuClass = 'bar-green';
+                if (cpuPct > 70) cpuClass = 'bar-red';
+                else if (cpuPct > 50) cpuClass = 'bar-orange';
+
+                let ramClass = 'bar-blue';
+                if (ramPct > 80) ramClass = 'bar-red';
+                else if (ramPct > 60) ramClass = 'bar-orange';
+
+                let tempStyle = 'color:var(--med-green);';
+                if (temp > 80) tempStyle = 'color:var(--med-red);';
+                else if (temp > 65) tempStyle = 'color:var(--med-orange);';
+
+                return `
+                    <div class="pc-card ${online ? 'online' : 'offline'}">
+                        <div class="pc-header">
+                            <div class="pc-name"><i class="fas fa-desktop"></i> ${pc.hostname || 'PC sans nom'}</div>
+                            <span class="pc-status-badge ${online ? 'badge-online' : 'badge-offline'}">
+                                ${online ? '● EN LIGNE' : '○ HORS LIGNE'}
+                            </span>
+                        </div>
+                        <div class="pc-info">
+                            <div><i class="fas fa-user"></i> ${pc.utilisateur || 'Inconnu'} — ${pc.os_name || 'OS inconnu'}</div>
+                            <div><i class="fas fa-network-wired"></i> ${pc.ip_locale || 'IP inconnue'}</div>
+                        </div>
+                        <div class="pc-metrics">
+                            <div class="metric">
+                                <div class="metric-label">CPU</div>
+                                <div class="metric-value" style="color:var(--med-green);">${cpuPct.toFixed(1)}%</div>
+                                <div class="metric-bar"><div class="metric-bar-fill ${cpuClass}" style="width:${cpuPct}%"></div></div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-label">RAM</div>
+                                <div class="metric-value" style="color:var(--med-blue);">${ramPct.toFixed(1)}%</div>
+                                <div class="metric-bar"><div class="metric-bar-fill ${ramClass}" style="width:${ramPct}%"></div></div>
+                            </div>
+                        </div>
+                        <div class="pc-info" style="margin-bottom:0.6rem;">
+                            <div style="display:flex;justify-content:space-between;">
+                                <span><i class="fas fa-thermometer-half"></i> Température</span>
+                                <strong style="${tempStyle}">${temp ? temp + '°C' : 'N/A'}</strong>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;margin-top:0.4rem;">
+                                <span><i class="fas fa-shield-virus"></i> Antivirus</span>
+                                <strong style="color:${pc.antivirus_actif ? 'var(--med-green)' : 'var(--med-red)'};">
+                                    ${pc.antivirus_actif ? '✓ ' + (pc.antivirus_nom || 'Actif') : '✗ Inactif'}
+                                </strong>
+                            </div>
+                        </div>
+                        <div class="pc-actions">
+                            <button class="btn btn-primary" onclick="voirDetails('${pc.id}')">
+                                <i class="fas fa-eye"></i> Détails
+                            </button>
+                            <button class="btn btn-red" onclick="supprimerPC('${pc.id}')">
+                                <i class="fas fa-trash"></i> Supprimer
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('') + '</div>';
+        }
+
+        function majStats() {
+            const total = pcsData.length;
+            const online = pcsData.filter(p => p._enLigne).length;
+            const offline = total - online;
+            let maxTemp = 0;
+            pcsData.forEach(p => {
+                const t = parseFloat(p.cpu_temperature_c) || 0;
+                if (t > maxTemp) maxTemp = t;
+            });
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statOnline').textContent = online;
+            document.getElementById('statOffline').textContent = offline;
+            document.getElementById('statTemp').textContent = maxTemp ? maxTemp + '°C' : '—';
+        }
+
+        function voirDetails(pcId) {
+            const pc = pcsData.find(p => p.id === pcId);
+            if (!pc) return;
+            pcSelectionne = pc;
+            const online = pc._enLigne;
+            document.getElementById('detailTitle').textContent = (pc.hostname || 'PC').toUpperCase();
+
+            let disquesHtml = '';
+            try {
+                const disques = typeof pc.disques === 'string' ? JSON.parse(pc.disques) : (pc.disques || []);
+                if (disques.length > 0) {
+                    disquesHtml = `
+                        <h3 style="color:var(--med-green);margin:1.5rem 0 0.8rem;font-family:Orbitron;font-size:1rem;letter-spacing:1.5px;">💾 DISQUES</h3>
+                        <table class="disks-table">
+                            <thead><tr><th>Nom</th><th>Total</th><th>Libre</th><th>Utilisation</th></tr></thead>
+                            <tbody>
+                                ${disques.map(d => `
+                                    <tr>
+                                        <td><strong>${d.nom || 'Disque'}</strong></td>
+                                        <td>${(d.total_go || 0).toFixed(1)} Go</td>
+                                        <td>${(d.libre_go || 0).toFixed(1)} Go</td>
+                                        <td>${(d.pct || 0).toFixed(1)}%</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    `;
+                }
+            } catch (e) {}
+
+            document.getElementById('detailBody').innerHTML = `
+                <div class="detail-grid">
+                    <div class="detail-item ${online ? 'ok' : 'danger'}">
+                        <div class="detail-label">Statut</div>
+                        <div class="detail-value" style="color:${online ? 'var(--med-green)' : 'var(--med-red)'};">
+                            ${online ? '● EN LIGNE' : '○ HORS LIGNE'}
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Système</div>
+                        <div class="detail-value">${pc.os_name || '?'} ${pc.os_arch || ''}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Utilisateur</div>
+                        <div class="detail-value">${pc.utilisateur || '?'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">IP locale</div>
+                        <div class="detail-value">${pc.ip_locale || '?'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">MAC</div>
+                        <div class="detail-value">${pc.mac_address || '?'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Résolution</div>
+                        <div class="detail-value">${pc.resolution || '?'}</div>
+                    </div>
+                </div>
+
+                <h3 style="color:var(--med-green);margin:1.5rem 0 0.8rem;font-family:Orbitron;font-size:1rem;letter-spacing:1.5px;">🔥 CPU</h3>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Modèle</div>
+                        <div class="detail-value">${pc.cpu_modele || '?'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Cœurs</div>
+                        <div class="detail-value">${pc.cpu_coeurs || 0}</div>
+                    </div>
+                    <div class="detail-item ${parseFloat(pc.cpu_utilisation_pct) > 70 ? 'danger' : 'ok'}">
+                        <div class="detail-label">Utilisation</div>
+                        <div class="detail-value">${(parseFloat(pc.cpu_utilisation_pct) || 0).toFixed(1)}%</div>
+                    </div>
+                    <div class="detail-item ${parseFloat(pc.cpu_temperature_c) > 75 ? 'danger' : 'ok'}">
+                        <div class="detail-label">Température</div>
+                        <div class="detail-value">${pc.cpu_temperature_c ? pc.cpu_temperature_c + '°C' : 'N/A'}</div>
+                    </div>
+                </div>
+
+                <h3 style="color:var(--med-blue);margin:1.5rem 0 0.8rem;font-family:Orbitron;font-size:1rem;letter-spacing:1.5px;">🧠 RAM</h3>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Totale</div>
+                        <div class="detail-value">${(parseFloat(pc.ram_totale_go) || 0).toFixed(2)} Go</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Utilisée</div>
+                        <div class="detail-value">${(parseFloat(pc.ram_utilisee_go) || 0).toFixed(2)} Go</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Libre</div>
+                        <div class="detail-value">${(parseFloat(pc.ram_libre_go) || 0).toFixed(2)} Go</div>
+                    </div>
+                    <div class="detail-item ${parseFloat(pc.ram_utilisation_pct) > 80 ? 'danger' : 'ok'}">
+                        <div class="detail-label">Utilisation</div>
+                        <div class="detail-value">${(parseFloat(pc.ram_utilisation_pct) || 0).toFixed(1)}%</div>
+                    </div>
+                </div>
+
+                <h3 style="color:var(--med-green);margin:1.5rem 0 0.8rem;font-family:Orbitron;font-size:1rem;letter-spacing:1.5px;">🛡️ SÉCURITÉ</h3>
+                <div class="detail-grid">
+                    <div class="detail-item ${pc.antivirus_actif ? 'ok' : 'danger'}">
+                        <div class="detail-label">Antivirus</div>
+                        <div class="detail-value">${pc.antivirus_actif ? '✓ ' + (pc.antivirus_nom || 'Actif') : '✗ Aucun'}</div>
+                    </div>
+                    <div class="detail-item ${pc.pare_feu_actif ? 'ok' : 'warn'}">
+                        <div class="detail-label">Pare-feu</div>
+                        <div class="detail-value">${pc.pare_feu_actif ? '✓ Actif' : '⚠ Inactif'}</div>
+                    </div>
+                </div>
+
+                ${disquesHtml}
+            `;
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        function fermerDetailModal() {
+            document.getElementById('detailModal').classList.remove('active');
+            pcSelectionne = null;
+        }
+
+        function ouvrirModalTelechargement() { document.getElementById('downloadModal').classList.add('active'); }
+        function fermerModalTelechargement() { document.getElementById('downloadModal').classList.remove('active'); }
+
+        function telechargerAgent() {
+            const contenu = `#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+AGENT DE DIAGNOSTIC AFRICA.TECH21
+Lance sur le PC à diagnostiquer. Envoie les données vers Supabase en temps réel.
+"""
+import platform, socket, uuid, time, json, subprocess, os
+import urllib.request, urllib.error
+
+SUPABASE_URL = "${SUPABASE_URL}"
+SUPABASE_KEY = "${SUPABASE_KEY}"
+
+try:
+    import psutil
+except ImportError:
+    print("Installation de psutil...")
+    subprocess.check_call(['pip', 'install', 'psutil', '--quiet'])
+    import psutil
+
+AGENT_ID = str(uuid.uuid4())[:16]
+INTERVALLE = 3
+
+def get_ip():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        s.close()
+        return ip
+    except:
+        return "127.0.0.1"
+
+def get_mac():
+    return ':'.join(['{:02x}'.format((uuid.getnode() >> ele) & 0xff) for ele in range(0, 8*6, 8)][::-1])
+
+def get_temp():
+    try:
+        if hasattr(psutil, "sensors_temperatures"):
+            temps = psutil.sensors_temperatures()
+            if temps:
+                for name, entries in temps.items():
+                    if entries:
+                        return round(entries[0].current, 1)
+    except:
+        pass
+    return None
+
+def get_antivirus():
+    try:
+        if platform.system() == 'Windows':
+            result = subprocess.run(
+                ['powershell', '-Command', 'Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct | Select-Object -ExpandProperty displayName'],
+                capture_output=True, text=True, timeout=5
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                return True, result.stdout.strip().split('\\n')[0]
+    except:
+        pass
+    return False, ""
+
+def get_disks():
+    disques = []
+    try:
+        for part in psutil.disk_partitions():
+            try:
+                usage = psutil.disk_usage(part.mountpoint)
+                disques.append({
+                    'nom': part.device,
+                    'total_go': round(usage.total / (1024**3), 2),
+                    'libre_go': round(usage.free / (1024**3), 2),
+                    'pct': round((usage.used / usage.total) * 100, 1)
+                })
+            except:
+                pass
+    except:
+        pass
+    return disques
+
+def get_processus():
+    procs = []
+    try:
+        for p in psutil.process_iter(['name', 'cpu_percent']):
+            try:
+                procs.append({'nom': p.info['name'], 'cpu': p.info['cpu_percent'] or 0})
+            except:
+                pass
+        procs.sort(key=lambda x: x['cpu'], reverse=True)
+    except:
+        pass
+    return procs[:10]
+
+def collecter():
+    cpu_pct = psutil.cpu_percent(interval=1)
+    ram = psutil.virtual_memory()
+    temp = get_temp()
+    av_actif, av_nom = get_antivirus()
+    cpu_modele = platform.processor() or "CPU"
+    if platform.system() == 'Windows':
+        try:
+            r = subprocess.run(['wmic', 'cpu', 'get', 'name'], capture_output=True, text=True, timeout=3)
+            lines = r.stdout.strip().split('\\n')
+            if len(lines) > 1:
+                cpu_modele = lines[1].strip()
+        except:
+            pass
+    return {
+        'agent_id': AGENT_ID,
+        'hostname': socket.gethostname(),
+        'os_name': f"{platform.system()} {platform.release()}",
+        'os_version': platform.version(),
+        'os_arch': platform.machine(),
+        'utilisateur': os.getlogin() if hasattr(os, 'getlogin') else 'user',
+        'uptime_secondes': int(time.time() - psutil.boot_time()),
+        'cpu_modele': cpu_modele,
+        'cpu_coeurs': psutil.cpu_count(logical=True),
+        'cpu_frequence_mhz': int(psutil.cpu_freq().current) if psutil.cpu_freq() else 0,
+        'cpu_utilisation_pct': round(cpu_pct, 2),
+        'cpu_temperature_c': temp,
+        'ram_totale_go': round(ram.total / (1024**3), 2),
+        'ram_utilisee_go': round(ram.used / (1024**3), 2),
+        'ram_libre_go': round(ram.available / (1024**3), 2),
+        'ram_utilisation_pct': round(ram.percent, 2),
+        'disques': get_disks(),
+        'ip_locale': get_ip(),
+        'mac_address': get_mac(),
+        'antivirus_actif': av_actif,
+        'antivirus_nom': av_nom,
+        'pare_feu_actif': True,
+        'menaces_detectees': 0,
+        'top_processus': get_processus(),
+        'resolution': 'N/A',
+        'statut': 'connecte',
+        'derniere_maj': time.strftime('%Y-%m-%dT%H:%M:%S.000Z', time.gmtime()),
+        'timestamp': int(time.time() * 1000)
+    }
+
+def envoyer(data):
+    url = f"{SUPABASE_URL}/rest/v1/diagnostics_pc"
+    headers = {
+        'apikey': SUPABASE_KEY,
+        'Authorization': f'Bearer {SUPABASE_KEY}',
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates,return=minimal'
+    }
+    try:
+        req = urllib.request.Request(url, data=json.dumps(data).encode(), headers=headers, method='POST')
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            return resp.status in (200, 201, 204)
+    except urllib.error.HTTPError as e:
+        if e.code == 409:
+            try:
+                patch_url = f"{url}?agent_id=eq.{data['agent_id']}"
+                req = urllib.request.Request(patch_url, data=json.dumps(data).encode(), headers=headers, method='PATCH')
+                with urllib.request.urlopen(req, timeout=10) as resp:
+                    return resp.status in (200, 201, 204)
+            except Exception as e2:
+                print(f"Erreur PATCH: {e2}")
+                return False
+        print(f"Erreur HTTP {e.code}: {e.reason}")
+        return False
+    except Exception as e:
+        print(f"Erreur envoi: {e}")
+        return False
+
+def main():
+    print("=" * 60)
+    print("  AGENT DE DIAGNOSTIC - AFRICA.TECH21")
+    print("  Centre de Diagnostic CSIV")
+    print("=" * 60)
+    print(f"  Agent ID : {AGENT_ID}")
+    print(f"  Hostname : {socket.gethostname()}")
+    print("=" * 60)
+    print("  Laissez cette fenetre ouverte.")
+    print("  Fermez-la pour arreter l'agent.")
+    print("=" * 60)
+    try:
+        while True:
+            try:
+                data = collecter()
+                success = envoyer(data)
+                if success:
+                    print(f"[{time.strftime('%H:%M:%S')}] OK - CPU: {data['cpu_utilisation_pct']}% | RAM: {data['ram_utilisation_pct']}%")
+                else:
+                    print(f"[{time.strftime('%H:%M:%S')}] Echec envoi")
+            except Exception as e:
+                print(f"[{time.strftime('%H:%M:%S')}] Erreur: {e}")
+            time.sleep(INTERVALLE)
+    except KeyboardInterrupt:
+        print("\\n Agent arrete.")
+
+if __name__ == '__main__':
+    main()
+`;
+            const blob = new Blob([contenu], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'agent_diag.py';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('✓ Agent téléchargé', 'success');
+            fermerModalTelechargement();
+        }
+
+        async function supprimerPC(pcId) {
+            if (!confirm('Supprimer ce PC de la liste ?')) return;
+            try {
+                const { error } = await supabaseClient.from('diagnostics_pc').delete().eq('id', pcId);
+                if (error) throw error;
+                showToast('✓ PC supprimé', 'success');
+                chargerPCs();
+            } catch (e) {
+                showToast('❌ ' + e.message, 'error');
+            }
+        }
+
+        function exporterRapportPDF() {
+            if (!pcSelectionne) return;
+            const pc = pcSelectionne;
+            const w = window.open('', '_blank', 'width=900,height=700');
+            if (!w) { showToast('❌ Popup bloquée', 'error'); return; }
+            let disques = [];
+            try { disques = typeof pc.disques === 'string' ? JSON.parse(pc.disques) : (pc.disques || []); } catch(e) {}
+            w.document.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Rapport - ${pc.hostname || 'PC'}</title>
+<style>@page{size:A4;margin:1.5cm}body{font-family:'Segoe UI',Arial,sans-serif;color:#1a1a2e;line-height:1.6}
+.header{text-align:center;border-bottom:3px solid #00b894;padding-bottom:1rem;margin-bottom:2rem}
+.logo{font-size:2rem;font-weight:900;color:#00b894;letter-spacing:3px}
+.sub{font-size:0.85rem;color:#00b894;letter-spacing:2px;text-transform:uppercase;margin-top:0.3rem}
+h1{color:#00b894;font-size:1.4rem;margin:1rem 0}h2{color:#00b894;font-size:1.1rem;margin:1.5rem 0 0.6rem;border-bottom:1px solid #ddd;padding-bottom:0.4rem}
+table{width:100%;border-collapse:collapse;margin:1rem 0}th{background:#00b894;color:white;padding:0.6rem;text-align:left}td{border:1px solid #ddd;padding:0.6rem}
+.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #ccc;font-size:0.8rem;color:#666;text-align:center}
+</style></head><body>
+<div class="header"><div class="logo">AFRICA.TECH21</div><div class="sub">Centre de Diagnostic</div></div>
+<h1>Rapport : ${pc.hostname || 'PC'}</h1>
+<p><strong>Date :</strong> ${new Date().toLocaleString('fr-FR')}</p>
+<h2>Général</h2><table><tr><th>Propriété</th><th>Valeur</th></tr>
+<tr><td>Nom</td><td>${pc.hostname || '—'}</td></tr>
+<tr><td>Système</td><td>${pc.os_name || '—'} ${pc.os_arch || ''}</td></tr>
+<tr><td>Utilisateur</td><td>${pc.utilisateur || '—'}</td></tr>
+<tr><td>IP</td><td>${pc.ip_locale || '—'}</td></tr>
+<tr><td>MAC</td><td>${pc.mac_address || '—'}</td></tr>
+</table>
+<h2>CPU</h2><table><tr><th>Métrique</th><th>Valeur</th></tr>
+<tr><td>Modèle</td><td>${pc.cpu_modele || '—'}</td></tr>
+<tr><td>Cœurs</td><td>${pc.cpu_coeurs || 0}</td></tr>
+<tr><td>Utilisation</td><td>${(parseFloat(pc.cpu_utilisation_pct) || 0).toFixed(1)}%</td></tr>
+<tr><td>Température</td><td>${pc.cpu_temperature_c || 'N/A'}°C</td></tr>
+</table>
+<h2>RAM</h2><table><tr><th>Métrique</th><th>Valeur</th></tr>
+<tr><td>Totale</td><td>${(parseFloat(pc.ram_totale_go) || 0).toFixed(2)} Go</td></tr>
+<tr><td>Utilisée</td><td>${(parseFloat(pc.ram_utilisee_go) || 0).toFixed(2)} Go</td></tr>
+<tr><td>Libre</td><td>${(parseFloat(pc.ram_libre_go) || 0).toFixed(2)} Go</td></tr>
+</table>
+${disques.length > 0 ? `<h2>Disques</h2><table><tr><th>Disque</th><th>Total</th><th>Libre</th></tr>${disques.map(d => `<tr><td>${d.nom||'—'}</td><td>${(d.total_go||0).toFixed(1)} Go</td><td>${(d.libre_go||0).toFixed(1)} Go</td></tr>`).join('')}</table>` : ''}
+<div class="footer">Généré par AFRICA.TECH21 — Centre de Diagnostic<br>${new Date().toLocaleString('fr-FR')}</div>
+<script>window.onload=function(){setTimeout(function(){window.print();},300);};<\/script>
+</body></html>`);
+            w.document.close();
+        }
+
+        function demarrerRefresh() {
+            if (refreshInterval) clearInterval(refreshInterval);
+            refreshInterval = setInterval(() => chargerPCs(), 3000);
+        }
+
+        createParticles();
+        chargerPCs();
+        demarrerRefresh();
+    </script>
+</body>
+</html>
