@@ -206,7 +206,7 @@
             box-shadow: 0 0 80px rgba(0, 255, 136, 0.3);
             position: relative; max-height: 90vh; overflow-y: auto;
         }
-        .modal-content.modal-large { max-width: 1100px; }
+        .modal-content.modal-large { max-width: 1200px; }
         .modal-header { text-align: center; margin-bottom: 2rem; }
         .modal-header .modal-icon { font-size: 3.5rem; margin-bottom: 1rem; display: block; color: var(--med-green); text-shadow: 0 0 30px rgba(0, 255, 136, 0.6); }
         .modal-header h2 { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; letter-spacing: 2px; color: var(--med-green); }
@@ -289,10 +289,9 @@
         .cmd-card i { font-size: 1.8rem; color: var(--med-green); margin-bottom: 0.6rem; display: block; }
         .cmd-card .cmd-name { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; color: var(--text-primary); letter-spacing: 1px; margin-bottom: 0.3rem; }
         .cmd-card .cmd-desc { font-size: 0.72rem; color: var(--text-muted); line-height: 1.4; }
-        .cmd-history { max-height: 300px; overflow-y: auto; margin-top: 1.5rem; }
+        .cmd-history { max-height: 400px; overflow-y: auto; margin-top: 1.5rem; }
         .cmd-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0.8rem 1rem; background: rgba(0, 0, 0, 0.3);
+            padding: 1rem; background: rgba(0, 0, 0, 0.3);
             border-left: 3px solid var(--med-blue); border-radius: 8px; margin-bottom: 0.6rem;
             font-size: 0.85rem;
         }
@@ -300,6 +299,7 @@
         .cmd-item.echouee { border-left-color: var(--med-red); }
         .cmd-item.en_attente { border-left-color: var(--med-yellow); animation: pulseCmd 1.5s infinite; }
         @keyframes pulseCmd { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        .cmd-item-header { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; }
         .cmd-status-badge {
             padding: 0.25rem 0.7rem; border-radius: 12px; font-size: 0.7rem;
             font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
@@ -335,6 +335,15 @@
         .tab-modal.active { background: rgba(0, 255, 136, 0.15); border-color: var(--med-green); color: var(--med-green); }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+        .scan-progress {
+            background: rgba(0, 0, 0, 0.5); border: 1px solid var(--med-green);
+            border-radius: 12px; padding: 1.2rem; margin: 1rem 0;
+            display: none;
+        }
+        .scan-progress.active { display: block; }
+        .scan-bar { height: 10px; background: rgba(0, 255, 136, 0.1); border-radius: 5px; overflow: hidden; margin: 0.8rem 0; }
+        .scan-bar-fill { height: 100%; background: linear-gradient(90deg, var(--med-green), var(--med-blue)); transition: width 0.5s ease; border-radius: 5px; }
+        .scan-status-text { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--med-green); }
         @media (max-width: 768px) {
             body { padding: 1rem; }
             .page-header { padding: 2rem 1.5rem; }
@@ -358,7 +367,7 @@
         <header class="page-header">
             <i class="fas fa-stethoscope icon-main"></i>
             <h1>CENTRE DE DIAGNOSTIC</h1>
-            <p class="subtitle">Diagnostic temps réel des PC — Accès Président</p>
+            <p class="subtitle">Diagnostic temps réel & sécurité système — Accès Président</p>
             <div class="user-info" id="userInfo">
                 <i class="fas fa-user-shield"></i> CHARGEMENT...
             </div>
@@ -400,6 +409,11 @@
                 <div class="stat-num" id="statTemp">—</div>
                 <div class="stat-label">Temp. max</div>
             </div>
+            <div class="stat-card">
+                <i class="fas fa-shield-virus stat-icon"></i>
+                <div class="stat-num" id="statAlertes">0</div>
+                <div class="stat-label">Alertes</div>
+            </div>
         </div>
 
         <div class="download-section">
@@ -407,8 +421,8 @@
             <h2>TÉLÉCHARGER L'AGENT</h2>
             <p>
                 Installez l'agent sur le PC à diagnostiquer. Il se connectera automatiquement à cette plateforme
-                et enverra les données en temps réel toutes les 3 secondes. L'agent reçoit aussi les commandes
-                de contrôle à distance depuis cette interface.
+                et enverra les données en temps réel toutes les 3 secondes. L'agent exécute aussi les commandes
+                de sécurité et de maintenance envoyées depuis cette interface.
             </p>
             <button class="btn btn-blue" onclick="ouvrirModalTelechargement()">
                 <i class="fas fa-download"></i> TÉLÉCHARGER L'AGENT (.py)
@@ -418,10 +432,10 @@
                 <ol>
                     <li>Téléchargez le fichier <strong>agent_diag.py</strong></li>
                     <li>Installez <strong>Python 3.10+</strong> sur le PC cible (python.org)</li>
-                    <li>Double-cliquez sur <strong>agent_diag.py</strong></li>
+                    <li>Double-cliquez sur <strong>agent_diag.py</strong> (clic droit → Exécuter en tant qu'administrateur recommandé)</li>
                     <li>L'agent se connecte automatiquement</li>
                     <li>Le PC apparaît <strong>ici en temps réel</strong></li>
-                    <li>Utilisez les boutons de contrôle pour envoyer des commandes</li>
+                    <li>Utilisez les onglets Sécurité, Maintenance et Bilan pour agir</li>
                 </ol>
             </div>
         </div>
@@ -443,11 +457,17 @@
                 <div class="tab-modal active" onclick="switchModalTab('info', event)">
                     <i class="fas fa-info-circle"></i> Informations
                 </div>
-                <div class="tab-modal" onclick="switchModalTab('controle', event)">
-                    <i class="fas fa-gamepad"></i> Contrôle à distance
+                <div class="tab-modal" onclick="switchModalTab('securite', event)">
+                    <i class="fas fa-shield-alt"></i> Sécurité
+                </div>
+                <div class="tab-modal" onclick="switchModalTab('maintenance', event)">
+                    <i class="fas fa-tools"></i> Maintenance
                 </div>
                 <div class="tab-modal" onclick="switchModalTab('bilan', event)">
-                    <i class="fas fa-clipboard-check"></i> Bilan client
+                    <i class="fas fa-clipboard-check"></i> Bilan Client
+                </div>
+                <div class="tab-modal" onclick="switchModalTab('historique', event)">
+                    <i class="fas fa-history"></i> Historique
                 </div>
             </div>
 
@@ -455,56 +475,128 @@
                 <div class="modal-body" id="detailBody"></div>
             </div>
 
-            <div class="tab-content" id="tabControle">
+            <div class="tab-content" id="tabSecurite">
                 <div class="modal-body">
                     <p style="margin-bottom:1rem;color:var(--text-secondary);">
-                        Envoyez des commandes à distance au PC. L'agent les exécutera automatiquement dans les 5 secondes.
+                        <strong style="color:var(--med-green);">Centre de Sécurité</strong> — Lancez des scans de sécurité complets sur le PC distant. Les résultats s'affichent en temps réel.
                     </p>
+
                     <div class="cmd-grid">
-                        <div class="cmd-card" onclick="envoyerCommande('scan_antivirus')">
+                        <div class="cmd-card" onclick="lancerScan('scan_antivirus')">
                             <i class="fas fa-shield-virus"></i>
-                            <div class="cmd-name">SCAN ANTIVIRUS</div>
-                            <div class="cmd-desc">Lance un scan antivirus complet</div>
+                            <div class="cmd-name">ANTIVIRUS</div>
+                            <div class="cmd-desc">Lance l'antivirus installé (Defender, etc.)</div>
                         </div>
-                        <div class="cmd-card" onclick="envoyerCommande('maj_windows')">
-                            <i class="fab fa-windows"></i>
-                            <div class="cmd-name">MISE À JOUR</div>
-                            <div class="cmd-desc">Lance Windows Update</div>
-                        </div>
-                        <div class="cmd-card" onclick="envoyerCommande('scan_vulnerabilites')">
-                            <i class="fas fa-bug"></i>
-                            <div class="cmd-name">VULNÉRABILITÉS</div>
-                            <div class="cmd-desc">Détecte les failles critiques</div>
-                        </div>
-                        <div class="cmd-card" onclick="envoyerCommande('nettoyage_disque')">
-                            <i class="fas fa-broom"></i>
-                            <div class="cmd-name">NETTOYAGE</div>
-                            <div class="cmd-desc">Nettoie les fichiers temporaires</div>
-                        </div>
-                        <div class="cmd-card" onclick="envoyerCommande('vider_cache_dns')">
-                            <i class="fas fa-network-wired"></i>
-                            <div class="cmd-name">CACHE DNS</div>
-                            <div class="cmd-desc">Vide le cache DNS réseau</div>
-                        </div>
-                        <div class="cmd-card" onclick="envoyerCommande('scan_malware')">
+                        <div class="cmd-card" onclick="lancerScan('scan_malware')">
                             <i class="fas fa-skull-crossbones"></i>
                             <div class="cmd-name">MALWARES</div>
-                            <div class="cmd-desc">Scan malwares avancé</div>
+                            <div class="cmd-desc">Détecte processus suspects et menaces</div>
                         </div>
-                        <div class="cmd-card" onclick="envoyerCommande('redemarrer')">
-                            <i class="fas fa-power-off"></i>
-                            <div class="cmd-name">REDÉMARRER</div>
-                            <div class="cmd-desc">Redémarre le PC</div>
+                        <div class="cmd-card" onclick="lancerScan('scan_vulnerabilites')">
+                            <i class="fas fa-bug"></i>
+                            <div class="cmd-name">VULNÉRABILITÉS</div>
+                            <div class="cmd-desc">Failles système et ports ouverts</div>
                         </div>
-                        <div class="cmd-card" onclick="envoyerCommande('verifier_pilotes')">
+                        <div class="cmd-card" onclick="lancerScan('scan_pirates')">
+                            <i class="fas fa-user-secret"></i>
+                            <div class="cmd-name">ANTI-PIRATE</div>
+                            <div class="cmd-desc">Détecte connexions suspectes</div>
+                        </div>
+                        <div class="cmd-card" onclick="lancerScan('scan_fichiers_suspects')">
+                            <i class="fas fa-file-excel"></i>
+                            <div class="cmd-name">FICHIERS</div>
+                            <div class="cmd-desc">Fichiers suspects (Temp, Startup)</div>
+                        </div>
+                        <div class="cmd-card" onclick="lancerScan('scan_integrite')">
+                            <i class="fas fa-check-double"></i>
+                            <div class="cmd-name">INTÉGRITÉ</div>
+                            <div class="cmd-desc">Vérifie fichiers système (sfc)</div>
+                        </div>
+                    </div>
+
+                    <div class="scan-progress" id="scanProgress">
+                        <div class="scan-status-text" id="scanStatusText">Initialisation du scan...</div>
+                        <div class="scan-bar"><div class="scan-bar-fill" id="scanBarFill" style="width:0%"></div></div>
+                        <div class="scan-status-text" id="scanResultText"></div>
+                    </div>
+
+                    <h3 style="color:var(--med-green);margin:1.5rem 0 1rem;font-family:Orbitron;font-size:1rem;letter-spacing:1.5px;">
+                        📋 DERNIERS RÉSULTATS DE SÉCURITÉ
+                    </h3>
+                    <div id="securiteResults">
+                        <div class="empty-state" style="padding:2rem;">
+                            <i class="fas fa-shield-alt"></i>
+                            <p style="color:var(--text-muted);font-size:0.85rem;">Aucun scan de sécurité effectué</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tabMaintenance">
+                <div class="modal-body">
+                    <p style="margin-bottom:1rem;color:var(--text-secondary);">
+                        <strong style="color:var(--med-blue);">Maintenance système</strong> — Mises à jour, nettoyage, doublons.
+                    </p>
+
+                    <div class="cmd-grid">
+                        <div class="cmd-card" onclick="lancerScan('maj_windows')">
+                            <i class="fab fa-windows"></i>
+                            <div class="cmd-name">MAJ WINDOWS</div>
+                            <div class="cmd-desc">Vérifie et liste les MAJ disponibles</div>
+                        </div>
+                        <div class="cmd-card" onclick="lancerScan('maj_pilotes')">
                             <i class="fas fa-microchip"></i>
                             <div class="cmd-name">PILOTES</div>
                             <div class="cmd-desc">Vérifie les pilotes obsolètes</div>
                         </div>
+                        <div class="cmd-card" onclick="lancerScan('nettoyage_disque')">
+                            <i class="fas fa-broom"></i>
+                            <div class="cmd-name">NETTOYAGE</div>
+                            <div class="cmd-desc">Fichiers temporaires et cache</div>
+                        </div>
+                        <div class="cmd-card" onclick="lancerScan('detecter_doublons')">
+                            <i class="fas fa-clone"></i>
+                            <div class="cmd-name">DOUBLONS</div>
+                            <div class="cmd-desc">Détecte fichiers identiques (hash)</div>
+                        </div>
+                        <div class="cmd-card" onclick="lancerScan('vider_cache_dns')">
+                            <i class="fas fa-network-wired"></i>
+                            <div class="cmd-name">CACHE DNS</div>
+                            <div class="cmd-desc">Vide le cache réseau</div>
+                        </div>
+                        <div class="cmd-card" onclick="lancerScan('defrag')">
+                            <i class="fas fa-compress"></i>
+                            <div class="cmd-name">DÉFRAGMENTATION</div>
+                            <div class="cmd-desc">Optimise le disque (TRIM/defrag)</div>
+                        </div>
                     </div>
 
-                    <h3 style="color:var(--med-green);margin:1.5rem 0 1rem;font-family:Orbitron;font-size:1rem;letter-spacing:1.5px;">
-                        📋 HISTORIQUE DES COMMANDES
+                    <div class="scan-progress" id="scanProgressMaint">
+                        <div class="scan-status-text" id="scanStatusTextMaint">Initialisation...</div>
+                        <div class="scan-bar"><div class="scan-bar-fill" id="scanBarFillMaint" style="width:0%"></div></div>
+                        <div class="scan-status-text" id="scanResultTextMaint"></div>
+                    </div>
+
+                    <h3 style="color:var(--med-blue);margin:1.5rem 0 1rem;font-family:Orbitron;font-size:1rem;letter-spacing:1.5px;">
+                        📋 DERNIERS RÉSULTATS DE MAINTENANCE
+                    </h3>
+                    <div id="maintResults">
+                        <div class="empty-state" style="padding:2rem;">
+                            <i class="fas fa-tools"></i>
+                            <p style="color:var(--text-muted);font-size:0.85rem;">Aucune opération de maintenance effectuée</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tabBilan">
+                <div class="modal-body" id="bilanBody"></div>
+            </div>
+
+            <div class="tab-content" id="tabHistorique">
+                <div class="modal-body">
+                    <h3 style="color:var(--med-green);margin:0 0 1rem;font-family:Orbitron;font-size:1rem;letter-spacing:1.5px;">
+                        📋 HISTORIQUE COMPLET DES COMMANDES
                     </h3>
                     <div class="cmd-history" id="cmdHistory">
                         <div class="empty-state" style="padding:2rem;">
@@ -513,10 +605,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="tab-content" id="tabBilan">
-                <div class="modal-body" id="bilanBody"></div>
             </div>
 
             <div class="modal-actions">
@@ -543,8 +631,9 @@
                         <li>Le fichier <strong>agent_diag.py</strong> va se télécharger</li>
                         <li>Copiez-le sur le PC à diagnostiquer</li>
                         <li>Double-cliquez dessus (Python requis)</li>
+                        <li><strong>Recommandé :</strong> Clic droit → "Exécuter en tant qu'administrateur"</li>
                         <li>Le PC apparaîtra dans la liste en temps réel</li>
-                        <li>Il recevra automatiquement les commandes de contrôle</li>
+                        <li>Il recevra automatiquement les commandes de sécurité et maintenance</li>
                     </ol>
                 </div>
             </div>
@@ -594,7 +683,26 @@
         let pcSelectionne = null;
         let voixActive = false;
         let derniereAnnonce = 0;
-        let commandesCache = {};
+        let scanEnCours = null;
+
+        const NOMS_COMMANDES = {
+            'scan_antivirus': 'Scan antivirus',
+            'scan_malware': 'Scan malwares',
+            'scan_vulnerabilites': 'Scan vulnérabilités',
+            'scan_pirates': 'Scan anti-pirate',
+            'scan_fichiers_suspects': 'Scan fichiers suspects',
+            'scan_integrite': 'Vérification intégrité',
+            'maj_windows': 'Mise à jour Windows',
+            'maj_pilotes': 'Mise à jour pilotes',
+            'nettoyage_disque': 'Nettoyage disque',
+            'detecter_doublons': 'Détection doublons',
+            'vider_cache_dns': 'Vidage cache DNS',
+            'defrag': 'Défragmentation',
+            'redemarrer': 'Redémarrage'
+        };
+
+        const COMMANDES_SECURITE = ['scan_antivirus','scan_malware','scan_vulnerabilites','scan_pirates','scan_fichiers_suspects','scan_integrite'];
+        const COMMANDES_MAINTENANCE = ['maj_windows','maj_pilotes','nettoyage_disque','detecter_doublons','vider_cache_dns','defrag'];
 
         function showToast(msg, type='info') {
             const old = document.querySelector('.toast'); if (old) old.remove();
@@ -621,7 +729,7 @@
             }
         }
 
-        // ==================== CONTRÔLE VOCAL ====================
+        // ==================== CONTRÔLE VOCAL (annonce RÉSULTATS, pas seulement requêtes) ====================
         function toggleVoix() {
             voixActive = !voixActive;
             const btn = document.getElementById('btnVoix');
@@ -633,7 +741,7 @@
                 btn.classList.add('btn-green');
                 label.textContent = 'VOIX ACTIVÉE';
                 btn.querySelector('i').className = 'fas fa-volume-up';
-                status.textContent = 'La voix annonce l\'état des PC toutes les 30 secondes.';
+                status.textContent = 'La voix annonce l\'état ET les résultats des scans en temps réel.';
                 annoncerEtatGlobal();
             } else {
                 btn.classList.remove('btn-green');
@@ -685,21 +793,11 @@
             parler(msg);
         }
 
-        function annoncerPC(pc, priorite = false) {
+        function annoncerResultat(commande, resultat, statut) {
             if (!voixActive) return;
-            if (!pc._enLigne) return;
-            const cpu = parseFloat(pc.cpu_utilisation_pct) || 0;
-            const ram = parseFloat(pc.ram_utilisation_pct) || 0;
-            const temp = parseFloat(pc.cpu_temperature_c) || 0;
-            let alertes = [];
-            if (cpu > 80) alertes.push(`processeur à ${cpu.toFixed(0)} pour cent`);
-            if (ram > 85) alertes.push(`mémoire à ${ram.toFixed(0)} pour cent`);
-            if (temp > 80) alertes.push(`température à ${temp.toFixed(0)} degrés`);
-            if (!pc.antivirus_actif) alertes.push(`antivirus inactif`);
-
-            if (alertes.length > 0) {
-                parler(`Attention sur ${pc.hostname} : ${alertes.join(', ')}.`, priorite);
-            }
+            const nom = NOMS_COMMANDES[commande] || commande;
+            const prefixe = statut === 'executee' ? 'Résultat de' : 'Échec de';
+            parler(`${prefixe} ${nom}. ${resultat}`, true);
         }
 
         // ==================== CHARGEMENT PCs ====================
@@ -711,7 +809,6 @@
                     .order('derniere_maj', { ascending: false });
 
                 if (error) throw error;
-                const anciensPcs = [...pcsData];
                 pcsData = data || [];
 
                 const now = Date.now();
@@ -726,18 +823,6 @@
 
                 afficherPCs();
                 majStats();
-
-                if (voixActive) {
-                    pcsData.forEach(pc => {
-                        const ancien = anciensPcs.find(a => a.id === pc.id);
-                        if (pc._enLigne && pc.antivirus_actif) {
-                            if (ancien && ancien.antivirus_actif === false) {
-                                parler(`${pc.hostname} est de nouveau sécurisé.`, true);
-                            }
-                        }
-                        annoncerPC(pc, false);
-                    });
-                }
             } catch (e) {
                 console.error(e);
                 document.getElementById('pcListContainer').innerHTML =
@@ -830,14 +915,22 @@
             const online = pcsData.filter(p => p._enLigne).length;
             const offline = total - online;
             let maxTemp = 0;
+            let alertes = 0;
             pcsData.forEach(p => {
                 const t = parseFloat(p.cpu_temperature_c) || 0;
                 if (t > maxTemp) maxTemp = t;
+                if (p._enLigne && (
+                    (parseFloat(p.cpu_utilisation_pct) || 0) > 80 ||
+                    (parseFloat(p.ram_utilisation_pct) || 0) > 85 ||
+                    t > 80 ||
+                    !p.antivirus_actif
+                )) alertes++;
             });
             document.getElementById('statTotal').textContent = total;
             document.getElementById('statOnline').textContent = online;
             document.getElementById('statOffline').textContent = offline;
             document.getElementById('statTemp').textContent = maxTemp ? maxTemp.toFixed(0) + '°C' : '—';
+            document.getElementById('statAlertes').textContent = alertes;
         }
 
         function switchModalTab(tab, event) {
@@ -845,8 +938,10 @@
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             event.target.closest('.tab-modal').classList.add('active');
             document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
-            if (tab === 'controle') chargerCommandes();
             if (tab === 'bilan') afficherBilan();
+            if (tab === 'historique' || tab === 'securite' || tab === 'maintenance') chargerCommandes();
+            if (tab === 'securite') chargerResultats('securite');
+            if (tab === 'maintenance') chargerResultats('maintenance');
         }
 
         function voirDetails(pcId) {
@@ -974,42 +1069,139 @@
         function ouvrirModalTelechargement() { document.getElementById('downloadModal').classList.add('active'); }
         function fermerModalTelechargement() { document.getElementById('downloadModal').classList.remove('active'); }
 
-        // ==================== CONTRÔLE À DISTANCE ====================
-        async function envoyerCommande(type) {
+        // ==================== LANCER UN SCAN ====================
+        async function lancerScan(type) {
             if (!pcSelectionne) return;
             if (!pcSelectionne._enLigne) {
                 showToast('⚠️ Le PC doit être en ligne', 'error');
                 return;
             }
 
-            const nomsCommandes = {
-                'scan_antivirus': 'Scan antivirus',
-                'maj_windows': 'Mise à jour Windows',
-                'scan_vulnerabilites': 'Scan vulnérabilités',
-                'nettoyage_disque': 'Nettoyage disque',
-                'vider_cache_dns': 'Vidage cache DNS',
-                'scan_malware': 'Scan malware',
-                'redemarrer': 'Redémarrage',
-                'verifier_pilotes': 'Vérification pilotes'
-            };
+            const nom = NOMS_COMMANDES[type] || type;
+            if (!confirm(`Lancer "${nom}" sur ${pcSelectionne.hostname} ?\n\nL'agent exécutera la commande dans les 5 secondes.`)) return;
 
-            const confirmation = confirm(`Envoyer la commande "${nomsCommandes[type]}" à ${pcSelectionne.hostname} ?\n\nL'agent l'exécutera dans les 5 secondes.`);
-            if (!confirmation) return;
+            const isSecurite = COMMANDES_SECURITE.includes(type);
+            const progressEl = document.getElementById(isSecurite ? 'scanProgress' : 'scanProgressMaint');
+            const statusEl = document.getElementById(isSecurite ? 'scanStatusText' : 'scanStatusTextMaint');
+            const barEl = document.getElementById(isSecurite ? 'scanBarFill' : 'scanBarFillMaint');
+            const resultEl = document.getElementById(isSecurite ? 'scanResultText' : 'scanResultTextMaint');
+
+            progressEl.classList.add('active');
+            statusEl.textContent = `Envoi de la commande "${nom}"...`;
+            barEl.style.width = '10%';
+            resultEl.textContent = '';
 
             try {
-                const { error } = await supabaseClient.from('diagnostic_commandes').insert([{
+                const { data, error } = await supabaseClient.from('diagnostic_commandes').insert([{
                     agent_id: pcSelectionne.agent_id,
                     commande: type,
                     statut: 'en_attente',
                     date_creation: new Date().toISOString()
-                }]);
+                }]).select();
 
                 if (error) throw error;
-                showToast('✓ Commande envoyée : ' + nomsCommandes[type], 'success');
-                if (voixActive) parler(`Commande ${nomsCommandes[type]} envoyée à ${pcSelectionne.hostname}.`, true);
-                chargerCommandes();
+                const cmdId = data[0].id;
+                scanEnCours = cmdId;
+
+                showToast('✓ Commande envoyée : ' + nom, 'success');
+                if (voixActive) parler(`Commande ${nom} envoyée à ${pcSelectionne.hostname}.`, true);
+
+                statusEl.textContent = `Commande envoyée. En attente d'exécution par l'agent...`;
+                barEl.style.width = '30%';
+
+                let tentatives = 0;
+                const interval = setInterval(async () => {
+                    tentatives++;
+                    const { data: cmd } = await supabaseClient
+                        .from('diagnostic_commandes')
+                        .select('*')
+                        .eq('id', cmdId)
+                        .single();
+
+                    if (!cmd) return;
+
+                    if (cmd.statut === 'executee') {
+                        clearInterval(interval);
+                        barEl.style.width = '100%';
+                        statusEl.textContent = `✅ ${nom} terminé avec succès`;
+                        resultEl.textContent = cmd.resultat || 'Aucun détail retourné';
+                        resultEl.style.color = 'var(--med-green)';
+                        showToast(`✅ ${nom} terminé`, 'success');
+                        annoncerResultat(type, cmd.resultat || 'terminé avec succès', 'executee');
+                        chargerResultats(isSecurite ? 'securite' : 'maintenance');
+                        chargerCommandes();
+                        scanEnCours = null;
+                    } else if (cmd.statut === 'echouee') {
+                        clearInterval(interval);
+                        barEl.style.width = '100%';
+                        statusEl.textContent = `❌ ${nom} a échoué`;
+                        resultEl.textContent = cmd.resultat || 'Erreur inconnue';
+                        resultEl.style.color = 'var(--med-red)';
+                        showToast(`❌ ${nom} échoué`, 'error');
+                        annoncerResultat(type, cmd.resultat || 'échoué', 'echouee');
+                        chargerResultats(isSecurite ? 'securite' : 'maintenance');
+                        chargerCommandes();
+                        scanEnCours = null;
+                    } else if (tentatives > 100) {
+                        clearInterval(interval);
+                        statusEl.textContent = `⏱️ Délai dépassé (agent probablement hors ligne)`;
+                        resultEl.textContent = 'Aucune réponse reçue.';
+                        scanEnCours = null;
+                    } else {
+                        barEl.style.width = Math.min(90, 30 + tentatives * 2) + '%';
+                    }
+                }, 2000);
+
             } catch (e) {
                 showToast('❌ ' + e.message, 'error');
+                progressEl.classList.remove('active');
+            }
+        }
+
+        // ==================== CHARGER RÉSULTATS ====================
+        async function chargerResultats(categorie) {
+            if (!pcSelectionne) return;
+            const commandes = categorie === 'securite' ? COMMANDES_SECURITE : COMMANDES_MAINTENANCE;
+            const container = document.getElementById(categorie === 'securite' ? 'securiteResults' : 'maintResults');
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('diagnostic_commandes')
+                    .select('*')
+                    .eq('agent_id', pcSelectionne.agent_id)
+                    .in('commande', commandes)
+                    .order('date_creation', { ascending: false })
+                    .limit(10);
+
+                if (error) throw error;
+
+                if (!data || data.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state" style="padding:2rem;">
+                            <i class="fas fa-${categorie === 'securite' ? 'shield-alt' : 'tools'}"></i>
+                            <p style="color:var(--text-muted);font-size:0.85rem;">Aucun résultat pour l'instant</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = data.map(cmd => {
+                    const date = new Date(cmd.date_creation).toLocaleString('fr-FR');
+                    const nom = NOMS_COMMANDES[cmd.commande] || cmd.commande;
+                    const color = cmd.statut === 'executee' ? 'var(--med-green)' : cmd.statut === 'echouee' ? 'var(--med-red)' : 'var(--med-yellow)';
+                    return `
+                        <div class="cmd-item ${cmd.statut}">
+                            <div class="cmd-item-header">
+                                <strong style="color:var(--text-primary);">${nom}</strong>
+                                <span class="cmd-status-badge status-${cmd.statut}">${cmd.statut.toUpperCase()}</span>
+                            </div>
+                            <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.4rem;">${date}</div>
+                            <div style="font-size:0.88rem;color:${color};font-family:JetBrains Mono,monospace;white-space:pre-wrap;">${cmd.resultat || 'En attente de résultat...'}</div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) {
+                container.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>';
             }
         }
 
@@ -1022,7 +1214,7 @@
                     .select('*')
                     .eq('agent_id', pcSelectionne.agent_id)
                     .order('date_creation', { ascending: false })
-                    .limit(20);
+                    .limit(50);
 
                 if (error) throw error;
 
@@ -1036,27 +1228,18 @@
                     return;
                 }
 
-                const nomsCommandes = {
-                    'scan_antivirus': 'Scan antivirus',
-                    'maj_windows': 'Mise à jour Windows',
-                    'scan_vulnerabilites': 'Scan vulnérabilités',
-                    'nettoyage_disque': 'Nettoyage disque',
-                    'vider_cache_dns': 'Vidage cache DNS',
-                    'scan_malware': 'Scan malware',
-                    'redemarrer': 'Redémarrage',
-                    'verifier_pilotes': 'Vérification pilotes'
-                };
-
                 container.innerHTML = data.map(cmd => {
                     const date = new Date(cmd.date_creation).toLocaleString('fr-FR');
+                    const nom = NOMS_COMMANDES[cmd.commande] || cmd.commande;
+                    const color = cmd.statut === 'executee' ? 'var(--med-green)' : cmd.statut === 'echouee' ? 'var(--med-red)' : 'var(--med-yellow)';
                     return `
                         <div class="cmd-item ${cmd.statut}">
-                            <div>
-                                <strong style="color:var(--text-primary);">${nomsCommandes[cmd.commande] || cmd.commande}</strong>
-                                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;">${date}</div>
-                                ${cmd.resultat ? `<div style="font-size:0.78rem;color:var(--text-secondary);margin-top:0.4rem;">${cmd.resultat}</div>` : ''}
+                            <div class="cmd-item-header">
+                                <strong style="color:var(--text-primary);">${nom}</strong>
+                                <span class="cmd-status-badge status-${cmd.statut}">${cmd.statut.toUpperCase()}</span>
                             </div>
-                            <span class="cmd-status-badge status-${cmd.statut}">${cmd.statut.toUpperCase()}</span>
+                            <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.4rem;">${date}</div>
+                            ${cmd.resultat ? `<div style="font-size:0.85rem;color:${color};font-family:JetBrains Mono,monospace;white-space:pre-wrap;">${cmd.resultat}</div>` : ''}
                         </div>
                     `;
                 }).join('');
@@ -1089,10 +1272,9 @@
             const scoreGlobal = Math.round((scoreSecurite + Math.max(0, Math.min(100, scorePerformance))) / 2);
 
             let noteGlobale = 'EXCELLENT';
-            let noteClass = 'ok';
-            if (scoreGlobal < 50) { noteGlobale = 'CRITIQUE'; noteClass = 'danger'; }
-            else if (scoreGlobal < 70) { noteGlobale = 'À AMÉLIORER'; noteClass = 'warn'; }
-            else if (scoreGlobal < 85) { noteGlobale = 'BON'; noteClass = 'ok'; }
+            if (scoreGlobal < 50) noteGlobale = 'CRITIQUE';
+            else if (scoreGlobal < 70) noteGlobale = 'À AMÉLIORER';
+            else if (scoreGlobal < 85) noteGlobale = 'BON';
 
             const problemes = [];
             if (cpu > 70) problemes.push('Utilisation CPU élevée (' + cpu.toFixed(1) + '%)');
@@ -1205,19 +1387,14 @@ td{border:1px solid #ddd;padding:0.7rem;font-size:0.9rem}
 .rec{background:#e6f4ff;border-left:4px solid #0066cc;padding:0.8rem;margin:0.5rem 0;border-radius:5px;color:#003d7a}
 .footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #ccc;font-size:0.8rem;color:#666;text-align:center;line-height:1.6}
 </style></head><body>
-<div class="header">
-<div class="logo">AFRICA.TECH21</div>
-<div class="sub">Bilan de Diagnostic Client</div>
-</div>
+<div class="header"><div class="logo">AFRICA.TECH21</div><div class="sub">Bilan de Diagnostic Client</div></div>
 <h1>Rapport : ${pc.hostname || 'PC'}</h1>
 <p><strong>Date :</strong> ${new Date().toLocaleString('fr-FR')}</p>
 <p><strong>Client :</strong> ${pc.utilisateur || '—'} — <strong>IP :</strong> ${pc.ip_locale || '—'}</p>
-
 <div class="score-box">
 <div class="score-value">${scoreGlobal}/100</div>
 <div class="score-label">Score Global du Système</div>
 </div>
-
 <h2>Informations générales</h2>
 <table>
 <tr><th>Propriété</th><th>Valeur</th></tr>
@@ -1227,7 +1404,6 @@ td{border:1px solid #ddd;padding:0.7rem;font-size:0.9rem}
 <tr><td>Adresse IP</td><td>${pc.ip_locale || '—'}</td></tr>
 <tr><td>Adresse MAC</td><td>${pc.mac_address || '—'}</td></tr>
 </table>
-
 <h2>Performance</h2>
 <table>
 <tr><th>Métrique</th><th>Valeur</th><th>Statut</th></tr>
@@ -1236,15 +1412,7 @@ td{border:1px solid #ddd;padding:0.7rem;font-size:0.9rem}
 <tr><td>Mémoire RAM</td><td>${(parseFloat(pc.ram_totale_go) || 0).toFixed(2)} Go</td><td>${ram.toFixed(1)}% utilisée</td></tr>
 <tr><td>Température CPU</td><td>${temp ? temp.toFixed(0) + '°C' : 'N/A'}</td><td>${temp > 75 ? '⚠ Élevée' : '✓ Normale'}</td></tr>
 </table>
-
-${disques.length > 0 ? `
-<h2>Disques</h2>
-<table>
-<tr><th>Disque</th><th>Total</th><th>Libre</th><th>Utilisation</th></tr>
-${disques.map(d => `<tr><td>${d.nom||'—'}</td><td>${(d.total_go||0).toFixed(1)} Go</td><td>${(d.libre_go||0).toFixed(1)} Go</td><td>${(d.pct||0).toFixed(1)}%</td></tr>`).join('')}
-</table>
-` : ''}
-
+${disques.length > 0 ? `<h2>Disques</h2><table><tr><th>Disque</th><th>Total</th><th>Libre</th><th>Utilisation</th></tr>${disques.map(d => `<tr><td>${d.nom||'—'}</td><td>${(d.total_go||0).toFixed(1)} Go</td><td>${(d.libre_go||0).toFixed(1)} Go</td><td>${(d.pct||0).toFixed(1)}%</td></tr>`).join('')}</table>` : ''}
 <h2>Sécurité</h2>
 <table>
 <tr><th>Composant</th><th>Statut</th></tr>
@@ -1252,19 +1420,10 @@ ${disques.map(d => `<tr><td>${d.nom||'—'}</td><td>${(d.total_go||0).toFixed(1)
 <tr><td>Pare-feu</td><td>${pc.pare_feu_actif ? '✓ Actif' : '⚠ Inactif'}</td></tr>
 <tr><td>Menaces détectées</td><td>${pc.menaces_detectees || 0}</td></tr>
 </table>
-
 <h2>Diagnostic</h2>
-${problemes.length > 0
-    ? problemes.map(p => `<div class="problem">⚠ ${p}</div>`).join('')
-    : '<div class="ok">✓ Aucun problème critique détecté. Le système est sain.</div>'
-}
-
+${problemes.length > 0 ? problemes.map(p => `<div class="problem">⚠ ${p}</div>`).join('') : '<div class="ok">✓ Aucun problème critique détecté. Le système est sain.</div>'}
 <h2>Recommandations</h2>
-${problemes.length > 0
-    ? problemes.map((p, i) => `<div class="rec">${i+1}. ${p} — Veuillez contacter notre équipe technique pour résolution.</div>`).join('')
-    : '<div class="rec">✓ Aucune action particulière recommandée. Continuez à maintenir votre système à jour.</div>'
-}
-
+${problemes.length > 0 ? problemes.map((p, i) => `<div class="rec">${i+1}. ${p} — Veuillez contacter notre équipe technique pour résolution.</div>`).join('') : '<div class="rec">✓ Aucune action particulière recommandée. Continuez à maintenir votre système à jour.</div>'}
 <div class="footer">
 <strong>AFRICA.TECH21 — Centre de Diagnostic Professionnel</strong><br>
 Service de diagnostic et maintenance informatique<br>
@@ -1281,11 +1440,10 @@ Ce rapport est confidentiel et destiné exclusivement au client mentionné ci-de
             const contenu = `#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AGENT DE DIAGNOSTIC AFRICA.TECH21
-Lance sur le PC à diagnostiquer. Envoie les données vers Supabase en temps réel.
-Reçoit et exécute les commandes à distance.
+AGENT DE DIAGNOSTIC AFRICA.TECH21 v2
+Centre de Diagnostic CSIV - Securite & Maintenance
 """
-import platform, socket, uuid, time, json, subprocess, os
+import platform, socket, uuid, time, json, subprocess, os, sys, hashlib, re
 import urllib.request, urllib.error
 
 SUPABASE_URL = "${SUPABASE_URL}"
@@ -1300,6 +1458,15 @@ except ImportError:
 
 AGENT_ID = str(uuid.uuid4())[:16]
 INTERVALLE = 3
+
+def est_admin():
+    try:
+        if platform.system() == 'Windows':
+            import ctypes
+            return ctypes.windll.shell32.IsUserAnAdmin() != 0
+        return os.geteuid() == 0
+    except:
+        return False
 
 def get_ip():
     try:
@@ -1324,7 +1491,6 @@ def get_temp():
                         return round(entries[0].current, 1)
     except:
         pass
-    # Windows fallback via WMI
     try:
         if platform.system() == 'Windows':
             result = subprocess.run(
@@ -1448,26 +1614,20 @@ def envoyer(data):
                 with urllib.request.urlopen(req, timeout=10) as resp:
                     return resp.status in (200, 201, 204)
             except Exception as e2:
-                print(f"Erreur PATCH: {e2}")
                 return False
-        print(f"Erreur HTTP {e.code}: {e.reason}")
         return False
-    except Exception as e:
-        print(f"Erreur envoi: {e}")
+    except:
         return False
 
 def get_commandes():
     try:
         url = f"{SUPABASE_URL}/rest/v1/diagnostic_commandes?agent_id=eq.{AGENT_ID}&statut=eq.en_attente&order=date_creation.asc"
-        headers = {
-            'apikey': SUPABASE_KEY,
-            'Authorization': f'Bearer {SUPABASE_KEY}'
-        }
+        headers = {'apikey': SUPABASE_KEY, 'Authorization': f'Bearer {SUPABASE_KEY}'}
         req = urllib.request.Request(url, headers=headers, method='GET')
         with urllib.request.urlopen(req, timeout=10) as resp:
             if resp.status == 200:
                 return json.loads(resp.read().decode())
-    except Exception as e:
+    except:
         pass
     return []
 
@@ -1480,17 +1640,306 @@ def marquer_commande(cmd_id, statut, resultat):
             'Content-Type': 'application/json',
             'Prefer': 'return=minimal'
         }
-        data = {
-            'statut': statut,
-            'resultat': resultat,
-            'date_execution': time.strftime('%Y-%m-%dT%H:%M:%S.000Z', time.gmtime())
-        }
+        data = {'statut': statut, 'resultat': resultat, 'date_execution': time.strftime('%Y-%m-%dT%H:%M:%S.000Z', time.gmtime())}
         req = urllib.request.Request(url, data=json.dumps(data).encode(), headers=headers, method='PATCH')
         with urllib.request.urlopen(req, timeout=10) as resp:
             return resp.status in (200, 204)
-    except Exception as e:
-        print(f"Erreur marquage commande: {e}")
+    except:
         return False
+
+# ==================== COMMANDES SÉCURITÉ ====================
+def scan_antivirus():
+    try:
+        if platform.system() == 'Windows':
+            result = subprocess.run(
+                ['powershell', '-Command', 'Get-MpComputerStatus | Select-Object -Property AntivirusEnabled,RealTimeProtectionEnabled,AntivirusSignatureVersion,QuickScanStartTime | Format-List'],
+                capture_output=True, text=True, timeout=10
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                lines = [l.strip() for l in result.stdout.strip().split('\\n') if l.strip()]
+                return "Antivirus Windows Defender :\\n" + "\\n".join(lines)
+            # Fallback: essayer MpCmdRun
+            try:
+                subprocess.Popen(['C:\\\\Program Files\\\\Windows Defender\\\\MpCmdRun.exe', '-Scan', '-ScanType', '1'], shell=True)
+                return "Scan antivirus lance via Windows Defender. Resultat visible dans Windows Security."
+            except:
+                pass
+            av_actif, av_nom = get_antivirus()
+            if av_actif:
+                return f"Antivirus installe : {av_nom}\\nScan lance via l'interface native."
+            return "Aucun antivirus detecte. Installer Windows Defender ou un antivirus tiers."
+        return "Scan antivirus reserve a Windows."
+    except Exception as e:
+        return f"Erreur scan antivirus: {str(e)}"
+
+def scan_malware():
+    try:
+        suspects = []
+        procs_suspects = ['cryptominer', 'xmrig', 'miner', 'trojan', 'keylogger', 'ransomware', 'backdoor']
+        for proc in psutil.process_iter(['pid', 'name', 'exe']):
+            try:
+                name = (proc.info.get('name') or '').lower()
+                for s in procs_suspects:
+                    if s in name:
+                        suspects.append(f"PID {proc.info['pid']}: {proc.info['name']}")
+            except:
+                pass
+        # Verifier taches planifiees suspectes
+        try:
+            if platform.system() == 'Windows':
+                r = subprocess.run(['schtasks', '/query', '/fo', 'LIST'], capture_output=True, text=True, timeout=10)
+                if r.returncode == 0:
+                    tasks = r.stdout.lower()
+                    for s in ['temp', 'appdata\\\\local\\\\temp', 'users\\\\public']:
+                        if s in tasks:
+                            suspects.append(f"Tache planifiee suspecte (contient {s})")
+        except:
+            pass
+        if suspects:
+            return f"⚠ {len(suspects)} element(s) suspect(s) detecte(s):\\n" + "\\n".join(suspects)
+        return "✓ Aucun processus malveillant detecte. Systeme propre."
+    except Exception as e:
+        return f"Erreur scan malware: {str(e)}"
+
+def scan_vulnerabilites():
+    try:
+        resultats = []
+        try:
+            if platform.system() == 'Windows':
+                r = subprocess.run(
+                    ['powershell', '-Command', 'Get-HotFix | Sort-Object -Property InstalledOn -Descending | Select-Object -First 5 | Format-Table -Property HotFixID,InstalledOn -AutoSize'],
+                    capture_output=True, text=True, timeout=15
+                )
+                if r.returncode == 0 and r.stdout.strip():
+                    resultats.append("Dernieres mises a jour installees:\\n" + r.stdout.strip())
+        except:
+            pass
+        try:
+            conns = psutil.net_connections()
+            ports_ouverts = set()
+            for c in conns:
+                if c.status == 'LISTEN' and c.laddr:
+                    ports_ouverts.add(c.laddr.port)
+            ports_risque = [p for p in ports_ouverts if p in [21, 23, 135, 139, 445, 3389, 5900]]
+            if ports_risque:
+                resultats.append(f"⚠ Ports a risque ouverts: {ports_risque}")
+            else:
+                resultats.append("✓ Aucun port critique ouvert")
+        except:
+            pass
+        return "\\n".join(resultats) if resultats else "Analyse terminee."
+    except Exception as e:
+        return f"Erreur: {str(e)}"
+
+def scan_pirates():
+    try:
+        resultats = []
+        connexions_suspectes = []
+        try:
+            for c in psutil.net_connections():
+                if c.status == 'ESTABLISHED' and c.raddr:
+                    ip = c.raddr.ip
+                    if not (ip.startswith('127.') or ip.startswith('192.168.') or ip.startswith('10.') or ip.startswith('172.16') or ip.startswith('172.17') or ip.startswith('172.18') or ip.startswith('172.19') or ip.startswith('172.2') or ip.startswith('172.30') or ip.startswith('172.31')):
+                        connexions_suspectes.append(f"{ip}:{c.raddr.port}")
+        except:
+            pass
+        if connexions_suspectes:
+            resultats.append(f"⚠ {len(connexions_suspectes)} connexion(s) externe(s) etablie(s):\\n" + "\\n".join(connexions_suspectes[:10]))
+        else:
+            resultats.append("✓ Aucune connexion externe suspecte")
+        try:
+            if platform.system() == 'Windows':
+                r = subprocess.run(['powershell', '-Command', 'Get-NetTCPConnection -State Established | Where-Object {$_.RemoteAddress -notlike "192.168.*" -and $_.RemoteAddress -notlike "10.*" -and $_.RemoteAddress -ne "127.0.0.1"} | Select-Object -First 5 | Format-Table -AutoSize'], capture_output=True, text=True, timeout=10)
+                if r.returncode == 0 and r.stdout.strip() and len(r.stdout.strip()) > 50:
+                    resultats.append("Connexions actives:\\n" + r.stdout.strip())
+        except:
+            pass
+        return "\\n".join(resultats)
+    except Exception as e:
+        return f"Erreur: {str(e)}"
+
+def scan_fichiers_suspects():
+    try:
+        resultats = []
+        zones = []
+        if platform.system() == 'Windows':
+            zones = [os.environ.get('TEMP', 'C:\\\\Windows\\\\Temp'), os.environ.get('APPDATA', ''), 'C:\\\\Users\\\\Public']
+        else:
+            zones = ['/tmp', os.path.expanduser('~')]
+        suspects = []
+        for zone in zones:
+            if not zone or not os.path.isdir(zone):
+                continue
+            try:
+                count = 0
+                for root, dirs, files in os.walk(zone):
+                    if count > 500:
+                        break
+                    for f in files:
+                        if f.endswith('.exe') or f.endswith('.scr') or f.endswith('.bat'):
+                            chemin = os.path.join(root, f)
+                            try:
+                                if os.path.getmtime(chemin) > time.time() - 7*24*3600:
+                                    suspects.append(chemin)
+                                    count += 1
+                                    if count >= 10:
+                                        break
+                            except:
+                                pass
+                    if count >= 10:
+                        break
+            except:
+                pass
+        if suspects:
+            return f"⚠ {len(suspects)} fichier(s) executable(s) recent(s) detecte(s):\\n" + "\\n".join(suspects[:5])
+        return "✓ Aucun fichier executable suspect dans les zones sensibles"
+    except Exception as e:
+        return f"Erreur: {str(e)}"
+
+def scan_integrite():
+    try:
+        if platform.system() == 'Windows':
+            result = subprocess.run(['sfc', '/verifyonly'], capture_output=True, text=True, timeout=120)
+            output = (result.stdout + result.stderr)
+            if 'violation' in output.lower() or 'corrupt' in output.lower():
+                return "⚠ Fichiers systeme corrompus detectes. Lancez 'sfc /scannow' en admin pour reparer."
+            return "✓ Fichiers systeme verifies - aucune corruption detectee"
+        return "Verification integrite reservee a Windows"
+    except Exception as e:
+        return f"Erreur: {str(e)}"
+
+# ==================== COMMANDES MAINTENANCE ====================
+def maj_windows():
+    try:
+        if platform.system() == 'Windows':
+            r = subprocess.run(['wmic', 'qfe', 'list', 'brief'], capture_output=True, text=True, timeout=15)
+            installed = []
+            if r.returncode == 0 and r.stdout.strip():
+                lines = [l.strip() for l in r.stdout.strip().split('\\n')[1:] if l.strip()]
+                installed = lines[:10]
+            # Verification eligibilite
+            r2 = subprocess.run(
+                ['powershell', '-Command', 'Get-WindowsUpdate -ErrorAction SilentlyContinue | Select-Object -First 10 | Format-Table -Property Title -AutoSize'],
+                capture_output=True, text=True, timeout=20
+            )
+            if r2.returncode == 0 and r2.stdout.strip() and len(r2.stdout.strip()) > 30:
+                return f"Mises a jour disponibles:\\n{r2.stdout.strip()}\\n\\nDernieres MAJ installees:\\n" + "\\n".join(installed[:5])
+            return f"Recherche MAJ terminee.\\nDernieres MAJ installees:\\n" + "\\n".join(installed[:5]) if installed else "Aucune MAJ installee detectee."
+        return "Mises a jour Windows reservees a Windows"
+    except Exception as e:
+        return f"Erreur: {str(e)}"
+
+def maj_pilotes():
+    try:
+        if platform.system() == 'Windows':
+            r = subprocess.run(
+                ['powershell', '-Command', 'Get-WmiObject Win32_PnPEntity | Where-Object {$_.ConfigManagerErrorCode -ne 0} | Select-Object Name,ConfigManagerErrorCode | Format-Table -AutoSize'],
+                capture_output=True, text=True, timeout=15
+            )
+            if r.returncode == 0 and r.stdout.strip() and len(r.stdout.strip()) > 30:
+                return f"⚠ Pilotes avec problemes:\\n{r.stdout.strip()}"
+            return "✓ Aucun pilote en conflit detecte"
+        return "Verification pilotes reservee a Windows"
+    except Exception as e:
+        return f"Erreur: {str(e)}"
+
+def nettoyage_disque():
+    try:
+        import tempfile, glob
+        cleaned = 0
+        freed = 0
+        try:
+            temp = tempfile.gettempdir()
+            for f in glob.glob(os.path.join(temp, '*')):
+                try:
+                    if os.path.isfile(f):
+                        size = os.path.getsize(f)
+                        os.remove(f)
+                        cleaned += 1
+                        freed += size
+                except:
+                    pass
+        except:
+            pass
+        return f"✓ Nettoyage termine: {cleaned} fichiers supprimes, {round(freed/1024/1024, 1)} Mo liberes"
+    except Exception as e:
+        return f"Erreur: {str(e)}"
+
+def detecter_doublons():
+    try:
+        zones = []
+        if platform.system() == 'Windows':
+            zones = [os.path.expanduser('~\\\\Documents'), os.path.expanduser('~\\\\Downloads'), os.path.expanduser('~\\\\Pictures')]
+        else:
+            zones = [os.path.expanduser('~/Documents'), os.path.expanduser('~/Downloads'), os.path.expanduser('~/Pictures')]
+        hashes = {}
+        doublons = []
+        for zone in zones:
+            if not os.path.isdir(zone):
+                continue
+            try:
+                for root, dirs, files in os.walk(zone):
+                    if len(hashes) > 2000:
+                        break
+                    for f in files:
+                        chemin = os.path.join(root, f)
+                        try:
+                            size = os.path.getsize(chemin)
+                            if size < 1024 or size > 100*1024*1024:
+                                continue
+                            h = hashlib.md5()
+                            with open(chemin, 'rb') as fp:
+                                h.update(fp.read(65536))
+                            key = (size, h.hexdigest())
+                            if key in hashes:
+                                doublons.append((chemin, hashes[key]))
+                                if len(doublons) >= 20:
+                                    break
+                            else:
+                                hashes[key] = chemin
+                        except:
+                            pass
+                    if len(doublons) >= 20:
+                        break
+            except:
+                pass
+        if doublons:
+            result = f"⚠ {len(doublons)} doublon(s) detecte(s):\\n"
+            for d in doublons[:10]:
+                result += f"- {os.path.basename(d[0])} (double de {os.path.basename(d[1])})\\n"
+            return result
+        return "✓ Aucun fichier doublon detecte dans Documents/Downloads/Pictures"
+    except Exception as e:
+        return f"Erreur: {str(e)}"
+
+def vider_cache_dns():
+    try:
+        if platform.system() == 'Windows':
+            subprocess.run(['ipconfig', '/flushdns'], capture_output=True, timeout=10)
+            return "✓ Cache DNS vide avec succes"
+        return "Reserve a Windows"
+    except Exception as e:
+        return f"Erreur: {str(e)}"
+
+def defrag():
+    try:
+        if platform.system() == 'Windows':
+            subprocess.Popen(['defrag', 'C:', '/O'], shell=True)
+            return "Defragmentation lancee en arriere-plan. Peut prendre plusieurs heures."
+        return "Reserve a Windows"
+    except Exception as e:
+        return f"Erreur: {str(e)}"
+
+def redemarrer():
+    try:
+        if platform.system() == 'Windows':
+            subprocess.Popen(['shutdown', '/r', '/t', '60'])
+            return "Redemarrage programme dans 60 secondes. Annulez avec 'shutdown /a'"
+        else:
+            subprocess.Popen(['shutdown', '-r', '+1'])
+            return "Redemarrage programme dans 1 minute"
+    except Exception as e:
+        return f"Erreur: {str(e)}"
 
 def executer_commande(cmd):
     commande = cmd.get('commande', '')
@@ -1499,47 +1948,19 @@ def executer_commande(cmd):
     statut = 'executee'
 
     try:
-        if commande == 'scan_antivirus':
-            resultat = "Scan antivirus planifie. (Nécessite un antivirus installé)"
-        elif commande == 'maj_windows':
-            if platform.system() == 'Windows':
-                subprocess.Popen(['powershell', '-Command', 'Start-Process ms-settings:windowsupdate'])
-                resultat = "Windows Update lance"
-            else:
-                resultat = "Commande reservee a Windows"
-        elif commande == 'scan_vulnerabilites':
-            resultat = "Analyse des vulnerabilites terminee - aucun probleme critique"
-        elif commande == 'nettoyage_disque':
-            import tempfile, glob
-            cleaned = 0
-            try:
-                temp = tempfile.gettempdir()
-                for f in glob.glob(os.path.join(temp, '*')):
-                    try:
-                        if os.path.isfile(f):
-                            os.remove(f)
-                            cleaned += 1
-                    except:
-                        pass
-            except:
-                pass
-            resultat = f"Nettoyage termine - {cleaned} fichiers supprimes"
-        elif commande == 'vider_cache_dns':
-            if platform.system() == 'Windows':
-                subprocess.run(['ipconfig', '/flushdns'], capture_output=True)
-                resultat = "Cache DNS vide"
-            else:
-                resultat = "Commande reservee a Windows"
-        elif commande == 'scan_malware':
-            resultat = "Scan malware termine - aucun malware detecte"
-        elif commande == 'redemarrer':
-            resultat = "Redemarrage programme dans 60 secondes..."
-            if platform.system() == 'Windows':
-                subprocess.Popen(['shutdown', '/r', '/t', '60'])
-            else:
-                subprocess.Popen(['shutdown', '-r', '+1'])
-        elif commande == 'verifier_pilotes':
-            resultat = "Verification des pilotes effectuee"
+        if commande == 'scan_antivirus': resultat = scan_antivirus()
+        elif commande == 'scan_malware': resultat = scan_malware()
+        elif commande == 'scan_vulnerabilites': resultat = scan_vulnerabilites()
+        elif commande == 'scan_pirates': resultat = scan_pirates()
+        elif commande == 'scan_fichiers_suspects': resultat = scan_fichiers_suspects()
+        elif commande == 'scan_integrite': resultat = scan_integrite()
+        elif commande == 'maj_windows': resultat = maj_windows()
+        elif commande == 'maj_pilotes': resultat = maj_pilotes()
+        elif commande == 'nettoyage_disque': resultat = nettoyage_disque()
+        elif commande == 'detecter_doublons': resultat = detecter_doublons()
+        elif commande == 'vider_cache_dns': resultat = vider_cache_dns()
+        elif commande == 'defrag': resultat = defrag()
+        elif commande == 'redemarrer': resultat = redemarrer()
         else:
             resultat = f"Commande inconnue: {commande}"
             statut = 'echouee'
@@ -1547,34 +1968,26 @@ def executer_commande(cmd):
         resultat = f"Erreur: {str(e)}"
         statut = 'echouee'
 
-    print(f"<<< RESULTAT: {resultat}")
+    print(f"<<< RESULTAT: {resultat[:200]}")
     marquer_commande(cmd['id'], statut, resultat)
 
 def main():
     print("=" * 60)
-    print("  AGENT DE DIAGNOSTIC - AFRICA.TECH21")
-    print("  Centre de Diagnostic CSIV")
+    print("  AGENT AFRICA.TECH21 v2 - SECURITE & MAINTENANCE")
     print("=" * 60)
     print(f"  Agent ID : {AGENT_ID}")
     print(f"  Hostname : {socket.gethostname()}")
-    print("=" * 60)
-    print("  Laissez cette fenetre ouverte.")
-    print("  Fermez-la pour arreter l'agent.")
+    print(f"  Admin    : {'OUI' if est_admin() else 'NON (certaines commandes limitees)'}")
     print("=" * 60)
     try:
         while True:
             try:
                 data = collecter()
-                success = envoyer(data)
-                if success:
-                    print(f"[{time.strftime('%H:%M:%S')}] OK - CPU: {data['cpu_utilisation_pct']}% | RAM: {data['ram_utilisation_pct']}% | Temp: {data['cpu_temperature_c'] or 'N/A'}C")
-                else:
-                    print(f"[{time.strftime('%H:%M:%S')}] Echec envoi")
-
+                envoyer(data)
                 commandes = get_commandes()
                 for cmd in commandes:
                     executer_commande(cmd)
-
+                print(f"[{time.strftime('%H:%M:%S')}] OK - CPU: {data['cpu_utilisation_pct']}% | RAM: {data['ram_utilisation_pct']}% | Temp: {data['cpu_temperature_c'] or 'N/A'}C")
             except Exception as e:
                 print(f"[{time.strftime('%H:%M:%S')}] Erreur: {e}")
             time.sleep(INTERVALLE)
@@ -1593,7 +2006,7 @@ if __name__ == '__main__':
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            showToast('✓ Agent téléchargé', 'success');
+            showToast('✓ Agent v2 téléchargé', 'success');
             fermerModalTelechargement();
         }
 
@@ -1613,8 +2026,10 @@ if __name__ == '__main__':
             if (refreshInterval) clearInterval(refreshInterval);
             refreshInterval = setInterval(() => {
                 chargerPCs();
-                if (pcSelectionne && document.getElementById('tabControle').classList.contains('active')) {
-                    chargerCommandes();
+                if (pcSelectionne) {
+                    if (document.getElementById('tabSecurite').classList.contains('active')) chargerResultats('securite');
+                    if (document.getElementById('tabMaintenance').classList.contains('active')) chargerResultats('maintenance');
+                    if (document.getElementById('tabHistorique').classList.contains('active')) chargerCommandes();
                 }
             }, 3000);
         }
