@@ -784,7 +784,7 @@
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        const ALLOWED_IDS = ['AT21_0011', 'AT21_006', 'Birane186@00'];
+        const ALLOWED_IDS = ['AT21_ZAM68', 'AT21_006', 'Birane186@00'];
         if (localStorage.getItem('memberLoggedIn') !== 'true') window.location.href = 'espace-membres.html';
         const memberId = localStorage.getItem('memberId') || '';
         if (!ALLOWED_IDS.includes(memberId)) {
