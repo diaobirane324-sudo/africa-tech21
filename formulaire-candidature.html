@@ -5,31 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Candidature Membre Officiel - AFRICA.TECH21</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --neon-blue: #00f3ff;
             --neon-purple: #b300ff;
             --neon-pink: #ff00c8;
             --neon-green: #00ff88;
+            --neon-gold: #ffd700;
             --cyber-yellow: #ffd300;
             --dark-space: #0a0a1f;
             --deep-space: #050510;
-            --glass: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(0, 243, 255, 0.15);
+            --glass-hover: rgba(0, 243, 255, 0.08);
         }
 
         body {
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(179, 0, 255, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(0, 243, 255, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(255, 0, 200, 0.2) 0%, transparent 50%),
+            background:
+                radial-gradient(circle at 15% 85%, rgba(179, 0, 255, 0.25) 0%, transparent 55%),
+                radial-gradient(circle at 85% 15%, rgba(0, 243, 255, 0.25) 0%, transparent 55%),
+                radial-gradient(circle at 50% 50%, rgba(255, 0, 200, 0.12) 0%, transparent 60%),
                 linear-gradient(135deg, var(--deep-space), var(--dark-space));
             min-height: 100vh;
             font-family: 'Exo 2', sans-serif;
@@ -41,239 +39,265 @@
 
         /* EFFETS DE FOND */
         .matrix-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(90deg, transparent 95%, rgba(0, 255, 65, 0.03) 100%),
-                linear-gradient(transparent 95%, rgba(0, 255, 65, 0.03) 100%);
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background:
+                linear-gradient(90deg, transparent 95%, rgba(0, 255, 136, 0.03) 100%),
+                linear-gradient(transparent 95%, rgba(0, 255, 136, 0.03) 100%);
             background-size: 50px 50px;
             animation: matrixMove 20s infinite linear;
             z-index: -3;
         }
-
-        .particles {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-        }
-
+        .particles { position: fixed; width: 100%; height: 100%; z-index: -2; }
         .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--neon-blue);
-            border-radius: 50%;
-            animation: float 15s infinite linear;
-            box-shadow: 0 0 10px var(--neon-blue);
+            position: absolute; width: 3px; height: 3px;
+            border-radius: 50%; animation: float 15s infinite linear;
         }
-
         .scan-lines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to bottom,
-                transparent 50%,
-                rgba(0, 255, 65, 0.03) 51%
-            );
-            background-size: 100% 4px;
-            pointer-events: none;
-            z-index: 2;
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 255, 136, 0.025) 51%);
+            background-size: 100% 4px; pointer-events: none; z-index: 2;
             animation: scanMove 2s linear infinite;
         }
-
-        @keyframes matrixMove {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(50px); }
-        }
-
+        @keyframes matrixMove { 0% { transform: translateY(0); } 100% { transform: translateY(50px); } }
         @keyframes float {
             0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
+            10% { opacity: 1; } 90% { opacity: 1; }
             100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
         }
-
-        @keyframes scanMove {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(4px); }
-        }
+        @keyframes scanMove { 0% { transform: translateY(0); } 100% { transform: translateY(4px); } }
 
         /* HEADER */
         .cyber-header {
-            background: rgba(5, 5, 16, 0.9);
-            border-bottom: 2px solid;
-            border-image: linear-gradient(45deg, var(--neon-blue), var(--neon-purple)) 1;
+            background: rgba(5, 5, 16, 0.85);
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
             padding: 1.5rem 0;
-            backdrop-filter: blur(15px);
-            position: relative;
-            z-index: 100;
+            backdrop-filter: blur(20px);
+            position: relative; z-index: 100;
             margin: -2rem -2rem 2rem -2rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
-
+        .cyber-header::after {
+            content: '';
+            position: absolute; bottom: -1px; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), var(--neon-purple), var(--neon-pink), transparent);
+            background-size: 200% 100%;
+            animation: headerFlow 4s linear infinite;
+        }
+        @keyframes headerFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
         .cyber-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 3rem;
-            max-width: 1400px;
-            margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 3rem; max-width: 1400px; margin: 0 auto;
         }
-
         .cyber-logo h1 {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.8rem;
-            font-weight: 900;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+            font-family: 'Orbitron', monospace; font-size: 1.8rem; font-weight: 900;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple), var(--neon-pink));
+            background-size: 200% 200%;
+            -webkit-background-clip: text; background-clip: text; color: transparent;
             letter-spacing: 2px;
+            animation: logoGradient 5s ease infinite;
         }
-
+        @keyframes logoGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
         .cyber-logo span {
             color: var(--neon-green);
             text-shadow: 0 0 15px var(--neon-green);
         }
-
-        .nav-buttons {
-            display: flex;
-            gap: 1.5rem;
-        }
-
+        .nav-buttons { display: flex; gap: 1rem; }
         .cyber-nav-btn {
-            background: transparent;
-            border: 2px solid;
-            border-image: linear-gradient(45deg, var(--neon-blue), var(--neon-green)) 1;
+            background: rgba(0, 243, 255, 0.05);
+            border: 1px solid var(--neon-blue);
             color: var(--neon-blue);
             padding: 0.8rem 1.5rem;
             font-family: 'Orbitron', monospace;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 0.85rem; text-transform: uppercase;
+            letter-spacing: 1.5px; cursor: pointer;
+            transition: all 0.3s ease; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 10px;
+            border-radius: 8px;
         }
-
         .cyber-nav-btn:hover {
-            background: rgba(0, 243, 255, 0.1);
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+            background: rgba(0, 243, 255, 0.15);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.4);
             transform: translateY(-2px);
         }
 
-        /* CONTAINER PRINCIPAL */
-        .form-container {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
+        /* HERO BANNER */
+        .hero-section {
+            max-width: 900px; margin: 0 auto 3rem;
+            text-align: center; position: relative; z-index: 1;
         }
+        .hero-icon {
+            font-size: 4rem; color: var(--neon-green);
+            text-shadow: 0 0 40px rgba(0, 255, 136, 0.6);
+            margin-bottom: 1rem;
+            display: block;
+            animation: heroPulse 3s ease-in-out infinite;
+        }
+        @keyframes heroPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px var(--neon-green)); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 30px var(--neon-green)); }
+        }
+        .hero-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem; font-weight: 900;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green), var(--neon-purple));
+            background-size: 200% 200%;
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            letter-spacing: 3px; margin-bottom: 1rem;
+            animation: logoGradient 4s ease infinite;
+        }
+        .hero-subtitle {
+            font-size: 1.15rem; color: rgba(255, 255, 255, 0.75);
+            max-width: 700px; margin: 0 auto; line-height: 1.7;
+        }
+        .hero-badges {
+            display: flex; gap: 1rem; justify-content: center;
+            margin-top: 1.5rem; flex-wrap: wrap;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.6rem 1.3rem;
+            background: rgba(0, 243, 255, 0.08);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 25px;
+            font-size: 0.85rem;
+            color: var(--neon-blue);
+            font-weight: 600;
+        }
+        .hero-badge i { color: var(--neon-green); }
+
+        /* CONTAINER PRINCIPAL */
+        .form-container { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
 
         /* CARTE PRINCIPALE */
         .cyber-form-card {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 25, 0.7);
+            backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
             padding: 3rem;
             border-radius: 25px;
-            box-shadow: 
-                0 25px 50px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.05),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            box-shadow:
+                0 25px 60px rgba(0, 0, 0, 0.6),
+                0 0 60px rgba(0, 243, 255, 0.08),
+                inset 0 0 30px rgba(179, 0, 255, 0.03);
             margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .cyber-form-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-pink), var(--neon-green), var(--neon-blue));
+            background-size: 300% 100%;
+            animation: borderFlow 5s linear infinite;
+        }
+        @keyframes borderFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
         }
 
-        .form-header {
-            text-align: center;
-            margin-bottom: 3rem;
+        /* SECTIONS */
+        .form-section {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.1);
         }
-
-        .form-title {
+        .form-section:last-of-type { border-bottom: none; }
+        .section-heading {
+            display: flex; align-items: center; gap: 0.8rem;
             font-family: 'Orbitron', monospace;
-            font-size: 2.5rem;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+            font-size: 1.1rem; font-weight: 700;
+            color: var(--neon-green);
+            letter-spacing: 2px; text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
         }
-
-        .form-subtitle {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.7);
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
+        .section-heading i {
+            color: var(--neon-blue); font-size: 1.3rem;
+            text-shadow: 0 0 20px var(--neon-blue);
+        }
+        .section-number {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--neon-green);
+            border-radius: 50%;
+            color: var(--neon-green);
+            font-size: 0.85rem; font-weight: 900;
+            text-shadow: 0 0 10px var(--neon-green);
+            margin-right: 0.3rem;
         }
 
         /* MESSAGES */
         .cyber-message {
             padding: 1.5rem;
-            border-radius: 10px;
+            border-radius: 15px;
             margin-bottom: 2rem;
             text-align: center;
             font-weight: 500;
             display: none;
         }
-
         .success-message {
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid rgba(0, 255, 136, 0.3);
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 243, 255, 0.1));
+            border: 2px solid rgba(0, 255, 136, 0.4);
             color: var(--neon-green);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
         }
-
+        .success-message i { font-size: 1.8rem; display: block; margin-bottom: 0.8rem; }
         .error-message {
             background: rgba(255, 71, 87, 0.1);
-            border: 1px solid rgba(255, 71, 87, 0.3);
+            border: 1px solid rgba(255, 71, 87, 0.4);
             color: #ff4757;
+            font-size: 0.95rem;
         }
-
+        .error-message i { font-size: 1.5rem; display: block; margin-bottom: 0.5rem; }
         .info-message {
-            background: rgba(255, 193, 7, 0.1);
+            background: rgba(255, 211, 0, 0.08);
             border: 1px solid var(--cyber-yellow);
             color: var(--cyber-yellow);
             text-align: left;
+            line-height: 1.8;
         }
+        .info-message strong {
+            display: block; margin-bottom: 0.8rem;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 1.5px;
+        }
+        .info-message p { margin-bottom: 0.4rem; font-size: 0.9rem; }
 
         /* FORMULAIRE */
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
-            margin-bottom: 2rem;
         }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group-full {
-            grid-column: 1 / -1;
-        }
+        .form-group { margin-bottom: 1.5rem; position: relative; }
+        .form-group-full { grid-column: 1 / -1; }
 
         .cyber-label {
             display: block;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.7rem;
             color: var(--neon-blue);
             font-family: 'Orbitron', monospace;
-            font-size: 0.9rem;
+            font-size: 0.82rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            text-shadow: 0 0 10px var(--neon-blue);
+            text-shadow: 0 0 8px rgba(0, 243, 255, 0.4);
+            font-weight: 600;
         }
-
+        .cyber-label i {
+            margin-right: 0.4rem;
+            color: var(--neon-green);
+        }
         .required::after {
             content: " *";
             color: var(--neon-pink);
@@ -281,32 +305,59 @@
 
         .cyber-input, .cyber-select, .cyber-textarea {
             width: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--glass-border);
-            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            border-radius: 12px;
             padding: 1rem 1.2rem;
             color: white;
-            font-size: 1rem;
+            font-size: 0.98rem;
             font-family: 'Exo 2', sans-serif;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
         }
-
+        .cyber-input:hover, .cyber-select:hover, .cyber-textarea:hover {
+            border-color: rgba(0, 243, 255, 0.4);
+            background: rgba(0, 0, 0, 0.45);
+        }
         .cyber-input:focus, .cyber-select:focus, .cyber-textarea:focus {
             outline: none;
             border-color: var(--neon-blue);
-            box-shadow: 0 0 0 2px rgba(0, 243, 255, 0.2), 0 0 20px rgba(0, 243, 255, 0.2);
-            background: rgba(0, 0, 0, 0.5);
+            box-shadow:
+                0 0 0 3px rgba(0, 243, 255, 0.15),
+                0 0 25px rgba(0, 243, 255, 0.25);
+            background: rgba(0, 0, 0, 0.55);
         }
-
         .cyber-input::placeholder, .cyber-textarea::placeholder {
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.35);
+            font-style: italic;
+        }
+        .cyber-select option {
+            background: #0a0a1f;
+            color: white;
+            padding: 10px;
+        }
+        .cyber-textarea {
+            height: 140px;
+            resize: vertical;
+            line-height: 1.6;
         }
 
-        .cyber-textarea {
-            height: 150px;
-            resize: vertical;
-            line-height: 1.5;
+        .char-counter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.6rem;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .char-counter .char-count {
+            font-weight: 700;
+            color: var(--cyber-yellow);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .char-counter .char-count.ok {
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green);
         }
 
         /* BOUTONS */
@@ -315,60 +366,54 @@
             gap: 1.5rem;
             justify-content: center;
             margin-top: 2rem;
+            flex-wrap: wrap;
         }
-
         .cyber-submit-btn {
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple), var(--neon-pink));
+            background-size: 200% 200%;
             color: white;
             border: none;
-            padding: 1.2rem 3rem;
-            border-radius: 10px;
+            padding: 1.3rem 3rem;
+            border-radius: 12px;
             font-family: 'Orbitron', monospace;
-            font-size: 1.1rem;
-            font-weight: 700;
+            font-size: 1rem;
+            font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 2px;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 243, 255, 0.3);
+            animation: logoGradient 3s ease infinite;
         }
-
         .cyber-submit-btn::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
             transition: 0.5s;
         }
-
         .cyber-submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 243, 255, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 243, 255, 0.5);
         }
-
-        .cyber-submit-btn:hover::before {
-            left: 100%;
-        }
-
+        .cyber-submit-btn:hover::before { left: 100%; }
         .cyber-submit-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
+            animation: none;
         }
-
         .cyber-cancel-btn {
             background: transparent;
-            border: 2px solid;
-            border-image: linear-gradient(45deg, #ff6b6b, #ff4757) 1;
+            border: 2px solid rgba(255, 71, 87, 0.5);
             color: #ff6b6b;
-            padding: 1.2rem 2rem;
-            border-radius: 10px;
+            padding: 1.3rem 2rem;
+            border-radius: 12px;
             font-family: 'Orbitron', monospace;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1.5px;
@@ -379,10 +424,10 @@
             align-items: center;
             gap: 10px;
         }
-
         .cyber-cancel-btn:hover {
             background: rgba(255, 107, 107, 0.1);
-            box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+            border-color: #ff6b6b;
+            box-shadow: 0 0 25px rgba(255, 107, 107, 0.4);
             transform: translateY(-2px);
         }
 
@@ -390,76 +435,43 @@
         .form-footer {
             text-align: center;
             margin-top: 2rem;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.88rem;
+            line-height: 1.7;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border-left: 3px solid var(--cyber-yellow);
         }
+        .form-footer i { color: var(--cyber-yellow); margin-right: 0.4rem; }
 
         /* RESPONSIVE */
         @media (max-width: 768px) {
-            body {
-                padding: 1rem;
-            }
-
-            .cyber-header {
-                margin: -1rem -1rem 2rem -1rem;
-            }
-
-            .cyber-nav {
-                padding: 0 1.5rem;
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .cyber-form-card {
-                padding: 2rem 1.5rem;
-            }
-
-            .form-title {
-                font-size: 2rem;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-                gap: 0;
-            }
-
-            .form-actions {
-                flex-direction: column;
-            }
-
-            .nav-buttons {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .cyber-nav-btn {
-                text-align: center;
-                justify-content: center;
-            }
+            body { padding: 1rem; }
+            .cyber-header { margin: -1rem -1rem 2rem -1rem; }
+            .cyber-nav { padding: 0 1.5rem; flex-direction: column; gap: 1rem; }
+            .cyber-form-card { padding: 2rem 1.5rem; }
+            .hero-title { font-size: 2rem; }
+            .hero-icon { font-size: 3rem; }
+            .form-grid { grid-template-columns: 1fr; gap: 0; }
+            .form-actions { flex-direction: column; }
+            .nav-buttons { flex-direction: column; width: 100%; }
+            .cyber-nav-btn { justify-content: center; }
+            .section-heading { font-size: 0.95rem; }
         }
-
         @media (max-width: 480px) {
-            .cyber-form-card {
-                padding: 1.5rem 1rem;
-            }
-
-            .form-title {
-                font-size: 1.8rem;
-            }
-
-            .cyber-input, .cyber-select, .cyber-textarea {
-                padding: 0.8rem 1rem;
-            }
+            .cyber-form-card { padding: 1.5rem 1rem; }
+            .hero-title { font-size: 1.6rem; }
+            .cyber-input, .cyber-select, .cyber-textarea { padding: 0.9rem 1rem; font-size: 0.92rem; }
+            .cyber-submit-btn { padding: 1.1rem 1.5rem; font-size: 0.85rem; }
         }
     </style>
 </head>
 <body>
-    <!-- EFFETS DE FOND -->
     <div class="matrix-bg"></div>
     <div class="particles" id="particles"></div>
     <div class="scan-lines"></div>
 
-    <!-- HEADER -->
     <header class="cyber-header">
         <nav class="cyber-nav">
             <div class="cyber-logo">
@@ -476,108 +488,142 @@
         </nav>
     </header>
 
-    <!-- CONTENU PRINCIPAL -->
+    <div class="hero-section">
+        <i class="fas fa-user-astronaut hero-icon"></i>
+        <h1 class="hero-title">REJOIGNEZ L'ÉLITE</h1>
+        <p class="hero-subtitle">
+            Postulez pour devenir membre officiel d'AFRICA.TECH21 et accédez aux projets confidentiels,
+            ressources techniques et opportunités de collaboration de la communauté.
+        </p>
+        <div class="hero-badges">
+            <div class="hero-badge"><i class="fas fa-check-circle"></i> Réponse sous 48h</div>
+            <div class="hero-badge"><i class="fas fa-shield-alt"></i> Examen par comité</div>
+            <div class="hero-badge"><i class="fas fa-lock"></i> Accès sécurisé</div>
+        </div>
+    </div>
+
     <div class="form-container">
-        <!-- CARTE DU FORMULAIRE -->
         <div class="cyber-form-card">
-            <div class="form-header">
-                <h1 class="form-title">CANDIDATURE MEMBRE OFFICIEL</h1>
-                <p class="form-subtitle">
-                    Postulez pour devenir membre officiel d'AFRICA.TECH21 et accéder à tous nos projets confidentiels, 
-                    ressources techniques et opportunités de collaboration.
-                </p>
-            </div>
 
             <div class="info-message cyber-message">
-                <strong>📋 INFORMATIONS IMPORTANTES :</strong>
-                <p>• Ce formulaire est pour devenir membre officiel avec accès complet aux projets</p>
+                <strong><i class="fas fa-info-circle"></i> INFORMATIONS IMPORTANTES</strong>
+                <p>• Ce formulaire est réservé aux candidatures de membre officiel</p>
                 <p>• Tous les champs marqués d'un * sont obligatoires</p>
-                <p>• Votre candidature sera examinée par notre comité de sélection</p>
+                <p>• Votre candidature sera examinée par le comité de sélection</p>
                 <p>• Vous recevrez une réponse sous 48 heures</p>
             </div>
 
-            <div class="success-message cyber-message" id="successMessage">
-                <i class="fas fa-check-circle"></i> Votre candidature a été envoyée avec succès !
-            </div>
-
+            <div class="success-message cyber-message" id="successMessage"></div>
             <div class="error-message cyber-message" id="errorMessage">
                 <i class="fas fa-exclamation-circle"></i> <span id="errorText">Une erreur est survenue</span>
             </div>
 
             <form id="candidatureForm">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="cyber-label required" for="prenom">Prénom</label>
-                        <input type="text" id="prenom" name="prenom" class="cyber-input" required placeholder="Votre prénom">
-                    </div>
 
-                    <div class="form-group">
-                        <label class="cyber-label required" for="nom">Nom</label>
-                        <input type="text" id="nom" name="nom" class="cyber-input" required placeholder="Votre nom">
+                <!-- SECTION 1 : IDENTITÉ -->
+                <div class="form-section">
+                    <div class="section-heading">
+                        <span class="section-number">1</span>
+                        <i class="fas fa-user"></i>
+                        Identité
                     </div>
-
-                    <div class="form-group">
-                        <label class="cyber-label required" for="civilite">Civilité</label>
-                        <select id="civilite" name="civilite" class="cyber-select" required>
-                            <option value="">Sélectionnez</option>
-                            <option value="Monsieur">Monsieur</option>
-                            <option value="Madame">Madame</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="cyber-label required" for="email">Email</label>
-                        <input type="email" id="email" name="email" class="cyber-input" required placeholder="votre@email.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="cyber-label required" for="telephone">Téléphone</label>
-                        <input type="tel" id="telephone" name="telephone" class="cyber-input" required placeholder="+221 XX XXX XX XX">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="cyber-label required" for="adresse">Adresse</label>
-                        <input type="text" id="adresse" name="adresse" class="cyber-input" required placeholder="Votre adresse complète">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="cyber-label required" for="profession">Profession</label>
-                        <input type="text" id="profession" name="profession" class="cyber-input" required placeholder="Votre profession actuelle">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="cyber-label required" for="domaine">Domaine d'expertise</label>
-                        <select id="domaine" name="domaine" class="cyber-select" required>
-                            <option value="">Sélectionnez votre domaine</option>
-                            <option value="Robotique">🤖 Robotique</option>
-                            <option value="Électronique">🔌 Électronique</option>
-                            <option value="Mécanique">⚙️ Mécanique</option>
-                            <option value="Informatique">💻 Informatique</option>
-                            <option value="Intelligence Artificielle">🧠 Intelligence Artificielle</option>
-                            <option value="Multidisciplinaire">🌐 Multidisciplinaire</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group form-group-full">
-                        <label class="cyber-label required" for="motivation">Motivation</label>
-                        <textarea id="motivation" name="motivation" class="cyber-textarea" required 
-                                  placeholder="Expliquez pourquoi vous souhaitez rejoindre AFRICA.TECH21, vos compétences techniques, 
-et ce que vous pouvez apporter au club... (Minimum 200 caractères)"></textarea>
-                        <div style="text-align: right; margin-top: 0.5rem; color: rgba(255, 255, 255, 0.5); font-size: 0.8rem;">
-                            <span id="charCount">0</span> caractères
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="cyber-label required" for="prenom"><i class="fas fa-signature"></i> Prénom</label>
+                            <input type="text" id="prenom" name="prenom" class="cyber-input" required placeholder="Votre prénom">
+                        </div>
+                        <div class="form-group">
+                            <label class="cyber-label required" for="nom"><i class="fas fa-signature"></i> Nom</label>
+                            <input type="text" id="nom" name="nom" class="cyber-input" required placeholder="Votre nom">
+                        </div>
+                        <div class="form-group">
+                            <label class="cyber-label required" for="civilite"><i class="fas fa-venus-mars"></i> Civilité</label>
+                            <select id="civilite" name="civilite" class="cyber-select" required>
+                                <option value="">Sélectionnez</option>
+                                <option value="Monsieur">Monsieur</option>
+                                <option value="Madame">Madame</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="cyber-label required" for="profession"><i class="fas fa-briefcase"></i> Profession</label>
+                            <input type="text" id="profession" name="profession" class="cyber-input" required placeholder="Votre profession actuelle">
                         </div>
                     </div>
+                </div>
 
-                    <div class="form-group form-group-full">
-                        <label class="cyber-label" for="projets">Projets d'intérêt</label>
-                        <textarea id="projets" name="projets" class="cyber-textarea" 
-                                  placeholder="Quels projets AFRICA.TECH21 vous intéressent le plus ? (RSMA, Robot Assistant, etc.)"></textarea>
+                <!-- SECTION 2 : CONTACT -->
+                <div class="form-section">
+                    <div class="section-heading">
+                        <span class="section-number">2</span>
+                        <i class="fas fa-address-book"></i>
+                        Coordonnées
                     </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="cyber-label required" for="email"><i class="fas fa-envelope"></i> Email</label>
+                            <input type="email" id="email" name="email" class="cyber-input" required placeholder="votre@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="cyber-label required" for="telephone"><i class="fas fa-phone"></i> Téléphone</label>
+                            <input type="tel" id="telephone" name="telephone" class="cyber-input" required placeholder="+221 XX XXX XX XX">
+                        </div>
+                        <div class="form-group form-group-full">
+                            <label class="cyber-label required" for="adresse"><i class="fas fa-map-marker-alt"></i> Adresse</label>
+                            <input type="text" id="adresse" name="adresse" class="cyber-input" required placeholder="Votre adresse complète">
+                        </div>
+                    </div>
+                </div>
 
-                    <div class="form-group form-group-full">
-                        <label class="cyber-label" for="competences">Compétences techniques</label>
-                        <textarea id="competences" name="competences" class="cyber-textarea" 
-                                  placeholder="Décrivez vos compétences techniques, langages de programmation, logiciels maîtrisés, expériences..."></textarea>
+                <!-- SECTION 3 : EXPERTISE -->
+                <div class="form-section">
+                    <div class="section-heading">
+                        <span class="section-number">3</span>
+                        <i class="fas fa-brain"></i>
+                        Expertise
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group form-group-full">
+                            <label class="cyber-label required" for="domaine"><i class="fas fa-microchip"></i> Domaine d'expertise</label>
+                            <select id="domaine" name="domaine" class="cyber-select" required>
+                                <option value="">Sélectionnez votre domaine</option>
+                                <option value="Robotique">🤖 Robotique</option>
+                                <option value="Électronique">🔌 Électronique</option>
+                                <option value="Mécanique">⚙️ Mécanique</option>
+                                <option value="Informatique">💻 Informatique</option>
+                                <option value="Intelligence Artificielle">🧠 Intelligence Artificielle</option>
+                                <option value="Multidisciplinaire">🌐 Multidisciplinaire</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-group-full">
+                            <label class="cyber-label" for="competences"><i class="fas fa-code"></i> Compétences techniques</label>
+                            <textarea id="competences" name="competences" class="cyber-textarea"
+                                placeholder="Langages de programmation, logiciels maîtrisés, expériences techniques..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 4 : MOTIVATION -->
+                <div class="form-section">
+                    <div class="section-heading">
+                        <span class="section-number">4</span>
+                        <i class="fas fa-fire"></i>
+                        Motivation
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group form-group-full">
+                            <label class="cyber-label required" for="motivation"><i class="fas fa-quote-left"></i> Pourquoi nous rejoindre ?</label>
+                            <textarea id="motivation" name="motivation" class="cyber-textarea" required
+                                placeholder="Expliquez pourquoi vous souhaitez rejoindre AFRICA.TECH21, vos compétences, et ce que vous pouvez apporter au club... (Minimum 200 caractères)"></textarea>
+                            <div class="char-counter">
+                                <span>Minimum requis : 200 caractères</span>
+                                <span class="char-count" id="charCount">0 / 200</span>
+                            </div>
+                        </div>
+                        <div class="form-group form-group-full">
+                            <label class="cyber-label" for="projets"><i class="fas fa-rocket"></i> Projets d'intérêt</label>
+                            <textarea id="projets" name="projets" class="cyber-textarea"
+                                placeholder="Quels projets AFRICA.TECH21 vous intéressent ? (RSMA, Robot Assistant, etc.)"></textarea>
+                        </div>
                     </div>
                 </div>
 
@@ -592,69 +638,116 @@ et ce que vous pouvez apporter au club... (Minimum 200 caractères)"></textarea>
             </form>
 
             <div class="form-footer">
-                <p>⚠️ Les membres officiels ont accès à tous les projets confidentiels et aux ressources techniques du club</p>
+                <i class="fas fa-shield-alt"></i>
+                Les membres officiels ont accès à tous les projets confidentiels et aux ressources techniques du club.
+                Votre candidature est traitée de manière confidentielle.
             </div>
         </div>
     </div>
-
-    <script>
+        <script>
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxglvfDnYyCHY0_HLvDiwOvJ99exnUx3TvkqsVWCAv4QatkrVPCVL--MiHf0xNmRCU/exec';
 
-        // CRÉATION DES PARTICULES
         function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            for (let i = 0; i < 20; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + 'vw';
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                particle.style.animationDuration = (10 + Math.random() * 10) + 's';
-                particlesContainer.appendChild(particle);
+            const container = document.getElementById('particles');
+            const colors = ['#00f3ff', '#b300ff', '#ff00c8', '#00ff88', '#ffd300'];
+            for (let i = 0; i < 30; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.animationDelay = Math.random() * 15 + 's';
+                p.style.animationDuration = (10 + Math.random() * 10) + 's';
+                const c = colors[Math.floor(Math.random() * colors.length)];
+                p.style.background = c;
+                p.style.boxShadow = `0 0 12px ${c}`;
+                container.appendChild(p);
             }
         }
 
-        // COMPTEUR DE CARACTÈRES
+        function messageVocal(texte) {
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(texte);
+            utterance.lang = 'fr-FR';
+            utterance.rate = 1;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function candidatureDejaEnvoyee(email, telephone) {
+            const emailNorm = email.trim().toLowerCase();
+            const telNorm = telephone.replace(/\s+/g, '');
+            const dejaPostule = JSON.parse(localStorage.getItem('candidatures_envoyees') || '[]');
+            return dejaPostule.some(c => c.email === emailNorm || c.telephone === telNorm);
+        }
+
+        function enregistrerCandidature(email, telephone, nom, prenom) {
+            const emailNorm = email.trim().toLowerCase();
+            const telNorm = telephone.replace(/\s+/g, '');
+            const dejaPostule = JSON.parse(localStorage.getItem('candidatures_envoyees') || '[]');
+            dejaPostule.push({
+                email: emailNorm,
+                telephone: telNorm,
+                nom: nom,
+                prenom: prenom,
+                date: new Date().toISOString()
+            });
+            localStorage.setItem('candidatures_envoyees', JSON.stringify(dejaPostule));
+        }
+
         const motivationTextarea = document.getElementById('motivation');
         const charCount = document.getElementById('charCount');
 
         motivationTextarea.addEventListener('input', function() {
-            charCount.textContent = this.value.length;
-            
-            if (this.value.length < 200) {
-                this.style.borderColor = '#ff4757';
-            } else {
+            const len = this.value.length;
+            charCount.textContent = len + ' / 200';
+            if (len >= 200) {
+                charCount.classList.add('ok');
                 this.style.borderColor = 'var(--neon-green)';
+            } else {
+                charCount.classList.remove('ok');
+                this.style.borderColor = len > 0 ? '#ff4757' : '';
             }
         });
 
-        // GESTION DU FORMULAIRE
         document.getElementById('candidatureForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
             const submitBtn = document.getElementById('submitBtn');
             const successMessage = document.getElementById('successMessage');
             const errorMessage = document.getElementById('errorMessage');
             const errorText = document.getElementById('errorText');
-            
-            // Vérifier la longueur de la motivation
+
+            const emailVal = document.getElementById('email').value.trim();
+            const telVal = document.getElementById('telephone').value.trim();
+            const nomVal = document.getElementById('nom').value.trim();
+            const prenomVal = document.getElementById('prenom').value.trim();
+
+            if (candidatureDejaEnvoyee(emailVal, telVal)) {
+                errorText.innerHTML = '<strong>⚠️ Vous avez déjà postulé</strong><br>Une candidature a déjà été enregistrée avec cet email ou ce téléphone. Votre dossier est en cours d\'examen. Réponse sous 48h.';
+                errorMessage.style.display = 'block';
+                messageVocal("Attention. Vous avez déjà postulé. Votre candidature est en cours d'examen par la Direction AFRICA.TECH21.");
+                setTimeout(() => errorMessage.style.display = 'none', 8000);
+                return;
+            }
+
             if (motivationTextarea.value.length < 200) {
                 errorText.textContent = 'Veuillez rédiger une motivation d\'au moins 200 caractères.';
                 errorMessage.style.display = 'block';
+                messageVocal("Votre motivation doit contenir au moins deux cents caractères.");
                 setTimeout(() => errorMessage.style.display = 'none', 5000);
                 return;
             }
-            
-            // Désactiver le bouton
+
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENVOI EN COURS...';
-            
-            // Préparer les données
+
             const formData = {
-                prenom: document.getElementById('prenom').value,
-                nom: document.getElementById('nom').value,
+                prenom: prenomVal,
+                nom: nomVal,
                 civilite: document.getElementById('civilite').value,
-                email: document.getElementById('email').value,
-                telephone: document.getElementById('telephone').value,
+                email: emailVal,
+                telephone: telVal,
                 adresse: document.getElementById('adresse').value,
                 profession: document.getElementById('profession').value,
                 domaine: document.getElementById('domaine').value,
@@ -662,45 +755,47 @@ et ce que vous pouvez apporter au club... (Minimum 200 caractères)"></textarea>
                 projets: document.getElementById('projets').value,
                 competences: document.getElementById('competences').value
             };
-            
+
             try {
-                // Envoyer à Google Sheets
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
                 });
-                
-                // Afficher le message de succès
-                successMessage.style.display = 'block';
-                submitBtn.innerHTML = '<i class="fas fa-check"></i> CANDIDATURE ENVOYÉE !';
-                
-                // Envoyer aussi par email
+
                 await sendEmail(formData);
-                
-                // Réinitialiser le formulaire
+
+                enregistrerCandidature(emailVal, telVal, nomVal, prenomVal);
+
+                successMessage.innerHTML = '<i class="fas fa-check-circle"></i><strong>✅ CANDIDATURE REÇUE PAR LA DIRECTION</strong><br><br>Votre dossier a bien été enregistré.<br>Vous recevrez une réponse sous 48 heures.<br>Merci pour votre confiance.';
+                successMessage.style.display = 'block';
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> CANDIDATURE ENVOYÉE';
+
+                messageVocal("Votre candidature a bien été reçue par la Direction AFRICA.TECH21. Vous recevrez une réponse sous quarante-huit heures. Merci pour votre confiance.");
+
                 document.getElementById('candidatureForm').reset();
-                charCount.textContent = '0';
-                
-                // Redirection après 3 secondes
+                charCount.textContent = '0 / 200';
+                charCount.classList.remove('ok');
+                motivationTextarea.style.borderColor = '';
+
+                successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
                 setTimeout(() => {
                     window.location.href = 'dashboard.html';
-                }, 3000);
-                
+                }, 9000);
+
             } catch (error) {
                 console.error('Erreur:', error);
                 errorText.textContent = 'Erreur lors de l\'envoi. Veuillez réessayer.';
                 errorMessage.style.display = 'block';
+                messageVocal("Une erreur est survenue lors de l'envoi. Veuillez réessayer.");
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> SOUMETTRE MA CANDIDATURE';
                 setTimeout(() => errorMessage.style.display = 'none', 5000);
             }
         });
 
-        // ENVOI EMAIL (FormSubmit)
         async function sendEmail(data) {
             const emailForm = new FormData();
             emailForm.append('Prénom', data.prenom);
@@ -717,21 +812,17 @@ et ce que vous pouvez apporter au club... (Minimum 200 caractères)"></textarea>
             emailForm.append('_subject', '🎯 NOUVELLE CANDIDATURE - AFRICA.TECH21');
             emailForm.append('_template', 'table');
             emailForm.append('_captcha', 'false');
-            
+
             await fetch('https://formsubmit.co/africa.tech21.net@gmail.com', {
                 method: 'POST',
                 body: emailForm
             });
         }
 
-        // PRÉ-REMPLISSAGE AVEC LES DONNÉES UTILISATEUR SI CONNECTÉ
         document.addEventListener('DOMContentLoaded', function() {
             createParticles();
-            
-            // Afficher le message info
             document.querySelector('.info-message').style.display = 'block';
-            
-            // Pré-remplir avec les données utilisateur si connecté
+
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
             if (currentUser) {
                 document.getElementById('prenom').value = currentUser.prenom || '';
