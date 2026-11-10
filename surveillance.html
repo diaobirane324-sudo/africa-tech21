@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surveillance | MAJOR AFRICA.TECH21</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Exo 2', sans-serif; }
+        :root {
+            --neon-blue: #00f0ff; --neon-green: #00ff88; --neon-violet: #9d00ff;
+            --neon-red: #ff003c; --neon-gold: #ffd700; --neon-pink: #ff00ff;
+            --dark: #050510; --panel: rgba(16,16,32,0.95);
+            --text-primary: #fff; --text-secondary: #a0a8c0;
+        }
+        body {
+            background: linear-gradient(135deg, #050510 0%, #0a0a18 50%, #0f0f1f 100%);
+            color: var(--text-primary); min-height: 100vh; padding: 2rem;
+            font-family: 'Exo 2', sans-serif;
+        }
+        body::before {
+            content: ''; position: fixed; inset: 0;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(0,240,255,0.06) 0%, transparent 45%),
+                radial-gradient(circle at 85% 80%, rgba(157,0,255,0.06) 0%, transparent 45%);
+            pointer-events: none; z-index: -1;
+        }
+        .container { max-width: 1600px; margin: 0 auto; }
+
+        /* ÉCRAN DE MOT DE PASSE */
+        .lock-screen {
+            display: flex; align-items: center; justify-content: center;
+            min-height: 100vh; padding: 2rem;
+        }
+        .lock-card {
+            background: linear-gradient(135deg, rgba(10,10,25,0.98), rgba(20,15,35,0.98));
+            border: 2px solid var(--neon-red);
+            border-radius: 25px; padding: 3rem 2.5rem;
+            max-width: 500px; width: 100%; text-align: center;
+            box-shadow: 0 0 80px rgba(255,0,60,0.3);
+        }
+        .lock-card i.lock-icon {
+            font-size: 4rem; color: var(--neon-red);
+            text-shadow: 0 0 40px rgba(255,0,60,0.6);
+            margin-bottom: 1.5rem; display: block;
+        }
+        .lock-card h1 {
+            font-family: 'Orbitron', sans-serif; font-size: 1.8rem;
+            color: var(--neon-red); letter-spacing: 2px; margin-bottom: 1rem;
+        }
+        .lock-card p { color: var(--text-secondary); margin-bottom: 2rem; }
+        .lock-card input {
+            width: 100%; padding: 1.2rem; font-size: 1.2rem;
+            text-align: center; font-family: 'JetBrains Mono', monospace;
+            background: rgba(0,0,0,0.5); border: 2px solid var(--neon-red);
+            border-radius: 12px; color: var(--neon-gold); letter-spacing: 3px;
+            margin-bottom: 1rem; outline: none;
+        }
+        .lock-card input:focus { box-shadow: 0 0 25px rgba(255,0,60,0.4); }
+        .lock-card button {
+            width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--neon-red), #cc0033);
+            border: none; border-radius: 12px; color: white;
+            font-family: 'Orbitron', sans-serif; font-weight: 700;
+            font-size: 1rem; letter-spacing: 2px; cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .lock-card button:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,0,60,0.5); }
+        .lock-err { color: var(--neon-red); margin-top: 1rem; font-weight: 600; display: none; }
+
+        /* DASHBOARD */
+        .dashboard { display: none; }
+        .dashboard.active { display: block; }
+
+        /* HEADER */
+        .header {
+            background: rgba(20,20,35,0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,0,60,0.3);
+            border-radius: 20px; padding: 1.5rem 2.5rem;
+            margin-bottom: 2rem; display: flex;
+            justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 1rem;
+            box-shadow: 0 0 40px rgba(255,0,60,0.2);
+        }
+        .header-title {
+            font-family: 'Orbitron', sans-serif; font-size: 1.8rem;
+            background: linear-gradient(90deg, var(--neon-red), var(--neon-gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+        .header-sub { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.3rem; letter-spacing: 1px; }
+        .header-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn-action {
+            padding: 0.8rem 1.5rem; border-radius: 10px;
+            font-family: 'Orbitron', sans-serif; font-size: 0.8rem;
+            font-weight: 700; letter-spacing: 1.5px; cursor: pointer;
+            border: none; transition: all 0.3s ease;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .btn-primary { background: linear-gradient(135deg, var(--neon-green), #00cc66); color: #050510; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,255,136,0.4); }
+        .btn-secondary { background: rgba(0,240,255,0.1); border: 1px solid var(--neon-blue); color: var(--neon-blue); }
+        .btn-secondary:hover { background: rgba(0,240,255,0.2); }
+
+        /* STATS GLOBALES */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem; margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 18px; padding: 1.8rem; text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .stat-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: var(--neon-blue);
+        }
+        .stat-card.online::before { background: var(--neon-green); }
+        .stat-card.alert::before { background: var(--neon-red); }
+        .stat-card.gold::before { background: var(--neon-gold); }
+        .stat-label { color: var(--text-secondary); font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 0.8rem; }
+        .stat-value {
+            font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 900;
+            color: var(--neon-blue);
+        }
+        .stat-card.online .stat-value { color: var(--neon-green); }
+        .stat-card.alert .stat-value { color: var(--neon-red); }
+        .stat-card.gold .stat-value { color: var(--neon-gold); }
+
+        /* TABS */
+        .tabs {
+            display: flex; gap: 0.5rem; margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            overflow-x: auto; padding-bottom: 0.5rem;
+        }
+        .tab {
+            padding: 1rem 1.8rem; background: transparent; border: none;
+            color: var(--text-secondary); font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem; letter-spacing: 1px; cursor: pointer;
+            border-radius: 10px 10px 0 0; transition: all 0.3s ease;
+            display: inline-flex; align-items: center; gap: 0.5rem; white-space: nowrap;
+        }
+        .tab:hover { background: rgba(0,240,255,0.05); color: var(--neon-blue); }
+        .tab.active {
+            background: rgba(0,240,255,0.1); color: var(--neon-blue);
+            border-bottom: 3px solid var(--neon-blue);
+        }
+
+        /* CONTENU ONGLET */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .panel {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 18px; padding: 2rem; margin-bottom: 1.5rem;
+        }
+        .panel-title {
+            font-family: 'Orbitron', sans-serif; font-size: 1.3rem;
+            color: var(--neon-blue); letter-spacing: 1.5px;
+            margin-bottom: 1.5rem; display: flex;
+            align-items: center; gap: 0.7rem;
+        }
+
+        /* LISTE MEMBRES */
+        .member-list { display: flex; flex-direction: column; gap: 1rem; }
+        .member-row {
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px; padding: 1.2rem 1.5rem;
+            display: flex; justify-content: space-between; align-items: center;
+            gap: 1rem; flex-wrap: wrap; transition: all 0.25s ease;
+        }
+        .member-row:hover { background: rgba(0,240,255,0.05); border-color: rgba(0,240,255,0.3); }
+        .member-row.online-row {
+            border-color: var(--neon-green);
+            background: rgba(0,255,136,0.05);
+            box-shadow: 0 0 20px rgba(0,255,136,0.15);
+        }
+        .member-info { display: flex; align-items: center; gap: 1rem; flex: 1; min-width: 200px; }
+        .member-avatar {
+            width: 45px; height: 45px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-violet));
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1.1rem;
+        }
+        .member-row.online-row .member-avatar {
+            background: linear-gradient(135deg, var(--neon-green), #00cc66);
+            animation: pulseGreen 2s infinite;
+        }
+        @keyframes pulseGreen {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0,255,136,0.5); }
+            50% { box-shadow: 0 0 0 10px rgba(0,255,136,0); }
+        }
+        .member-name { font-weight: 700; color: var(--neon-blue); font-size: 1.05rem; }
+        .member-fonction { font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.2rem; }
+        .member-meta { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+        .meta-item {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+            padding: 0.4rem 0.9rem; border-radius: 8px;
+            background: rgba(0,240,255,0.08); color: var(--neon-blue);
+            border: 1px solid rgba(0,240,255,0.2);
+            display: inline-flex; align-items: center; gap: 0.4rem;
+        }
+        .meta-item.green { background: rgba(0,255,136,0.1); color: var(--neon-green); border-color: rgba(0,255,136,0.3); }
+        .meta-item.red { background: rgba(255,0,60,0.1); color: var(--neon-red); border-color: rgba(255,0,60,0.3); }
+        .meta-item.gold { background: rgba(255,215,0,0.1); color: var(--neon-gold); border-color: rgba(255,215,0,0.3); }
+        .meta-item.violet { background: rgba(157,0,255,0.1); color: var(--neon-violet); border-color: rgba(157,0,255,0.3); }
+
+        /* TABLE */
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .data-table thead { background: rgba(0,240,255,0.08); }
+        .data-table th {
+            padding: 1rem; text-align: left; font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem; letter-spacing: 1px; color: var(--neon-blue);
+            border-bottom: 2px solid rgba(0,240,255,0.3);
+        }
+        .data-table td {
+            padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-secondary);
+        }
+        .data-table tbody tr:hover { background: rgba(0,240,255,0.03); }
+
+        /* PROGRESS BAR */
+        .progress-bar {
+            width: 120px; height: 8px; background: rgba(0,0,0,0.4);
+            border-radius: 10px; overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%; background: linear-gradient(90deg, var(--neon-blue), var(--neon-green));
+            transition: width 0.6s ease; border-radius: 10px;
+        }
+
+        /* LOADING */
+        .loading {
+            text-align: center; padding: 3rem; color: var(--text-secondary);
+        }
+        .loading i { font-size: 2.5rem; margin-bottom: 1rem; display: block; color: var(--neon-blue); }
+
+        /* ALERTES */
+        .alert-item {
+            background: rgba(255,0,60,0.08); border: 1px solid rgba(255,0,60,0.3);
+            border-left: 4px solid var(--neon-red);
+            border-radius: 10px; padding: 1.2rem 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .alert-item.basse { border-left-color: var(--neon-gold); background: rgba(255,215,0,0.05); }
+        .alert-item.moyenne { border-left-color: #ffa500; background: rgba(255,165,0,0.05); }
+        .alert-item.haute { border-left-color: var(--neon-red); background: rgba(255,0,60,0.08); }
+        .alert-item.critique { border-left-color: #cc0000; background: rgba(204,0,0,0.15); }
+        .alert-title { font-weight: 700; color: var(--neon-red); margin-bottom: 0.4rem; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; letter-spacing: 1px; }
+        .alert-msg { color: var(--text-secondary); font-size: 0.95rem; }
+        .alert-meta { margin-top: 0.6rem; display: flex; gap: 1rem; font-size: 0.8rem; color: var(--text-secondary); flex-wrap: wrap; }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-title { font-size: 1.3rem; }
+            .stat-value { font-size: 1.8rem; }
+            .tabs { overflow-x: auto; }
+            .tab { padding: 0.8rem 1rem; font-size: 0.75rem; }
+            .data-table { font-size: 0.75rem; }
+            .data-table th, .data-table td { padding: 0.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ÉCRAN DE VERROUILLAGE -->
+<div class="lock-screen" id="lockScreen">
+    <div class="lock-card">
+        <i class="fas fa-shield-halved lock-icon"></i>
+        <h1>ACCÈS MAJOR</h1>
+        <p>Zone hautement confidentielle.<br>Seul le Major peut accéder à ce tableau.</p>
+        <input type="password" id="pwdInput" placeholder="MOT DE PASSE" autocomplete="off" onkeydown="if(event.key==='Enter')unlock()">
+        <button onclick="unlock()"><i class="fas fa-key"></i> DÉVERROUILLER</button>
+        <div class="lock-err" id="lockErr">❌ Mot de passe incorrect</div>
+    </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+    <div class="container">
+        <div class="header">
+            <div>
+                <div class="header-title"><i class="fas fa-satellite-dish"></i> SURVEILLANCE GLOBALE</div>
+                <div class="header-sub">ACCÈS MAJOR — Données en temps réel</div>
+            </div>
+            <div class="header-actions">
+                <button class="btn-action btn-primary" onclick="loadAll()"><i class="fas fa-sync"></i> ACTUALISER</button>
+                <button class="btn-action btn-secondary" onclick="exportCSV()"><i class="fas fa-download"></i> EXPORT CSV</button>
+            </div>
+        </div>
+
+        <!-- STATS GLOBALES -->
+        <div class="stats-grid">
+            <div class="stat-card online">
+                <div class="stat-label"><i class="fas fa-circle"></i> En ligne</div>
+                <div class="stat-value" id="statOnline">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label"><i class="fas fa-users"></i> Total membres</div>
+                <div class="stat-value" id="statTotal">0</div>
+            </div>
+            <div class="stat-card gold">
+                <div class="stat-label"><i class="fas fa-clock"></i> Temps total 7j</div>
+                <div class="stat-value" id="statTemps">0h</div>
+            </div>
+            <div class="stat-card alert">
+                <div class="stat-label"><i class="fas fa-exclamation-triangle"></i> Alertes</div>
+                <div class="stat-value" id="statAlertes">0</div>
+            </div>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('tab-online', this)"><i class="fas fa-circle"></i> En ligne</button>
+            <button class="tab" onclick="showTab('tab-assiduite', this)"><i class="fas fa-calendar"></i> Assiduité</button>
+            <button class="tab" onclick="showTab('tab-interets', this)"><i class="fas fa-heart"></i> Centres d'intérêt</button>
+            <button class="tab" onclick="showTab('tab-activites', this)"><i class="fas fa-stream"></i> Activités récentes</button>
+            <button class="tab" onclick="showTab('tab-alertes', this)"><i class="fas fa-bell"></i> Alertes</button>
+        </div>
+
+        <!-- ONGLET : EN LIGNE -->
+        <div class="tab-content active" id="tab-online">
+            <div class="panel">
+                <div class="panel-title"><i class="fas fa-circle" style="color: var(--neon-green);"></i> Membres connectés en ce moment</div>
+                <div class="member-list" id="onlineList">
+                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ONGLET : ASSIDUITÉ -->
+        <div class="tab-content" id="tab-assiduite">
+            <div class="panel">
+                <div class="panel-title"><i class="fas fa-calendar-week"></i> Temps de travail (7 derniers jours)</div>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Membre</th>
+                                <th>Fonction</th>
+                                <th>Temps total</th>
+                                <th>Jours actifs</th>
+                                <th>Pages vues</th>
+                                <th>Dernière activité</th>
+                            </tr>
+                        </thead>
+                        <tbody id="assiduiteBody">
+                            <tr><td colspan="6" class="loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ONGLET : CENTRES D'INTÉRÊT -->
+        <div class="tab-content" id="tab-interets">
+            <div class="panel">
+                <div class="panel-title"><i class="fas fa-heart" style="color: var(--neon-pink);"></i> Centres d'intérêt par membre</div>
+                <div id="interetsContent">
+                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ONGLET : ACTIVITÉS -->
+        <div class="tab-content" id="tab-activites">
+            <div class="panel">
+                <div class="panel-title"><i class="fas fa-stream"></i> 50 dernières activités</div>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Membre</th>
+                                <th>Action</th>
+                                <th>Page</th>
+                                <th>Détails</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activitesBody">
+                            <tr><td colspan="5" class="loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ONGLET : ALERTES -->
+        <div class="tab-content" id="tab-alertes">
+            <div class="panel">
+                <div class="panel-title"><i class="fas fa-bell" style="color: var(--neon-red);"></i> Alertes automatiques</div>
+                <div id="alertesContent">
+                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ============================================================
+// CONFIGURATION
+// ============================================================
+const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
+const MAJOR_PASSWORD = 'MAJOR2024'; // ⚠️ CHANGEZ CE MOT DE PASSE
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let allData = { online: [], assiduite: [], interets: [], activites: [], alertes: [] };
+
+// ============================================================
+// AUTHENTIFICATION MAJOR
+// ============================================================
+function unlock() {
+    const pwd = document.getElementById('pwdInput').value;
+    if (pwd === MAJOR_PASSWORD) {
+        sessionStorage.setItem('major_unlocked', 'true');
+        document.getElementById('lockScreen').style.display = 'none';
+        document.getElementById('dashboard').classList.add('active');
+        loadAll();
+        // Auto-refresh toutes les 30s
+        setInterval(loadAll, 30000);
+    } else {
+        document.getElementById('lockErr').style.display = 'block';
+        setTimeout(() => document.getElementById('lockErr').style.display = 'none', 3000);
+    }
+}
+
+// ============================================================
+// NAVIGATION ONGLETS
+// ============================================================
+function showTab(id, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+}
+
+// ============================================================
+// CHARGEMENT DES DONNÉES
+// ============================================================
+async function loadAll() {
+    try {
+        // 1. Membres connectés
+        const { data: online } = await supabase.from('vue_connectes').select('*');
+        allData.online = online || [];
+        renderOnline();
+
+        // 2. Assiduité 7 jours
+        const { data: assid } = await supabase.from('vue_activite_7j').select('*');
+        allData.assiduite = assid || [];
+        renderAssiduite();
+
+        // 3. Centres d'intérêt
+        const { data: interets } = await supabase
+            .from('surveillance_centre_interet')
+            .select('*')
+            .order('nb_visites', { ascending: false });
+        allData.interets = interets || [];
+        renderInterets();
+
+        // 4. Activités récentes
+        const { data: activites } = await supabase
+            .from('surveillance_activites')
+            .select('*')
+            .order('timestamp', { ascending: false })
+            .limit(50);
+        allData.activites = activites || [];
+        renderActivites();
+
+        // 5. Alertes
+        const { data: alertes } = await supabase
+            .from('surveillance_alertes')
+            .select('*')
+            .order('date_creation', { ascending: false })
+            .limit(30);
+        allData.alertes = alertes || [];
+        renderAlertes();
+
+        // Stats globales
+        document.getElementById('statOnline').textContent = allData.online.length;
+        document.getElementById('statAlertes').textContent = allData.alertes.filter(a => a.statut === 'nouvelle').length;
+
+        const totalMembres = new Set((assid || []).map(a => a.member_id));
+        document.getElementById('statTotal').textContent = totalMembres.size || allData.online.length;
+
+        const totalMin = (assid || []).reduce((sum, a) => sum + (a.temps_total_min || 0), 0);
+        const h = Math.floor(totalMin / 60);
+        const m = totalMin % 60;
+        document.getElementById('statTemps').textContent = `${h}h${m.toString().padStart(2, '0')}`;
+
+    } catch (e) {
+        console.error('Erreur chargement:', e);
+    }
+}
+
+// ============================================================
+// RENDU : EN LIGNE
+// ============================================================
+function renderOnline() {
+    const container = document.getElementById('onlineList');
+    if (!allData.online.length) {
+        container.innerHTML = '<div class="loading"><i class="fas fa-moon"></i><br>Aucun membre connecté en ce moment</div>';
+        return;
+    }
+    container.innerHTML = allData.online.map(m => {
+        const mins = Math.floor((m.duree_actuelle_sec || 0) / 60);
+        const secs = (m.duree_actuelle_sec || 0) % 60;
+        return `
+            <div class="member-row online-row">
+                <div class="member-info">
+                    <div class="member-avatar">${(m.member_nom || 'M')[0].toUpperCase()}</div>
+                    <div>
+                        <div class="member-name">${m.member_nom || 'Inconnu'}</div>
+                        <div class="member-fonction">${m.fonction || 'Membre'}</div>
+                    </div>
+                </div>
+                <div class="member-meta">
+                    <span class="meta-item green"><i class="fas fa-circle"></i> EN LIGNE</span>
+                    <span class="meta-item"><i class="fas fa-clock"></i> ${mins}m ${secs}s</span>
+                    <span class="meta-item gold"><i class="fas fa-file"></i> ${m.page_entree || '?'}</span>
+                    <span class="meta-item violet"><i class="fas fa-desktop"></i> ${getDevice(m.navigateur)}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// ============================================================
+// RENDU : ASSIDUITÉ
+// ============================================================
+function renderAssiduite() {
+    const tbody = document.getElementById('assiduiteBody');
+    if (!allData.assiduite.length) {
+        tbody.innerHTML = '<tr><td colspan="6" class="loading">Aucune donnée</td></tr>';
+        return;
+    }
+    const maxTemps = Math.max(...allData.assiduite.map(a => a.temps_total_min || 0), 1);
+    tbody.innerHTML = allData.assiduite.map(a => {
+        const h = Math.floor((a.temps_total_min || 0) / 60);
+        const m = (a.temps_total_min || 0) % 60;
+        const pct = Math.round(((a.temps_total_min || 0) / maxTemps) * 100);
+        const lastAct = a.derniere_activite ? formatRelative(a.derniere_activite) : 'Jamais';
+        return `
+            <tr>
+                <td><strong style="color: var(--neon-blue);">${a.member_nom || '?'}</strong></td>
+                <td>${a.fonction || 'Membre'}</td>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span class="meta-item">${h}h${m.toString().padStart(2,'0')}</span>
+                        <div class="progress-bar"><div class="progress-fill" style="width: ${pct}%"></div></div>
+                    </div>
+                </td>
+                <td><span class="meta-item green">${a.nb_jours_actifs || 0}j</span></td>
+                <td><span class="meta-item">${a.nb_pages || 0}</span></td>
+                <td>${lastAct}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+// ============================================================
+// RENDU : CENTRES D'INTÉRÊT
+// ============================================================
+function renderInterets() {
+    const container = document.getElementById('interetsContent');
+    if (!allData.interets.length) {
+        container.innerHTML = '<div class="loading">Aucune donnée</div>';
+        return;
+    }
+
+    const grouped = {};
+    allData.interets.forEach(i => {
+        if (!grouped[i.member_id]) grouped[i.member_id] = { member_id: i.member_id, items: [] };
+        grouped[i.member_id].items.push(i);
+    });
+
+    const emojiCat = { cours:'📚', evaluation:'📝', projets:'⚙️', forum:'💬', ia:'🧠', direction:'🛡️', dashboard:'🏠', general:'📄' };
+
+    container.innerHTML = Object.values(grouped).map(g => {
+        const categories = g.items.map(i => `
+            <span class="meta-item ${['cours','ia','projets'].includes(i.categorie)?'green':''}" title="${i.temps_total_min||0} min">
+                ${emojiCat[i.categorie] || '📄'} ${i.categorie} (${i.nb_visites}×)
+            </span>
+        `).join('');
+        return `
+            <div class="member-row" style="flex-direction: column; align-items: stretch;">
+                <div class="member-name" style="margin-bottom: 1rem;">👤 ${g.member_id}</div>
+                <div class="member-meta">${categories}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+// ============================================================
+// RENDU : ACTIVITÉS
+// ============================================================
+function renderActivites() {
+    const tbody = document.getElementById('activitesBody');
+    if (!allData.activites.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="loading">Aucune activité</td></tr>';
+        return;
+    }
+    const emojiAct = {
+        page_view: '👁️', projet_open: '🚀', session_start: '🟢', session_end: '🔴',
+        logout: '🚪', page_exit: '⏱️', cours_lesson: '📚', message_forum: '💬'
+    };
+    tbody.innerHTML = allData.activites.map(a => {
+        const details = a.details ? Object.entries(a.details).map(([k,v]) => `${k}: ${v}`).join(' | ') : '—';
+        return `
+            <tr>
+                <td><strong style="color: var(--neon-blue);">${a.member_nom || a.member_id}</strong></td>
+                <td>${emojiAct[a.type_action] || '•'} ${a.type_action}</td>
+                <td>${a.page || '—'}</td>
+                <td style="font-size: 0.8rem; max-width: 250px; overflow: hidden; text-overflow: ellipsis;">${details.substring(0,80)}</td>
+                <td>${formatRelative(a.timestamp)}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+// ============================================================
+// RENDU : ALERTES
+// ============================================================
+function renderAlertes() {
+    const container = document.getElementById('alertesContent');
+    if (!allData.alertes.length) {
+        container.innerHTML = '<div class="loading"><i class="fas fa-check-circle" style="color: var(--neon-green);"></i><br>Aucune alerte — tout va bien !</div>';
+        return;
+    }
+    container.innerHTML = allData.alertes.map(a => {
+        const sevEmoji = { basse:'ℹ️', moyenne:'⚠️', haute:'🚨', critique:'🔥' };
+        return `
+            <div class="alert-item ${a.severite || 'moyenne'}">
+                <div class="alert-title">${sevEmoji[a.severite] || '⚠️'} ${(a.type_alerte || '').replace(/_/g, ' ').toUpperCase()}</div>
+                <div class="alert-msg"><strong>${a.member_nom || a.member_id}</strong> — ${a.message || ''}</div>
+                <div class="alert-meta">
+                    <span>${formatRelative(a.date_creation)}</span>
+                    <span>Statut : ${a.statut}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// ============================================================
+// UTILS
+// ============================================================
+function getDevice(ua) {
+    if (!ua) return '?';
+    if (/tablet|ipad/i.test(ua)) return 'Tablette';
+    if (/mobile|iphone|android.*mobile/i.test(ua)) return 'Mobile';
+    return 'PC';
+}
+
+function formatRelative(isoDate) {
+    if (!isoDate) return 'Jamais';
+    const diff = (Date.now() - new Date(isoDate).getTime()) / 1000;
+    if (diff < 60) return 'À l\'instant';
+    if (diff < 3600) return `Il y a ${Math.floor(diff/60)} min`;
+    if (diff < 86400) return `Il y a ${Math.floor(diff/3600)}h`;
+    return `Il y a ${Math.floor(diff/86400)}j`;
+}
+
+// ============================================================
+// EXPORT CSV
+// ============================================================
+function exportCSV() {
+    let csv = 'Type,Membre,Fonction,Info,Date\n';
+
+    allData.online.forEach(m => {
+        csv += `"En ligne","${m.member_nom}","${m.fonction}","${Math.floor((m.duree_actuelle_sec||0)/60)}min","${m.date_connexion}"\n`;
+    });
+    allData.assiduite.forEach(a => {
+        csv += `"Activité 7j","${a.member_nom}","${a.fonction}","${a.temps_total_min}min, ${a.nb_jours_actifs}j actifs","—"\n`;
+    });
+    allData.alertes.forEach(a => {
+        csv += `"Alerte","${a.member_nom}","${a.fonction}","${a.message}","${a.date_creation}"\n`;
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `surveillance_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// ============================================================
+// AUTO-UNLOCK SI DÉJÀ AUTHENTIFIÉ
+// ============================================================
+if (sessionStorage.getItem('major_unlocked') === 'true') {
+    document.getElementById('lockScreen').style.display = 'none';
+    document.getElementById('dashboard').classList.add('active');
+    loadAll();
+    setInterval(loadAll, 30000);
+}
+</script>
+</body>
+</html>
