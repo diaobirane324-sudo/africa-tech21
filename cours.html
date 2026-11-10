@@ -3925,7 +3925,7 @@ void loop() {
                         // ============================================================
             // CHAPITRE 7 — LES CAPTEURS AVANCÉS
             // ============================================================
-            {
+            {            {
                 id: 'ch7',
                 numero: 7,
                 titre: 'Les capteurs avancés',
@@ -3992,7 +3992,7 @@ void loop() {
                                 question: 'Que signifie IMU ?',
                                 options: ['Interface Micro Utilisateur', 'Inertial Measurement Unit', 'Indicateur de Mouvement Ultrason', 'Interrupteur Multi Usages', 'Identifiant Machine Universel'],
                                 bonne: 1,
-                               explication: 'IMU signifie Inertial Measurement Unit (Unité de Mesure Inertielle). C\'est un ensemble de capteurs qui mesure le mouvement et l\'orientation.'
+                                explication: 'IMU signifie Inertial Measurement Unit (Unité de Mesure Inertielle). C\'est un ensemble de capteurs qui mesure le mouvement et l\'orientation.'
                             },
                             {
                                 question: 'Un accéléromètre mesure :',
@@ -4095,7 +4095,7 @@ void loop() {
                                 question: 'Un LiDAR rotatif produit :',
                                 options: ['Une photo', 'Un nuage de points (point cloud)', 'Un son', 'Un texte', 'Une vidéo'],
                                 bonne: 1,
-                                explication: 'Un LiDAR rotatif scanne 360° et génère un NUAGE DE POINTS (point cloud) : des millions de points 3D qui représentent l\\'environnement.'
+                                explication: 'Un LiDAR rotatif scanne 360° et génère un NUAGE DE POINTS (point cloud) : des millions de points 3D qui représentent l\'environnement.'
                             },
                             {
                                 question: 'La vision stéréo utilise :',
@@ -4107,7 +4107,7 @@ void loop() {
                                 question: 'Quel capteur LiDAR miniature est très répandu en éducation ?',
                                 options: ['VL53L0X', 'MPU-6050', 'HC-SR04', 'L298N', 'DS18B20'],
                                 bonne: 0,
-                                explication: 'Le VL53L0X est un capteur LiDAR ToF miniature (portée 2m, I2C). Il coûte ~3€ et est très utilisé pour l\\'apprentissage car il est simple et fiable.'
+                                explication: 'Le VL53L0X est un capteur LiDAR ToF miniature (portée 2m, I2C). Il coûte ~3€ et est très utilisé pour l\'apprentissage car il est simple et fiable.'
                             }
                         ]
                     },
@@ -4185,13 +4185,13 @@ void loop() {
                                 question: 'Quel capteur est le plus précis pour mesurer température + humidité ?',
                                 options: ['DHT11', 'DHT22', 'MQ-2', 'HC-SR04', 'LDR'],
                                 bonne: 1,
-                                explication: 'Le DHT22 (AM2302) est plus précis que le DHT11 : ±0.5°C et ±2% d\\'humidité contre ±2°C et ±5% pour le DHT11. Il coûte juste un peu plus cher.'
+                                explication: 'Le DHT22 (AM2302) est plus précis que le DHT11 : ±0.5°C et ±2% d\'humidité contre ±2°C et ±5% pour le DHT11. Il coûte juste un peu plus cher.'
                             },
                             {
                                 question: 'Le capteur BME280 mesure :',
                                 options: ['Température, humidité et pression', 'Seulement la température', 'Les gaz', 'La distance', 'La lumière'],
                                 bonne: 0,
-                                explication: 'Le BME280 est un combo très populaire : température + humidité + pression atmosphérique, en I2C ou SPI. Idéal pour la météo et l\\'altimétrie.'
+                                explication: 'Le BME280 est un combo très populaire : température + humidité + pression atmosphérique, en I2C ou SPI. Idéal pour la météo et l\'altimétrie.'
                             },
                             {
                                 question: 'Les capteurs MQ-x doivent être préchauffés :',
@@ -4201,7 +4201,7 @@ void loop() {
                             },
                             {
                                 question: 'Le capteur MQ-7 détecte :',
-                                options: ['La lumière', 'Le monoxyde de carbone (CO)', 'L\\'humidité', 'La pression', 'Le son'],
+                                options: ['La lumière', 'Le monoxyde de carbone (CO)', 'L\'humidité', 'La pression', 'Le son'],
                                 bonne: 1,
                                 explication: 'Le MQ-7 est spécifiquement conçu pour détecter le MONOXYDE DE CARBONE (CO), un gaz inodore mais très dangereux (mortel à haute concentration).'
                             }
@@ -4210,16 +4210,16 @@ void loop() {
                 ],
                 examen: [
                     { type: 'quiz', question: 'IMU signifie :', options: ['Interface Multi Utilisateur', 'Inertial Measurement Unit', 'Indicateur Mouvement Ultrason', 'Interrupteur Universel', 'Identifiant Machine'], bonne: 1 },
-                    { type: 'quiz', question: 'Un accéléromètre mesure :', options: ['La température', 'L\\'accélération linéaire', 'La pression', 'La lumière', 'Le son'], bonne: 1 },
-                    { type: 'quiz', question: 'Un gyroscope mesure :', options: ['La gravité', 'La vitesse angulaire (rotation)', 'Le champ magnétique', 'La distance', 'L\\'humidité'], bonne: 1 },
+                    { type: 'quiz', question: 'Un accéléromètre mesure :', options: ['La température', 'L\'accélération linéaire', 'La pression', 'La lumière', 'Le son'], bonne: 1 },
+                    { type: 'quiz', question: 'Un gyroscope mesure :', options: ['La gravité', 'La vitesse angulaire (rotation)', 'Le champ magnétique', 'La distance', 'L\'humidité'], bonne: 1 },
                     { type: 'quiz', question: 'Le LiDAR mesure la distance avec :', options: ['Un ultrason', 'Un laser', 'Un radar', 'Une caméra', 'Un GPS'], bonne: 1 },
                     { type: 'quiz', question: 'Un LiDAR rotatif produit :', options: ['Une photo', 'Un point cloud', 'Un son', 'Un texte', 'Un GPS'], bonne: 1 },
                     { type: 'quiz', question: 'La vision stéréo utilise :', options: ['Une caméra', 'Deux caméras', 'Un laser', 'Un radar', 'Un GPS'], bonne: 1 },
-                    { type: 'quiz', question: 'Le MPU-6050 a combien d\\'axes ?', options: ['3', '6', '9', '12', '1'], bonne: 1 },
+                    { type: 'quiz', question: 'Le MPU-6050 a combien d\'axes ?', options: ['3', '6', '9', '12', '1'], bonne: 1 },
                     { type: 'quiz', question: 'Le BME280 mesure :', options: ['Temp/hum/pression', 'Seulement la température', 'Les gaz', 'La distance', 'Le son'], bonne: 0 },
-                    { type: 'quiz', question: 'Le MQ-7 détecte :', options: ['La lumière', 'Le CO (monoxyde de carbone)', 'L\\'humidité', 'La pression', 'Le son'], bonne: 1 },
+                    { type: 'quiz', question: 'Le MQ-7 détecte :', options: ['La lumière', 'Le CO (monoxyde de carbone)', 'L\'humidité', 'La pression', 'Le son'], bonne: 1 },
                     { type: 'quiz', question: 'Les capteurs MQ-x doivent être préchauffés :', options: ['Jamais', '24h avant utilisation', '1 minute', '1 seconde', 'En hiver'], bonne: 1 },
-                    { type: 'quiz', question: 'La pression atmosphérique permet de calculer :', options: ['La température', 'L\\'altitude', 'L\\'humidité', 'La vitesse', 'La lumière'], bonne: 1 },
+                    { type: 'quiz', question: 'La pression atmosphérique permet de calculer :', options: ['La température', 'L\'altitude', 'L\'humidité', 'La vitesse', 'La lumière'], bonne: 1 },
                     { type: 'quiz', question: 'Le capteur de particules fines PMS5003 mesure :', options: ['La température', 'PM1/PM2.5/PM10', 'Les gaz', 'La pression', 'La lumière'], bonne: 1 }
                 ]
             },
@@ -4313,7 +4313,7 @@ void loop() {
                                 question: 'Un servomoteur est composé de :',
                                 options: ['Uniquement un moteur', 'Moteur + réducteur + capteur + contrôleur', 'Uniquement un capteur', 'Uniquement un réducteur', 'Uniquement un potentiomètre'],
                                 bonne: 1,
-                                explication: 'Un servomoteur est un ensemble complet : moteur DC + réducteur (pour le couple) + potentiomètre (capteur de position) + carte de contrôle. C\\'est ce qui lui permet de se positionner précisément.'
+                                explication: 'Un servomoteur est un ensemble complet : moteur DC + réducteur (pour le couple) + potentiomètre (capteur de position) + carte de contrôle. C\'est ce qui lui permet de se positionner précisément.'
                             },
                             {
                                 question: 'Un servomoteur standard tourne de :',
@@ -4325,13 +4325,13 @@ void loop() {
                                 question: 'Quel signal un servomoteur reçoit-il pour sa commande ?',
                                 options: ['Un signal analogique', 'Un signal PWM', 'Un signal I2C', 'Un signal SPI', 'Un signal RF'],
                                 bonne: 1,
-                                explication: 'Un servomoteur standard reçoit un signal PWM (Pulse Width Modulation) : la largeur de l\\'impulsion (1-2 ms) détermine l\\'angle (0-180°).'
+                                explication: 'Un servomoteur standard reçoit un signal PWM (Pulse Width Modulation) : la largeur de l\'impulsion (1-2 ms) détermine l\'angle (0-180°).'
                             },
                             {
-                                question: 'Pourquoi ne faut-il PAS alimenter un servomoteur directement depuis l\\'Arduino ?',
-                                options: ['Ça ne marche pas', 'Il consomme trop de courant (jusqu\\'à 1A)', 'Il crame l\\'Arduino', 'Il chauffe trop', 'Ça fait du bruit'],
+                                question: 'Pourquoi ne faut-il PAS alimenter un servomoteur directement depuis l\'Arduino ?',
+                                options: ['Ça ne marche pas', 'Il consomme trop de courant (jusqu\'à 1A)', 'Il crame l\'Arduino', 'Il chauffe trop', 'Ça fait du bruit'],
                                 bonne: 1,
-                                explication: 'Un servomoteur peut tirer jusqu\\'à 1A au démarrage, alors que la sortie 5V de l\\'Arduino ne peut fournir que ~500mA. Il faut une alimentation externe, avec GND commun avec l\\'Arduino.'
+                                explication: 'Un servomoteur peut tirer jusqu\'à 1A au démarrage, alors que la sortie 5V de l\'Arduino ne peut fournir que ~500mA. Il faut une alimentation externe, avec GND commun avec l\'Arduino.'
                             }
                         ]
                     },
@@ -4419,7 +4419,7 @@ void loop() {
                                 question: 'Un moteur brushless a-t-il des balais ?',
                                 options: ['Oui, obligatoirement', 'Non, aucun balai', 'Parfois', 'Seulement les gros modèles', 'Seulement les petits'],
                                 bonne: 1,
-                                explication: 'Un moteur brushless (BrushLess DC) n\\'a AUCUN balai. La commutation est électronique, ce qui élimine l\\'usure mécanique et améliore considérablement la durée de vie.'
+                                explication: 'Un moteur brushless (BrushLess DC) n\'a AUCUN balai. La commutation est électronique, ce qui élimine l\'usure mécanique et améliore considérablement la durée de vie.'
                             },
                             {
                                 question: 'Quel composant est indispensable pour piloter un brushless ?',
@@ -4431,7 +4431,7 @@ void loop() {
                                 question: 'Un moteur brushless a un rendement de :',
                                 options: ['30-40%', '50-60%', '70-80%', '85-95%', '100%'],
                                 bonne: 3,
-                                explication: 'Un brushless a un rendement de 85-95% (contre 70-80% pour un brushed). C\\'est pourquoi il est privilégié pour les applications où l\\'autonomie compte (drones, vélos électriques).'
+                                explication: 'Un brushless a un rendement de 85-95% (contre 70-80% pour un brushed). C\'est pourquoi il est privilégié pour les applications où l\'autonomie compte (drones, vélos électriques).'
                             },
                             {
                                 question: 'Les moteurs brushless sont utilisés dans :',
@@ -4573,31 +4573,31 @@ void loop() {
                                 question: 'Un vérin transforme un mouvement rotatif en :',
                                 options: ['Un autre mouvement rotatif', 'Un mouvement linéaire', 'Un mouvement aléatoire', 'De la chaleur', 'De la lumière'],
                                 bonne: 1,
-                                explication: 'Un vérin transforme la rotation d\\'un moteur en un mouvement LINÉAIRE (aller-retour en ligne droite). C\\'est ce qu\\'on appelle un actionneur linéaire.'
+                                explication: 'Un vérin transforme la rotation d\'un moteur en un mouvement LINÉAIRE (aller-retour en ligne droite). C\'est ce qu\'on appelle un actionneur linéaire.'
                             },
                             {
                                 question: 'Un vérin hydraulique utilise :',
-                                options: ['De l\\'eau', 'De l\\'huile sous pression', 'De l\\'air comprimé', 'De l\\'électricité seule', 'Du vide'],
+                                options: ['De l\'eau', 'De l\'huile sous pression', 'De l\'air comprimé', 'De l\'électricité seule', 'Du vide'],
                                 bonne: 1,
-                                explication: 'Un vérin hydraulique utilise de l\\'HUILE sous pression. Il développe une force énorme (plusieurs tonnes) mais est lent. Le pneumatique utilise de l\\'air comprimé (plus rapide, moins puissant).'
+                                explication: 'Un vérin hydraulique utilise de l\'HUILE sous pression. Il développe une force énorme (plusieurs tonnes) mais est lent. Le pneumatique utilise de l\'air comprimé (plus rapide, moins puissant).'
                             },
                             {
                                 question: 'Un module Peltier peut :',
-                                options: ['Chauffer d\\'un côté et refroidir de l\\'autre', 'Faire tourner un moteur', 'Émettre de la lumière', 'Mesurer la température', 'Créer un champ magnétique'],
+                                options: ['Chauffer d\'un côté et refroidir de l\'autre', 'Faire tourner un moteur', 'Émettre de la lumière', 'Mesurer la température', 'Créer un champ magnétique'],
                                 bonne: 0,
-                                explication: 'Le module Peltier utilise l\\'effet thermoélectrique : quand il est traversé par un courant, il CHAUFFE d\\'un côté et REFROIDIT de l\\'autre. En inversant le courant, on inverse les côtés.'
+                                explication: 'Le module Peltier utilise l\'effet thermoélectrique : quand il est traversé par un courant, il CHAUFFE d\'un côté et REFROIDIT de l\'autre. En inversant le courant, on inverse les côtés.'
                             },
                             {
                                 question: 'Une électrovanne sert à :',
-                                options: ['Faire tourner un moteur', 'Ouvrir/fermer automatiquement le passage d\\'un fluide', 'Chauffer', 'Refroidir', 'Émettre du son'],
+                                options: ['Faire tourner un moteur', 'Ouvrir/fermer automatiquement le passage d\'un fluide', 'Chauffer', 'Refroidir', 'Émettre du son'],
                                 bonne: 1,
-                                explication: 'Une électrovanne est un ROBINET CONTRÔLÉ ÉLECTRIQUEMENT. Elle ouvre ou ferme le passage d\\'un fluide (eau, air, gaz) sur commande. Utilisée dans l\\'arrosage automatique et les circuits de gaz.'
+                                explication: 'Une électrovanne est un ROBINET CONTRÔLÉ ÉLECTRIQUEMENT. Elle ouvre ou ferme le passage d\'un fluide (eau, air, gaz) sur commande. Utilisée dans l\'arrosage automatique et les circuits de gaz.'
                             },
                             {
                                 question: 'Un buzzer piézoélectrique sert à :',
                                 options: ['Mesurer la température', 'Émettre un signal sonore', 'Faire tourner un moteur', 'Chauffer', 'Refroidir'],
                                 bonne: 1,
-                                explication: 'Un buzzer piézoélectrique convertit un signal électrique en VIBRATION SONORE. C\\'est utilisé pour les alarmes, les bips de confirmation, les alertes (comme dans SAGAF).'
+                                explication: 'Un buzzer piézoélectrique convertit un signal électrique en VIBRATION SONORE. C\'est utilisé pour les alarmes, les bips de confirmation, les alertes (comme dans SAGAF).'
                             }
                         ]
                     }
@@ -4605,10 +4605,10 @@ void loop() {
                 examen: [
                     { type: 'quiz', question: 'Un servomoteur tourne de :', options: ['0 à 90°', '0 à 180°', '0 à 360°', '0 à 720°', 'Sans limite'], bonne: 1 },
                     { type: 'quiz', question: 'Un servomoteur est composé de :', options: ['Moteur seul', 'Moteur + réducteur + capteur + contrôleur', 'Capteur seul', 'Réducteur seul', 'Contrôleur seul'], bonne: 1 },
-                    { type: 'quiz', question: 'Le signal de commande d\\'un servo est :', options: ['Analogique', 'PWM', 'I2C', 'SPI', 'RF'], bonne: 1 },
+                    { type: 'quiz', question: 'Le signal de commande d\'un servo est :', options: ['Analogique', 'PWM', 'I2C', 'SPI', 'RF'], bonne: 1 },
                     { type: 'quiz', question: 'Un moteur brushless a :', options: ['Des balais', 'Aucun balai', 'Deux rotors', 'Aucun stator', 'Aucun aimant'], bonne: 1 },
                     { type: 'quiz', question: 'Un brushless nécessite :', options: ['Un condensateur', 'Un ESC', 'Une résistance', 'Une diode', 'Un relais'], bonne: 1 },
-                    { type: 'quiz', question: 'Le rendement d\\'un brushless est de :', options: ['30-40%', '50-60%', '70-80%', '85-95%', '100%'], bonne: 3 },
+                    { type: 'quiz', question: 'Le rendement d\'un brushless est de :', options: ['30-40%', '50-60%', '70-80%', '85-95%', '100%'], bonne: 3 },
                     { type: 'quiz', question: 'Un vérin transforme rotation en :', options: ['Rotation', 'Linéaire', 'Chaleur', 'Lumière', 'Son'], bonne: 1 },
                     { type: 'quiz', question: 'Un vérin hydraulique utilise :', options: ['Eau', 'Huile sous pression', 'Air', 'Électricité', 'Vide'], bonne: 1 },
                     { type: 'quiz', question: 'Un module Peltier :', options: ['Chauffe/refroidit', 'Tourne', 'Éclaire', 'Mesure', 'Émet du son'], bonne: 0 },
