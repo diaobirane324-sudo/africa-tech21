@@ -3992,31 +3992,31 @@ void loop() {
                                 question: 'Que signifie IMU ?',
                                 options: ['Interface Micro Utilisateur', 'Inertial Measurement Unit', 'Indicateur de Mouvement Ultrason', 'Interrupteur Multi Usages', 'Identifiant Machine Universel'],
                                 bonne: 1,
-                                explication: 'IMU signifie Inertial Measurement Unit (Unité de Mesure Inertielle). C\\'est un ensemble de capteurs qui mesure le mouvement et l\\'orientation.'
+                               explication: 'IMU signifie Inertial Measurement Unit (Unité de Mesure Inertielle). C\'est un ensemble de capteurs qui mesure le mouvement et l\'orientation.'
                             },
                             {
                                 question: 'Un accéléromètre mesure :',
-                                options: ['La température', 'L\\'accélération linéaire', 'La pression', 'Le champ magnétique', 'Le son'],
+                                options: ['La température', 'L\'accélération linéaire', 'La pression', 'Le champ magnétique', 'Le son'],
                                 bonne: 1,
-                                explication: 'Un accéléromètre mesure l\\'accélération sur 3 axes. Au repos, il mesure la gravité (1g). Il détecte les mouvements linéaires et l\\'inclinaison.'
+                                explication: 'Un accéléromètre mesure l\'accélération sur 3 axes. Au repos, il mesure la gravité (1g). Il détecte les mouvements linéaires et l\'inclinaison.'
                             },
                             {
                                 question: 'Un gyroscope mesure :',
-                                options: ['La vitesse angulaire (rotation)', 'La gravité', 'Le champ magnétique', 'La lumière', 'L\\'humidité'],
+                                options: ['La vitesse angulaire (rotation)', 'La gravité', 'Le champ magnétique', 'La lumière', 'L\'humidité'],
                                 bonne: 0,
-                                explication: 'Un gyroscope mesure la vitesse angulaire (à quelle vitesse le robot tourne) sur 3 axes. Il faut l\\'intégrer dans le temps pour obtenir l\\'angle.'
+                                explication: 'Un gyroscope mesure la vitesse angulaire (à quelle vitesse le robot tourne) sur 3 axes. Il faut l\'intégrer dans le temps pour obtenir l\'angle.'
                             },
                             {
-                                question: 'Le module MPU-6050 possède combien d\\'axes ?',
+                                question: 'Le module MPU-6050 possède combien d\'axes ?',
                                 options: ['3 axes', '6 axes', '9 axes', '12 axes', '1 axe'],
                                 bonne: 1,
-                                explication: 'Le MPU-6050 combine un accéléromètre 3 axes + un gyroscope 3 axes = 6 axes. Il n\\'a pas de magnétomètre (contrairement au MPU-9250 qui en a 9).'
+                                explication: 'Le MPU-6050 combine un accéléromètre 3 axes + un gyroscope 3 axes = 6 axes. Il n\'a pas de magnétomètre (contrairement au MPU-9250 qui en a 9).'
                             },
                             {
                                 question: 'Pourquoi une IMU seule dérive-t-elle dans le temps ?',
-                                options: ['Elle est cassée', 'Le gyroscope accumule des erreurs, l\\'accéléromètre est bruité', 'Elle n\\'a pas de pile', 'Elle chauffe trop', 'Elle est trop précise'],
+                                options: ['Elle est cassée', 'Le gyroscope accumule des erreurs, l\'accéléromètre est bruité', 'Elle n\'a pas de pile', 'Elle chauffe trop', 'Elle est trop précise'],
                                 bonne: 1,
-                                explication: 'Le gyroscope accumule les erreurs d\\'intégration, et l\\'accéléromètre est bruité par les vibrations. C\\'est pourquoi on fusionne les données avec un filtre (complémentaire ou Kalman) pour corriger.'
+                                explication: 'Le gyroscope accumule les erreurs d\'intégration, et l\'accéléromètre est bruité par les vibrations. C\'est pourquoi on fusionne les données avec un filtre (complémentaire ou Kalman) pour corriger.'
                             }
                         ]
                     },
