@@ -3,701 +3,523 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surveillance | MAJOR AFRICA.TECH21</title>
+    <title>Dashboard | AFRICA.TECH21</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Exo 2', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Exo 2', 'Segoe UI', sans-serif; }
         :root {
-            --neon-blue: #00f0ff; --neon-green: #00ff88; --neon-violet: #9d00ff;
-            --neon-red: #ff003c; --neon-gold: #ffd700; --neon-pink: #ff00ff;
-            --dark: #050510; --panel: rgba(16,16,32,0.95);
-            --text-primary: #fff; --text-secondary: #a0a8c0;
+            --neon-blue: #00f0ff; --neon-purple: #7b2cbf; --neon-pink: #ff00ff; --neon-green: #00ff88;
+            --dark-space: #0a0a12; --deep-space: #050510; --panel-dark: rgba(16, 16, 32, 0.95);
+            --panel-glow: 0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(123, 44, 191, 0.2);
+            --text-primary: #ffffff; --text-secondary: #a0a8c0; --accent-glow: 0 0 15px var(--neon-blue);
+            --glass: rgba(255, 255, 255, 0.08); --glass-border: rgba(255, 255, 255, 0.1);
         }
-        body {
-            background: linear-gradient(135deg, #050510 0%, #0a0a18 50%, #0f0f1f 100%);
-            color: var(--text-primary); min-height: 100vh; padding: 2rem;
-            font-family: 'Exo 2', sans-serif;
-        }
-        body::before {
-            content: ''; position: fixed; inset: 0;
-            background:
-                radial-gradient(circle at 15% 20%, rgba(0,240,255,0.06) 0%, transparent 45%),
-                radial-gradient(circle at 85% 80%, rgba(157,0,255,0.06) 0%, transparent 45%);
-            pointer-events: none; z-index: -1;
-        }
-        .container { max-width: 1600px; margin: 0 auto; }
-
-        /* ÉCRAN DE MOT DE PASSE */
-        .lock-screen {
-            display: flex; align-items: center; justify-content: center;
-            min-height: 100vh; padding: 2rem;
-        }
-        .lock-card {
-            background: linear-gradient(135deg, rgba(10,10,25,0.98), rgba(20,15,35,0.98));
-            border: 2px solid var(--neon-red);
-            border-radius: 25px; padding: 3rem 2.5rem;
-            max-width: 500px; width: 100%; text-align: center;
-            box-shadow: 0 0 80px rgba(255,0,60,0.3);
-        }
-        .lock-card i.lock-icon {
-            font-size: 4rem; color: var(--neon-red);
-            text-shadow: 0 0 40px rgba(255,0,60,0.6);
-            margin-bottom: 1.5rem; display: block;
-        }
-        .lock-card h1 {
-            font-family: 'Orbitron', sans-serif; font-size: 1.8rem;
-            color: var(--neon-red); letter-spacing: 2px; margin-bottom: 1rem;
-        }
-        .lock-card p { color: var(--text-secondary); margin-bottom: 2rem; }
-        .lock-card input {
-            width: 100%; padding: 1.2rem; font-size: 1.2rem;
-            text-align: center; font-family: 'JetBrains Mono', monospace;
-            background: rgba(0,0,0,0.5); border: 2px solid var(--neon-red);
-            border-radius: 12px; color: var(--neon-gold); letter-spacing: 3px;
-            margin-bottom: 1rem; outline: none;
-        }
-        .lock-card input:focus { box-shadow: 0 0 25px rgba(255,0,60,0.4); }
-        .lock-card button {
-            width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--neon-red), #cc0033);
-            border: none; border-radius: 12px; color: white;
-            font-family: 'Orbitron', sans-serif; font-weight: 700;
-            font-size: 1rem; letter-spacing: 2px; cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .lock-card button:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,0,60,0.5); }
-        .lock-err { color: var(--neon-red); margin-top: 1rem; font-weight: 600; display: none; }
-
-        /* DASHBOARD */
-        .dashboard { display: none; }
-        .dashboard.active { display: block; }
-
-        /* HEADER */
-        .header {
-            background: rgba(20,20,35,0.85); backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,0,60,0.3);
-            border-radius: 20px; padding: 1.5rem 2.5rem;
-            margin-bottom: 2rem; display: flex;
-            justify-content: space-between; align-items: center;
-            flex-wrap: wrap; gap: 1rem;
-            box-shadow: 0 0 40px rgba(255,0,60,0.2);
-        }
-        .header-title {
-            font-family: 'Orbitron', sans-serif; font-size: 1.8rem;
-            background: linear-gradient(90deg, var(--neon-red), var(--neon-gold));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            letter-spacing: 2px;
-        }
-        .header-sub { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.3rem; letter-spacing: 1px; }
-        .header-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-        .btn-action {
-            padding: 0.8rem 1.5rem; border-radius: 10px;
-            font-family: 'Orbitron', sans-serif; font-size: 0.8rem;
-            font-weight: 700; letter-spacing: 1.5px; cursor: pointer;
-            border: none; transition: all 0.3s ease;
-            display: inline-flex; align-items: center; gap: 0.5rem;
-        }
-        .btn-primary { background: linear-gradient(135deg, var(--neon-green), #00cc66); color: #050510; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,255,136,0.4); }
-        .btn-secondary { background: rgba(0,240,255,0.1); border: 1px solid var(--neon-blue); color: var(--neon-blue); }
-        .btn-secondary:hover { background: rgba(0,240,255,0.2); }
-
-        /* STATS GLOBALES */
-        .stats-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem; margin-bottom: 2rem;
-        }
-        .stat-card {
-            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 18px; padding: 1.8rem; text-align: center;
-            position: relative; overflow: hidden;
-        }
-        .stat-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-            background: var(--neon-blue);
-        }
-        .stat-card.online::before { background: var(--neon-green); }
-        .stat-card.alert::before { background: var(--neon-red); }
-        .stat-card.gold::before { background: var(--neon-gold); }
-        .stat-label { color: var(--text-secondary); font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 0.8rem; }
-        .stat-value {
-            font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 900;
-            color: var(--neon-blue);
-        }
-        .stat-card.online .stat-value { color: var(--neon-green); }
-        .stat-card.alert .stat-value { color: var(--neon-red); }
-        .stat-card.gold .stat-value { color: var(--neon-gold); }
-
-        /* TABS */
-        .tabs {
-            display: flex; gap: 0.5rem; margin-bottom: 2rem;
-            border-bottom: 2px solid rgba(255,255,255,0.1);
-            overflow-x: auto; padding-bottom: 0.5rem;
-        }
-        .tab {
-            padding: 1rem 1.8rem; background: transparent; border: none;
-            color: var(--text-secondary); font-family: 'Orbitron', sans-serif;
-            font-size: 0.85rem; letter-spacing: 1px; cursor: pointer;
-            border-radius: 10px 10px 0 0; transition: all 0.3s ease;
-            display: inline-flex; align-items: center; gap: 0.5rem; white-space: nowrap;
-        }
-        .tab:hover { background: rgba(0,240,255,0.05); color: var(--neon-blue); }
-        .tab.active {
-            background: rgba(0,240,255,0.1); color: var(--neon-blue);
-            border-bottom: 3px solid var(--neon-blue);
-        }
-
-        /* CONTENU ONGLET */
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .panel {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 18px; padding: 2rem; margin-bottom: 1.5rem;
-        }
-        .panel-title {
-            font-family: 'Orbitron', sans-serif; font-size: 1.3rem;
-            color: var(--neon-blue); letter-spacing: 1.5px;
-            margin-bottom: 1.5rem; display: flex;
-            align-items: center; gap: 0.7rem;
-        }
-
-        /* LISTE MEMBRES */
-        .member-list { display: flex; flex-direction: column; gap: 1rem; }
-        .member-row {
-            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px; padding: 1.2rem 1.5rem;
-            display: flex; justify-content: space-between; align-items: center;
-            gap: 1rem; flex-wrap: wrap; transition: all 0.25s ease;
-        }
-        .member-row:hover { background: rgba(0,240,255,0.05); border-color: rgba(0,240,255,0.3); }
-        .member-row.online-row {
-            border-color: var(--neon-green);
-            background: rgba(0,255,136,0.05);
-            box-shadow: 0 0 20px rgba(0,255,136,0.15);
-        }
-        .member-info { display: flex; align-items: center; gap: 1rem; flex: 1; min-width: 200px; }
-        .member-avatar {
-            width: 45px; height: 45px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--neon-blue), var(--neon-violet));
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 900; font-size: 1.1rem;
-        }
-        .member-row.online-row .member-avatar {
-            background: linear-gradient(135deg, var(--neon-green), #00cc66);
-            animation: pulseGreen 2s infinite;
-        }
-        @keyframes pulseGreen {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(0,255,136,0.5); }
-            50% { box-shadow: 0 0 0 10px rgba(0,255,136,0); }
-        }
-        .member-name { font-weight: 700; color: var(--neon-blue); font-size: 1.05rem; }
-        .member-fonction { font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.2rem; }
-        .member-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
-        .meta-item {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
-            padding: 0.4rem 0.9rem; border-radius: 8px;
-            background: rgba(0,240,255,0.08); color: var(--neon-blue);
-            border: 1px solid rgba(0,240,255,0.2);
-            display: inline-flex; align-items: center; gap: 0.4rem;
-        }
-        .meta-item.green { background: rgba(0,255,136,0.1); color: var(--neon-green); border-color: rgba(0,255,136,0.3); }
-        .meta-item.red { background: rgba(255,0,60,0.1); color: var(--neon-red); border-color: rgba(255,0,60,0.3); }
-        .meta-item.gold { background: rgba(255,215,0,0.1); color: var(--neon-gold); border-color: rgba(255,215,0,0.3); }
-        .meta-item.violet { background: rgba(157,0,255,0.1); color: var(--neon-violet); border-color: rgba(157,0,255,0.3); }
-
-        /* TABLE */
-        .data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-        .data-table thead { background: rgba(0,240,255,0.08); }
-        .data-table th {
-            padding: 1rem; text-align: left; font-family: 'Orbitron', sans-serif;
-            font-size: 0.8rem; letter-spacing: 1px; color: var(--neon-blue);
-            border-bottom: 2px solid rgba(0,240,255,0.3);
-        }
-        .data-table td {
-            padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);
-            color: var(--text-secondary);
-        }
-        .data-table tbody tr:hover { background: rgba(0,240,255,0.03); }
-
-        /* PROGRESS BAR */
-        .progress-bar {
-            width: 120px; height: 8px; background: rgba(0,0,0,0.4);
-            border-radius: 10px; overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%; background: linear-gradient(90deg, var(--neon-blue), var(--neon-green));
-            transition: width 0.6s ease; border-radius: 10px;
-        }
-
-        /* LOADING */
-        .loading {
-            text-align: center; padding: 3rem; color: var(--text-secondary);
-        }
-        .loading i { font-size: 2.5rem; margin-bottom: 1rem; display: block; color: var(--neon-blue); }
-
-        /* ALERTES */
-        .alert-item {
-            background: rgba(255,0,60,0.08); border: 1px solid rgba(255,0,60,0.3);
-            border-left: 4px solid var(--neon-red);
-            border-radius: 10px; padding: 1.2rem 1.5rem;
-            margin-bottom: 1rem;
-        }
-        .alert-item.basse { border-left-color: var(--neon-gold); background: rgba(255,215,0,0.05); }
-        .alert-item.moyenne { border-left-color: #ffa500; background: rgba(255,165,0,0.05); }
-        .alert-item.haute { border-left-color: var(--neon-red); background: rgba(255,0,60,0.08); }
-        .alert-item.critique { border-left-color: #cc0000; background: rgba(204,0,0,0.15); }
-        .alert-title { font-weight: 700; color: var(--neon-red); margin-bottom: 0.4rem; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; letter-spacing: 1px; }
-        .alert-msg { color: var(--text-secondary); font-size: 0.95rem; }
-        .alert-meta { margin-top: 0.6rem; display: flex; gap: 1rem; font-size: 0.8rem; color: var(--text-secondary); flex-wrap: wrap; }
-
+        body { background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%); color: var(--text-primary); min-height: 100vh; position: relative; overflow-x: hidden; }
+        .hologram-grid { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px), linear-gradient(180deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px); background-size: 50px 50px; animation: gridScan 20s linear infinite; pointer-events: none; z-index: -2; }
+        .ambient-light { position: fixed; width: 500px; height: 500px; border-radius: 50%; filter: blur(100px); opacity: 0.1; z-index: -1; }
+        .light-1 { background: var(--neon-blue); top: -200px; right: -100px; animation: floatLight 8s ease-in-out infinite; }
+        .light-2 { background: var(--neon-purple); bottom: -150px; left: -100px; animation: floatLight 10s ease-in-out infinite reverse; }
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
+        .particle { position: absolute; width: 3px; height: 3px; background: var(--neon-blue); border-radius: 50%; animation: float 15s infinite linear; box-shadow: 0 0 10px var(--neon-blue); }
+        @keyframes gridScan { 0% { transform: translate(0, 0); } 100% { transform: translate(50px, 50px); } }
+        @keyframes floatLight { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(50px, -30px) scale(1.1); } }
+        @keyframes float { 0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100px) translateX(100px) rotate(360deg); opacity: 0; } }
+        .neuro-header { background: rgba(20, 20, 35, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 240, 255, 0.2); padding: 1.5rem 3rem; position: relative; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); }
+        .neuro-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--neon-blue), transparent); }
+        .header-content { display: flex; justify-content: space-between; align-items: center; max-width: 1600px; margin: 0 auto; }
+        .logo-container h1 { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: var(--accent-glow); letter-spacing: 2px; font-weight: 900; }
+        .logo-container .subtitle { font-size: 0.9rem; color: var(--text-secondary); letter-spacing: 3px; text-transform: uppercase; margin-top: 0.5rem; }
+        .user-panel { display: flex; align-items: center; gap: 2rem; }
+        .user-badge { background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 15px; padding: 0.8rem 1.5rem; backdrop-filter: blur(10px); text-align: center; }
+        .user-email { color: var(--neon-blue); font-weight: 600; font-size: 0.95rem; }
+        .user-role { color: var(--neon-green); font-size: 0.8rem; margin-top: 5px; }
+        .nav-buttons { display: flex; gap: 1rem; }
+        .nav-btn { background: transparent; border: 2px solid; border-image: linear-gradient(45deg, var(--neon-blue), var(--neon-green)) 1; color: var(--neon-blue); padding: 0.7rem 1.2rem; border-radius: 10px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; text-decoration: none; }
+        .nav-btn:hover { background: rgba(0, 240, 255, 0.1); box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); transform: translateY(-2px); }
+        .logout-btn { background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue)); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 10px; cursor: pointer; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4); }
+        .logout-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(123, 44, 191, 0.6); }
+        .dashboard-container { padding: 3rem; max-width: 1600px; margin: 0 auto; }
+        .info-banner { background: linear-gradient(90deg, #00f0ff, #7b2cbf, #ff00ff, #00f0ff); background-size: 300%; padding: 1.2rem 2rem; border-radius: 15px; margin-bottom: 2rem; text-align: center; font-size: 1.3rem; font-weight: 700; color: #ffffff; text-shadow: 0 0 20px rgba(0, 240, 255, 0.8); box-shadow: 0 0 40px rgba(0, 240, 255, 0.3); animation: clignoter 1.5s infinite, bgMove 4s linear infinite; position: relative; overflow: hidden; border: 2px solid rgba(255, 255, 255, 0.2); }
+        @keyframes clignoter { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.85; transform: scale(1.01); } }
+        @keyframes bgMove { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
+        .info-banner::before { content: ''; position: absolute; top: -100%; left: -100%; width: 300%; height: 300%; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%); animation: rotateGlow 4s linear infinite; }
+        @keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .info-banner .icon { margin-right: 1rem; font-size: 1.8rem; animation: pulseIcon 1.5s ease-in-out infinite; }
+        @keyframes pulseIcon { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+        .info-banner .message-text { position: relative; z-index: 1; }
+        .info-banner .message-text i { margin-right: 0.8rem; }
+        .hero-section { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 25px; padding: 4rem; margin-bottom: 3rem; position: relative; overflow: hidden; box-shadow: var(--panel-glow); }
+        .hero-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(123, 44, 191, 0.1) 0%, transparent 50%); pointer-events: none; }
+        .hero-title { font-family: 'Orbitron', sans-serif; font-size: 3.5rem; background: linear-gradient(45deg, var(--neon-blue), #ffffff, var(--neon-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; margin-bottom: 1rem; text-shadow: 0 0 30px rgba(0, 240, 255, 0.5); }
+        .hero-subtitle { font-size: 1.3rem; color: var(--text-secondary); text-align: center; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.5rem; margin-bottom: 4rem; }
+        .feature-card { position: relative; padding: 3rem 2.5rem; background: rgba(10, 10, 20, 0.75); backdrop-filter: blur(15px); cursor: pointer; transition: all 0.4s ease; clip-path: polygon(30px 0%, 100% 0%, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0% 100%, 0% 30px); overflow: hidden; }
+        .feature-card::before { content: ''; position: absolute; inset: 0; padding: 2px; background: linear-gradient(90deg, #00f0ff, #7b2cbf, #ff00ff, #00f0ff); background-size: 300% 300%; -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; animation: borderShift 4s linear infinite; pointer-events: none; clip-path: polygon(30px 0%, 100% 0%, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0% 100%, 0% 30px); }
+        @keyframes borderShift { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
+        .feature-card::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.08), transparent); transition: 0.6s; pointer-events: none; }
+        .feature-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 240, 255, 0.4); }
+        .feature-card:hover::after { left: 100%; }
+        .feature-card .corner { position: absolute; width: 20px; height: 20px; border-color: var(--neon-blue); opacity: 0.6; transition: all 0.3s ease; pointer-events: none; }
+        .feature-card .corner.tl { top: 10px; left: 10px; border-top: 2px solid; border-left: 2px solid; }
+        .feature-card .corner.br { bottom: 10px; right: 10px; border-bottom: 2px solid; border-right: 2px solid; }
+        .feature-card:hover .corner { opacity: 1; width: 30px; height: 30px; }
+        .feature-icon { font-size: 4rem; color: var(--neon-blue); margin-bottom: 2rem; text-shadow: var(--accent-glow); text-align: center; position: relative; z-index: 2; }
+        .feature-title { font-size: 1.8rem; color: var(--neon-blue); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px; text-align: center; font-weight: 700; position: relative; z-index: 2; }
+        .feature-description { color: var(--text-secondary); line-height: 1.7; text-align: center; margin-bottom: 2rem; font-size: 1.1rem; position: relative; z-index: 2; }
+        .feature-status { text-align: center; font-weight: 700; letter-spacing: 1px; position: relative; z-index: 2; }
+        .status-active { color: var(--neon-blue); text-shadow: var(--accent-glow); }
+        .forum-section { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 25px; padding: 3rem; margin-bottom: 4rem; box-shadow: var(--panel-glow); }
+        .section-title { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; color: var(--neon-blue); text-align: center; margin-bottom: 3rem; text-transform: uppercase; letter-spacing: 2px; text-shadow: var(--accent-glow); }
+        .messages-container { max-height: 500px; overflow-y: auto; margin-bottom: 2.5rem; border: 1px solid var(--glass-border); border-radius: 15px; padding: 2rem; background: rgba(10, 10, 20, 0.6); }
+        .message { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); border-radius: 15px; padding: 2rem; margin-bottom: 1.5rem; transition: all 0.3s ease; position: relative; }
+        .message::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, var(--neon-blue), var(--neon-purple)); border-radius: 15px 0 0 15px; }
+        .message:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(0, 240, 255, 0.3); transform: translateX(5px); }
+        .message-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .message-user { color: var(--neon-blue); font-weight: 700; font-size: 1.1rem; }
+        .message-time { color: var(--text-secondary); font-size: 0.9rem; }
+        .message-content { color: var(--text-primary); line-height: 1.6; font-size: 1.05rem; }
+        .input-group { display: flex; gap: 1.5rem; align-items: center; }
+        .message-input { flex-grow: 1; padding: 1.5rem 2rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); border-radius: 15px; color: var(--text-primary); font-size: 1.1rem; transition: all 0.3s ease; backdrop-filter: blur(10px); }
+        .message-input:focus { outline: none; border-color: var(--neon-blue); box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); background: rgba(255, 255, 255, 0.08); }
+        .message-input::placeholder { color: var(--text-secondary); }
+        .send-btn { background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue)); color: white; border: none; padding: 1.5rem 3rem; border-radius: 15px; cursor: pointer; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4); min-width: 180px; }
+        .send-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(123, 44, 191, 0.6); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--neon-blue), var(--neon-purple)); border-radius: 10px; }
         @media (max-width: 768px) {
-            body { padding: 1rem; }
-            .header { flex-direction: column; align-items: flex-start; }
-            .header-title { font-size: 1.3rem; }
-            .stat-value { font-size: 1.8rem; }
-            .tabs { overflow-x: auto; }
-            .tab { padding: 0.8rem 1rem; font-size: 0.75rem; }
-            .data-table { font-size: 0.75rem; }
-            .data-table th, .data-table td { padding: 0.6rem; }
+            .neuro-header { padding: 1rem 1.5rem; }
+            .header-content { flex-direction: column; gap: 1rem; }
+            .user-panel { flex-direction: column; gap: 1rem; }
+            .dashboard-container { padding: 1.5rem; }
+            .hero-section { padding: 2rem 1.5rem; }
+            .hero-title { font-size: 2.5rem; }
+            .features-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .feature-card { padding: 2rem 1.5rem; clip-path: polygon(20px 0%, 100% 0%, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0% 100%, 0% 20px); }
+            .input-group { flex-direction: column; }
+            .send-btn { width: 100%; }
+            .info-banner { font-size: 1rem; padding: 0.8rem 1rem; }
+            .info-banner .icon { font-size: 1.2rem; }
         }
     </style>
 </head>
 <body>
+    <div class="hologram-grid"></div>
+    <div class="ambient-light light-1"></div>
+    <div class="ambient-light light-2"></div>
+    <div class="particles" id="particles"></div>
 
-<!-- ÉCRAN DE VERROUILLAGE -->
-<div class="lock-screen" id="lockScreen">
-    <div class="lock-card">
-        <i class="fas fa-shield-halved lock-icon"></i>
-        <h1>ACCÈS MAJOR</h1>
-        <p>Zone hautement confidentielle.<br>Seul le Major peut accéder à ce tableau.</p>
-        <input type="password" id="pwdInput" placeholder="MOT DE PASSE" autocomplete="off" onkeydown="if(event.key==='Enter')unlock()">
-        <button onclick="unlock()"><i class="fas fa-key"></i> DÉVERROUILLER</button>
-        <div class="lock-err" id="lockErr">❌ Mot de passe incorrect</div>
-    </div>
-</div>
-
-<!-- DASHBOARD -->
-<div class="dashboard" id="dashboard">
-    <div class="container">
-        <div class="header">
-            <div>
-                <div class="header-title"><i class="fas fa-satellite-dish"></i> SURVEILLANCE GLOBALE</div>
-                <div class="header-sub">ACCÈS MAJOR — Données en temps réel</div>
+    <header class="neuro-header">
+        <div class="header-content">
+            <div class="logo-container">
+                <h1>AFRICA.TECH21</h1>
+                <div class="subtitle">SYSTÈME DE CONTRÔLE PRINCIPAL</div>
             </div>
-            <div class="header-actions">
-                <button class="btn-action btn-primary" onclick="loadAll()"><i class="fas fa-sync"></i> ACTUALISER</button>
-                <button class="btn-action btn-secondary" onclick="exportCSV()"><i class="fas fa-download"></i> EXPORT CSV</button>
-            </div>
-        </div>
-
-        <!-- STATS GLOBALES -->
-        <div class="stats-grid">
-            <div class="stat-card online">
-                <div class="stat-label"><i class="fas fa-circle"></i> En ligne</div>
-                <div class="stat-value" id="statOnline">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label"><i class="fas fa-users"></i> Total membres</div>
-                <div class="stat-value" id="statTotal">0</div>
-            </div>
-            <div class="stat-card gold">
-                <div class="stat-label"><i class="fas fa-clock"></i> Temps total 7j</div>
-                <div class="stat-value" id="statTemps">0h</div>
-            </div>
-            <div class="stat-card alert">
-                <div class="stat-label"><i class="fas fa-exclamation-triangle"></i> Alertes</div>
-                <div class="stat-value" id="statAlertes">0</div>
-            </div>
-        </div>
-
-        <!-- TABS -->
-        <div class="tabs">
-            <button class="tab active" onclick="showTab('tab-online', this)"><i class="fas fa-circle"></i> En ligne</button>
-            <button class="tab" onclick="showTab('tab-assiduite', this)"><i class="fas fa-calendar"></i> Assiduité</button>
-            <button class="tab" onclick="showTab('tab-interets', this)"><i class="fas fa-heart"></i> Centres d'intérêt</button>
-            <button class="tab" onclick="showTab('tab-activites', this)"><i class="fas fa-stream"></i> Activités récentes</button>
-            <button class="tab" onclick="showTab('tab-alertes', this)"><i class="fas fa-bell"></i> Alertes</button>
-        </div>
-
-        <!-- ONGLET : EN LIGNE -->
-        <div class="tab-content active" id="tab-online">
-            <div class="panel">
-                <div class="panel-title"><i class="fas fa-circle" style="color: var(--neon-green);"></i> Membres connectés en ce moment</div>
-                <div class="member-list" id="onlineList">
-                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
+            <div class="user-panel">
+                <div class="user-badge">
+                    <div class="user-email" id="userEmail">CHARGEMENT...</div>
+                    <div class="user-role" id="userRole"></div>
                 </div>
-            </div>
-        </div>
-
-        <!-- ONGLET : ASSIDUITÉ -->
-        <div class="tab-content" id="tab-assiduite">
-            <div class="panel">
-                <div class="panel-title"><i class="fas fa-calendar-week"></i> Temps de travail (7 derniers jours)</div>
-                <div style="overflow-x: auto;">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Membre</th>
-                                <th>Fonction</th>
-                                <th>Temps total</th>
-                                <th>Jours actifs</th>
-                                <th>Pages vues</th>
-                                <th>Dernière activité</th>
-                            </tr>
-                        </thead>
-                        <tbody id="assiduiteBody">
-                            <tr><td colspan="6" class="loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</td></tr>
-                        </tbody>
-                    </table>
+                <div class="nav-buttons">
+                    <a href="profile.html" class="nav-btn"><i class="fas fa-user"></i> Profil</a>
+                    <a href="rsma.html" class="nav-btn"><i class="fas fa-water"></i> RSMA</a>
+                    <a href="oxy.html" class="nav-btn"><i class="fas fa-wind"></i> OXY</a>
+                    <a href="rga.html" class="nav-btn"><i class="fas fa-robot"></i> RGA</a>
+                    <a href="irritech.html" class="nav-btn"><i class="fas fa-tint"></i> IRRITECH</a>
+                    <a href="mk40.html" class="nav-btn"><i class="fas fa-egg"></i> MK-40</a>
+                    <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> Accueil</a>
+                    <a href="sagaf.html" class="nav-btn"><i class="fas fa-exclamation-triangle"></i> SAGAF</a>
+                    <a href="binv.html" class="nav-btn"><i class="fas fa-eye-slash"></i> BINV</a>
+                    <a href="cours.html" class="nav-btn"><i class="fas fa-graduation-cap"></i> COURS</a>
+                    <a href="ia.html" class="nav-btn"><i class="fas fa-brain"></i> IA</a>
                 </div>
+                <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> DÉCONNEXION</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="info-banner" id="infoBanner">
+            <span class="icon"><i class="fas fa-bullhorn"></i></span>
+            <span class="message-text" id="infoMessage"><i class="fas fa-spinner fa-spin"></i>Bienvenue sur AFRICA.TECH21 !</span>
+        </div>
+
+        <section class="hero-section">
+            <h1 class="hero-title">TABLEAU DE BORD PRINCIPAL</h1>
+            <p class="hero-subtitle">Interface de collaboration avancée pour les membres d'AFRICA.TECH21. Accédez aux projets confidentiels, communiquez avec l'équipe et gérez les développements techniques.</p>
+        </section>
+
+        <div class="features-grid">
+            <div class="feature-card" onclick="accederEspaceDirection()">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
+                <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3 class="feature-title">ESPACE DIRECTION</h3>
+                <p class="feature-description">Postes de travail des membres de la direction. Secrétariat, Gestion des Stocks, Admin Examens, Espace Major. Accès strictement réservé.</p>
+                <div class="feature-status status-active"><i class="fas fa-lock"></i> ACCÈS: DIRECTION</div>
+            </div>
+
+            <div class="feature-card" onclick="window.location.href='rapport.html'">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
+                <div class="feature-icon"><i class="fas fa-clipboard-check"></i></div>
+                <h3 class="feature-title">RAPPORT DE FIN DE JOURNÉE</h3>
+                <p class="feature-description">Rédigez votre rapport d'activité quotidien.</p>
+                <div class="feature-status status-active"><i class="fas fa-users"></i> ACCÈS: MEMBRES</div>
+            </div>
+
+            <div class="feature-card" onclick="window.location.href='examiner.html'">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
+                <div class="feature-icon"><i class="fas fa-file-pdf"></i></div>
+                <h3 class="feature-title"> DÉPOSER MON TRAVAIL</h3>
+                <p class="feature-description">Soumettez votre travail (PDF) à l'examen ultra-rigoureux.</p>
+                <div class="feature-status status-active"><i class="fas fa-lock"></i> RÉSERVÉ AUX MEMBRES</div>
+            </div>
+
+            <div class="feature-card" onclick="window.location.href='cours.html'">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
+                <div class="feature-icon"><i class="fas fa-graduation-cap"></i></div>
+                <h3 class="feature-title">COURS AFRICA.TECH21</h3>
+                <p class="feature-description">Formation Future Members Africa.tech21 (FFAM).</p>
+                <div class="feature-status status-active">✅ ACCÈS: OUVERT</div>
+            </div>
+
+            <div class="feature-card" onclick="window.location.href='examen-ffam.html'">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
+                <div class="feature-icon"><i class="fas fa-graduation-cap"></i></div>
+                <h3 class="feature-title">EXAMEN FFAM</h3>
+                <p class="feature-description">Évaluation technique pour les Future Members.</p>
+                <div class="feature-status status-active"><i class="fas fa-lock"></i> ACCÈS: RÉSERVÉ</div>
+            </div>
+
+            <div class="feature-card" onclick="window.location.href='quiz.html'">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
+                <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                <h3 class="feature-title">PAUSE QUIZ</h3>
+                <p class="feature-description">100 questions sur l'électronique et la robotique.</p>
+                <div class="feature-status status-active"><i class="fas fa-gamepad"></i> DISPONIBLE</div>
+            </div>
+
+            <div class="feature-card" onclick="window.location.href='qr-generator.html'">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
+                <div class="feature-icon"><i class="fas fa-qrcode"></i></div>
+                <h3 class="feature-title">GÉNÉRATEUR QR</h3>
+                <p class="feature-description">Génération des QR codes officiels pour les cartes membres de la direction. Accès à l'Espace Direction par scan.</p>
+                <div class="feature-status status-active"><i class="fas fa-lock"></i> ACCÈS: PRÉSIDENT</div>
+            </div>
+
+            <div class="feature-card" onclick="window.location.href='centre-controle.html'">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
+                <div class="feature-icon"><i class="fas fa-satellite-dish"></i></div>
+                <h3 class="feature-title">CENTRE DE CONTRÔLE</h3>
+                <p class="feature-description">Pilotez vos robots et systèmes automatiques (ESP32, Raspberry, ROS2). Manettes, panneau industriel, simulation, combat.</p>
+                <div class="feature-status status-active"><i class="fas fa-lock"></i> ACCÈS: PRÉSIDENT</div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- 🆕 NOUVELLE CARTE : SURVEILLANCE MAJOR                        -->
+            <!-- ============================================================ -->
+            <div class="feature-card" onclick="ouvrirSurveillance()" style="border-color: var(--neon-red);">
+                <span class="corner tl" style="border-color: var(--neon-red);"></span>
+                <span class="corner br" style="border-color: var(--neon-red);"></span>
+                <div class="feature-icon" style="color: var(--neon-red);"><i class="fas fa-eye"></i></div>
+                <h3 class="feature-title" style="color: var(--neon-red);">SURVEILLANCE</h3>
+                <p class="feature-description">Tableau de bord confidentiel : suivi en temps réel de l'activité, de l'assiduité et des centres d'intérêt de tous les membres. Réservé au Major.</p>
+                <div class="feature-status" style="color: var(--neon-red);"><i class="fas fa-lock"></i> ACCÈS: MAJOR UNIQUEMENT</div>
+            </div>
+
+            <div class="feature-card" onclick="verifierAcces('oxy.html')">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
+                <div class="feature-icon"><i class="fas fa-wind"></i></div>
+                <h3 class="feature-title">PROJET OXY</h3>
+                <p class="feature-description">Système d'assistance respiratoire automatique.</p>
+                <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
+            </div>
+
+            <div class="feature-card" onclick="verifierAcces('mk40.html')">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
+                <div class="feature-icon"><i class="fas fa-egg"></i></div>
+                <h3 class="feature-title">MK-40</h3>
+                <p class="feature-description">Couveuse automatique intelligente nouvelle génération.</p>
+                <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
+            </div>
+
+            <div class="feature-card" onclick="verifierAcces('binv.html')">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
+                <div class="feature-icon"><i class="fas fa-eye-slash"></i></div>
+                <h3 class="feature-title">BINV</h3>
+                <p class="feature-description">Bâton Intelligent pour les Non-Voyants.</p>
+                <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
+            </div>
+
+            <div class="feature-card" onclick="verifierAcces('sagaf.html')">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
+                <div class="feature-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                <h3 class="feature-title">SAGAF</h3>
+                <p class="feature-description">Système d'Alerte pour Fuite de Gaz. Détection précoce pour la sécurité domestique et industrielle.</p>
+                <div class="feature-status status-active"><i class="fas fa-lock"></i> ACCÈS: RESTREINT</div>
+            </div>
+
+            <div class="feature-card" onclick="verifierAcces('irritech.html')">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
+                <div class="feature-icon"><i class="fas fa-tint"></i></div>
+                <h3 class="feature-title">IRRITECH V1.0</h3>
+                <p class="feature-description">Système d'arrosage automatique intelligent.</p>
+                <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
+            </div>
+
+            <div class="feature-card" onclick="verifierAcces('rga.html')">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
+                <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                <h3 class="feature-title">ROBOT DE GUIDE (RGA)</h3>
+                <p class="feature-description">Robot intelligent autonome pour l'accueil et l'assistance.</p>
+                <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
+            </div>
+
+            <div class="feature-card" onclick="verifierAcces('rsma.html')">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
+                <div class="feature-icon"><i class="fas fa-water"></i></div>
+                <h3 class="feature-title">RSMA V1.0</h3>
+                <p class="feature-description">Système de robot sous-marin autonome pour l'exploration marine.</p>
+                <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
+            </div>
+
+            <div class="feature-card" onclick="window.location.href='rejoindre-csiv.html'">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
+                <div class="feature-icon"><i class="fas fa-crown"></i></div>
+                <h3 class="feature-title">REJOINDRE LA CSIV</h3>
+                <p class="feature-description">Postuler pour intégrer la Cellule Stratégique d'Innovation et de Veille, ou demander un transfert de poste.</p>
+                <div class="feature-status status-active"><i class="fas fa-user-plus"></i> ACCÈS: TOUS</div>
+            </div>
+
+            <div class="feature-card" onclick="window.location.href='collaboratif.html'">
+                <span class="corner tl"></span>
+                <span class="corner br"></span>
+                <div class="feature-icon"><i class="fas fa-users-cog"></i></div>
+                <h3 class="feature-title">RÉSEAU COLLABORATIF</h3>
+                <p class="feature-description">Plateforme de collaboration en temps réel avec les membres.</p>
+                <div class="feature-status status-active">ACCÈS: DISPONIBLE</div>
             </div>
         </div>
 
-        <!-- ONGLET : CENTRES D'INTÉRÊT -->
-        <div class="tab-content" id="tab-interets">
-            <div class="panel">
-                <div class="panel-title"><i class="fas fa-heart" style="color: var(--neon-pink);"></i> Centres d'intérêt par membre</div>
-                <div id="interetsContent">
-                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ONGLET : ACTIVITÉS -->
-        <div class="tab-content" id="tab-activites">
-            <div class="panel">
-                <div class="panel-title"><i class="fas fa-stream"></i> 50 dernières activités</div>
-                <div style="overflow-x: auto;">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Membre</th>
-                                <th>Action</th>
-                                <th>Page</th>
-                                <th>Détails</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody id="activitesBody">
-                            <tr><td colspan="5" class="loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- ONGLET : ALERTES -->
-        <div class="tab-content" id="tab-alertes">
-            <div class="panel">
-                <div class="panel-title"><i class="fas fa-bell" style="color: var(--neon-red);"></i> Alertes automatiques</div>
-                <div id="alertesContent">
-                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-// ============================================================
-// CONFIGURATION
-// ============================================================
-const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
-const MAJOR_PASSWORD = 'MAJOR2024'; // ⚠️ CHANGEZ CE MOT DE PASSE
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-let allData = { online: [], assiduite: [], interets: [], activites: [], alertes: [] };
-
-// ============================================================
-// AUTHENTIFICATION MAJOR
-// ============================================================
-function unlock() {
-    const pwd = document.getElementById('pwdInput').value;
-    if (pwd === MAJOR_PASSWORD) {
-        sessionStorage.setItem('major_unlocked', 'true');
-        document.getElementById('lockScreen').style.display = 'none';
-        document.getElementById('dashboard').classList.add('active');
-        loadAll();
-        // Auto-refresh toutes les 30s
-        setInterval(loadAll, 30000);
-    } else {
-        document.getElementById('lockErr').style.display = 'block';
-        setTimeout(() => document.getElementById('lockErr').style.display = 'none', 3000);
-    }
-}
-
-// Auto-unlock si déjà authentifié dans cette session
-if (sessionStorage.getItem('major_unlocked') === 'true') {
-    document.getElementById('lockScreen').style.display = 'none';
-    document.getElementById('dashboard').classList.add('active');
-}
-
-// ============================================================
-// NAVIGATION ONGLETS
-// ============================================================
-function showTab(id, btn) {
-    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    btn.classList.add('active');
-}
-
-// ============================================================
-// CHARGEMENT DES DONNÉES
-// ============================================================
-async function loadAll() {
-    try {
-        // 1. Membres connectés
-        const { data: online } = await supabase.from('vue_connectes').select('*');
-        allData.online = online || [];
-        renderOnline();
-
-        // 2. Assiduité 7 jours
-        const { data: assid } = await supabase.from('vue_activite_7j').select('*');
-        allData.assiduite = assid || [];
-        renderAssiduite();
-
-        // 3. Centres d'intérêt
-        const { data: interets } = await supabase.from('surveillance_centre_interet').select('*').order('nb_visites', { ascending: false });
-        allData.interets = interets || [];
-        renderInterets();
-
-        // 4. Activités récentes
-        const { data: activites } = await supabase.from('surveillance_activites')
-            .select('*')
-            .order('timestamp', { ascending: false })
-            .limit(50);
-        allData.activites = activites || [];
-        renderActivites();
-
-        // 5. Alertes
-        const { data: alertes } = await supabase.from('surveillance_alertes')
-            .select('*')
-            .order('date_creation', { ascending: false })
-            .limit(30);
-        allData.alertes = alertes || [];
-        renderAlertes();
-
-        // Stats globales
-        document.getElementById('statOnline').textContent = allData.online.length;
-        document.getElementById('statAlertes').textContent = allData.alertes.filter(a => a.statut === 'nouvelle').length;
-
-        const totalMembres = new Set(assid?.map(a => a.member_id) || []);
-        document.getElementById('statTotal').textContent = totalMembres.size || allData.online.length;
-
-        const totalMin = (assid || []).reduce((sum, a) => sum + (a.temps_total_min || 0), 0);
-        const h = Math.floor(totalMin / 60);
-        const m = totalMin % 60;
-        document.getElementById('statTemps').textContent = `${h}h${m.toString().padStart(2, '0')}`;
-
-    } catch (e) {
-        console.error('Erreur chargement:', e);
-    }
-}
-
-// ============================================================
-// RENDU : EN LIGNE
-// ============================================================
-function renderOnline() {
-    const container = document.getElementById('onlineList');
-    if (!allData.online.length) {
-        container.innerHTML = '<div class="loading"><i class="fas fa-moon"></i><br>Aucun membre connecté en ce moment</div>';
-        return;
-    }
-    container.innerHTML = allData.online.map(m => {
-        const mins = Math.floor((m.duree_actuelle_sec || 0) / 60);
-        const secs = (m.duree_actuelle_sec || 0) % 60;
-        return `
-            <div class="member-row online-row">
-                <div class="member-info">
-                    <div class="member-avatar">${(m.member_nom || 'M')[0].toUpperCase()}</div>
-                    <div>
-                        <div class="member-name">${m.member_nom || 'Inconnu'}</div>
-                        <div class="member-fonction">${m.fonction || 'Membre'}</div>
+        <section class="forum-section">
+            <h2 class="section-title">CANAL DE COMMUNICATION</h2>
+            <div class="messages-container" id="forumMessages">
+                <div class="message">
+                    <div class="message-header">
+                        <span class="message-user">SYSTÈME CENTRAL</span>
+                        <span class="message-time">05 JAN 2024 - 14:30</span>
                     </div>
-                </div>
-                <div class="member-meta">
-                    <span class="meta-item green"><i class="fas fa-circle"></i> EN LIGNE</span>
-                    <span class="meta-item"><i class="fas fa-clock"></i> ${mins}m ${secs}s</span>
-                    <span class="meta-item gold"><i class="fas fa-file"></i> ${m.page_entree || '?'}</span>
-                    <span class="meta-item violet"><i class="fas fa-desktop"></i> ${getDevice(m.navigateur)}</span>
+                    <p class="message-content">Bienvenue sur le canal de communication principal.</p>
                 </div>
             </div>
-        `;
-    }).join('');
-}
+            <div class="input-group">
+                <input type="text" id="newMessage" placeholder="Saisissez votre message technique..." class="message-input">
+                <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i> TRANSMETTRE</button>
+            </div>
+        </section>
+    </div>
 
-// ============================================================
-// RENDU : ASSIDUITÉ
-// ============================================================
-function renderAssiduite() {
-    const tbody = document.getElementById('assiduiteBody');
-    if (!allData.assiduite.length) {
-        tbody.innerHTML = '<tr><td colspan="6" class="loading">Aucune donnée</td></tr>';
-        return;
-    }
-    const maxTemps = Math.max(...allData.assiduite.map(a => a.temps_total_min || 0), 1);
-    tbody.innerHTML = allData.assiduite.map(a => {
-        const h = Math.floor((a.temps_total_min || 0) / 60);
-        const m = (a.temps_total_min || 0) % 60;
-        const pct = Math.round(((a.temps_total_min || 0) / maxTemps) * 100);
-        const lastAct = a.derniere_activite ? formatRelative(a.derniere_activite) : 'Jamais';
-        return `
-            <tr>
-                <td><strong style="color: var(--neon-blue);">${a.member_nom || '?'}</strong></td>
-                <td>${a.fonction || 'Membre'}</td>
-                <td>
-                    <div style="display: flex; align-items: center; gap: 1rem;">
-                        <span class="meta-item">${h}h${m.toString().padStart(2,'0')}</span>
-                        <div class="progress-bar"><div class="progress-fill" style="width: ${pct}%"></div></div>
+    <!-- 🆕 INCLURE LE TRACKER (surveillance) -->
+    <script src="tracker.js"></script>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyV86rnSYPMRVIyZ-sE62lQXoVRDvhfKPOppMW7Z2IACqM8s2pGbpXC0BcKUNydxs/exec';
+        const INFO_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwESkPKPu4svg_ZDnCj-LSTZWlCE_GRLNAP00F_GQXqTBKhqxcmsRjHGk7aXBn5GbfF/exec';
+
+        if (localStorage.getItem('memberLoggedIn') !== 'true') {
+            window.location.href = 'espace-membres.html';
+        }
+
+        const memberNom = localStorage.getItem('memberNom') || '';
+        const memberPrenom = localStorage.getItem('memberPrenom') || '';
+        const memberFonction = localStorage.getItem('memberFonction') || '';
+
+        if (memberPrenom && memberNom) {
+            document.getElementById('userEmail').textContent = memberPrenom + ' ' + memberNom;
+        } else {
+            document.getElementById('userEmail').textContent = 'UTILISATEUR';
+        }
+        document.getElementById('userRole').textContent = '🎯 ' + memberFonction;
+
+        // ==================== MESSAGE VOCAL DE BIENVENUE ====================
+        function messageVocalBienvenue() {
+            if (!window.speechSynthesis) return;
+            if (!memberPrenom && !memberNom) return;
+
+            if (sessionStorage.getItem('bienvenue_dite') === 'true') return;
+
+            const prenom = memberPrenom || '';
+            const nom = memberNom || '';
+            const fonction = memberFonction || '';
+
+            let texte = `Bienvenue ${prenom} ${nom}`;
+            if (fonction) {
+                texte += `, ${fonction.toLowerCase()}`;
+            }
+            texte += `, sur AFRICA.TECH21.`;
+
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(texte);
+            utterance.lang = 'fr-FR';
+            utterance.rate = 0.95;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+
+            utterance.onend = function() {
+                sessionStorage.setItem('bienvenue_dite', 'true');
+            };
+
+            setTimeout(() => {
+                window.speechSynthesis.speak(utterance);
+            }, 800);
+        }
+
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.animationDelay = Math.random() * 15 + 's';
+                p.style.animationDuration = (8 + Math.random() * 12) + 's';
+                container.appendChild(p);
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('newMessage');
+            const msg = input.value.trim();
+            if (!msg) return;
+            const container = document.getElementById('forumMessages');
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('fr-FR') + ' - ' + now.toLocaleTimeString('fr-FR');
+            const email = localStorage.getItem('memberEmail');
+            const div = document.createElement('div');
+            div.className = 'message';
+            div.innerHTML = `
+                <div class="message-header">
+                    <span class="message-user">${email}</span>
+                    <span class="message-time">${dateStr}</span>
+                </div>
+                <p class="message-content">${msg}</p>
+            `;
+            container.appendChild(div);
+            input.value = '';
+            container.scrollTop = container.scrollHeight;
+            saveMessage(msg, dateStr);
+        }
+
+        function saveMessage(msg, date) {
+            const messages = JSON.parse(localStorage.getItem('forumMessages') || '[]');
+            messages.push({
+                email: localStorage.getItem('memberEmail'),
+                message: msg,
+                date: date,
+                timestamp: new Date().toISOString()
+            });
+            localStorage.setItem('forumMessages', JSON.stringify(messages));
+        }
+
+        function loadMessages() {
+            const messages = JSON.parse(localStorage.getItem('forumMessages') || '[]');
+            const container = document.getElementById('forumMessages');
+            while (container.children.length > 1) container.removeChild(container.lastChild);
+            messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+            messages.forEach(msg => {
+                const div = document.createElement('div');
+                div.className = 'message';
+                div.innerHTML = `
+                    <div class="message-header">
+                        <span class="message-user">${msg.email}</span>
+                        <span class="message-time">${msg.date}</span>
                     </div>
-                </td>
-                <td><span class="meta-item green">${a.nb_jours_actifs || 0}j</span></td>
-                <td><span class="meta-item">${a.nb_pages || 0}</span></td>
-                <td>${lastAct}</td>
-            </tr>
-        `;
-    }).join('');
-}
+                    <p class="message-content">${msg.message}</p>
+                `;
+                container.appendChild(div);
+            });
+            container.scrollTop = container.scrollHeight;
+        }
 
-// ============================================================
-// RENDU : CENTRES D'INTÉRÊT
-// ============================================================
-function renderInterets() {
-    const container = document.getElementById('interetsContent');
-    if (!allData.interets.length) {
-        container.innerHTML = '<div class="loading">Aucune donnée</div>';
-        return;
-    }
+        async function chargerInfoJour() {
+            try {
+                const response = await fetch(INFO_SCRIPT_URL + '?action=getInfo');
+                const data = await response.json();
+                if (data.success && data.message) {
+                    document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> ' + data.message;
+                } else {
+                    document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> Projet OXY en développement actif !';
+                }
+            } catch (error) {
+                document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> 🚀 AFRICA.TECH21 - Innovation en mouvement !';
+            }
+        }
 
-    // Grouper par membre
-    const grouped = {};
-    allData.interets.forEach(i => {
-        if (!grouped[i.member_id]) grouped[i.member_id] = { member_id: i.member_id, items: [] };
-        grouped[i.member_id].items.push(i);
-    });
+        const ACCES_AUTORISES = ['Birane186@00', 'AT21_0036', 'AT21-001', 'AT21_ZAM68','AT21_0071','AT21_0072'];
 
-    const emojiCat = { cours:'📚', evaluation:'📝', projets:'⚙️', forum:'💬', ia:'🧠', direction:'🛡️', dashboard:'🏠', general:'📄' };
+        function verifierAcces(page) {
+            const codeSaisi = prompt("🔒 Entrez votre code d'accès :");
+            if (ACCES_AUTORISES.includes(codeSaisi)) {
+                window.location.href = page;
+            } else {
+                alert("❌ Code incorrect. Accès refusé.");
+            }
+        }
 
-    container.innerHTML = Object.values(grouped).map(g => {
-        const categories = g.items.map(i => `
-            <span class="meta-item ${['cours','ia','projets'].includes(i.categorie)?'green':''}" title="${i.temps_total_min||0} min">
-                ${emojiCat[i.categorie] || '📄'} ${i.categorie} (${i.nb_visites}×)
-            </span>
-        `).join('');
-        return `
-            <div class="member-row" style="flex-direction: column; align-items: stretch;">
-                <div class="member-name" style="margin-bottom: 1rem;">👤 ${g.member_id}</div>
-                <div class="member-meta">${categories}</div>
-            </div>
-        `;
-    }).join('');
-}
+        function accederEspaceDirection() {
+            window.location.href = 'direction.html';
+        }
 
-// ============================================================
-// RENDU : ACTIVITÉS
-// ============================================================
-function renderActivites() {
-    const tbody = document.getElementById('activitesBody');
-    if (!allData.activites.length) {
-        tbody.innerHTML = '<tr><td colspan="5" class="loading">Aucune activité</td></tr>';
-        return;
-    }
-    const emojiAct = {
-        page_view: '👁️', projet_open: '🚀', session_start: '🟢', session_end: '🔴',
-        logout: '🚪', page_exit: '⏱️', cours_lesson: '📚', message_forum: '💬'
-    };
-    tbody.innerHTML = allData.activites.map(a => {
-        const details = a.details ? Object.entries(a.details).map(([k,v]) => `${k}: ${v}`).join(' | ') : '—';
-        return `
-            <tr>
-                <td><strong style="color: var(--neon-blue);">${a.member_nom || a.member_id}</strong></td>
-                <td>${emojiAct[a.type_action] || '•'} ${a.type_action}</td>
-                <td>${a.page || '—'}</td>
-                <td style="font-size: 0.8rem; max-width: 250px; overflow: hidden; text-overflow: ellipsis;">${details.substring(0,80)}</td>
-                <td>${formatRelative(a.timestamp)}</td>
-            </tr>
-        `;
-    }).join('');
-}
+        // ============================================================
+        // 🆕 FONCTION D'ACCÈS À LA SURVEILLANCE (MAJOR)
+        // ============================================================
+        const MAJOR_CODE = 'MAJOR2024'; // ⚠️ CHANGEZ CE CODE SI VOUS VOULEZ
 
-// ============================================================
-// RENDU : ALERTES
-// ============================================================
-function renderAlertes() {
-    const container = document.getElementById('alertesContent');
-    if (!allData.alertes.length) {
-        container.innerHTML = '<div class="loading"><i class="fas fa-check-circle" style="color: var(--neon-green);"></i><br>Aucune alerte — tout va bien !</div>';
-        return;
-    }
-    container.innerHTML = allData.alertes.map(a => {
-        const sevEmoji = { basse:'ℹ️', moyenne:'⚠️', haute:'🚨', critique:'🔥' };
-        return `
-            <div class="alert-item ${a.severite || 'moyenne'}">
-                <div class="alert-title">${sevEmoji[a.severite] || '⚠️'} ${a.type_alerte.replace(/_/g, ' ').toUpperCase()}</div>
-                <div class="alert-msg"><strong>${a.member_nom || a.member_id}</strong> — ${a.message || ''}</div>
-                <div class="alert-meta">
-                    <span>${formatRelative(a.date_creation)}</span>
-                    <span>Statut : ${a.statut}</span>
-                </div>
-            </div>
-        `;
-    }).join('');
-}
+        function ouvrirSurveillance() {
+            const codeSaisi = prompt("🔒 ACCÈS RÉSERVÉ AU MAJOR\n\nEntrez votre code MAJOR :");
+            if (codeSaisi === null) return; // annulé
+            if (codeSaisi === MAJOR_CODE) {
+                // Déverrouiller pour cette session
+                sessionStorage.setItem('major_unlocked', 'true');
+                window.location.href = 'surveillance.html';
+            } else {
+                alert("❌ Code incorrect. Accès refusé.\n\nCet accès est réservé au Major.");
+            }
+        }
 
-// ============================================================
-// UTILS
-// ============================================================
-function getDevice(ua) {
-    if (!ua) return '?';
-    if (/tablet|ipad/i.test(ua)) return 'Tablette';
-    if (/mobile|iphone|android.*mobile/i.test(ua)) return 'Mobile';
-    return 'PC';
-}
+        function logout() {
+            sessionStorage.removeItem('bienvenue_dite');
+            localStorage.removeItem('memberLoggedIn');
+            localStorage.removeItem('memberId');
+            localStorage.removeItem('memberNom');
+            localStorage.removeItem('memberPrenom');
+            localStorage.removeItem('memberFonction');
+            localStorage.removeItem('memberEmail');
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
 
-function formatRelative(isoDate) {
-    if (!isoDate) return 'Jamais';
-    const diff = (Date.now() - new Date(isoDate).getTime()) / 1000;
-    if (diff < 60) return 'À l\'instant';
-    if (diff < 3600) return `Il y a ${Math.floor(diff/60)} min`;
-    if (diff < 86400) return `Il y a ${Math.floor(diff/3600)}h`;
-    return `Il y a ${Math.floor(diff/86400)}j`;
-}
-
-// ============================================================
-// EXPORT CSV
-// ============================================================
-function exportCSV() {
-    let csv = 'Type,Membre,Fonction,Info,Date\n';
-    
-    allData.online.forEach(m => {
-        csv += `"En ligne","${m.member_nom}","${m.fonction}","${Math.floor(m.duree_actuelle_sec/60)}min","${m.date_connexion}"\n`;
-    });
-    allData.assiduite.forEach(a => {
-        csv += `"Activité 7j","${a.member_nom}","${a.fonction}","${a.temps_total_min}min, ${a.nb_jours_actifs}j actifs","—"\n`;
-    });
-    allData.alertes.forEach(a => {
-        csv += `"Alerte","${a.member_nom}","${a.fonction}","${a.message}","${a.date_creation}"\n`;
-    });
-
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `surveillance_${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-}
-
-// Auto-unlock si déjà fait
-if (sessionStorage.getItem('major_unlocked') === 'true') {
-    loadAll();
-    setInterval(loadAll, 30000);
-}
-</script>
+        window.addEventListener('load', () => {
+            createParticles();
+            loadMessages();
+            chargerInfoJour();
+            messageVocalBienvenue();
+        });
+    </script>
 </body>
 </html>
