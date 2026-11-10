@@ -3921,6 +3921,701 @@ void loop() {
                     { type: 'quiz', question: 'Un projet robotique combine toujours :', options: ['Un seul composant', 'Au moins capteur + actionneur + cerveau', 'Uniquement du code', 'Uniquement de la mécanique', 'Uniquement de l\'électricité'], bonne: 1 },
                     { type: 'quiz', question: 'Le LiDAR est un capteur de :', options: ['Lumière ambiante', 'Distance par laser', 'Température', 'Son', 'Gaz'], bonne: 1 }
                 ]
+            },
+                        // ============================================================
+            // CHAPITRE 7 — LES CAPTEURS AVANCÉS
+            // ============================================================
+            {
+                id: 'ch7',
+                numero: 7,
+                titre: 'Les capteurs avancés',
+                description: 'IMU, LiDAR, caméras de profondeur, capteurs de gaz et d\'humidité : plongez dans les capteurs professionnels qui équipent les robots autonomes et les drones.',
+                noteRequise: 14,
+                lecons: [
+                    {
+                        id: 'ch7_l1',
+                        titre: 'Les capteurs inertiels (IMU)',
+                        sousTitre: 'Chapitre 7 — Leçon 1',
+                        contenu: `
+<h3>Qu'est-ce qu'une IMU ?</h3>
+<p>Une <strong>IMU</strong> (Inertial Measurement Unit) est un ensemble de capteurs qui mesure le <strong>mouvement et l'orientation</strong> d'un objet dans l'espace. Elle équipe tous les drones, smartphones, robots autonomes et systèmes de navigation.</p>
+
+<div class="term-def">
+    <strong>IMU (Inertial Measurement Unit)</strong>
+    Unité de mesure inertielle. Combine généralement un <strong>accéléromètre</strong> (mesure l'accélération) et un <strong>gyroscope</strong> (mesure la rotation), parfois complétés par un <strong>magnétomètre</strong> (mesure le champ magnétique terrestre).
+</div>
+
+<div class="analogy">
+    <strong>Analogie :</strong> Ton oreille interne te permet de savoir si tu es debout, penché, ou en train de tourner, même les yeux fermés. Une IMU, c'est <strong>l'oreille interne du robot</strong>.
+</div>
+
+<h3>Les 3 capteurs qui composent une IMU</h3>
+<h4>1. L'accéléromètre</h4>
+<p>Mesure l'<strong>accélération linéaire</strong> sur 3 axes (X, Y, Z). En position statique, il mesure la gravité terrestre (1g ≈ 9,81 m/s²). Il permet de savoir si le robot est incliné, s'il accélère, s'il freine.</p>
+
+<h4>2. Le gyroscope</h4>
+<p>Mesure la <strong>vitesse angulaire</strong> (rotation) sur 3 axes. Il détecte quand le robot tourne (lacet, tangage, roulis). Un gyroscope donne la vitesse de rotation, qu'on doit intégrer dans le temps pour obtenir l'angle.</p>
+
+<h4>3. Le magnétomètre</h4>
+<p>Mesure le <strong>champ magnétique terrestre</strong> sur 3 axes. Il agit comme une boussole et permet de connaître le cap (l'orientation par rapport au Nord).</p>
+
+<h3>L'IMU 9 axes</h3>
+<p>Une IMU complète avec accéléromètre + gyroscope + magnétomètre = <strong>9 axes</strong> (3 × 3). C'est le standard dans les drones et robots autonomes.</p>
+
+<h4>Exemples de modules</h4>
+<ul>
+    <li><strong>MPU-6050</strong> : 6 axes (accéléro + gyro), I2C, très répandu en éducation</li>
+    <li><strong>MPU-9250</strong> : 9 axes (ajoute le magnétomètre)</li>
+    <li><strong>BNO055</strong> : 9 axes avec fusion intégrée (donne l'orientation absolue directement)</li>
+    <li><strong>ICM-20948</strong> : 9 axes haute précision</li>
+</ul>
+
+<h3>Application en robotique</h3>
+<ul>
+    <li><strong>Drones</strong> : stabilisation en vol (correction permanente d'attitude)</li>
+    <li><strong>Robots roulants</strong> : détection de chute, calcul d'odométrie</li>
+    <li><strong>Bras robotisés</strong> : mesure de l'angle des articulations</li>
+    <li><strong>VR/AR</strong> : suivi du mouvement de la tête</li>
+    <li><strong>Téléphones</strong> : rotation automatique de l'écran, compteur de pas</li>
+</ul>
+
+<div class="warning-note">
+    <strong>Attention :</strong> Une IMU seule <strong>dérive</strong> dans le temps. Le gyroscope accumule des erreurs, et l'accéléromètre est bruité. En pratique, on <strong>fusionne</strong> les données avec un filtre (complémentaire, Kalman) pour obtenir une orientation précise.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Une IMU combine accéléromètre (accélération), gyroscope (rotation) et parfois magnétomètre (boussole). C'est l'oreille interne du robot. Le module MPU-6050 (6 axes) est le plus utilisé en apprentissage.
+</div>
+                        `,
+                        quiz: [
+                            {
+                                question: 'Que signifie IMU ?',
+                                options: ['Interface Micro Utilisateur', 'Inertial Measurement Unit', 'Indicateur de Mouvement Ultrason', 'Interrupteur Multi Usages', 'Identifiant Machine Universel'],
+                                bonne: 1,
+                                explication: 'IMU signifie Inertial Measurement Unit (Unité de Mesure Inertielle). C\\'est un ensemble de capteurs qui mesure le mouvement et l\\'orientation.'
+                            },
+                            {
+                                question: 'Un accéléromètre mesure :',
+                                options: ['La température', 'L\\'accélération linéaire', 'La pression', 'Le champ magnétique', 'Le son'],
+                                bonne: 1,
+                                explication: 'Un accéléromètre mesure l\\'accélération sur 3 axes. Au repos, il mesure la gravité (1g). Il détecte les mouvements linéaires et l\\'inclinaison.'
+                            },
+                            {
+                                question: 'Un gyroscope mesure :',
+                                options: ['La vitesse angulaire (rotation)', 'La gravité', 'Le champ magnétique', 'La lumière', 'L\\'humidité'],
+                                bonne: 0,
+                                explication: 'Un gyroscope mesure la vitesse angulaire (à quelle vitesse le robot tourne) sur 3 axes. Il faut l\\'intégrer dans le temps pour obtenir l\\'angle.'
+                            },
+                            {
+                                question: 'Le module MPU-6050 possède combien d\\'axes ?',
+                                options: ['3 axes', '6 axes', '9 axes', '12 axes', '1 axe'],
+                                bonne: 1,
+                                explication: 'Le MPU-6050 combine un accéléromètre 3 axes + un gyroscope 3 axes = 6 axes. Il n\\'a pas de magnétomètre (contrairement au MPU-9250 qui en a 9).'
+                            },
+                            {
+                                question: 'Pourquoi une IMU seule dérive-t-elle dans le temps ?',
+                                options: ['Elle est cassée', 'Le gyroscope accumule des erreurs, l\\'accéléromètre est bruité', 'Elle n\\'a pas de pile', 'Elle chauffe trop', 'Elle est trop précise'],
+                                bonne: 1,
+                                explication: 'Le gyroscope accumule les erreurs d\\'intégration, et l\\'accéléromètre est bruité par les vibrations. C\\'est pourquoi on fusionne les données avec un filtre (complémentaire ou Kalman) pour corriger.'
+                            }
+                        ]
+                    },
+                    {
+                        id: 'ch7_l2',
+                        titre: 'Le LiDAR et les caméras de profondeur',
+                        sousTitre: 'Chapitre 7 — Leçon 2',
+                        contenu: `
+<h3>Le LiDAR</h3>
+<p>Le <strong>LiDAR</strong> (Light Detection And Ranging) est un capteur qui mesure la distance par <strong>laser</strong>. Il émet une impulsion laser, mesure le temps de retour de l'écho, et calcule la distance (comme le HC-SR04, mais avec de la lumière au lieu du son).</p>
+
+<div class="term-def">
+    <strong>LiDAR</strong>
+    Capteur de distance par laser. Émet un faisceau infrarouge invisible, mesure le temps de vol (Time of Flight) et calcule la distance avec une précision millimétrique. Peut scanner à 360° (LiDAR rotatif) ou sur un plan fixe.
+</div>
+
+<div class="analogy">
+    <strong>Analogie :</strong> Le LiDAR, c'est comme une <strong>chauve-souris avec un laser</strong> : elle émet un signal, écoute l'écho, et en déduit la distance. Sauf qu'ici le signal est de la lumière, donc bien plus rapide et précis que le son.
+</div>
+
+<h3>LiDAR rotatif (2D / 3D)</h3>
+<p>Un LiDAR rotatif tourne à grande vitesse (5-20 Hz) et scanne 360° autour de lui. Il produit un <strong>nuage de points</strong> (point cloud) qui représente l'environnement. Utilisé dans :</p>
+<ul>
+    <li>Voitures autonomes (Waymo, Tesla)</li>
+    <li>Robots mobiles (SLAM)</li>
+    <li>Cartographie de bâtiments</li>
+    <li>Drones de topographie</li>
+</ul>
+
+<p>Prix : de 100€ (RPLIDAR A1 éducatif) à 10 000€ (LiDAR 3D haute précision).</p>
+
+<h3>LiDAR ToF (Time of Flight) miniature</h3>
+<p>Capteurs laser miniatures pour l'éducation et le prototypage :</p>
+<ul>
+    <li><strong>VL53L0X</strong> : portée 2m, I2C, ~3€</li>
+    <li><strong>VL53L1X</strong> : portée 4m, plus précis, ~5€</li>
+    <li><strong>TFLuna</strong> : portée 8m, UART/I2C</li>
+</ul>
+
+<h3>Les caméras de profondeur</h3>
+<p>Une caméra de profondeur capture une image où chaque pixel contient la <strong>distance</strong> en plus de la couleur. Trois grandes technologies :</p>
+
+<h4>1. Stéréoscopie (vision stéréo)</h4>
+<p>Deux caméras côte à côte, comme nos yeux. La disparité entre les deux images permet de calculer la profondeur. Utilisé par : <strong>Intel RealSense D435</strong>, <strong>ZED</strong>.</p>
+
+<h4>2. Lumière structurée</h4>
+<p>Projette un motif de points infrarouges sur la scène. La déformation du motif révèle la profondeur. Utilisé par : <strong>Kinect v1</strong>, <strong>Intel RealSense SR300</strong>.</p>
+
+<h4>3. Time of Flight (ToF)</h4>
+<p>Mesure le temps que met un pulse infrarouge pour revenir sur chaque pixel. Utilisé par : <strong>Kinect v2</strong>, <strong>Azure Kinect</strong>, <strong>Intel RealSense L515</strong>.</p>
+
+<h3>Applications en robotique</h3>
+<ul>
+    <li><strong>Navigation autonome</strong> : éviter les obstacles, planifier des trajectoires</li>
+    <li><strong>SLAM</strong> : cartographier et se localiser en même temps</li>
+    <li><strong>Reconnaissance d'objets</strong> : détecter une tasse, un visage, un obstacle</li>
+    <li><strong>Manipulation</strong> : saisir des objets avec un bras robotisé</li>
+</ul>
+
+<div class="warning-note">
+    <strong>Attention :</strong> Le LiDAR et les caméras de profondeur sont <strong>sensibles à la lumière du soleil</strong> et aux <strong>surfaces réfléchissantes</strong> (miroirs, vitres, métal poli). Ils peuvent produire des mesures aberrantes dans ces conditions.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Le LiDAR mesure la distance par laser (très précis, jusqu'à 100m). Les caméras de profondeur (stéréo, lumière structurée, ToF) donnent une image avec la distance par pixel. Ce sont les yeux avancés des robots autonomes.
+</div>
+                        `,
+                        quiz: [
+                            {
+                                question: 'Le LiDAR mesure la distance en utilisant :',
+                                options: ['Un laser', 'Un ultrason', 'Un radar', 'Une caméra', 'Un GPS'],
+                                bonne: 0,
+                                explication: 'Le LiDAR (Light Detection And Ranging) utilise un faisceau LASER. Il mesure le temps de vol (aller-retour) de la lumière et calcule la distance avec une précision millimétrique.'
+                            },
+                            {
+                                question: 'Un LiDAR rotatif produit :',
+                                options: ['Une photo', 'Un nuage de points (point cloud)', 'Un son', 'Un texte', 'Une vidéo'],
+                                bonne: 1,
+                                explication: 'Un LiDAR rotatif scanne 360° et génère un NUAGE DE POINTS (point cloud) : des millions de points 3D qui représentent l\\'environnement.'
+                            },
+                            {
+                                question: 'La vision stéréo utilise :',
+                                options: ['Une caméra infrarouge', 'Deux caméras côte à côte', 'Un laser', 'Un GPS', 'Un ultrason'],
+                                bonne: 1,
+                                explication: 'La vision stéréo utilise DEUX caméras côte à côte, comme les deux yeux humains. La différence entre les deux images (disparité) permet de calculer la profondeur.'
+                            },
+                            {
+                                question: 'Quel capteur LiDAR miniature est très répandu en éducation ?',
+                                options: ['VL53L0X', 'MPU-6050', 'HC-SR04', 'L298N', 'DS18B20'],
+                                bonne: 0,
+                                explication: 'Le VL53L0X est un capteur LiDAR ToF miniature (portée 2m, I2C). Il coûte ~3€ et est très utilisé pour l\\'apprentissage car il est simple et fiable.'
+                            }
+                        ]
+                    },
+                    {
+                        id: 'ch7_l3',
+                        titre: 'Capteurs environnementaux et de gaz',
+                        sousTitre: 'Chapitre 7 — Leçon 3',
+                        contenu: `
+<h3>Les capteurs environnementaux</h3>
+<p>Ces capteurs mesurent les conditions de l'environnement : température, humidité, pression, qualité de l'air, gaz, luminosité. Essentiels dans les projets de maison connectée, agriculture intelligente, robots d'extérieur.</p>
+
+<h4>1. Capteurs de température et d'humidité</h4>
+<ul>
+    <li><strong>DHT11</strong> : température ±2°C, humidité ±5%. Lent (1 lecture/s max). ~2€. Débutant.</li>
+    <li><strong>DHT22 (AM2302)</strong> : température ±0.5°C, humidité ±2%. Plus précis. ~5€. Recommandé.</li>
+    <li><strong>BME280</strong> : température + humidité + pression, I2C/SPI, très précis. ~5€. Excellent pour la météo.</li>
+    <li><strong>SHT31</strong> : température + humidité, précision ±0.3°C et ±2%. ~8€. Pro.</li>
+</ul>
+
+<h4>2. Capteurs de gaz (MQ-x)</h4>
+<p>La série MQ utilise un oxyde métallique chauffé. Quand un gaz cible s'accumule, la résistance électrique change. Ce sont des capteurs <strong>analogiques</strong> (lire avec <code>analogRead()</code>) qui donnent une valeur relative.</p>
+<ul>
+    <li><strong>MQ-2</strong> : fumée, méthane, propane, LPG (détection d'incendie)</li>
+    <li><strong>MQ-3</strong> : alcool (éthylotest)</li>
+    <li><strong>MQ-4</strong> : méthane, gaz naturel</li>
+    <li><strong>MQ-5</strong> : GPL, gaz naturel</li>
+    <li><strong>MQ-6</strong> : butane, LPG</li>
+    <li><strong>MQ-7</strong> : monoxyde de carbone (CO) — dangereux !</li>
+    <li><strong>MQ-8</strong> : hydrogène</li>
+    <li><strong>MQ-9</strong> : CO, méthane, GPL</li>
+    <li><strong>MQ-135</strong> : qualité de l'air (CO2, benzène, fumée)</li>
+</ul>
+
+<div class="warning-note">
+    <strong>Important :</strong> Les capteurs MQ doivent être <strong>préchauffés</strong> 24h avant utilisation pour être fiables. Leur précision est faible (détection qualitative, pas quantitative). Pour une mesure précise de CO2, préférer un capteur NDIR comme le <strong>MH-Z19</strong>.
+</div>
+
+<h4>3. Capteurs de pression</h4>
+<ul>
+    <li><strong>BMP180</strong> : pression 300-1100 hPa, I2C, ~2€. Altimètre débutant.</li>
+    <li><strong>BMP280</strong> : meilleur que le BMP180, plus précis. ~3€.</li>
+    <li><strong>BME280</strong> : BMP280 + humidité + température, le combo idéal. ~5€.</li>
+</ul>
+<p>La pression permet de calculer l'altitude : plus on monte, plus la pression baisse (~1 hPa par 8m).</p>
+
+<h4>4. Capteurs de particules fines (PM2.5, PM10)</h4>
+<ul>
+    <li><strong>PMS5003</strong> : particules PM1.0/PM2.5/PM10, UART, ~15€</li>
+    <li><strong>SDS011</strong> : particules PM2.5 et PM10, USB/UART, ~20€</li>
+</ul>
+<p>Utilisés dans les stations de surveillance de la qualité de l'air.</p>
+
+<h3>Applications en robotique</h3>
+<ul>
+    <li><strong>Robots d'intérieur</strong> : détection de fumée, CO, alerte incendie (SAGAF)</li>
+    <li><strong>Robots agricoles</strong> : température + humidité du sol pour l'irrigation (IRRITECH)</li>
+    <li><strong>Drones</strong> : altimètre barométrique (BMP280)</li>
+    <li><strong>Stations météo</strong> : température, humidité, pression, particules</li>
+    <li><strong>Milieu industriel</strong> : détection de fuites de gaz</li>
+</ul>
+
+<h3>Choix du capteur</h3>
+<ul>
+    <li><strong>Débutant</strong> : DHT11 (temp/hum) + MQ-2 (fumée)</li>
+    <li><strong>Projet sérieux</strong> : BME280 (temp/hum/pression) + MQ-135 (air) + MH-Z19 (CO2)</li>
+    <li><strong>Haute précision</strong> : SHT31 + SCD30 (CO2 NDIR) + PMS5003 (particules)</li>
+</ul>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Les capteurs environnementaux mesurent le monde autour du robot. DHT11/DHT22 pour temp/hum, BME280 pour tout, MQ-x pour les gaz, PMS5003 pour les particules. Ils rendent le robot sensible à son environnement.
+</div>
+                        `,
+                        quiz: [
+                            {
+                                question: 'Quel capteur est le plus précis pour mesurer température + humidité ?',
+                                options: ['DHT11', 'DHT22', 'MQ-2', 'HC-SR04', 'LDR'],
+                                bonne: 1,
+                                explication: 'Le DHT22 (AM2302) est plus précis que le DHT11 : ±0.5°C et ±2% d\\'humidité contre ±2°C et ±5% pour le DHT11. Il coûte juste un peu plus cher.'
+                            },
+                            {
+                                question: 'Le capteur BME280 mesure :',
+                                options: ['Température, humidité et pression', 'Seulement la température', 'Les gaz', 'La distance', 'La lumière'],
+                                bonne: 0,
+                                explication: 'Le BME280 est un combo très populaire : température + humidité + pression atmosphérique, en I2C ou SPI. Idéal pour la météo et l\\'altimétrie.'
+                            },
+                            {
+                                question: 'Les capteurs MQ-x doivent être préchauffés :',
+                                options: ['Jamais', 'Pendant 24h avant utilisation', 'Pendant 1 minute', 'Pendant 1 seconde', 'Uniquement en hiver'],
+                                bonne: 1,
+                                explication: 'Les capteurs MQ-x (à oxyde métallique) doivent être PRÉCHAUFFÉS 24h avant la première utilisation pour stabiliser leur résistance interne. Sans cela, les mesures sont fausses.'
+                            },
+                            {
+                                question: 'Le capteur MQ-7 détecte :',
+                                options: ['La lumière', 'Le monoxyde de carbone (CO)', 'L\\'humidité', 'La pression', 'Le son'],
+                                bonne: 1,
+                                explication: 'Le MQ-7 est spécifiquement conçu pour détecter le MONOXYDE DE CARBONE (CO), un gaz inodore mais très dangereux (mortel à haute concentration).'
+                            }
+                        ]
+                    }
+                ],
+                examen: [
+                    { type: 'quiz', question: 'IMU signifie :', options: ['Interface Multi Utilisateur', 'Inertial Measurement Unit', 'Indicateur Mouvement Ultrason', 'Interrupteur Universel', 'Identifiant Machine'], bonne: 1 },
+                    { type: 'quiz', question: 'Un accéléromètre mesure :', options: ['La température', 'L\\'accélération linéaire', 'La pression', 'La lumière', 'Le son'], bonne: 1 },
+                    { type: 'quiz', question: 'Un gyroscope mesure :', options: ['La gravité', 'La vitesse angulaire (rotation)', 'Le champ magnétique', 'La distance', 'L\\'humidité'], bonne: 1 },
+                    { type: 'quiz', question: 'Le LiDAR mesure la distance avec :', options: ['Un ultrason', 'Un laser', 'Un radar', 'Une caméra', 'Un GPS'], bonne: 1 },
+                    { type: 'quiz', question: 'Un LiDAR rotatif produit :', options: ['Une photo', 'Un point cloud', 'Un son', 'Un texte', 'Un GPS'], bonne: 1 },
+                    { type: 'quiz', question: 'La vision stéréo utilise :', options: ['Une caméra', 'Deux caméras', 'Un laser', 'Un radar', 'Un GPS'], bonne: 1 },
+                    { type: 'quiz', question: 'Le MPU-6050 a combien d\\'axes ?', options: ['3', '6', '9', '12', '1'], bonne: 1 },
+                    { type: 'quiz', question: 'Le BME280 mesure :', options: ['Temp/hum/pression', 'Seulement la température', 'Les gaz', 'La distance', 'Le son'], bonne: 0 },
+                    { type: 'quiz', question: 'Le MQ-7 détecte :', options: ['La lumière', 'Le CO (monoxyde de carbone)', 'L\\'humidité', 'La pression', 'Le son'], bonne: 1 },
+                    { type: 'quiz', question: 'Les capteurs MQ-x doivent être préchauffés :', options: ['Jamais', '24h avant utilisation', '1 minute', '1 seconde', 'En hiver'], bonne: 1 },
+                    { type: 'quiz', question: 'La pression atmosphérique permet de calculer :', options: ['La température', 'L\\'altitude', 'L\\'humidité', 'La vitesse', 'La lumière'], bonne: 1 },
+                    { type: 'quiz', question: 'Le capteur de particules fines PMS5003 mesure :', options: ['La température', 'PM1/PM2.5/PM10', 'Les gaz', 'La pression', 'La lumière'], bonne: 1 }
+                ]
+                       },
+            {
+                id: 'ch8',
+                numero: 8,
+                titre: 'Les actionneurs',
+                description: 'Servomoteurs, moteurs brushless, vérins, pompes : découvrez les muscles du robot. Maîtrisez les composants qui transforment les décisions du cerveau en actions physiques.',
+                noteRequise: 15,
+                lecons: [
+                    {
+                        id: 'ch8_l1',
+                        titre: 'Les servomoteurs',
+                        sousTitre: 'Chapitre 8 — Leçon 1',
+                        contenu: `
+<h3>Qu'est-ce qu'un servomoteur ?</h3>
+<p>Un <strong>servomoteur</strong> est un moteur à courant continu équipé d'un <strong>système d'asservissement</strong> intégré. Il peut se positionner précisément à un angle donné (généralement 0° à 180°) et maintenir cette position.</p>
+
+<div class="term-def">
+    <strong>Servomoteur</strong>
+    Moteur DC + réducteur + capteur de position (potentiomètre) + carte de contrôle, le tout dans un seul boîtier. Il reçoit une consigne de position (angle) et s'y rend automatiquement. Il "sait" où il est grâce à son capteur interne.
+</div>
+
+<div class="analogy">
+    <strong>Analogie :</strong> Un moteur CC, c'est un moteur de voiture : il tourne, point. Un servomoteur, c'est un moteur avec un <strong>volant qui revient à la position demandée</strong> : tu lui dis "30°", il va à 30°, tu lui dis "90°", il va à 90° et il y reste.
+</div>
+
+<h3>Composition interne d'un servomoteur</h3>
+<ul>
+    <li><strong>Moteur DC</strong> : le moteur qui tourne</li>
+    <li><strong>Réducteur</strong> : un train d'engrenages qui réduit la vitesse et augmente le couple</li>
+    <li><strong>Potentiomètre</strong> : capteur qui mesure l'angle actuel de l'axe</li>
+    <li><strong>Carte de contrôle</strong> : compare l'angle actuel à la consigne, et ajuste la puissance du moteur</li>
+</ul>
+
+<h3>Comment le commander ?</h3>
+<p>Un servomoteur standard (SG90, MG996R) reçoit un signal <strong>PWM</strong> (Pulse Width Modulation) sur son fil de commande :</p>
+<ul>
+    <li><strong>0°</strong> → impulsion de 1 ms toutes les 20 ms</li>
+    <li><strong>90°</strong> : impulsion de 1,5 ms (position centrale)</li>
+    <li><strong>180°</strong> : impulsion de 2 ms</li>
+</ul>
+
+<p>Sur Arduino, on utilise la bibliothèque <code>Servo.h</code> :</p>
+
+<pre>
+#include &lt;Servo.h&gt;
+
+Servo monServo;
+void setup() {
+    monServo.attach(9);  // Broche 9
+}
+void loop() {
+    monServo.write(0);    // Va à 0°
+    delay(1000);
+    monServo.write(90);   // Va à 90°
+    delay(1000);
+    monServo.write(180);  // Va à 180°
+    delay(1000);
+}
+</pre>
+
+<h3>Les modèles courants</h3>
+<ul>
+    <li><strong>SG90</strong> : 9g, couple 1,8 kg·cm, ~3€. Parfait pour les petits projets.</li>
+    <li><strong>MG90S</strong> : 9g, engrenages métal, plus robuste. ~5€.</li>
+    <li><strong>MG996R</strong> : 55g, couple 11 kg·cm, ~8€. Pour les bras robotisés.</li>
+    <li><strong>DS3218</strong> : 20 kg·cm, haute performance. ~15€.</li>
+    <li><strong>Dynamixel</strong> (Robotis) : servomoteurs série haute précision, retour de position, 50-500€. Pour la robotique professionnelle.</li>
+</ul>
+
+<h3>Applications typiques</h3>
+<ul>
+    <li><strong>Bras robotisés</strong> : chaque articulation est un servomoteur</li>
+    <li><strong>Robots marcheurs</strong> : hexapodes, quadrupèdes</li>
+    <li><strong>Directions de véhicules RC</strong> : le servo contrôle l'angle des roues avant</li>
+    <li><strong>Pinces et préhenseurs</strong> : pour saisir des objets</li>
+    <li><strong>Caméras panoramiques</strong> : orienter une caméra dans 2 axes</li>
+</ul>
+
+<div class="warning-note">
+    <strong>Attention :</strong> Un servomoteur <strong>consomme beaucoup de courant</strong> au démarrage (jusqu'à 1A pour un MG996R). Ne le branche jamais directement sur la sortie 5V de l'Arduino : utilise une alimentation séparée, avec GND commun.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Un servomoteur se positionne à un angle précis (0-180°) et maintient sa position. Il combine moteur + réducteur + capteur + contrôleur. Se commande en PWM. Très utilisé pour les articulations de robots.
+</div>
+                        `,
+                        quiz: [
+                            {
+                                question: 'Un servomoteur est composé de :',
+                                options: ['Uniquement un moteur', 'Moteur + réducteur + capteur + contrôleur', 'Uniquement un capteur', 'Uniquement un réducteur', 'Uniquement un potentiomètre'],
+                                bonne: 1,
+                                explication: 'Un servomoteur est un ensemble complet : moteur DC + réducteur (pour le couple) + potentiomètre (capteur de position) + carte de contrôle. C\\'est ce qui lui permet de se positionner précisément.'
+                            },
+                            {
+                                question: 'Un servomoteur standard tourne de :',
+                                options: ['0 à 90°', '0 à 180°', '0 à 360°', '0 à 720°', 'Sans limite'],
+                                bonne: 1,
+                                explication: 'Un servomoteur standard tourne de 0° à 180° (demi-tour). Il existe des servos 270° ou 360° (rotation continue) mais le standard est 180°.'
+                            },
+                            {
+                                question: 'Quel signal un servomoteur reçoit-il pour sa commande ?',
+                                options: ['Un signal analogique', 'Un signal PWM', 'Un signal I2C', 'Un signal SPI', 'Un signal RF'],
+                                bonne: 1,
+                                explication: 'Un servomoteur standard reçoit un signal PWM (Pulse Width Modulation) : la largeur de l\\'impulsion (1-2 ms) détermine l\\'angle (0-180°).'
+                            },
+                            {
+                                question: 'Pourquoi ne faut-il PAS alimenter un servomoteur directement depuis l\\'Arduino ?',
+                                options: ['Ça ne marche pas', 'Il consomme trop de courant (jusqu\\'à 1A)', 'Il crame l\\'Arduino', 'Il chauffe trop', 'Ça fait du bruit'],
+                                bonne: 1,
+                                explication: 'Un servomoteur peut tirer jusqu\\'à 1A au démarrage, alors que la sortie 5V de l\\'Arduino ne peut fournir que ~500mA. Il faut une alimentation externe, avec GND commun avec l\\'Arduino.'
+                            }
+                        ]
+                    },
+                    {
+                        id: 'ch8_l2',
+                        titre: 'Moteurs brushless et contrôleurs ESC',
+                        sousTitre: 'Chapitre 8 — Leçon 2',
+                        contenu: `
+<h3>Qu'est-ce qu'un moteur brushless ?</h3>
+<p>Un <strong>moteur brushless</strong> (BLDC — BrushLess DC) est un moteur à courant continu <strong>sans balais</strong>. Au lieu d'utiliser des contacts mécaniques glissants, il utilise un <strong>champ magnétique tournant</strong> généré électroniquement.</p>
+
+<div class="term-def">
+    <strong>Moteur brushless (BLDC)</strong>
+    Moteur synchrone sans balais. Un contrôleur externe (ESC) commute électroniquement les bobines du stator pour créer un champ magnétique tournant qui entraîne l'aimant du rotor.
+</div>
+
+<div class="analogy">
+    <strong>Analogie :</strong> Un moteur CC à balais, c'est un moteur qui "frotte" pour tourner. Un brushless, c'est un moteur qui "flotte" grâce à des aimants. Il n'y a <strong>aucun contact mécanique</strong> entre les parties tournantes et fixes, d'où un rendement et une durée de vie bien meilleurs.
+</div>
+
+<h3>Différences avec un moteur CC à balais</h3>
+<ul>
+    <li><strong>Pas d'usure</strong> : pas de balais à remplacer, durée de vie 10x supérieure</li>
+    <li><strong>Rendement</strong> : 85-95% contre 70-80% pour un brushed</li>
+    <li><strong>Puissance</strong> : pour le même poids, un brushless développe 2-3x plus de puissance</li>
+    <li><strong>Couple à basse vitesse</strong> : plus faible qu'un brushed (besoin de vitesse pour avoir du couple)</li>
+    <li><strong>Coût</strong> : plus cher (moteur + ESC)</li>
+    <li><strong>Contrôle</strong> : nécessite un ESC (Electronic Speed Controller), plus complexe à piloter</li>
+</ul>
+
+<h3>L'ESC (Electronic Speed Controller)</h3>
+<p>Un ESC est un <strong>contrôleur de vitesse électronique</strong> indispensable pour piloter un brushless. Il convertit une consigne PWM (comme un servo) en courant triphasé pour les bobines du moteur.</p>
+<ul>
+    <li>Reçoit un signal PWM (1000-2000 µs) depuis l'Arduino</li>
+    <li>Génère trois phases (A, B, C) commutées</li>
+    <li>Peut gérer jusqu'à 30-200A selon les modèles</li>
+    <li>Inclut parfois un BEC (Battery Eliminator Circuit) pour alimenter la carte en 5V</li>
+</ul>
+
+<h3>Types de moteurs brushless</h3>
+<h4>Outrunner (cloche tournante)</h4>
+<p>L'aimant est sur la cloche externe qui tourne. Fort couple à basse vitesse. Idéal pour les <strong>drones</strong>, hélices, roues.</p>
+
+<h4>Inrunner (cloche fixe)</h4>
+<p>L'aimant est interne. Vitesse plus élevée, couple plus faible. Idéal pour les <strong>voitures RC rapides</strong>, <strong>fusées</strong>, turbines.</p>
+
+<h3>Applications typiques</h3>
+<ul>
+    <li><strong>Drones</strong> : moteurs brushless outrunner sur les 4 bras (quadricoptère)</li>
+    <li><strong>Voitures RC</strong> : moteurs brushless inrunner pour la vitesse</li>
+    <li><strong>Vélo électrique</strong> : moteur brushless dans la roue (hub motor)</li>
+    <li><strong>Imprimantes 3D</strong> : ventilateurs brushless (pas le moteur principal, généralement pas à pas)</li>
+    <li><strong>Robots sous-marins</strong> : brushless étanches (RSMA)</li>
+</ul>
+
+<h3>Contrôle d'un brushless avec Arduino</h3>
+
+<pre>
+#include &lt;Servo.h&gt;
+
+Servo esc;
+void setup() {
+    esc.attach(9);
+    esc.writeMicroseconds(1000);  // Signal de repos
+    delay(3000);                  // Armement
+}
+void loop() {
+    esc.writeMicroseconds(1500);  // Vitesse moyenne
+    delay(2000);
+    esc.writeMicroseconds(1000);  // Arrêt
+    delay(2000);
+}
+</pre>
+
+<div class="warning-note">
+    <strong>Danger :</strong> Une hélice entraînée par un brushless peut <strong>sectionner un doigt</strong>. Ne jamais tester un moteur avec hélice sans protection. Sécuriser l'objet, éloigner les personnes, porter des lunettes.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Un moteur brushless n'a pas de balais : meilleur rendement, durée de vie, puissance. Nécessite un ESC pour être contrôlé. Utilisé dans les drones, voitures RC, vélos électriques. Attention aux hélices !
+</div>
+                        `,
+                        quiz: [
+                            {
+                                question: 'Un moteur brushless a-t-il des balais ?',
+                                options: ['Oui, obligatoirement', 'Non, aucun balai', 'Parfois', 'Seulement les gros modèles', 'Seulement les petits'],
+                                bonne: 1,
+                                explication: 'Un moteur brushless (BrushLess DC) n\\'a AUCUN balai. La commutation est électronique, ce qui élimine l\\'usure mécanique et améliore considérablement la durée de vie.'
+                            },
+                            {
+                                question: 'Quel composant est indispensable pour piloter un brushless ?',
+                                options: ['Un condensateur', 'Un ESC (Electronic Speed Controller)', 'Une résistance', 'Une diode', 'Un relais'],
+                                bonne: 1,
+                                explication: 'Un moteur brushless nécessite un ESC (Electronic Speed Controller) pour commuter électroniquement les bobines en triphasé. Sans ESC, il ne tourne pas.'
+                            },
+                            {
+                                question: 'Un moteur brushless a un rendement de :',
+                                options: ['30-40%', '50-60%', '70-80%', '85-95%', '100%'],
+                                bonne: 3,
+                                explication: 'Un brushless a un rendement de 85-95% (contre 70-80% pour un brushed). C\\'est pourquoi il est privilégié pour les applications où l\\'autonomie compte (drones, vélos électriques).'
+                            },
+                            {
+                                question: 'Les moteurs brushless sont utilisés dans :',
+                                options: ['Les drones', 'Les imprimantes 3D uniquement', 'Les horloges', 'Les calculatrices', 'Les lampes'],
+                                bonne: 0,
+                                explication: 'Les brushless outrunner sont massivement utilisés dans les DRONES (quadricoptères), et les inrunner dans les voitures RC rapides. Ils équipent aussi les vélos électriques et robots sous-marins.'
+                            }
+                        ]
+                    },
+                    {
+                        id: 'ch8_l3',
+                        titre: 'Vérins, pompes et actionneurs spéciaux',
+                        sousTitre: 'Chapitre 8 — Leçon 3',
+                        contenu: `
+<h3>Au-delà des moteurs : les autres actionneurs</h3>
+<p>Un robot n'agit pas seulement en tournant. Il peut aussi <strong>pousser</strong>, <strong>tirer</strong>, <strong>soulever</strong>, <strong>aspirer</strong>, <strong>pulvériser</strong>, <strong>chauffer</strong>. Ces actions nécessitent des actionneurs spécialisés.</p>
+
+<h3>1. Les vérins (actionneurs linéaires)</h3>
+<p>Un vérin transforme un mouvement rotatif en <strong>mouvement linéaire</strong> (aller-retour en ligne droite).</p>
+
+<h4>Vérin électrique linéaire</h4>
+<ul>
+    <li>Moteur DC + vis sans fin + tige filetée</li>
+    <li>Course typique : 50-500 mm</li>
+    <li>Force : 50 N à 5 000 N</li>
+    <li>Contrôlé par un pont en H (comme un moteur DC)</li>
+    <li>Prix : 20-200€</li>
+</ul>
+
+<h4>Vérin hydraulique</h4>
+<ul>
+    <li>Utilise de l'huile sous pression</li>
+    <li>Force énorme (plusieurs tonnes)</li>
+    <li>Lent mais très puissant</li>
+    <li>Utilisé en industrie, BTP, robotique lourde</li>
+</ul>
+
+<h4>Vérin pneumatique</h4>
+<ul>
+    <li>Utilise de l'air comprimé</li>
+    <li>Très rapide (aller-retour en 50 ms)</li>
+    <li>Force moyenne (100-1000 N)</li>
+    <li>Utilisé dans les lignes de production, la robotique souple</li>
+</ul>
+
+<h3>2. Les pompes</h3>
+<p>Une pompe déplace un fluide (eau, air, huile) dans un circuit. Indispensables pour les projets qui manipulent des liquides ou des gaz.</p>
+
+<h4>Pompe à eau</h4>
+<ul>
+    <li><strong>Pompe péristaltique</strong> : précise, sans contamination, idéale pour l'agriculture (IRRITECH)</li>
+    <li><strong>Pompe immergée</strong> : fonctionne dans l'eau, pour l'aquariophilie ou l'arrosage</li>
+    <li><strong>Pompe à diaphragme</strong> : auto-amorçante, pour les systèmes de pulvérisation</li>
+</ul>
+
+<h4>Pompe à air</h4>
+<ul>
+    <li><strong>Mini-compresseur</strong> : pour gonfler, propulser, créer de la pression</li>
+    <li><strong>Pompe à vide</strong> : pour créer un vide partiel (ventouses, prélèvements)</li>
+</ul>
+
+<h4>Applications</h4>
+<ul>
+    <li>IRRITECH : pompe d'arrosage automatique</li>
+    <li>MK-40 : circulation d'air chaud dans la couveuse</li>
+    <li>OXY : système de production d'oxygène (compresseur, filtres)</li>
+    <li>Robots de laboratoire : dosage de liquides</li>
+</ul>
+
+<h3>3. Les électroaimants et ventouses</h3>
+<h4>Électroaimant</h4>
+<p>Une bobine parcourue par un courant crée un champ magnétique qui attire les objets ferreux. Contrôlé en tout ou rien (ON/OFF) ou en intensité.</p>
+<ul>
+    <li>Utilisé dans les bras de manutention (prendre une pièce en acier)</li>
+    <li>Prix : 5-100€ selon la taille</li>
+</ul>
+
+<h4>Ventouse à vide</h4>
+<p>Une ventouse + une pompe à vide permettent de <strong>saisir</strong> des objets lisses (verre, plastique, carton) sans les abîmer.</p>
+<ul>
+    <li>Utilisée dans les robots de pick-and-place</li>
+    <li>Nécessite une pompe à vide et des électrovannes</li>
+</ul>
+
+<h3>4. Les actionneurs thermiques</h3>
+<h4>Résistance chauffante</h4>
+<p>Un fil résistif qui chauffe quand il est traversé par un courant. Contrôlé en PWM pour réguler la température.</p>
+<ul>
+    <li>Utilisée dans les imprimantes 3D (buse chauffante, plateau)</li>
+    <li>MK-40 : chauffage de la couveuse</li>
+    <li>Prix : 2-20€</li>
+</ul>
+
+<h4>Module Peltier (effet thermoélectrique)</h4>
+<p>Un composant qui <strong>chauffe d'un côté et refroidit de l'autre</strong> quand il est parcouru par un courant. En inversant le courant, on inverse les côtés.</p>
+<ul>
+    <li>Utilisé pour les mini-réfrigérateurs, les glacières portables</li>
+    <li>Consomme beaucoup de courant (2-6A)</li>
+    <li>Prix : 5-30€</li>
+</ul>
+
+<h3>5. Les électrovannes</h3>
+<p>Une <strong>électrovanne</strong> est un robinet contrôlé électriquement. Elle ouvre ou ferme le passage d'un fluide (eau, air, gaz) sur commande.</p>
+<ul>
+    <li>Utilisée dans l'arrosage automatique (IRRITECH)</li>
+    <li>Utilisée dans les circuits de gaz (SAGAF)</li>
+    <li>Fonctionne souvent en 12V DC ou 220V AC</li>
+    <li>Prix : 5-30€</li>
+</ul>
+
+<h3>6. Les actionneurs piézoélectriques</h3>
+<p>Un matériau piézoélectrique se déforme quand on lui applique une tension (et inversement). Utilisé pour :</p>
+<ul>
+    <li><strong>Buzzer</strong> : signal sonore (SAGAF, alarmes)</li>
+    <li><strong>Nettoyage ultrason</strong> : vibrations haute fréquence</li>
+    <li><strong>Positionnement ultra-précis</strong> : microscopes, nanotechnologie</li>
+</ul>
+
+<h3>Comment choisir un actionneur ?</h3>
+<ul>
+    <li><strong>Type de mouvement</strong> : rotation, translation, aspiration, chauffage…</li>
+    <li><strong>Force nécessaire</strong> : quelques grammes, kilos, tonnes ?</li>
+    <li><strong>Vitesse</strong> : rapide (pneumatique) ou lente (vérin électrique) ?</li>
+    <li><strong>Précision</strong> : positionnement au mm, au 1/100mm ?</li>
+    <li><strong>Alimentation</strong> : 5V, 12V, 24V, 220V ?</li>
+    <li><strong>Coût</strong> : de 2€ (buzzer) à 500€ (vérin industriel)</li>
+</ul>
+
+<div class="warning-note">
+    <strong>Sécurité :</strong> Les vérins hydrauliques et pneumatiques peuvent être <strong>très dangereux</strong> (mouvements violents, projections). Les systèmes de chauffage peuvent brûler. Toujours travailler avec un adulte pour les projets à haute tension ou haute pression.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Les actionneurs sont les muscles du robot. Il existe des vérins (linéaires), des pompes (fluides), des électroaimants (saisie métal), des ventouses (saisie lisse), des résistances/Peltier (chauffage/refroidissement), des électrovannes (robinets automatiques), des buzzers (son). Chaque action a son actionneur dédié.
+</div>
+                        `,
+                        quiz: [
+                            {
+                                question: 'Un vérin transforme un mouvement rotatif en :',
+                                options: ['Un autre mouvement rotatif', 'Un mouvement linéaire', 'Un mouvement aléatoire', 'De la chaleur', 'De la lumière'],
+                                bonne: 1,
+                                explication: 'Un vérin transforme la rotation d\\'un moteur en un mouvement LINÉAIRE (aller-retour en ligne droite). C\\'est ce qu\\'on appelle un actionneur linéaire.'
+                            },
+                            {
+                                question: 'Un vérin hydraulique utilise :',
+                                options: ['De l\\'eau', 'De l\\'huile sous pression', 'De l\\'air comprimé', 'De l\\'électricité seule', 'Du vide'],
+                                bonne: 1,
+                                explication: 'Un vérin hydraulique utilise de l\\'HUILE sous pression. Il développe une force énorme (plusieurs tonnes) mais est lent. Le pneumatique utilise de l\\'air comprimé (plus rapide, moins puissant).'
+                            },
+                            {
+                                question: 'Un module Peltier peut :',
+                                options: ['Chauffer d\\'un côté et refroidir de l\\'autre', 'Faire tourner un moteur', 'Émettre de la lumière', 'Mesurer la température', 'Créer un champ magnétique'],
+                                bonne: 0,
+                                explication: 'Le module Peltier utilise l\\'effet thermoélectrique : quand il est traversé par un courant, il CHAUFFE d\\'un côté et REFROIDIT de l\\'autre. En inversant le courant, on inverse les côtés.'
+                            },
+                            {
+                                question: 'Une électrovanne sert à :',
+                                options: ['Faire tourner un moteur', 'Ouvrir/fermer automatiquement le passage d\\'un fluide', 'Chauffer', 'Refroidir', 'Émettre du son'],
+                                bonne: 1,
+                                explication: 'Une électrovanne est un ROBINET CONTRÔLÉ ÉLECTRIQUEMENT. Elle ouvre ou ferme le passage d\\'un fluide (eau, air, gaz) sur commande. Utilisée dans l\\'arrosage automatique et les circuits de gaz.'
+                            },
+                            {
+                                question: 'Un buzzer piézoélectrique sert à :',
+                                options: ['Mesurer la température', 'Émettre un signal sonore', 'Faire tourner un moteur', 'Chauffer', 'Refroidir'],
+                                bonne: 1,
+                                explication: 'Un buzzer piézoélectrique convertit un signal électrique en VIBRATION SONORE. C\\'est utilisé pour les alarmes, les bips de confirmation, les alertes (comme dans SAGAF).'
+                            }
+                        ]
+                    }
+                ],
+                examen: [
+                    { type: 'quiz', question: 'Un servomoteur tourne de :', options: ['0 à 90°', '0 à 180°', '0 à 360°', '0 à 720°', 'Sans limite'], bonne: 1 },
+                    { type: 'quiz', question: 'Un servomoteur est composé de :', options: ['Moteur seul', 'Moteur + réducteur + capteur + contrôleur', 'Capteur seul', 'Réducteur seul', 'Contrôleur seul'], bonne: 1 },
+                    { type: 'quiz', question: 'Le signal de commande d\\'un servo est :', options: ['Analogique', 'PWM', 'I2C', 'SPI', 'RF'], bonne: 1 },
+                    { type: 'quiz', question: 'Un moteur brushless a :', options: ['Des balais', 'Aucun balai', 'Deux rotors', 'Aucun stator', 'Aucun aimant'], bonne: 1 },
+                    { type: 'quiz', question: 'Un brushless nécessite :', options: ['Un condensateur', 'Un ESC', 'Une résistance', 'Une diode', 'Un relais'], bonne: 1 },
+                    { type: 'quiz', question: 'Le rendement d\\'un brushless est de :', options: ['30-40%', '50-60%', '70-80%', '85-95%', '100%'], bonne: 3 },
+                    { type: 'quiz', question: 'Un vérin transforme rotation en :', options: ['Rotation', 'Linéaire', 'Chaleur', 'Lumière', 'Son'], bonne: 1 },
+                    { type: 'quiz', question: 'Un vérin hydraulique utilise :', options: ['Eau', 'Huile sous pression', 'Air', 'Électricité', 'Vide'], bonne: 1 },
+                    { type: 'quiz', question: 'Un module Peltier :', options: ['Chauffe/refroidit', 'Tourne', 'Éclaire', 'Mesure', 'Émet du son'], bonne: 0 },
+                    { type: 'quiz', question: 'Une électrovanne sert à :', options: ['Tourner', 'Ouvrir/fermer un fluide', 'Chauffer', 'Refroidir', 'Émettre du son'], bonne: 1 },
+                    { type: 'quiz', question: 'Un buzzer émet :', options: ['De la chaleur', 'De la lumière', 'Du son', 'Un mouvement', 'Un gaz'], bonne: 2 },
+                    { type: 'quiz', question: 'Un moteur brushless utilisé dans les drones est :', options: ['Inrunner', 'Outrunner', 'Bipolaire', 'Pas à pas', 'Servo'], bonne: 1 }
+                ]
             }
         ];
                 // ============================================================
