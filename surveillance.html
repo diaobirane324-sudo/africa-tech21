@@ -92,8 +92,7 @@
             font-size: 0.75rem; font-family: monospace;
         }
         .meta-green { background: rgba(0,255,136,0.1); border-color: var(--neon-green); color: var(--neon-green); }
-        .meta-red { background: rgba(255,0,60,0.1); border-color: var(--neon-red); color: var(--neon-red); }
-
+        
         table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
         th { text-align: left; padding: 0.8rem; color: var(--neon-blue); border-bottom: 2px solid #333; }
         td { padding: 0.8rem; border-bottom: 1px solid #222; color: var(--text-secondary); }
@@ -102,7 +101,16 @@
         .btn-refresh {
             background: var(--neon-blue); color: #000; border: none;
             padding: 0.6rem 1.2rem; border-radius: 5px; cursor: pointer;
-            font-weight: bold; font-family: 'Orbitron';
+            font-weight: bold; font-family: 'Orbitron'; transition: 0.3s;
+        }
+        .btn-refresh:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-refresh i { margin-right: 0.4rem; }
+
+        /* Alerte d'erreur */
+        .error-banner {
+            background: rgba(255,0,60,0.1); border: 1px solid var(--neon-red);
+            color: var(--neon-red); padding: 1rem; border-radius: 8px;
+            margin-bottom: 1rem; display: none; font-weight: bold;
         }
     </style>
 </head>
@@ -124,21 +132,25 @@
 <div class="dashboard" id="dashboard">
     <div class="header">
         <h1><i class="fas fa-satellite-dish"></i> SURVEILLANCE</h1>
-        <button class="btn-refresh" onclick="loadData()">ACTUALISER</button>
+        <button class="btn-refresh" id="btnRefresh" onclick="loadData()">
+            <i class="fas fa-sync"></i> ACTUALISER
+        </button>
     </div>
+
+    <div class="error-banner" id="errorBanner"></div>
 
     <div class="stats">
         <div class="stat">
             <div class="stat-lbl">En ligne</div>
-            <div class="stat-val" id="statOnline">0</div>
+            <div class="stat-val" id="statOnline">-</div>
         </div>
         <div class="stat">
             <div class="stat-lbl">Total membres</div>
-            <div class="stat-val" id="statTotal">0</div>
+            <div class="stat-val" id="statTotal">-</div>
         </div>
         <div class="stat">
             <div class="stat-lbl">Alertes</div>
-            <div class="stat-val" id="statAlertes">0</div>
+            <div class="stat-val" id="statAlertes">-</div>
         </div>
     </div>
 
@@ -210,9 +222,18 @@ function initSupabase() {
         loadData();
         setInterval(loadData, 30000); // Auto-refresh 30s
     } catch (e) {
-        console.error("Erreur Supabase:", e);
-        document.getElementById('onlineList').innerHTML = '<div class="loading" style="color:red;">Erreur de connexion à la base de données.</div>';
+        showError("Erreur d'initialisation Supabase : " + e.message);
     }
+}
+
+// ============================================
+// AFFICHAGE DES ERREURS
+// ============================================
+function showError(msg) {
+    const banner = document.getElementById('errorBanner');
+    banner.textContent = "⚠️ " + msg;
+    banner.style.display = 'block';
+    setTimeout(() => { banner.style.display = 'none'; }, 8000);
 }
 
 // ============================================
@@ -231,43 +252,50 @@ function showTab(id, btn) {
 async function loadData() {
     if (!supabaseClient) return;
 
+    const btn = document.getElementById('btnRefresh');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> CHARGEMENT...';
+
     try {
         // 1. En ligne
         const resOnline = await supabaseClient.from('vue_connectes').select('*');
-        if (resOnline.data) {
-            allData.online = resOnline.data;
-            document.getElementById('statOnline').textContent = allData.online.length;
-            renderOnline();
-        }
+        if (resOnline.error) throw new Error("Table 'vue_connectes' : " + resOnline.error.message);
+        allData.online = resOnline.data || [];
+        document.getElementById('statOnline').textContent = allData.online.length;
+        renderOnline();
 
         // 2. Assiduité
         const resAssid = await supabaseClient.from('vue_activite_7j').select('*');
-        if (resAssid.data) {
-            allData.assiduite = resAssid.data;
-            document.getElementById('statTotal').textContent = allData.assiduite.length;
-            renderAssiduite();
-        }
+        if (resAssid.error) throw new Error("Table 'vue_activite_7j' : " + resAssid.error.message);
+        allData.assiduite = resAssid.data || [];
+        document.getElementById('statTotal').textContent = allData.assiduite.length;
+        renderAssiduite();
 
         // 3. Activités
         const resAct = await supabaseClient.from('surveillance_activites').select('*').order('timestamp', { ascending: false }).limit(50);
-        if (resAct.data) {
-            allData.activites = resAct.data;
-            renderActivites();
-        }
+        if (resAct.error) throw new Error("Table 'surveillance_activites' : " + resAct.error.message);
+        allData.activites = resAct.data || [];
+        renderActivites();
 
         // 4. Alertes
         const resAlert = await supabaseClient.from('surveillance_alertes').select('*').eq('statut', 'nouvelle');
-        if (resAlert.data) {
-            document.getElementById('statAlertes').textContent = resAlert.data.length;
+        if (!resAlert.error) {
+            document.getElementById('statAlertes').textContent = (resAlert.data || []).length;
         }
 
     } catch (e) {
-        console.error("Erreur chargement données:", e);
+        console.error("Erreur:", e);
+        showError(e.message);
+        // Même en cas d'erreur, on affiche un message dans chaque section
+        document.getElementById('onlineList').innerHTML = '<div class="loading" style="color:#ff003c;">Erreur de chargement. Vérifiez la console (F12).</div>';
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-sync"></i> ACTUALISER';
     }
 }
 
 // ============================================
-// AFFICHAGE
+// AFFICHAGE : EN LIGNE
 // ============================================
 function renderOnline() {
     const container = document.getElementById('onlineList');
@@ -287,10 +315,13 @@ function renderOnline() {
     `).join('');
 }
 
+// ============================================
+// AFFICHAGE : ASSIDUITÉ
+// ============================================
 function renderAssiduite() {
     const container = document.getElementById('assiduiteContent');
     if (allData.assiduite.length === 0) {
-        container.innerHTML = '<div class="loading">Aucune donnée d\'assiduité.</div>';
+        container.innerHTML = '<div class="loading">Aucune donnée d\'assiduité. (Le tracker n\'a peut-être pas encore enregistré d\'activité).</div>';
         return;
     }
     container.innerHTML = `
@@ -310,10 +341,13 @@ function renderAssiduite() {
     `;
 }
 
+// ============================================
+// AFFICHAGE : ACTIVITÉS
+// ============================================
 function renderActivites() {
     const container = document.getElementById('activitesContent');
     if (allData.activites.length === 0) {
-        container.innerHTML = '<div class="loading">Aucune activité récente.</div>';
+        container.innerHTML = '<div class="loading">Aucune activité récente. (Le tracker n\'a peut-être pas encore enregistré d\'activité).</div>';
         return;
     }
     container.innerHTML = `
