@@ -389,21 +389,26 @@
             margin-bottom: 1rem;
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        /* ===== MODAL PLEIN ÉCRAN ===== */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(10px);
             z-index: 9999; align-items: center; justify-content: center;
-            padding: 2rem;
+            padding: 1rem;
         }
         .modal-overlay.active { display: flex; }
         .modal-content {
             background: linear-gradient(135deg, #0a0014 0%, #14002a 100%);
             border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: 25px; max-width: 750px; width: 100%;
-            max-height: 90vh; overflow-y: auto;
-            padding: 2.5rem;
+            border-radius: 15px; 
+            max-width: 98vw;
+            width: 100%;
+            max-height: 98vh;
+            overflow-y: auto;
+            padding: 2rem;
             box-shadow: 0 0 60px rgba(155, 48, 255, 0.4);
         }
         .modal-content h2 {
@@ -717,7 +722,8 @@
                 </div>
             </div>
         </div>
-                <!-- SECTION RAPPORTS (NOUVELLE VERSION) -->
+
+        <!-- SECTION RAPPORTS -->
         <div class="section" id="sectionRapports">
             <div class="stats-grid">
                 <div class="stat-card"><div class="num" id="statVeille">0</div><div class="label">Veilles</div></div>
@@ -726,7 +732,6 @@
                 <div class="stat-card"><div class="num" id="statRapport">0</div><div class="label">Rapports</div></div>
             </div>
 
-            <!-- ÉDITEUR DE RAPPORT -->
             <div class="card-box">
                 <h2><i class="fas fa-chart-line"></i> RÉDIGER UN RAPPORT CSIV</h2>
 
@@ -774,9 +779,63 @@
                     <button onclick="insertTable()" title="Tableau"><i class="fas fa-table"></i></button>
                     <button onclick="execCmd('insertHorizontalRule')" title="Séparateur"><i class="fas fa-minus"></i></button>
                     <button onclick="execCmd('removeFormat')" title="Effacer format"><i class="fas fa-eraser"></i></button>
+                    
+                    <!-- TAILLE DE POLICE -->
+                    <span style="width:1px; height:24px; background:rgba(155,48,255,0.3); align-self:center;"></span>
+                    <select onchange="execCmd('fontSize', this.value); this.selectedIndex=0;" style="background:#14002a; color:#fff; border:1px solid rgba(155,48,255,0.3); border-radius:6px; padding:0.3rem; font-size:0.8rem;">
+                        <option value="">Taille</option>
+                        <option value="1">Très petit</option>
+                        <option value="2">Petit</option>
+                        <option value="3">Normal</option>
+                        <option value="4">Moyen</option>
+                        <option value="5">Grand</option>
+                        <option value="6">Très grand</option>
+                        <option value="7">Énorme</option>
+                    </select>
+                    <!-- COULEUR PERSONNALISÉE -->
+                    <input type="color" onchange="execCmd('foreColor', this.value)" title="Couleur du texte" style="width:30px; height:30px; border:none; background:none; cursor:pointer;" value="#1a0033">
+                    
+                    <!-- PALETTE DE 30 COULEURS -->
+                    <div style="display:flex; flex-wrap:wrap; gap:4px; margin-top:0.5rem; padding:0.5rem; background:rgba(0,0,0,0.3); border-radius:8px; width:100%;">
+                        <span style="font-size:0.75rem; color:#c0a0e0; width:100%; margin-bottom:4px;">Palette de couleurs :</span>
+                        <!-- Couleurs de base (10) -->
+                        <button onclick="execCmd('foreColor', '#000000')" style="width:24px;height:24px;background:#000000;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Noir"></button>
+                        <button onclick="execCmd('foreColor', '#ffffff')" style="width:24px;height:24px;background:#ffffff;border:2px solid #000;border-radius:4px;cursor:pointer;" title="Blanc"></button>
+                        <button onclick="execCmd('foreColor', '#ff0000')" style="width:24px;height:24px;background:#ff0000;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Rouge"></button>
+                        <button onclick="execCmd('foreColor', '#00ff00')" style="width:24px;height:24px;background:#00ff00;border:2px solid #000;border-radius:4px;cursor:pointer;" title="Vert"></button>
+                        <button onclick="execCmd('foreColor', '#0000ff')" style="width:24px;height:24px;background:#0000ff;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Bleu"></button>
+                        <button onclick="execCmd('foreColor', '#ffff00')" style="width:24px;height:24px;background:#ffff00;border:2px solid #000;border-radius:4px;cursor:pointer;" title="Jaune"></button>
+                        <button onclick="execCmd('foreColor', '#ff00ff')" style="width:24px;height:24px;background:#ff00ff;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Magenta"></button>
+                        <button onclick="execCmd('foreColor', '#00ffff')" style="width:24px;height:24px;background:#00ffff;border:2px solid #000;border-radius:4px;cursor:pointer;" title="Cyan"></button>
+                        <button onclick="execCmd('foreColor', '#ff8800')" style="width:24px;height:24px;background:#ff8800;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Orange"></button>
+                        <button onclick="execCmd('foreColor', '#8800ff')" style="width:24px;height:24px;background:#8800ff;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Violet"></button>
+                        <!-- Couleurs professionnelles (20) -->
+                        <button onclick="execCmd('foreColor', '#1a0033')" style="width:24px;height:24px;background:#1a0033;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Prune"></button>
+                        <button onclick="execCmd('foreColor', '#6a0dad')" style="width:24px;height:24px;background:#6a0dad;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Pourpre"></button>
+                        <button onclick="execCmd('foreColor', '#9b30ff')" style="width:24px;height:24px;background:#9b30ff;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Violet clair"></button>
+                        <button onclick="execCmd('foreColor', '#ffd700')" style="width:24px;height:24px;background:#ffd700;border:2px solid #000;border-radius:4px;cursor:pointer;" title="Or"></button>
+                        <button onclick="execCmd('foreColor', '#00f0ff')" style="width:24px;height:24px;background:#00f0ff;border:2px solid #000;border-radius:4px;cursor:pointer;" title="Cyan néon"></button>
+                        <button onclick="execCmd('foreColor', '#00ff88')" style="width:24px;height:24px;background:#00ff88;border:2px solid #000;border-radius:4px;cursor:pointer;" title="Vert néon"></button>
+                        <button onclick="execCmd('foreColor', '#ff003c')" style="width:24px;height:24px;background:#ff003c;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Rouge néon"></button>
+                        <button onclick="execCmd('foreColor', '#7b2cbf')" style="width:24px;height:24px;background:#7b2cbf;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Violet foncé"></button>
+                        <button onclick="execCmd('foreColor', '#ff69b4')" style="width:24px;height:24px;background:#ff69b4;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Rose"></button>
+                        <button onclick="execCmd('foreColor', '#8b4513')" style="width:24px;height:24px;background:#8b4513;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Marron"></button>
+                        <button onclick="execCmd('foreColor', '#808080')" style="width:24px;height:24px;background:#808080;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Gris"></button>
+                        <button onclick="execCmd('foreColor', '#c0c0c0')" style="width:24px;height:24px;background:#c0c0c0;border:2px solid #000;border-radius:4px;cursor:pointer;" title="Argent"></button>
+                        <button onclick="execCmd('foreColor', '#800000')" style="width:24px;height:24px;background:#800000;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Marron foncé"></button>
+                        <button onclick="execCmd('foreColor', '#008000')" style="width:24px;height:24px;background:#008000;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Vert foncé"></button>
+                        <button onclick="execCmd('foreColor', '#000080')" style="width:24px;height:24px;background:#000080;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Bleu marine"></button>
+                        <button onclick="execCmd('foreColor', '#808000')" style="width:24px;height:24px;background:#808000;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Olive"></button>
+                        <button onclick="execCmd('foreColor', '#008080')" style="width:24px;height:24px;background:#008080;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Turquoise"></button>
+                        <button onclick="execCmd('foreColor', '#4b0082')" style="width:24px;height:24px;background:#4b0082;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Indigo"></button>
+                        <button onclick="execCmd('foreColor', '#ff1493')" style="width:24px;height:24px;background:#ff1493;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Rose vif"></button>
+                        <button onclick="execCmd('foreColor', '#2e8b57')" style="width:24px;height:24px;background:#2e8b57;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Vert mer"></button>
+                        <button onclick="execCmd('foreColor', '#dc143c')" style="width:24px;height:24px;background:#dc143c;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Cramoisi"></button>
+                        <button onclick="execCmd('foreColor', '#ffa500')" style="width:24px;height:24px;background:#ffa500;border:2px solid #000;border-radius:4px;cursor:pointer;" title="Orange vif"></button>
+                    </div>
                 </div>
 
-                <!-- En-tête imprimable (visible seulement à l'impression PDF) -->
+                <!-- En-tête imprimable -->
                 <div class="print-header" id="rapportPrintHeader">
                     <div style="text-align:center; border-bottom:3px solid #6a0dad; padding-bottom:1rem; margin-bottom:2rem;">
                         <div style="font-size:1.8rem; font-weight:900; color:#6a0dad; letter-spacing:3px;">AFRICA.TECH21</div>
@@ -909,7 +968,8 @@
             <input type="hidden" id="transCahierId" value="">
         </div>
     </div>
-        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
@@ -1267,8 +1327,7 @@
             } catch (e) { showToast('❌ ' + e.message, 'error'); }
         }
 
-        // ==================== RAPPORTS CSIV (NOUVEAU) ====================
-
+        // ==================== RAPPORTS CSIV ====================
         function genererReferenceRapport() {
             const now = new Date();
             const y = now.getFullYear();
