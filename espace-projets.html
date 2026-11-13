@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Espace Responsable Projets | AFRICA.TECH21</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Exo 2', 'Segoe UI', sans-serif; }
         :root {
             --blood-red: #8b0000;
             --dark-red: #3d0000;
             --neon-red: #ff0033;
+            --neon-gold: #ffd700;
             --neon-blue: #0044ff;
+            --neon-cyan: #00f0ff;
+            --neon-green: #00ff88;
             --dark-blue: #001a4d;
             --deep-black: #0a0000;
             --text-primary: #ffffff;
@@ -20,11 +23,15 @@
             --glass: rgba(255, 0, 0, 0.03);
             --glass-border: rgba(255, 0, 0, 0.2);
             --panel-glow: 0 0 30px rgba(255, 0, 51, 0.3);
+            --gold-glow: 0 0 30px rgba(255, 215, 0, 0.5);
         }
+
+        /* ===== FOND ANIMÉ HAUTE QUALITÉ ===== */
         body {
             background:
-                radial-gradient(circle at 20% 20%, rgba(139, 0, 0, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(0, 26, 77, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 20% 20%, rgba(139, 0, 0, 0.18) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 26, 77, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.03) 0%, transparent 70%),
                 linear-gradient(135deg, #0a0000 0%, #050000 50%, #000814 100%);
             color: var(--text-primary);
             min-height: 100vh;
@@ -32,17 +39,19 @@
             position: relative;
             overflow-x: hidden;
         }
+
         .hologram-grid {
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
             background:
-                linear-gradient(90deg, rgba(255, 0, 51, 0.02) 1px, transparent 1px),
-                linear-gradient(180deg, rgba(255, 0, 51, 0.02) 1px, transparent 1px);
+                linear-gradient(90deg, rgba(255, 0, 51, 0.03) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(255, 215, 0, 0.02) 1px, transparent 1px);
             background-size: 50px 50px;
             animation: gridScan 20s linear infinite;
             pointer-events: none; z-index: -2;
         }
         @keyframes gridScan { 0% { transform: translate(0,0); } 100% { transform: translate(50px,50px); } }
+
         .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
         .particle {
             position: absolute; width: 3px; height: 3px;
@@ -56,23 +65,39 @@
             90% { opacity: 0.8; }
             100% { transform: translateY(-100px) translateX(100px) rotate(360deg); opacity: 0; }
         }
+
+        /* ===== BOUTON RETOUR ===== */
         .back-btn {
-            display: inline-block; padding: 0.8rem 2rem; margin-bottom: 2rem;
-            background: rgba(255, 0, 51, 0.1); border: 1px solid var(--neon-red);
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            padding: 0.8rem 2rem; margin-bottom: 2rem;
+            background: rgba(255, 0, 51, 0.08); border: 1px solid var(--neon-red);
             border-radius: 10px; color: var(--neon-red); text-decoration: none;
             font-weight: 600; transition: all 0.3s ease;
+            position: relative; overflow: hidden;
         }
-        .back-btn:hover { background: rgba(255, 0, 51, 0.2); box-shadow: 0 0 20px rgba(255, 0, 51, 0.3); }
-        .page-container { max-width: 1300px; margin: 0 auto; }
+        .back-btn::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,0,51,0.1), transparent);
+            transform: translateX(-100%); transition: 0.5s;
+        }
+        .back-btn:hover::before { transform: translateX(100%); }
+        .back-btn:hover { background: rgba(255, 0, 51, 0.2); box-shadow: 0 0 25px rgba(255, 0, 51, 0.4); transform: translateX(-3px); }
+
+        .page-container { max-width: 1400px; margin: 0 auto; }
+
+        /* ===== HEADER PREMIUM ===== */
         .page-header {
-            background: linear-gradient(135deg, rgba(139, 0, 0, 0.15), rgba(0, 26, 77, 0.15));
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.2), rgba(0, 26, 77, 0.2));
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 0, 51, 0.3);
-            border-radius: 25px;
-            padding: 3rem 2.5rem;
+            border: 1px solid rgba(255, 215, 0, 0.35);
+            border-radius: 28px;
+            padding: 3.5rem 2.5rem;
             margin-bottom: 2.5rem;
             text-align: center;
-            box-shadow: 0 0 60px rgba(255, 0, 51, 0.2);
+            box-shadow:
+                0 0 80px rgba(255, 0, 51, 0.25),
+                0 0 120px rgba(255, 215, 0, 0.05),
+                inset 0 0 60px rgba(255, 0, 51, 0.05);
             position: relative;
             overflow: hidden;
         }
@@ -80,253 +105,333 @@
             content: '';
             position: absolute; top: -50%; left: -50%;
             width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255, 0, 51, 0.05) 0%, transparent 60%);
-            animation: rotateGlow 20s linear infinite;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.08) 0%, transparent 60%);
+            animation: rotateGlow 25s linear infinite;
+        }
+        .page-header::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-red), var(--neon-gold), var(--neon-cyan), transparent);
+            animation: borderSlide 4s linear infinite;
+        }
+        @keyframes borderSlide {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
         @keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .crown-icon {
+            font-size: 4.5rem;
+            background: linear-gradient(45deg, var(--neon-gold), #ffffff, var(--neon-red));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            animation: pulseCrown 2.5s ease-in-out infinite;
+            position: relative; z-index: 1;
+            filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.6));
+        }
+        @keyframes pulseCrown {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.6)); }
+            50% { transform: scale(1.08); filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.9)); }
+        }
+
         .page-header h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.8rem;
-            background: linear-gradient(45deg, var(--neon-red), #ffffff, var(--neon-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 3px;
-            font-weight: 900;
+            font-size: 3rem;
+            background: linear-gradient(45deg, var(--neon-gold), #ffffff, var(--neon-red), var(--neon-cyan));
+            background-size: 300% 300%;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            letter-spacing: 3px; font-weight: 900;
             position: relative; z-index: 1;
+            animation: gradientFlow 8s ease infinite;
         }
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
         .page-header .subtitle {
             color: var(--text-secondary);
-            margin-top: 0.5rem;
+            margin-top: 0.6rem;
             font-size: 1.1rem;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
             position: relative; z-index: 1;
         }
-        .tabs {
+
+        .header-badges {
+            margin-top: 1.5rem;
             display: flex;
             gap: 1rem;
-            margin-bottom: 2rem;
+            justify-content: center;
             flex-wrap: wrap;
+            position: relative; z-index: 1;
+        }
+        .header-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.6rem 1.4rem;
+            background: rgba(255, 215, 0, 0.08);
+            border: 1px solid rgba(255, 215, 0, 0.35);
+            border-radius: 20px;
+            color: var(--neon-gold);
+            font-weight: 700; font-size: 0.8rem;
+            letter-spacing: 1.5px;
+            backdrop-filter: blur(10px);
+        }
+        .header-badge.cyan { background: rgba(0, 240, 255, 0.08); border-color: rgba(0, 240, 255, 0.35); color: var(--neon-cyan); }
+        .header-badge.green { background: rgba(0, 255, 136, 0.08); border-color: rgba(0, 255, 136, 0.35); color: var(--neon-green); }
+
+        /* ===== TABS ULTRA-STYLÉS ===== */
+        .tabs {
+            display: flex; gap: 1rem; margin-bottom: 2rem;
+            flex-wrap: wrap;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 18px;
+            border: 1px solid rgba(255, 0, 51, 0.15);
+            backdrop-filter: blur(10px);
         }
         .tab {
-            padding: 1rem 2rem;
-            background: rgba(255, 0, 51, 0.05);
-            border: 1px solid rgba(255, 0, 51, 0.2);
+            flex: 1; min-width: 150px;
+            padding: 1.1rem 1.5rem;
+            background: transparent;
+            border: 1px solid transparent;
             border-radius: 12px;
             color: var(--text-secondary);
             cursor: pointer;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: all 0.3s ease;
+            transition: all 0.35s ease;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             position: relative;
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+            overflow: hidden;
         }
-        .tab:hover { background: rgba(255, 0, 51, 0.1); }
+        .tab::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(255, 0, 51, 0.15), rgba(255, 215, 0, 0.1));
+            opacity: 0;
+            transition: opacity 0.35s;
+        }
+        .tab:hover { color: var(--neon-red); }
+        .tab:hover::before { opacity: 1; }
         .tab.active {
-            background: linear-gradient(135deg, var(--dark-red), var(--dark-blue));
-            border-color: var(--neon-red);
+            background: linear-gradient(135deg, var(--blood-red), var(--dark-blue));
+            border-color: var(--neon-gold);
             color: white;
-            box-shadow: 0 0 25px rgba(255, 0, 51, 0.4);
+            box-shadow: 0 0 30px rgba(255, 0, 51, 0.5), inset 0 0 20px rgba(255, 215, 0, 0.1);
+            transform: translateY(-2px);
         }
-        .section { display: none; }
+
+        .section { display: none; animation: fadeInUp 0.4s ease; }
         .section.active { display: block; }
-        .card-box {
-            background: linear-gradient(135deg, rgba(20, 0, 0, 0.7), rgba(0, 10, 30, 0.7));
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 0, 51, 0.2);
-            border-radius: 20px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 0 40px rgba(255, 0, 51, 0.1);
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+
+        /* ===== CARTES PREMIUM ===== */
+        .card-box {
+            background: linear-gradient(135deg, rgba(20, 0, 0, 0.75), rgba(0, 10, 30, 0.75));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 0, 51, 0.25);
+            border-radius: 22px;
+            padding: 2.2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 50px rgba(255, 0, 51, 0.1), inset 0 0 30px rgba(255, 0, 51, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+        .card-box::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, var(--neon-red), var(--neon-gold), var(--neon-cyan), var(--neon-red));
+            background-size: 200% 100%;
+            animation: borderFlow 3s linear infinite;
+            opacity: 0.5;
+        }
+        @keyframes borderFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
         .card-box h2 {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.5rem;
-            color: var(--neon-red);
+            background: linear-gradient(45deg, var(--neon-red), var(--neon-gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            text-shadow: 0 0 15px rgba(255, 0, 51, 0.5);
+            display: flex; align-items: center; gap: 1rem;
+            letter-spacing: 1.5px;
         }
+
+        /* ===== ÉDITEUR ===== */
         .editor-toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            padding: 0.8rem;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 0, 51, 0.15);
+            display: flex; flex-wrap: wrap; gap: 0.5rem;
+            margin-bottom: 1rem; padding: 0.9rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 0, 51, 0.2);
         }
         .editor-toolbar button {
             background: rgba(255, 0, 51, 0.08);
-            border: 1px solid rgba(255, 0, 51, 0.2);
-            border-radius: 6px;
-            padding: 0.5rem 0.9rem;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
+            border: 1px solid rgba(255, 0, 51, 0.25);
+            border-radius: 6px; padding: 0.5rem 0.9rem;
+            color: var(--text-primary); cursor: pointer;
+            transition: all 0.3s ease; font-size: 0.9rem;
         }
         .editor-toolbar button:hover {
-            background: rgba(255, 0, 51, 0.2);
-            border-color: var(--neon-red);
-            box-shadow: 0 0 15px rgba(255, 0, 51, 0.3);
+            background: rgba(255, 215, 0, 0.2);
+            border-color: var(--neon-gold);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
         }
+
         #editorContent {
-            width: 100%;
-            min-height: 400px;
-            padding: 1.5rem;
+            width: 100%; min-height: 400px; padding: 1.5rem;
             background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 0, 51, 0.2);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 1rem;
-            line-height: 1.8;
-            outline: none;
+            border: 1px solid rgba(255, 0, 51, 0.25);
+            border-radius: 12px; color: var(--text-primary);
+            font-size: 1rem; line-height: 1.8; outline: none;
             transition: all 0.3s ease;
         }
         #editorContent:focus {
-            border-color: var(--neon-red);
-            box-shadow: 0 0 25px rgba(255, 0, 51, 0.2);
+            border-color: var(--neon-gold);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
         }
         #editorContent img { max-width: 100%; border-radius: 10px; margin: 1rem 0; }
         #editorContent table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
         #editorContent table td, #editorContent table th {
-            border: 1px solid rgba(255, 0, 51, 0.3);
-            padding: 0.5rem;
+            border: 1px solid rgba(255, 0, 51, 0.3); padding: 0.5rem;
         }
+
         .editor-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+
+        /* ===== BOUTONS ===== */
         .btn {
-            padding: 0.9rem 2rem;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.9rem;
+            padding: 0.9rem 2rem; border: none; border-radius: 10px;
+            font-weight: 700; cursor: pointer; transition: all 0.3s ease;
+            text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;
+            font-family: 'Orbitron', sans-serif;
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            position: relative; overflow: hidden;
         }
+        .btn::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transform: translateX(-100%); transition: 0.5s;
+        }
+        .btn:hover::before { transform: translateX(100%); }
         .btn-danger { background: linear-gradient(135deg, var(--blood-red), var(--neon-red)); color: white; }
-        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(255, 0, 51, 0.5); }
+        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255, 0, 51, 0.5); }
         .btn-blue { background: linear-gradient(135deg, var(--dark-blue), var(--neon-blue)); color: white; }
-        .btn-blue:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0, 68, 255, 0.5); }
+        .btn-blue:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 68, 255, 0.5); }
         .btn-dark { background: rgba(255, 255, 255, 0.05); color: var(--text-secondary); border: 1px solid rgba(255, 0, 51, 0.2); }
         .btn-dark:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
         .btn-green { background: linear-gradient(135deg, #00b894, #00ff88); color: #031a0a; }
-        .btn-green:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0, 255, 136, 0.5); }
+        .btn-green:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 255, 136, 0.5); }
         .btn-valider { background: linear-gradient(135deg, #00b894, #00ff88); color: #031a0a; }
-        .btn-valider:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0, 255, 136, 0.5); }
+        .btn-valider:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 255, 136, 0.5); }
         .btn-rejeter { background: linear-gradient(135deg, #8b0000, #ff0033); color: white; }
-        .btn-rejeter:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(255, 0, 51, 0.5); }
+        .btn-rejeter:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255, 0, 51, 0.5); }
+        .btn-gold { background: linear-gradient(135deg, #b8860b, var(--neon-gold)); color: #1a0033; }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255, 215, 0, 0.5); }
+
+        /* ===== INPUTS ===== */
         .input-full {
-            width: 100%;
-            padding: 1rem 1.5rem;
+            width: 100%; padding: 1rem 1.5rem;
             background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 0, 51, 0.2);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
+            border: 1px solid rgba(255, 0, 51, 0.25);
+            border-radius: 12px; color: var(--text-primary);
+            font-size: 1rem; outline: none; transition: 0.3s;
             margin-bottom: 1rem;
         }
-        .input-full:focus { border-color: var(--neon-red); box-shadow: 0 0 20px rgba(255, 0, 51, 0.2); }
+        .input-full:focus {
+            border-color: var(--neon-gold);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
+        }
         .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem; margin-bottom: 1rem;
         }
         .form-group label {
-            display: block;
-            color: var(--text-secondary);
-            font-weight: 600;
-            margin-bottom: 0.4rem;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            display: block; color: var(--text-secondary);
+            font-weight: 600; margin-bottom: 0.4rem;
+            font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;
         }
         .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 0.9rem 1.2rem;
+            width: 100%; padding: 0.9rem 1.2rem;
             background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 0, 51, 0.2);
-            border-radius: 10px;
-            color: var(--text-primary);
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
+            border: 1px solid rgba(255, 0, 51, 0.25);
+            border-radius: 10px; color: var(--text-primary);
+            font-size: 1rem; outline: none; transition: 0.3s;
         }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            border-color: var(--neon-red);
-            box-shadow: 0 0 20px rgba(255, 0, 51, 0.2);
+            border-color: var(--neon-gold);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
         }
         .form-group select option { background: var(--deep-black); }
+
+        /* ===== LISTE ITEMS ===== */
         .list-item {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 0, 51, 0.15);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            transition: all 0.3s ease;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 0, 51, 0.2);
+            border-radius: 14px; padding: 1.5rem; margin-bottom: 1rem;
+            transition: all 0.35s ease;
+            position: relative; overflow: hidden;
+        }
+        .list-item::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+            background: linear-gradient(180deg, var(--neon-red), var(--neon-gold));
+            opacity: 0.6; transition: 0.3s;
         }
         .list-item:hover {
             border-color: var(--neon-red);
-            background: rgba(255, 0, 51, 0.05);
+            background: rgba(255, 0, 51, 0.06);
             transform: translateX(5px);
+            box-shadow: 0 0 25px rgba(255, 0, 51, 0.15);
         }
-        .list-item .title { color: var(--neon-red); font-weight: 700; font-size: 1.1rem; margin-bottom: 0.3rem; }
-        .list-item .meta { color: var(--text-secondary); font-size: 0.85rem; }
+        .list-item:hover::before { opacity: 1; width: 5px; }
+        .list-item .title { color: var(--neon-gold); font-weight: 700; font-size: 1.1rem; margin-bottom: 0.4rem; }
+        .list-item .meta { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6; }
         .list-item .actions { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
         .list-item .actions button {
             background: rgba(255, 0, 51, 0.1);
             border: 1px solid rgba(255, 0, 51, 0.3);
-            border-radius: 8px;
-            color: var(--neon-red);
-            padding: 0.4rem 0.9rem;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: 0.3s;
+            border-radius: 8px; color: var(--neon-red);
+            padding: 0.4rem 0.9rem; cursor: pointer;
+            font-size: 0.85rem; font-weight: 600; transition: 0.3s;
         }
-        .list-item .actions button:hover { background: rgba(255, 0, 51, 0.2); }
+        .list-item .actions button:hover { background: rgba(255, 0, 51, 0.25); }
         .list-item .actions button.delete { color: #ff4757; border-color: rgba(255, 71, 87, 0.3); background: rgba(255, 71, 87, 0.05); }
         .list-item .actions button.delete:hover { background: rgba(255, 71, 87, 0.2); }
         .list-item .actions button.corriger { color: #00ff88; border-color: rgba(0, 255, 136, 0.4); background: rgba(0, 255, 136, 0.08); }
         .list-item .actions button.corriger:hover { background: rgba(0, 255, 136, 0.2); }
-        .list-item .actions button.voir { color: #87ceeb; border-color: rgba(135, 206, 235, 0.4); background: rgba(135, 206, 235, 0.08); }
-        .list-item .actions button.voir:hover { background: rgba(135, 206, 235, 0.2); }
+        .list-item .actions button.voir { color: #00f0ff; border-color: rgba(0, 240, 255, 0.4); background: rgba(0, 240, 255, 0.08); }
+        .list-item .actions button.voir:hover { background: rgba(0, 240, 255, 0.2); }
+
+        /* ===== STATUTS ===== */
         .statut-badge {
-            display: inline-block;
-            padding: 0.3rem 0.9rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            margin-top: 0.5rem;
+            display: inline-block; padding: 0.35rem 1rem;
+            border-radius: 15px; font-size: 0.8rem; font-weight: 700;
+            letter-spacing: 1px; margin-top: 0.5rem;
         }
         .statut-en_attente { background: rgba(255, 200, 0, 0.15); border: 1px solid #ffc800; color: #ffc800; }
         .statut-corrige { background: rgba(0, 255, 136, 0.15); border: 1px solid #00ff88; color: #00ff88; }
-        /* ===== RAPPORTS CSIV ===== */
         .statut-brouillon { background: rgba(160,160,160,0.15); border: 1px solid #a0a0a0; color: #d0d0d0; }
         .statut-transmis { background: rgba(255, 215, 0, 0.15); border: 1px solid #ffd700; color: #ffd700; }
         .statut-lu { background: rgba(0, 160, 255, 0.15); border: 1px solid #00a0ff; color: #00a0ff; }
         .statut-valide { background: rgba(0, 255, 136, 0.15); border: 1px solid #00ff88; color: #00ff88; }
         .statut-rejete { background: rgba(255, 0, 51, 0.15); border: 1px solid #ff0033; color: #ff0033; }
+
+        /* ===== RAPPORTS CSIV ===== */
         .rapport-card {
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.45);
             border: 1px solid rgba(255, 0, 51, 0.2);
-            border-radius: 14px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            transition: all 0.3s ease;
-            position: relative;
+            border-radius: 14px; padding: 1.5rem; margin-bottom: 1rem;
+            transition: all 0.3s ease; position: relative;
         }
         .rapport-card.nouveau {
             border-color: #ff0033;
@@ -337,97 +442,36 @@
             0%, 100% { box-shadow: 0 0 25px rgba(255, 0, 51, 0.3); }
             50% { box-shadow: 0 0 40px rgba(255, 0, 51, 0.6); }
         }
-        .rapport-card .rapport-titre {
-            color: #ff0033;
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 0.4rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-        .rapport-card .rapport-meta {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            margin-bottom: 0.3rem;
-        }
-        .rapport-card .rapport-apercu {
-            color: #e0d0d0;
-            font-size: 0.9rem;
-            margin-top: 0.7rem;
-            padding: 0.8rem;
-            background: rgba(255, 255, 255, 0.03);
+        .rapport-titre { color: #ff0033; font-weight: 700; font-size: 1.1rem; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.6rem; }
+        .rapport-meta { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.3rem; }
+        .rapport-apercu {
+            color: #e0d0d0; font-size: 0.9rem; margin-top: 0.7rem;
+            padding: 0.8rem; background: rgba(255, 255, 255, 0.03);
             border-left: 3px solid rgba(255, 0, 51, 0.4);
-            border-radius: 6px;
-            font-style: italic;
+            border-radius: 6px; font-style: italic;
         }
-        .rapport-card .rapport-actions {
-            display: flex;
-            gap: 0.6rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
-        .tab .badge-rapport {
-            display: inline-block;
-            background: #ff0033;
-            color: white;
-            border-radius: 50%;
-            min-width: 22px;
-            height: 22px;
-            line-height: 22px;
-            text-align: center;
-            font-size: 0.75rem;
-            font-weight: 900;
+        .rapport-actions { display: flex; gap: 0.6rem; margin-top: 1rem; flex-wrap: wrap; }
+
+        /* ===== BADGES ===== */
+        .badge-rapport, .badge-alerte {
+            display: inline-block; background: #ff0033; color: white;
+            border-radius: 50%; min-width: 22px; height: 22px;
+            line-height: 22px; text-align: center;
+            font-size: 0.75rem; font-weight: 900;
             margin-left: 0.5rem;
             animation: badgePulse 0.8s infinite;
             box-shadow: 0 0 15px #ff0033;
         }
-        .rapport-viewer {
-            background: #f5f2f7;
-            color: #1a0033;
-            padding: 2rem;
-            border-radius: 12px;
-            line-height: 1.7;
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
         }
-        .rapport-viewer h1, .rapport-viewer h2, .rapport-viewer h3 { color: #6a0dad; }
-        .rapport-viewer table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
-        .rapport-viewer td, .rapport-viewer th { border: 1px solid #333; padding: 6px 10px; }
-        .rapport-viewer img { max-width: 100%; height: auto; }
-        .rapport-viewer ul, .rapport-viewer ol { padding-left: 1.8rem; margin-bottom: 0.8rem; }
-        .decision-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-top: 1rem;
-        }
-        .note-slider {
-            width: 100%;
-            margin: 1rem 0;
-            height: 8px;
-            accent-color: #ff0033;
-        }
-        .note-display {
-            text-align: center;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            color: #ff0033;
-            text-shadow: 0 0 20px rgba(255, 0, 51, 0.5);
-            margin: 0.5rem 0;
-        }
-        .empty-state { text-align: center; color: var(--text-secondary); padding: 3rem; }
-        .loading-text { text-align: center; color: var(--text-secondary); padding: 2rem; }
-        .loading-spinner {
-            display: inline-block; width: 30px; height: 30px;
-            border: 3px solid rgba(255, 0, 51, 0.2);
-            border-top: 3px solid var(--neon-red);
-            border-radius: 50%; animation: spin 0.8s linear infinite;
-            margin-bottom: 1rem;
-        }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* ===== MODALS ===== */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.92);
             backdrop-filter: blur(10px);
             z-index: 9999; align-items: center; justify-content: center;
             padding: 2rem;
@@ -435,39 +479,46 @@
         .modal-overlay.active { display: flex; }
         .modal-content {
             background: linear-gradient(135deg, #0a0000 0%, #000814 100%);
-            border: 1px solid rgba(255, 0, 51, 0.3);
-            border-radius: 25px;
-            max-width: 700px; width: 100%;
-            max-height: 90vh; overflow-y: auto;
-            padding: 2.5rem;
-            box-shadow: 0 0 60px rgba(255, 0, 51, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.35);
+            border-radius: 25px; max-width: 750px; width: 100%;
+            max-height: 92vh; overflow-y: auto; padding: 2.5rem;
+            box-shadow: 0 0 80px rgba(255, 0, 51, 0.4), 0 0 40px rgba(255, 215, 0, 0.1);
+            position: relative;
+        }
+        .modal-content::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--neon-red), var(--neon-gold), var(--neon-cyan), var(--neon-red));
+            background-size: 200% 100%;
+            animation: borderFlow 3s linear infinite;
         }
         .modal-content h2 {
             font-family: 'Orbitron', sans-serif;
-            color: var(--neon-red);
+            background: linear-gradient(45deg, var(--neon-red), var(--neon-gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+            display: flex; align-items: center; gap: 1rem;
         }
+
+        /* ===== TOASTS ===== */
         .toast {
             position: fixed; bottom: 2rem; left: 50%;
             transform: translateX(-50%);
             background: rgba(255, 0, 51, 0.95);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            font-weight: 700;
-            z-index: 10001;
-            animation: fadeInUp 0.3s ease;
+            color: white; padding: 1.1rem 2.2rem;
+            border-radius: 12px; font-weight: 700;
+            z-index: 10001; animation: fadeInUp 0.3s ease;
+            box-shadow: 0 8px 30px rgba(255, 0, 51, 0.5);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
         }
-        .toast.success { background: rgba(0, 255, 136, 0.95); color: #050510; }
+        .toast.success { background: rgba(0, 255, 136, 0.95); color: #050510; box-shadow: 0 8px 30px rgba(0, 255, 136, 0.5); }
+        .toast.warning { background: rgba(255, 200, 0, 0.95); color: #1a0033; box-shadow: 0 8px 30px rgba(255, 200, 0, 0.5); }
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateX(-50%) translateY(20px); }
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
-        /* ===== ALERTE ===== */
+        /* ===== ALERTE BANNER ===== */
         .alerte-banner {
             display: none;
             background: linear-gradient(90deg, #ff0033, #8b0000, #ff0033);
@@ -480,97 +531,216 @@
             font-weight: 700;
             font-size: 1.2rem;
             color: #fff;
-            box-shadow: 0 0 40px rgba(255, 0, 51, 0.6);
+            box-shadow: 0 0 50px rgba(255, 0, 51, 0.6);
             animation: alertePulse 1s infinite, bgMoveAlerte 3s linear infinite;
-            cursor: pointer;
             position: relative;
             overflow: hidden;
         }
         .alerte-banner.active { display: block; }
-        .alerte-banner .alerte-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        .alerte-banner i.warn-icon { font-size: 1.8rem; animation: shakeIcon 0.5s infinite; }
-        @keyframes alertePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-        @keyframes bgMoveAlerte {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 300% 50%; }
-        }
+        .alerte-content { display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+        .warn-icon { font-size: 1.8rem; animation: shakeIcon 0.5s infinite; }
+        @keyframes alertePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+        @keyframes bgMoveAlerte { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
         @keyframes shakeIcon {
             0%, 100% { transform: rotate(0deg); }
             25% { transform: rotate(-15deg); }
             75% { transform: rotate(15deg); }
         }
         .btn-stop-son {
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid #fff;
-            color: #fff;
-            padding: 0.6rem 1.3rem;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            letter-spacing: 1px;
+            background: rgba(0, 0, 0, 0.5); border: 2px solid #fff;
+            color: #fff; padding: 0.6rem 1.3rem;
+            border-radius: 10px; font-weight: 700; cursor: pointer;
+            font-size: 0.9rem; transition: all 0.3s ease; letter-spacing: 1px;
         }
         .btn-stop-son:hover { background: #fff; color: #ff0033; }
         .btn-stop-son.muet { background: #fff; color: #ff0033; }
 
-        .tab .badge-alerte {
-            display: inline-block;
-            background: #ff0033;
-            color: white;
-            border-radius: 50%;
-            min-width: 22px;
-            height: 22px;
-            line-height: 22px;
-            text-align: center;
-            font-size: 0.75rem;
-            font-weight: 900;
-            margin-left: 0.5rem;
-            animation: badgePulse 0.8s infinite;
-            box-shadow: 0 0 15px #ff0033;
-        }
-        @keyframes badgePulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.2); opacity: 0.7; }
-        }
-
-        /* ===== MODELE RAPPORT TECHNIQUE (NOUVEAU) ===== */
-        .btn-modele-rapport {
-            background: linear-gradient(135deg, #b8860b, #ffd700);
-            color: #1a0033;
-            border: none;
-            padding: 0.9rem 1.6rem;
-            border-radius: 10px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 700;
-            cursor: pointer;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        /* ===== EMPTY / LOADING ===== */
+        .empty-state { text-align: center; color: var(--text-secondary); padding: 3rem; }
+        .empty-state i { font-size: 3rem; color: rgba(255, 215, 0, 0.25); margin-bottom: 1rem; display: block; }
+        .loading-text { text-align: center; color: var(--text-secondary); padding: 2rem; }
+        .loading-spinner {
+            display: inline-block; width: 32px; height: 32px;
+            border: 3px solid rgba(255, 215, 0, 0.2);
+            border-top: 3px solid var(--neon-gold);
+            border-radius: 50%; animation: spin 0.8s linear infinite;
             margin-bottom: 1rem;
         }
-        .btn-modele-rapport:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(255, 215, 0, 0.5);
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* ===== STATS SURVEILLANCE ===== */
+        .surv-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem; margin-bottom: 2rem;
+        }
+        .surv-stat {
+            background: linear-gradient(135deg, rgba(20, 0, 0, 0.8), rgba(0, 20, 50, 0.8));
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            border-radius: 16px; padding: 1.5rem; text-align: center;
+            position: relative; overflow: hidden;
+            transition: 0.3s;
+        }
+        .surv-stat:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2); border-color: var(--neon-gold); }
+        .surv-stat::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--neon-red), var(--neon-gold));
+        }
+        .surv-stat .num {
+            font-family: 'Orbitron', sans-serif; font-size: 2.3rem; font-weight: 900;
+            background: linear-gradient(45deg, var(--neon-gold), var(--neon-red));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .surv-stat .label { color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 0.4rem; }
+
+        /* ===== CARTE MEMBRE SURVEILLANCE ===== */
+        .membre-surv-card {
+            background: linear-gradient(135deg, rgba(15, 0, 0, 0.85), rgba(0, 10, 30, 0.85));
+            border: 1px solid rgba(255, 0, 51, 0.25);
+            border-radius: 18px; padding: 1.8rem;
+            margin-bottom: 1.2rem; position: relative; overflow: hidden;
+            transition: 0.35s;
+        }
+        .membre-surv-card:hover {
+            border-color: var(--neon-gold);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.15);
+        }
+        .membre-surv-header {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;
+        }
+        .membre-surv-avatar {
+            width: 55px; height: 55px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--neon-red), var(--neon-gold));
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Orbitron', sans-serif; font-weight: 900;
+            font-size: 1.4rem; color: #000;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+            flex-shrink: 0;
+        }
+        .membre-surv-name {
+            font-family: 'Orbitron', sans-serif; font-size: 1.15rem;
+            color: var(--neon-gold); font-weight: 700;
+        }
+        .membre-surv-fonction { color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.2rem; }
+
+        .membre-surv-note {
+            text-align: center; padding: 0.8rem 1.5rem;
+            background: rgba(0, 0, 0, 0.6); border-radius: 12px;
+            border: 2px solid var(--neon-gold);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+            min-width: 130px;
+        }
+        .membre-surv-note .note-val {
+            font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900;
+            line-height: 1;
+        }
+        .membre-surv-note .note-label {
+            font-size: 0.7rem; color: var(--text-secondary);
+            text-transform: uppercase; letter-spacing: 1px; margin-top: 0.3rem;
+        }
+        .note-excellent .note-val { color: var(--neon-green); text-shadow: 0 0 20px rgba(0,255,136,0.6); }
+        .note-excellent { border-color: var(--neon-green); box-shadow: 0 0 25px rgba(0,255,136,0.3); }
+        .note-bon .note-val { color: var(--neon-gold); text-shadow: 0 0 20px rgba(255,215,0,0.6); }
+        .note-moyen .note-val { color: #ffa500; text-shadow: 0 0 20px rgba(255,165,0,0.6); }
+        .note-moyen { border-color: #ffa500; box-shadow: 0 0 25px rgba(255,165,0,0.3); }
+        .note-faible .note-val { color: var(--neon-red); text-shadow: 0 0 20px rgba(255,0,51,0.6); }
+        .note-faible { border-color: var(--neon-red); box-shadow: 0 0 25px rgba(255,0,51,0.3); }
+
+        .membre-surv-criteres {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.8rem; margin-top: 1rem;
+        }
+        .critere-item {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 0, 51, 0.15);
+            border-radius: 10px; padding: 0.7rem 1rem;
+        }
+        .critere-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.4rem; }
+        .critere-bar {
+            height: 6px; background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px; overflow: hidden;
+        }
+        .critere-fill {
+            height: 100%; border-radius: 10px;
+            background: linear-gradient(90deg, var(--neon-red), var(--neon-gold));
+            transition: width 0.8s ease;
+        }
+        .critere-val { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--neon-gold); margin-top: 0.3rem; text-align: right; }
+
+        .membre-surv-actions {
+            display: flex; gap: 0.7rem; margin-top: 1.2rem; flex-wrap: wrap;
+        }
+        .membre-surv-actions button {
+            flex: 1; min-width: 140px;
+            padding: 0.7rem 1rem;
+            border-radius: 10px; font-weight: 700;
+            cursor: pointer; transition: 0.3s;
+            font-size: 0.82rem; font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.5px;
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+        }
+        .btn-feliciter {
+            background: linear-gradient(135deg, rgba(0, 200, 100, 0.15), rgba(0, 255, 136, 0.15));
+            border: 1px solid var(--neon-green); color: var(--neon-green);
+        }
+        .btn-feliciter:hover { background: rgba(0, 255, 136, 0.3); box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
+        .btn-recompenser {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(184, 134, 11, 0.15));
+            border: 1px solid var(--neon-gold); color: var(--neon-gold);
+        }
+        .btn-recompenser:hover { background: rgba(255, 215, 0, 0.3); box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
+        .btn-avertir {
+            background: linear-gradient(135deg, rgba(255, 100, 0, 0.15), rgba(255, 60, 0, 0.15));
+            border: 1px solid #ff6600; color: #ff6600;
+        }
+        .btn-avertir:hover { background: rgba(255, 100, 0, 0.3); box-shadow: 0 0 20px rgba(255, 100, 0, 0.4); }
+
+        .filtre-surv {
+            display: flex; gap: 0.6rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+        }
+        .filtre-btn {
+            padding: 0.6rem 1.2rem;
+            background: rgba(255, 0, 51, 0.08);
+            border: 1px solid rgba(255, 0, 51, 0.25);
+            border-radius: 10px; color: var(--text-secondary);
+            cursor: pointer; font-weight: 600;
+            font-size: 0.85rem; transition: 0.3s;
+        }
+        .filtre-btn:hover { background: rgba(255, 0, 51, 0.15); }
+        .filtre-btn.active {
+            background: linear-gradient(135deg, var(--blood-red), var(--neon-red));
+            border-color: var(--neon-gold); color: white;
+            box-shadow: 0 0 20px rgba(255, 0, 51, 0.4);
         }
 
+        /* ===== MODELE RAPPORT ===== */
+        .btn-modele-rapport {
+            background: linear-gradient(135deg, #b8860b, #ffd700);
+            color: #1a0033; border: none;
+            padding: 1rem 2rem; border-radius: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.95rem; font-weight: 700;
+            cursor: pointer; letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+        }
+        .btn-modele-rapport:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5); }
+
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             body { padding: 1rem; }
             .page-header h1 { font-size: 1.8rem; }
+            .crown-icon { font-size: 3rem; }
             .card-box { padding: 1.5rem; }
             .tabs { flex-direction: column; }
+            .tab { min-width: 100%; }
             .alerte-banner { font-size: 1rem; padding: 1rem; }
+            .membre-surv-header { flex-direction: column; }
+            .membre-surv-note { width: 100%; }
         }
     </style>
 </head>
@@ -586,7 +756,7 @@
         <div class="alerte-banner" id="alerteBanner">
             <div class="alerte-content">
                 <i class="fas fa-exclamation-triangle warn-icon"></i>
-                <span id="alerteTexte">⚠️ VOUS AVEZ DES DOSSIERS À CORRIGER !</span>
+                <span id="alerteTexte">⚠️ VOUS AVEZ DES DOSSIERS À TRAITER !</span>
                 <button class="btn-stop-son" id="btnStopSon" onclick="toggleSon(event)">
                     <i class="fas fa-volume-up"></i> ARRÊTER LE SON
                 </button>
@@ -594,25 +764,34 @@
         </div>
 
         <header class="page-header">
+            <i class="fas fa-crown crown-icon"></i>
             <h1><i class="fas fa-project-diagram"></i> ESPACE RESPONSABLE PROJETS</h1>
-            <p class="subtitle">Gestion des projets et évaluation des travaux</p>
+            <p class="subtitle">Gestion · Évaluation · Surveillance · Excellence</p>
+            <div class="header-badges">
+                <span class="header-badge gold"><i class="fas fa-star"></i> PÔLE STRATÉGIQUE</span>
+                <span class="header-badge cyan"><i class="fas fa-shield-alt"></i> ACCÈS PRIVILÉGIÉ</span>
+                <span class="header-badge green"><i class="fas fa-bolt"></i> SYSTÈME ACTIF</span>
+            </div>
         </header>
 
         <div class="tabs">
             <div class="tab active" onclick="switchTab('redaction')">
-                <i class="fas fa-edit"></i> RÉDACTION PROJETS
+                <i class="fas fa-edit"></i> PROJETS
             </div>
             <div class="tab" onclick="switchTab('evaluations')">
                 <i class="fas fa-star"></i> ÉVALUATIONS
             </div>
             <div class="tab" onclick="switchTab('travaux')">
-                <i class="fas fa-folder-open"></i> TRAVAUX MEMBRES
+                <i class="fas fa-folder-open"></i> TRAVAUX
             </div>
             <div class="tab" onclick="switchTab('rapportsCsiv')" id="tabRapportsCsiv">
-                <i class="fas fa-file-signature"></i> RAPPORTS CSIV
+                <i class="fas fa-file-signature"></i> CSIV
             </div>
             <div class="tab" onclick="switchTab('monRapport')">
-                <i class="fas fa-file-alt"></i> MON RAPPORT TECHNIQUE
+                <i class="fas fa-file-alt"></i> MON RAPPORT
+            </div>
+            <div class="tab" onclick="switchTab('surveillance')" id="tabSurveillance">
+                <i class="fas fa-eye"></i> SURVEILLANCE
             </div>
         </div>
 
@@ -622,29 +801,29 @@
                 <h2><i class="fas fa-pen-fancy"></i> ÉDITEUR DE PROJETS</h2>
                 <input type="text" id="projetTitle" class="input-full" placeholder="Titre du projet...">
                 <div class="editor-toolbar">
-                    <button onclick="execCmd('bold')" title="Gras"><i class="fas fa-bold"></i></button>
-                    <button onclick="execCmd('italic')" title="Italique"><i class="fas fa-italic"></i></button>
-                    <button onclick="execCmd('underline')" title="Souligné"><i class="fas fa-underline"></i></button>
-                    <button onclick="execCmd('strikeThrough')" title="Barré"><i class="fas fa-strikethrough"></i></button>
+                    <button onclick="execCmd('bold')"><i class="fas fa-bold"></i></button>
+                    <button onclick="execCmd('italic')"><i class="fas fa-italic"></i></button>
+                    <button onclick="execCmd('underline')"><i class="fas fa-underline"></i></button>
+                    <button onclick="execCmd('strikeThrough')"><i class="fas fa-strikethrough"></i></button>
                     <span style="width:1px; height:24px; background:rgba(255,0,51,0.2); align-self:center;"></span>
-                    <button onclick="execCmd('formatBlock','h1')" title="Titre 1">H1</button>
-                    <button onclick="execCmd('formatBlock','h2')" title="Titre 2">H2</button>
-                    <button onclick="execCmd('formatBlock','h3')" title="Titre 3">H3</button>
-                    <button onclick="execCmd('formatBlock','p')" title="Paragraphe">P</button>
+                    <button onclick="execCmd('formatBlock','h1')">H1</button>
+                    <button onclick="execCmd('formatBlock','h2')">H2</button>
+                    <button onclick="execCmd('formatBlock','h3')">H3</button>
+                    <button onclick="execCmd('formatBlock','p')">P</button>
                     <span style="width:1px; height:24px; background:rgba(255,0,51,0.2); align-self:center;"></span>
-                    <button onclick="execCmd('insertUnorderedList')" title="Liste à puces"><i class="fas fa-list-ul"></i></button>
-                    <button onclick="execCmd('insertOrderedList')" title="Liste numérotée"><i class="fas fa-list-ol"></i></button>
+                    <button onclick="execCmd('insertUnorderedList')"><i class="fas fa-list-ul"></i></button>
+                    <button onclick="execCmd('insertOrderedList')"><i class="fas fa-list-ol"></i></button>
                     <span style="width:1px; height:24px; background:rgba(255,0,51,0.2); align-self:center;"></span>
-                    <button onclick="execCmd('justifyLeft')" title="Aligner à gauche"><i class="fas fa-align-left"></i></button>
-                    <button onclick="execCmd('justifyCenter')" title="Centrer"><i class="fas fa-align-center"></i></button>
-                    <button onclick="execCmd('justifyRight')" title="Aligner à droite"><i class="fas fa-align-right"></i></button>
+                    <button onclick="execCmd('justifyLeft')"><i class="fas fa-align-left"></i></button>
+                    <button onclick="execCmd('justifyCenter')"><i class="fas fa-align-center"></i></button>
+                    <button onclick="execCmd('justifyRight')"><i class="fas fa-align-right"></i></button>
                     <span style="width:1px; height:24px; background:rgba(255,0,51,0.2); align-self:center;"></span>
-                    <button onclick="insertLink()" title="Lien"><i class="fas fa-link"></i></button>
-                    <button onclick="insertImage()" title="Image"><i class="fas fa-image"></i></button>
-                    <button onclick="insertTable()" title="Tableau"><i class="fas fa-table"></i></button>
-                    <button onclick="execCmd('insertHorizontalRule')" title="Séparateur"><i class="fas fa-minus"></i></button>
+                    <button onclick="insertLink()"><i class="fas fa-link"></i></button>
+                    <button onclick="insertImage()"><i class="fas fa-image"></i></button>
+                    <button onclick="insertTable()"><i class="fas fa-table"></i></button>
+                    <button onclick="execCmd('insertHorizontalRule')"><i class="fas fa-minus"></i></button>
                     <span style="width:1px; height:24px; background:rgba(255,0,51,0.2); align-self:center;"></span>
-                    <button onclick="execCmd('removeFormat')" title="Effacer format"><i class="fas fa-eraser"></i></button>
+                    <button onclick="execCmd('removeFormat')"><i class="fas fa-eraser"></i></button>
                 </div>
                 <div id="editorContent" contenteditable="true" placeholder="Rédigez votre projet ici..."></div>
                 <div class="editor-actions">
@@ -657,9 +836,7 @@
 
             <div class="card-box">
                 <h2><i class="fas fa-archive"></i> PROJETS RÉDIGÉS</h2>
-                <div id="projetsList">
-                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
-                </div>
+                <div id="projetsList"><div class="loading-text"><div class="loading-spinner"></div> Chargement...</div></div>
             </div>
         </div>
 
@@ -696,28 +873,21 @@
                 </div>
                 <button class="btn btn-danger" onclick="saveEvaluation()"><i class="fas fa-check"></i> ENREGISTRER L'ÉVALUATION</button>
             </div>
-
             <div class="card-box">
                 <h2><i class="fas fa-clipboard-list"></i> HISTORIQUE DES ÉVALUATIONS</h2>
-                <div id="evaluationsList">
-                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
-                </div>
+                <div id="evaluationsList"><div class="loading-text"><div class="loading-spinner"></div> Chargement...</div></div>
             </div>
         </div>
-                <!-- SECTION TRAVAUX MEMBRES -->
+
+        <!-- SECTION TRAVAUX -->
         <div class="section" id="sectionTravaux">
             <div class="card-box">
                 <h2><i class="fas fa-hourglass-half"></i> TRAVAUX EN ATTENTE</h2>
-                <div id="travauxAttente">
-                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
-                </div>
+                <div id="travauxAttente"><div class="loading-text"><div class="loading-spinner"></div> Chargement...</div></div>
             </div>
-
             <div class="card-box">
                 <h2><i class="fas fa-check-circle"></i> TRAVAUX CORRIGÉS</h2>
-                <div id="travauxCorriges">
-                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
-                </div>
+                <div id="travauxCorriges"><div class="loading-text"><div class="loading-spinner"></div> Chargement...</div></div>
             </div>
         </div>
 
@@ -726,45 +896,86 @@
             <div class="card-box">
                 <h2><i class="fas fa-inbox"></i> RAPPORTS CSIV À TRAITER</h2>
                 <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
-                    Rapports transmis par Angélique et son équipe CSIV. Vous pouvez les consulter, les valider ou les rejeter avec un retour.
+                    Rapports transmis par l'équipe CSIV. Vous pouvez les consulter, les valider ou les rejeter avec un retour.
                 </p>
-                <div id="rapportsCsivAttente">
-                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
-                </div>
+                <div id="rapportsCsivAttente"><div class="loading-text"><div class="loading-spinner"></div> Chargement...</div></div>
             </div>
-
             <div class="card-box">
                 <h2><i class="fas fa-archive"></i> RAPPORTS CSIV TRAITÉS</h2>
-                <div id="rapportsCsivTraites">
-                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
-                </div>
+                <div id="rapportsCsivTraites"><div class="loading-text"><div class="loading-spinner"></div> Chargement...</div></div>
             </div>
         </div>
 
-        <!-- SECTION MON RAPPORT TECHNIQUE (NOUVEAU) -->
+        <!-- SECTION MON RAPPORT TECHNIQUE -->
         <div class="section" id="sectionMonRapport">
             <div class="card-box">
                 <h2><i class="fas fa-file-alt"></i> GÉNÉRER MON RAPPORT TECHNIQUE</h2>
                 <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
                     Utilisez le modèle officiel AFRICA.TECH21 pour rédiger votre rapport d'activité technique.
-                    Le PDF sera généré avec l'en-tête officiel et prêt à être transmis au Bureau Exécutif.
                 </p>
-
                 <button class="btn-modele-rapport" onclick="ouvrirModeleRapport()">
                     <i class="fas fa-file-alt"></i> OUVRIR LE MODÈLE DE RAPPORT TECHNIQUE
                 </button>
-
                 <div style="margin-top:2rem; padding:1.5rem; background:rgba(255,0,51,0.05); border:1px solid rgba(255,0,51,0.2); border-radius:12px;">
-                    <h3 style="color:var(--neon-red); font-family:'Orbitron'; font-size:1rem; margin-bottom:0.8rem;">
+                    <h3 style="color:var(--neon-gold); font-family:'Orbitron'; font-size:1rem; margin-bottom:0.8rem;">
                         <i class="fas fa-info-circle"></i> À PROPOS DU MODÈLE
                     </h3>
                     <ul style="color:var(--text-secondary); font-size:0.92rem; line-height:1.8; padding-left:1.5rem;">
-                        <li>Le modèle contient 6 sections obligatoires (Introduction, Objectifs, Déroulement, Bilan, Recommandations, Conclusion)</li>
+                        <li>Le modèle contient 6 sections obligatoires</li>
                         <li>Un en-tête officiel AFRICA.TECH21 est automatiquement ajouté</li>
-                        <li>Les champs Rédacteur, Destinataire, Date, Version et Statut sont inclus</li>
                         <li>Le PDF généré est prêt à être imprimé ou transmis au Bureau Exécutif</li>
-                        <li>Les signatures du Rédacteur et du Responsable AFRICA.TECH21 sont prévues</li>
                     </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION SURVEILLANCE (NOUVEAU) -->
+        <div class="section" id="sectionSurveillance">
+            <div class="card-box">
+                <h2><i class="fas fa-eye"></i> SURVEILLANCE DES MEMBRES</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                    Bilan complet de l'assiduité et de l'engagement des membres, calculé automatiquement à partir des données de surveillance. Félicitez, récompensez ou avertissez les membres selon leur performance.
+                </p>
+
+                <div class="surv-stats">
+                    <div class="surv-stat">
+                        <div class="num" id="survTotalMembres">—</div>
+                        <div class="label">Membres suivis</div>
+                    </div>
+                    <div class="surv-stat">
+                        <div class="num" id="survMoyenne">—</div>
+                        <div class="label">Moyenne générale</div>
+                    </div>
+                    <div class="surv-stat">
+                        <div class="num" id="survExcellents" style="background:linear-gradient(45deg,#00ff88,#00cc66);-webkit-background-clip:text;background-clip:text;">—</div>
+                        <div class="label">Excellents (≥16)</div>
+                    </div>
+                    <div class="surv-stat">
+                        <div class="num" id="survFaibles" style="background:linear-gradient(45deg,#ff0033,#8b0000);-webkit-background-clip:text;background-clip:text;">—</div>
+                        <div class="label">À surveiller (&lt;10)</div>
+                    </div>
+                </div>
+
+                <div class="filtre-surv">
+                    <button class="filtre-btn active" data-filtre="tous" onclick="filtrerSurveillance('tous', this)">
+                        <i class="fas fa-users"></i> TOUS
+                    </button>
+                    <button class="filtre-btn" data-filtre="excellent" onclick="filtrerSurveillance('excellent', this)">
+                        <i class="fas fa-trophy"></i> EXCELLENTS
+                    </button>
+                    <button class="filtre-btn" data-filtre="bon" onclick="filtrerSurveillance('bon', this)">
+                        <i class="fas fa-thumbs-up"></i> BONS
+                    </button>
+                    <button class="filtre-btn" data-filtre="moyen" onclick="filtrerSurveillance('moyen', this)">
+                        <i class="fas fa-minus-circle"></i> MOYENS
+                    </button>
+                    <button class="filtre-btn" data-filtre="faible" onclick="filtrerSurveillance('faible', this)">
+                        <i class="fas fa-exclamation-triangle"></i> À SURVEILLER
+                    </button>
+                </div>
+
+                <div id="surveillanceListe">
+                    <div class="loading-text"><div class="loading-spinner"></div> Chargement des données de surveillance...</div>
                 </div>
             </div>
         </div>
@@ -787,19 +998,16 @@
         <div class="modal-content">
             <h2><i class="fas fa-check-double"></i> CORRIGER LE TRAVAIL</h2>
             <div id="correctionInfo" style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.7;"></div>
-
             <div class="form-group" style="margin-bottom: 1rem;">
                 <label>Note (/20)</label>
                 <input type="number" id="corrNote" min="0" max="20" step="1" placeholder="Ex: 15">
             </div>
-
             <div class="form-group" style="margin-bottom: 1.5rem;">
                 <label>Correction / Commentaire</label>
                 <textarea id="corrCommentaire" rows="6" placeholder="Détaillez votre correction..."></textarea>
             </div>
-
             <div style="display:flex; gap:1rem; flex-wrap:wrap;">
-                <button class="btn btn-green" onclick="validerCorrection()"><i class="fas fa-check"></i> VALIDER LA CORRECTION</button>
+                <button class="btn btn-green" onclick="validerCorrection()"><i class="fas fa-check"></i> VALIDER</button>
                 <button class="btn btn-dark" onclick="closeCorrectionModal()">ANNULER</button>
             </div>
             <input type="hidden" id="corrTravailId" value="">
@@ -809,68 +1017,61 @@
     <!-- MODAL DÉCISION RAPPORT CSIV -->
     <div class="modal-overlay" id="decisionRapportModal">
         <div class="modal-content">
-            <h2><i class="fas fa-gavel"></i> <span id="decisionModalTitle">DÉCISION SUR LE RAPPORT</span></h2>
+            <h2><i class="fas fa-gavel"></i> DÉCISION SUR LE RAPPORT</h2>
             <div id="decisionRapportInfo" style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.7;"></div>
-
             <div class="form-group" style="margin-bottom: 1rem;">
-                <label>Note du rapport (/20) — optionnel</label>
-                <div class="note-display" id="noteRapportDisplay">15</div>
-                <input type="range" id="noteRapportInput" min="0" max="20" step="1" value="15" class="note-slider" oninput="document.getElementById('noteRapportDisplay').textContent = this.value">
+                <label>Note du rapport (/20)</label>
+                <div style="text-align:center; font-family:'Orbitron'; font-size:2.5rem; color:var(--neon-red); text-shadow:0 0 20px rgba(255,0,51,0.5); margin:0.5rem 0;" id="noteRapportDisplay">15</div>
+                <input type="range" id="noteRapportInput" min="0" max="20" step="1" value="15" style="width:100%; height:8px; accent-color:#ff0033;" oninput="document.getElementById('noteRapportDisplay').textContent = this.value">
             </div>
-
             <div class="form-group" style="margin-bottom: 1.5rem;">
                 <label>Retour / Commentaire <span style="color:#ff0033;">*</span></label>
-                <textarea id="retourRapportInput" rows="6" placeholder="Détaillez votre retour pour l'équipe CSIV..."></textarea>
+                <textarea id="retourRapportInput" rows="6" placeholder="Détaillez votre retour..."></textarea>
             </div>
-
-            <div class="decision-buttons">
-                <button class="btn btn-valider" onclick="validerRapportDecision()"><i class="fas fa-check"></i> VALIDER LE RAPPORT</button>
-                <button class="btn btn-rejeter" onclick="rejeterRapportDecision()"><i class="fas fa-times"></i> REJETER LE RAPPORT</button>
+            <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+                <button class="btn btn-valider" onclick="validerRapportDecision()"><i class="fas fa-check"></i> VALIDER</button>
+                <button class="btn btn-rejeter" onclick="rejeterRapportDecision()"><i class="fas fa-times"></i> REJETER</button>
                 <button class="btn btn-dark" onclick="closeDecisionModal()">ANNULER</button>
             </div>
             <input type="hidden" id="decisionRapportId" value="">
         </div>
     </div>
 
-    <!-- === NOUVEAU MODAL : MODÈLE DE RAPPORT TECHNIQUE === -->
+    <!-- MODAL MODÈLE RAPPORT TECHNIQUE -->
     <div class="modal-overlay" id="modeleRapportOverlay" style="z-index: 10002;">
-        <div class="modal-content" style="max-width: 950px; max-height: 95vh;">
+        <div class="modal-content" style="max-width: 950px;">
             <h2><i class="fas fa-file-alt"></i> MODÈLE DE RAPPORT TECHNIQUE</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Remplissez les champs ci-dessous pour générer votre rapport technique au format officiel AFRICA.TECH21.</p>
-
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Remplissez les champs ci-dessous pour générer votre rapport technique au format officiel.</p>
             <div style="display:flex; flex-direction:column; gap:1rem;">
-                <!-- Titre & Sous-titre -->
                 <div>
                     <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">TITRE DU RAPPORT</label>
-                    <input type="text" id="mrTitre" placeholder="Ex: CONCEPTION DU PROTOTYPE DE RADAR SONORE" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
+                    <input type="text" id="mrTitre" placeholder="Ex: CONCEPTION DU PROTOTYPE" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
                 </div>
                 <div>
                     <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">SOUS-TITRE / THÈME</label>
-                    <input type="text" id="mrSousTitre" placeholder="Ex: Rapport d'activité mensuel — Pôle Responsable Projets" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
+                    <input type="text" id="mrSousTitre" placeholder="Ex: Rapport mensuel" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
                 </div>
-                <!-- Rédigé par / Destinataire -->
                 <div style="display:flex; gap:1rem; flex-wrap:wrap;">
                     <div style="flex:1; min-width:200px;">
-                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">RÉDIGÉ PAR</label>
-                        <input type="text" id="mrRedigePar" placeholder="Nom & Prénom / Pôle" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
+                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700;">RÉDIGÉ PAR</label>
+                        <input type="text" id="mrRedigePar" placeholder="Nom & Prénom" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
                     </div>
                     <div style="flex:1; min-width:200px;">
-                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">DESTINATAIRE</label>
+                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700;">DESTINATAIRE</label>
                         <input type="text" id="mrDestinataire" placeholder="Bureau exécutif" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
                     </div>
                 </div>
-                <!-- Date / Version / Statut -->
                 <div style="display:flex; gap:1rem; flex-wrap:wrap;">
                     <div style="flex:1; min-width:150px;">
-                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">DATE DE FINALISATION</label>
+                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700;">DATE</label>
                         <input type="date" id="mrDate" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
                     </div>
                     <div style="flex:1; min-width:150px;">
-                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">VERSION</label>
+                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700;">VERSION</label>
                         <input type="text" id="mrVersion" value="v1.0" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
                     </div>
                     <div style="flex:1; min-width:150px;">
-                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">STATUT</label>
+                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700;">STATUT</label>
                         <select id="mrStatut" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
                             <option value="Interne">Interne</option>
                             <option value="Confidentiel">Confidentiel</option>
@@ -878,34 +1079,24 @@
                         </select>
                     </div>
                 </div>
-
-                <!-- Contenu : Sections -->
                 <div style="border-top:1px solid rgba(255,215,0,0.2); padding-top:1rem; margin-top:0.5rem;">
-                    <h3 style="color:var(--neon-red); font-size:1rem; margin-bottom:0.8rem;"><i class="fas fa-list-ol"></i> CONTENU DU RAPPORT</h3>
-
-                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">01. INTRODUCTION & CONTEXTE</label>
-                    <textarea id="mrIntro" rows="3" placeholder="Contexte du rapport..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
-
-                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">02. OBJECTIFS ET PÉRIMÈTRE</label>
-                    <textarea id="mrObjectifs" rows="3" placeholder="Objectif principal, objectifs secondaires, périmètre..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
-
-                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">03. DÉROULEMENT & RÉALISATIONS</label>
-                    <textarea id="mrDeroulement" rows="4" placeholder="Étapes clés, technologies utilisées, résultats..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
-
-                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">04. BILAN FINANCIER / RESSOURCES</label>
-                    <textarea id="mrBilan" rows="3" placeholder="Éléments, quantités, coûts (optionnel)..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
-
-                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">05. RECOMMANDATIONS & PROCHAINES ÉTAPES</label>
+                    <h3 style="color:var(--neon-gold); font-size:1rem; margin-bottom:0.8rem;"><i class="fas fa-list-ol"></i> CONTENU DU RAPPORT</h3>
+                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700;">01. INTRODUCTION & CONTEXTE</label>
+                    <textarea id="mrIntro" rows="3" placeholder="Contexte..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
+                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700;">02. OBJECTIFS ET PÉRIMÈTRE</label>
+                    <textarea id="mrObjectifs" rows="3" placeholder="Objectifs..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
+                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700;">03. DÉROULEMENT & RÉALISATIONS</label>
+                    <textarea id="mrDeroulement" rows="4" placeholder="Étapes, technologies, résultats..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
+                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700;">04. BILAN FINANCIER / RESSOURCES</label>
+                    <textarea id="mrBilan" rows="3" placeholder="Coûts (optionnel)..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
+                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700;">05. RECOMMANDATIONS</label>
                     <textarea id="mrRecommandations" rows="3" placeholder="Actions à mener..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
-
-                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">06. CONCLUSION</label>
-                    <textarea id="mrConclusion" rows="3" placeholder="Synthèse globale et perspectives..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
+                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700;">06. CONCLUSION</label>
+                    <textarea id="mrConclusion" rows="3" placeholder="Synthèse et perspectives..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
                 </div>
-
-                <!-- Boutons -->
                 <div style="display:flex; gap:1rem; justify-content:flex-end; flex-wrap:wrap; margin-top:1rem;">
                     <button class="btn btn-dark" onclick="fermerModeleRapport()">ANNULER</button>
-                    <button class="btn btn-gold" style="background:linear-gradient(135deg,#b8860b,#ffd700); color:#1a0033;" onclick="genererRapportTechniquePDF()"><i class="fas fa-file-pdf"></i> GÉNÉRER LE PDF</button>
+                    <button class="btn btn-gold" onclick="genererRapportTechniquePDF()"><i class="fas fa-file-pdf"></i> GÉNÉRER LE PDF</button>
                 </div>
             </div>
         </div>
@@ -928,6 +1119,9 @@
         const memberNom = localStorage.getItem('memberNom') || '';
         const memberPrenom = localStorage.getItem('memberPrenom') || '';
 
+        let surveillancesData = [];
+        let filtreSurveillanceActif = 'tous';
+
         function showToast(msg, type='') {
             const old = document.querySelector('.toast'); if (old) old.remove();
             const t = document.createElement('div');
@@ -939,12 +1133,15 @@
 
         function createParticles() {
             const container = document.getElementById('particles');
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 60; i++) {
                 const p = document.createElement('div');
                 p.className = 'particle';
                 p.style.left = Math.random() * 100 + 'vw';
                 p.style.animationDelay = Math.random() * 15 + 's';
                 p.style.animationDuration = (10 + Math.random() * 12) + 's';
+                const colors = ['#ff0033', '#ffd700', '#00f0ff'];
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.boxShadow = `0 0 10px ${p.style.background}`;
                 container.appendChild(p);
             }
         }
@@ -954,6 +1151,9 @@
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             event.target.closest('.tab').classList.add('active');
             document.getElementById('section' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
+            if (name === 'surveillance') {
+                chargerSurveillance();
+            }
         }
 
         function execCmd(cmd, val=null) {
@@ -1012,7 +1212,7 @@
             try {
                 const { data, error } = await supabaseClient.from('projets_redaction').select('*').order('timestamp', {ascending: false});
                 if (error) throw error;
-                if (!data || data.length === 0) { c.innerHTML = '<div class="empty-state">📭 Aucun projet.</div>'; return; }
+                if (!data || data.length === 0) { c.innerHTML = '<div class="empty-state"><i class="fas fa-folder-open"></i><p>Aucun projet.</p></div>'; return; }
                 c.innerHTML = data.map(p => `
                     <div class="list-item">
                         <div class="title">${p.title}</div>
@@ -1089,7 +1289,7 @@
             try {
                 const { data, error } = await supabaseClient.from('evaluations').select('*').order('timestamp', {ascending: false});
                 if (error) throw error;
-                if (!data || data.length === 0) { c.innerHTML = '<div class="empty-state">📭 Aucune évaluation.</div>'; return; }
+                if (!data || data.length === 0) { c.innerHTML = '<div class="empty-state"><i class="fas fa-star"></i><p>Aucune évaluation.</p></div>'; return; }
                 c.innerHTML = data.map(e => `
                     <div class="list-item">
                         <div class="title">⭐ ${e.note}/20 - ${e.cible_nom} (${e.cible_id})</div>
@@ -1142,30 +1342,17 @@
         function demarrerBuzzer() {
             if (intervalBuzzer) return;
             jouerBuzzer();
-            intervalBuzzer = setInterval(() => {
-                if (!sonMuet) jouerBuzzer();
-            }, 5 * 60 * 1000);
+            intervalBuzzer = setInterval(() => { if (!sonMuet) jouerBuzzer(); }, 5 * 60 * 1000);
         }
-
         function arreterBuzzer() {
-            if (intervalBuzzer) {
-                clearInterval(intervalBuzzer);
-                intervalBuzzer = null;
-            }
+            if (intervalBuzzer) { clearInterval(intervalBuzzer); intervalBuzzer = null; }
         }
-
         function toggleSon(event) {
             event.stopPropagation();
             sonMuet = !sonMuet;
             const btn = document.getElementById('btnStopSon');
-            if (sonMuet) {
-                btn.classList.add('muet');
-                btn.innerHTML = '<i class="fas fa-volume-mute"></i> SON COUPÉ';
-            } else {
-                btn.classList.remove('muet');
-                btn.innerHTML = '<i class="fas fa-volume-up"></i> ARRÊTER LE SON';
-                jouerBuzzer();
-            }
+            if (sonMuet) { btn.classList.add('muet'); btn.innerHTML = '<i class="fas fa-volume-mute"></i> SON COUPÉ'; }
+            else { btn.classList.remove('muet'); btn.innerHTML = '<i class="fas fa-volume-up"></i> ARRÊTER LE SON'; jouerBuzzer(); }
         }
 
         function afficherAlerte(nbTravaux, nbRapports) {
@@ -1221,28 +1408,18 @@
             const corrigesC = document.getElementById('travauxCorriges');
             attenteC.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
             corrigesC.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
-
             try {
-                const { data, error } = await supabaseClient
-                    .from('travaux_membres')
-                    .select('*')
-                    .order('timestamp', { ascending: false });
-
+                const { data, error } = await supabaseClient.from('travaux_membres').select('*').order('timestamp', { ascending: false });
                 if (error) throw error;
-
-                // Exclure les rapports CSIV (ils ont leur propre onglet)
                 const dataFiltre = (data || []).filter(t => t.source_type !== 'rapport_csiv');
-
                 const attente = dataFiltre.filter(t => t.statut === 'en_attente');
                 const corriges = dataFiltre.filter(t => t.statut === 'corrige');
-
-                // Compter aussi les rapports CSIV en attente pour l'alerte globale
                 const nbRapportsAttente = await compterRapportsCsivAttente();
                 afficherAlerte(attente.length, nbRapportsAttente);
                 mettreAJourBadge(attente.length);
 
                 if (attente.length === 0) {
-                    attenteC.innerHTML = '<div class="empty-state">📭 Aucun travail en attente.</div>';
+                    attenteC.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>Aucun travail en attente.</p></div>';
                 } else {
                     attenteC.innerHTML = attente.map(t => `
                         <div class="list-item">
@@ -1261,7 +1438,7 @@
                 }
 
                 if (corriges.length === 0) {
-                    corrigesC.innerHTML = '<div class="empty-state">📭 Aucun travail corrigé.</div>';
+                    corrigesC.innerHTML = '<div class="empty-state"><i class="fas fa-check-circle"></i><p>Aucun travail corrigé.</p></div>';
                 } else {
                     corrigesC.innerHTML = corriges.map(t => `
                         <div class="list-item">
@@ -1270,7 +1447,6 @@
                             <div class="meta">📅 Déposé le ${t.date_depot}</div>
                             <div class="statut-badge statut-corrige"><i class="fas fa-check-circle"></i> CORRIGÉ — ${t.note}/20</div>
                             <div class="meta" style="margin-top:0.6rem; color:#fff;">${t.correction || ''}</div>
-                            ${t.date_correction ? `<div class="meta" style="margin-top:0.4rem;">Corrigé le ${t.date_correction}</div>` : ''}
                             <div class="actions">
                                 <button class="voir" onclick="window.open('${t.fichier_url}', '_blank')"><i class="fas fa-eye"></i> Voir PDF</button>
                                 <button class="delete" onclick="supprimerTravail('${t.id}', '${t.storage_path}')"><i class="fas fa-trash"></i></button>
@@ -1290,34 +1466,22 @@
             document.getElementById('corrCommentaire').value = '';
             document.getElementById('correctionModal').classList.add('active');
         }
-
-        function closeCorrectionModal() {
-            document.getElementById('correctionModal').classList.remove('active');
-        }
+        function closeCorrectionModal() { document.getElementById('correctionModal').classList.remove('active'); }
 
         async function validerCorrection() {
             const id = document.getElementById('corrTravailId').value;
             const note = document.getElementById('corrNote').value;
             const correction = document.getElementById('corrCommentaire').value.trim();
-
             if (!note || note < 0 || note > 20) { showToast('⚠️ Note entre 0 et 20.'); return; }
             if (!correction) { showToast('⚠️ Écrivez la correction.'); return; }
-
             const now = new Date();
             try {
-                const { error } = await supabaseClient
-                    .from('travaux_membres')
-                    .update({
-                        statut: 'corrige',
-                        note: parseInt(note),
-                        correction: correction,
-                        correcteur: `${memberPrenom} ${memberNom}`,
-                        date_correction: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})
-                    })
-                    .eq('id', id);
-
+                const { error } = await supabaseClient.from('travaux_membres').update({
+                    statut: 'corrige', note: parseInt(note), correction: correction,
+                    correcteur: `${memberPrenom} ${memberNom}`,
+                    date_correction: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})
+                }).eq('id', id);
                 if (error) throw error;
-
                 showToast('✅ Correction validée !', 'success');
                 closeCorrectionModal();
                 loadTravaux();
@@ -1329,77 +1493,46 @@
             try {
                 const { error } = await supabaseClient.from('travaux_membres').delete().eq('id', id);
                 if (error) throw error;
-                if (storagePath) {
-                    await supabaseClient.storage.from('documents').remove([storagePath]);
-                }
+                if (storagePath) await supabaseClient.storage.from('documents').remove([storagePath]);
                 showToast('🗑️ Travail supprimé.', 'success');
                 loadTravaux();
             } catch (e) { showToast('❌ ' + e.message); }
         }
 
         // ==================== RAPPORTS CSIV ====================
-
         let rapportsCsivData = [];
 
         async function compterRapportsCsivAttente() {
             try {
-                const { data } = await supabaseClient
-                    .from('csiv_rapports')
-                    .select('id, statut')
-                    .in('statut', ['transmis', 'lu']);
+                const { data } = await supabaseClient.from('csiv_rapports').select('id, statut').in('statut', ['transmis', 'lu']);
                 return (data || []).length;
-            } catch (e) {
-                console.warn('Erreur comptage rapports CSIV:', e);
-                return 0;
-            }
+            } catch (e) { return 0; }
         }
 
         async function loadRapportsCsiv() {
             const attenteC = document.getElementById('rapportsCsivAttente');
             const traitesC = document.getElementById('rapportsCsivTraites');
             if (!attenteC || !traitesC) return;
-
             attenteC.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
             traitesC.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
-
             try {
-                const { data, error } = await supabaseClient
-                    .from('csiv_rapports')
-                    .select('*')
-                    .order('timestamp', { ascending: false });
-
+                const { data, error } = await supabaseClient.from('csiv_rapports').select('*').order('timestamp', { ascending: false });
                 if (error) throw error;
-
                 rapportsCsivData = data || [];
-
                 const attente = rapportsCsivData.filter(r => r.statut === 'transmis' || r.statut === 'lu');
                 const traites = rapportsCsivData.filter(r => r.statut === 'valide' || r.statut === 'rejete');
-
-                // Badge sur l'onglet
                 const nonLus = rapportsCsivData.filter(r => r.statut === 'transmis').length;
                 mettreAJourBadgeRapports(nonLus);
-
-                // Recalculer l'alerte globale
-                const { data: travauxData } = await supabaseClient
-                    .from('travaux_membres')
-                    .select('id, statut, source_type');
+                const { data: travauxData } = await supabaseClient.from('travaux_membres').select('id, statut, source_type');
                 const nbTravauxAttente = (travauxData || []).filter(t => t.statut === 'en_attente' && t.source_type !== 'rapport_csiv').length;
                 afficherAlerte(nbTravauxAttente, attente.length);
                 mettreAJourBadge(nbTravauxAttente);
 
-                // À traiter
-                if (attente.length === 0) {
-                    attenteC.innerHTML = '<div class="empty-state">📭 Aucun rapport CSIV en attente. 🎉</div>';
-                } else {
-                    attenteC.innerHTML = attente.map(r => renderRapportCard(r, true)).join('');
-                }
+                if (attente.length === 0) attenteC.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>Aucun rapport CSIV en attente.</p></div>';
+                else attenteC.innerHTML = attente.map(r => renderRapportCard(r, true)).join('');
 
-                // Traités
-                if (traites.length === 0) {
-                    traitesC.innerHTML = '<div class="empty-state">📭 Aucun rapport traité.</div>';
-                } else {
-                    traitesC.innerHTML = traites.map(r => renderRapportCard(r, false)).join('');
-                }
+                if (traites.length === 0) traitesC.innerHTML = '<div class="empty-state"><i class="fas fa-archive"></i><p>Aucun rapport traité.</p></div>';
+                else traitesC.innerHTML = traites.map(r => renderRapportCard(r, false)).join('');
             } catch (e) {
                 attenteC.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>';
                 traitesC.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>';
@@ -1407,53 +1540,26 @@
         }
 
         function renderRapportCard(r, actif) {
-            const statutLabel = {
-                'transmis': '📤 TRANSMIS',
-                'lu': '👁️ LU',
-                'valide': '✅ VALIDÉ',
-                'rejete': '❌ REJETÉ'
-            }[r.statut] || r.statut.toUpperCase();
-
+            const statutLabel = { 'transmis': '📤 TRANSMIS', 'lu': '👁️ LU', 'valide': '✅ VALIDÉ', 'rejete': '❌ REJETÉ' }[r.statut] || r.statut.toUpperCase();
             const dateCreation = r.date_creation ? new Date(r.date_creation).toLocaleDateString('fr-FR') : '—';
             const dateTransmission = r.date_transmission ? new Date(r.date_transmission).toLocaleDateString('fr-FR') : '—';
-
             const apercu = (r.contenu_html || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 200);
-
-            const retourHtml = r.retour_responsable ? `
-                <div style="margin-top:0.8rem; padding:0.8rem; background:rgba(0,160,255,0.08); border-left:3px solid #00a0ff; border-radius:6px; font-size:0.88rem; color:#cfe8ff;">
-                    <strong style="color:#00a0ff;">↩️ Votre retour :</strong><br>${r.retour_responsable}
-                    ${r.note_responsable != null ? `<br><em>Note : ${r.note_responsable}/20</em>` : ''}
-                </div>
-            ` : '';
-
+            const retourHtml = r.retour_responsable ? `<div style="margin-top:0.8rem; padding:0.8rem; background:rgba(0,160,255,0.08); border-left:3px solid #00a0ff; border-radius:6px; font-size:0.88rem; color:#cfe8ff;"><strong style="color:#00a0ff;">↩️ Votre retour :</strong><br>${r.retour_responsable}${r.note_responsable != null ? `<br><em>Note : ${r.note_responsable}/20</em>` : ''}</div>` : '';
             const actionsActif = actif ? `
                 <div class="rapport-actions">
-                    <button onclick="viewRapportCsiv('${r.id}')" style="background:rgba(0,160,255,0.1); border:1px solid rgba(0,160,255,0.4); color:#00a0ff; padding:0.5rem 1rem; border-radius:8px; cursor:pointer; font-weight:600;">
-                        <i class="fas fa-eye"></i> Lire le rapport
-                    </button>
-                    <button onclick="openDecisionModal('${r.id}')" style="background:rgba(0,255,136,0.1); border:1px solid rgba(0,255,136,0.4); color:#00ff88; padding:0.5rem 1rem; border-radius:8px; cursor:pointer; font-weight:600;">
-                        <i class="fas fa-gavel"></i> Décider (valider/rejeter)
-                    </button>
+                    <button onclick="viewRapportCsiv('${r.id}')" style="background:rgba(0,160,255,0.1); border:1px solid rgba(0,160,255,0.4); color:#00a0ff; padding:0.5rem 1rem; border-radius:8px; cursor:pointer; font-weight:600;"><i class="fas fa-eye"></i> Lire</button>
+                    <button onclick="openDecisionModal('${r.id}')" style="background:rgba(0,255,136,0.1); border:1px solid rgba(0,255,136,0.4); color:#00ff88; padding:0.5rem 1rem; border-radius:8px; cursor:pointer; font-weight:600;"><i class="fas fa-gavel"></i> Décider</button>
                 </div>
             ` : `
                 <div class="rapport-actions">
-                    <button onclick="viewRapportCsiv('${r.id}')" style="background:rgba(0,160,255,0.1); border:1px solid rgba(0,160,255,0.4); color:#00a0ff; padding:0.5rem 1rem; border-radius:8px; cursor:pointer; font-weight:600;">
-                        <i class="fas fa-eye"></i> Relire
-                    </button>
+                    <button onclick="viewRapportCsiv('${r.id}')" style="background:rgba(0,160,255,0.1); border:1px solid rgba(0,160,255,0.4); color:#00a0ff; padding:0.5rem 1rem; border-radius:8px; cursor:pointer; font-weight:600;"><i class="fas fa-eye"></i> Relire</button>
                 </div>
             `;
-
             return `
                 <div class="rapport-card ${r.statut === 'transmis' ? 'nouveau' : ''}">
-                    <div class="rapport-titre">
-                        <i class="fas fa-file-signature"></i> ${r.titre}
-                    </div>
-                    <div class="rapport-meta">
-                        🆔 ${r.reference || '—'} — 👤 ${r.auteur_nom} (${r.auteur_id})
-                    </div>
-                    <div class="rapport-meta">
-                        📅 Créé le ${dateCreation} — 📤 Transmis le ${dateTransmission}
-                    </div>
+                    <div class="rapport-titre"><i class="fas fa-file-signature"></i> ${r.titre}</div>
+                    <div class="rapport-meta">🆔 ${r.reference || '—'} — 👤 ${r.auteur_nom} (${r.auteur_id})</div>
+                    <div class="rapport-meta">📅 Créé le ${dateCreation} — 📤 Transmis le ${dateTransmission}</div>
                     <div class="statut-badge statut-${r.statut}">${statutLabel}</div>
                     <div class="rapport-apercu">${apercu}...</div>
                     ${retourHtml}
@@ -1465,34 +1571,18 @@
         async function viewRapportCsiv(id) {
             const { data, error } = await supabaseClient.from('csiv_rapports').select('*').eq('id', id).single();
             if (error || !data) { showToast('❌ Rapport introuvable.'); return; }
-
-            // Si statut = 'transmis' → passer à 'lu' automatiquement
             if (data.statut === 'transmis') {
-                try {
-                    await supabaseClient.from('csiv_rapports').update({
-                        statut: 'lu',
-                        date_lecture: new Date().toISOString()
-                    }).eq('id', id);
-                    loadRapportsCsiv();
-                } catch (e) { console.warn('Erreur marquage lu:', e); }
+                try { await supabaseClient.from('csiv_rapports').update({ statut: 'lu', date_lecture: new Date().toISOString() }).eq('id', id); loadRapportsCsiv(); } catch (e) {}
             }
-
             document.getElementById('viewTitle').textContent = data.titre;
             document.getElementById('viewMeta').innerHTML = `
                 🆔 ${data.reference || '—'} — 👤 ${data.auteur_nom}<br>
                 📅 Créé le ${new Date(data.date_creation).toLocaleDateString('fr-FR')}
                 ${data.date_transmission ? ` — 📤 Transmis le ${new Date(data.date_transmission).toLocaleDateString('fr-FR')}` : ''}
-                ${data.date_lecture ? ` — 👁️ Lu le ${new Date(data.date_lecture).toLocaleDateString('fr-FR')}` : ''}
             `;
             document.getElementById('viewBody').innerHTML = `
-                <div class="rapport-viewer">${data.contenu_html}</div>
-                ${data.retour_responsable ? `
-                    <div style="margin-top:1.5rem; padding:1rem; background:rgba(0,160,255,0.08); border-left:3px solid #00a0ff; border-radius:8px; color:#cfe8ff;">
-                        <strong style="color:#00a0ff;">↩️ Votre retour précédent :</strong><br>
-                        ${data.retour_responsable}
-                        ${data.note_responsable != null ? `<br><em>Note : ${data.note_responsable}/20</em>` : ''}
-                    </div>
-                ` : ''}
+                <div style="background:#f5f2f7; color:#1a0033; padding:2rem; border-radius:12px; line-height:1.7;">${data.contenu_html}</div>
+                ${data.retour_responsable ? `<div style="margin-top:1.5rem; padding:1rem; background:rgba(0,160,255,0.08); border-left:3px solid #00a0ff; border-radius:8px; color:#cfe8ff;"><strong style="color:#00a0ff;">↩️ Retour :</strong><br>${data.retour_responsable}${data.note_responsable != null ? `<br><em>Note : ${data.note_responsable}/20</em>` : ''}</div>` : ''}
             `;
             document.getElementById('viewModal').classList.add('active');
         }
@@ -1500,98 +1590,368 @@
         function openDecisionModal(id) {
             const rapport = rapportsCsivData.find(r => r.id === id);
             if (!rapport) { showToast('❌ Rapport introuvable.'); return; }
-
             document.getElementById('decisionRapportId').value = id;
             document.getElementById('decisionRapportInfo').innerHTML = `
                 <strong style="color:#ff0033;">Titre :</strong> ${rapport.titre}<br>
                 <strong>Référence :</strong> ${rapport.reference || '—'}<br>
-                <strong>Auteur :</strong> ${rapport.auteur_nom} (${rapport.auteur_id})<br>
-                <strong>Date de transmission :</strong> ${rapport.date_transmission ? new Date(rapport.date_transmission).toLocaleDateString('fr-FR') : '—'}
+                <strong>Auteur :</strong> ${rapport.auteur_nom} (${rapport.auteur_id})
             `;
             document.getElementById('retourRapportInput').value = '';
             document.getElementById('noteRapportInput').value = 15;
             document.getElementById('noteRapportDisplay').textContent = '15';
             document.getElementById('decisionRapportModal').classList.add('active');
         }
+        function closeDecisionModal() { document.getElementById('decisionRapportModal').classList.remove('active'); }
 
-        function closeDecisionModal() {
-            document.getElementById('decisionRapportModal').classList.remove('active');
-        }
-
-        async function validerRapportDecision() {
-            await appliquerDecision('valide');
-        }
-
-        async function rejeterRapportDecision() {
-            await appliquerDecision('rejete');
-        }
+        async function validerRapportDecision() { await appliquerDecision('valide'); }
+        async function rejeterRapportDecision() { await appliquerDecision('rejete'); }
 
         async function appliquerDecision(nouveauStatut) {
             const id = document.getElementById('decisionRapportId').value;
             const note = parseInt(document.getElementById('noteRapportInput').value);
             const retour = document.getElementById('retourRapportInput').value.trim();
-
-            if (!retour || retour.length < 5) {
-                showToast('⚠️ Le retour/commentaire est obligatoire (min 5 caractères).');
-                return;
-            }
-
-            const rapport = rapportsCsivData.find(r => r.id === id);
-            if (!rapport) { showToast('❌ Rapport introuvable.'); return; }
-
+            if (!retour || retour.length < 5) { showToast('⚠️ Le retour est obligatoire (min 5 caractères).'); return; }
             const now = new Date();
-            const nowIso = now.toISOString();
-
             try {
-                // 1. Mettre à jour le rapport
                 const { error: err1 } = await supabaseClient.from('csiv_rapports').update({
-                    statut: nouveauStatut,
-                    retour_responsable: retour,
-                    note_responsable: note,
-                    date_decision: nowIso
+                    statut: nouveauStatut, retour_responsable: retour, note_responsable: note, date_decision: now.toISOString()
                 }).eq('id', id);
                 if (err1) throw err1;
-
-                // 2. Mettre à jour l'entrée dans travaux_membres pour refléter la décision
-                const { data: travauxExistants } = await supabaseClient
-                    .from('travaux_membres')
-                    .select('id')
-                    .eq('source_rapport_id', id);
-
+                const { data: travauxExistants } = await supabaseClient.from('travaux_membres').select('id').eq('source_rapport_id', id);
                 if (travauxExistants && travauxExistants.length > 0) {
                     await supabaseClient.from('travaux_membres').update({
-                        statut: 'corrige',
-                        note: note,
-                        correction: retour,
+                        statut: 'corrige', note: note, correction: retour,
                         correcteur: `${memberPrenom} ${memberNom}`,
                         date_correction: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})
                     }).eq('source_rapport_id', id);
                 }
-
-                const label = nouveauStatut === 'valide' ? 'validé ✅' : 'rejeté ❌';
-                showToast(`Rapport ${label} !`, 'success');
+                showToast(`Rapport ${nouveauStatut === 'valide' ? 'validé ✅' : 'rejeté ❌'} !`, 'success');
                 closeDecisionModal();
                 loadRapportsCsiv();
+            } catch (e) { showToast('❌ ' + e.message); }
+        }
+
+        // ==================== SURVEILLANCE (NOUVEAU) ====================
+        async function chargerSurveillance() {
+            const c = document.getElementById('surveillanceListe');
+            c.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Calcul des scores en cours...</div>';
+
+            try {
+                // 1. Récupérer toutes les données de surveillance
+                const [resSessions, resActivites, resAssiduite, resAlertes] = await Promise.all([
+                    supabaseClient.from('surveillance_sessions').select('*').order('date_connexion', { ascending: false }),
+                    supabaseClient.from('surveillance_activites').select('*').order('timestamp', { ascending: false }),
+                    supabaseClient.from('surveillance_assiduite').select('*'),
+                    supabaseClient.from('surveillance_alertes').select('*')
+                ]);
+
+                const sessions = resSessions.data || [];
+                const activites = resActivites.data || [];
+                const assiduite = resAssiduite.data || [];
+                const alertes = resAlertes.data || [];
+
+                // 2. Regrouper par membre
+                const membresMap = {};
+                const ajouterMembre = (mId, mNom, fonction) => {
+                    if (!mId) return;
+                    if (!membresMap[mId]) {
+                        membresMap[mId] = {
+                            id: mId,
+                            nom: mNom || mId,
+                            fonction: fonction || 'Membre',
+                            nbSessions: 0,
+                            tempsTotalMin: 0,
+                            nbJoursActifs: 0,
+                            nbActivites: 0,
+                            nbProjetsConsultes: 0,
+                            nbAlertes: 0,
+                            alertesGraves: 0,
+                            derniereActivite: null
+                        };
+                    }
+                };
+
+                sessions.forEach(s => ajouterMembre(s.member_id, s.member_nom, s.fonction));
+                activites.forEach(a => ajouterMembre(a.member_id, a.member_nom, a.fonction));
+                assiduite.forEach(a => ajouterMembre(a.member_id, a.member_nom, a.fonction));
+                alertes.forEach(a => ajouterMembre(a.member_id, a.member_nom, a.fonction));
+
+                // 3. Calculer les statistiques par membre
+                sessions.forEach(s => {
+                    if (membresMap[s.member_id]) membresMap[s.member_id].nbSessions++;
+                });
+
+                const now = Date.now();
+                const ilYa7Jours = now - (7 * 24 * 60 * 60 * 1000);
+
+                assiduite.forEach(a => {
+                    if (!membresMap[a.member_id]) return;
+                    const dateJour = a.date_jour ? new Date(a.date_jour).getTime() : 0;
+                    if (dateJour >= ilYa7Jours) {
+                        membresMap[a.member_id].tempsTotalMin += (a.temps_total_min || 0);
+                        membresMap[a.member_id].nbJoursActifs += 1;
+                    }
+                });
+
+                activites.forEach(a => {
+                    if (!membresMap[a.member_id]) return;
+                    membresMap[a.member_id].nbActivites++;
+                    if (a.type_action === 'projet_open') membresMap[a.member_id].nbProjetsConsultes++;
+                    const ts = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+                    if (!membresMap[a.member_id].derniereActivite || ts > membresMap[a.member_id].derniereActivite) {
+                        membresMap[a.member_id].derniereActivite = ts;
+                    }
+                });
+
+                alertes.forEach(a => {
+                    if (!membresMap[a.member_id]) return;
+                    if (a.statut !== 'resolue') {
+                        membresMap[a.member_id].nbAlertes++;
+                        if (a.severite === 'haute' || a.severite === 'critique') {
+                            membresMap[a.member_id].alertesGraves++;
+                        }
+                    }
+                });
+
+                // 4. Calculer les scores /20 pour chaque membre
+                const membresListe = Object.values(membresMap).map(m => {
+                    // Critère 1 : Assiduité (temps de travail sur 7j) — 0 à 6 pts
+                    // Référence : 300 min = 5h sur 7j
+                    const scoreAssiduite = Math.min(6, (m.tempsTotalMin / 300) * 6);
+
+                    // Critère 2 : Consistance (nombre de jours actifs sur 7) — 0 à 5 pts
+                    const scoreConsistance = Math.min(5, (m.nbJoursActifs / 7) * 5);
+
+                    // Critère 3 : Discipline (activités — clics, pages, projets) — 0 à 4 pts
+                    // Référence : 50 actions = max
+                    const scoreDiscipline = Math.min(4, (m.nbActivites / 50) * 4);
+
+                    // Critère 4 : Rage de travailler (projets consultés + sessions) — 0 à 3 pts
+                    const scoreRage = Math.min(3, ((m.nbProjetsConsultes / 10) * 2) + (Math.min(m.nbSessions, 5) / 5));
+
+                    // Critère 5 : Exemplarité (absence d'alertes) — 0 à 2 pts
+                    let scoreExemplarite = 2;
+                    if (m.alertesGraves > 0) scoreExemplarite = 0;
+                    else if (m.nbAlertes > 0) scoreExemplarite = 1;
+
+                    const noteTotale = Math.round((scoreAssiduite + scoreConsistance + scoreDiscipline + scoreRage + scoreExemplarite) * 10) / 10;
+                    const noteSur20 = Math.min(20, Math.round(noteTotale * 10) / 10);
+
+                    return {
+                        ...m,
+                        scoreAssiduite: Math.round(scoreAssiduite * 10) / 10,
+                        scoreConsistance: Math.round(scoreConsistance * 10) / 10,
+                        scoreDiscipline: Math.round(scoreDiscipline * 10) / 10,
+                        scoreRage: Math.round(scoreRage * 10) / 10,
+                        scoreExemplarite: Math.round(scoreExemplarite * 10) / 10,
+                        noteTotale: noteSur20
+                    };
+                });
+
+                // Trier par note décroissante
+                membresListe.sort((a, b) => b.noteTotale - a.noteTotale);
+                surveillancesData = membresListe;
+
+                // 5. Stats globales
+                document.getElementById('survTotalMembres').textContent = membresListe.length;
+                const moyenne = membresListe.length > 0 ? (membresListe.reduce((s, m) => s + m.noteTotale, 0) / membresListe.length).toFixed(1) : 0;
+                document.getElementById('survMoyenne').textContent = moyenne + '/20';
+                document.getElementById('survExcellents').textContent = membresListe.filter(m => m.noteTotale >= 16).length;
+                document.getElementById('survFaibles').textContent = membresListe.filter(m => m.noteTotale < 10).length;
+
+                // 6. Affichage
+                afficherSurveillance();
+
+            } catch (e) {
+                console.error(e);
+                c.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Erreur : ' + e.message + '</p><p style="font-size:0.85rem; margin-top:1rem;">Vérifiez que les tables surveillance_* existent dans Supabase.</p></div>';
+            }
+        }
+
+        function filtrerSurveillance(filtre, btn) {
+            filtreSurveillanceActif = filtre;
+            document.querySelectorAll('.filtre-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            afficherSurveillance();
+        }
+
+        function afficherSurveillance() {
+            const c = document.getElementById('surveillanceListe');
+            if (!surveillancesData.length) {
+                c.innerHTML = '<div class="empty-state"><i class="fas fa-users"></i><p>Aucune donnée de surveillance disponible.</p><p style="font-size:0.85rem; margin-top:1rem;">Les membres doivent se connecter et utiliser la plateforme pour générer des données.</p></div>';
+                return;
+            }
+
+            let liste = surveillancesData;
+            if (filtreSurveillanceActif === 'excellent') liste = liste.filter(m => m.noteTotale >= 16);
+            else if (filtreSurveillanceActif === 'bon') liste = liste.filter(m => m.noteTotale >= 12 && m.noteTotale < 16);
+            else if (filtreSurveillanceActif === 'moyen') liste = liste.filter(m => m.noteTotale >= 10 && m.noteTotale < 12);
+            else if (filtreSurveillanceActif === 'faible') liste = liste.filter(m => m.noteTotale < 10);
+
+            if (!liste.length) {
+                c.innerHTML = '<div class="empty-state"><i class="fas fa-filter"></i><p>Aucun membre dans cette catégorie.</p></div>';
+                return;
+            }
+
+            c.innerHTML = liste.map(m => {
+                let classeNote = 'note-moyen';
+                if (m.noteTotale >= 16) classeNote = 'note-excellent';
+                else if (m.noteTotale >= 12) classeNote = 'note-bon';
+                else if (m.noteTotale < 10) classeNote = 'note-faible';
+
+                const initiales = (m.nom || 'M').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+                const derniereActivite = m.derniereActivite ? formatRelativeTime(m.derniereActivite) : 'Jamais';
+
+                return `
+                    <div class="membre-surv-card">
+                        <div class="membre-surv-header">
+                            <div style="display:flex; gap:1rem; align-items:center;">
+                                <div class="membre-surv-avatar">${initiales}</div>
+                                <div>
+                                    <div class="membre-surv-name">${m.nom}</div>
+                                    <div class="membre-surv-fonction">${m.fonction} — ${m.id}</div>
+                                </div>
+                            </div>
+                            <div class="membre-surv-note ${classeNote}">
+                                <div class="note-val">${m.noteTotale}</div>
+                                <div class="note-label">Note /20</div>
+                            </div>
+                        </div>
+
+                        <div class="membre-surv-criteres">
+                            <div class="critere-item">
+                                <div class="critere-label"><i class="fas fa-clock"></i> Assiduité</div>
+                                <div class="critere-bar"><div class="critere-fill" style="width:${(m.scoreAssiduite / 6) * 100}%"></div></div>
+                                <div class="critere-val">${m.scoreAssiduite} / 6</div>
+                            </div>
+                            <div class="critere-item">
+                                <div class="critere-label"><i class="fas fa-calendar-check"></i> Consistance</div>
+                                <div class="critere-bar"><div class="critere-fill" style="width:${(m.scoreConsistance / 5) * 100}%"></div></div>
+                                <div class="critere-val">${m.scoreConsistance} / 5</div>
+                            </div>
+                            <div class="critere-item">
+                                <div class="critere-label"><i class="fas fa-shield-alt"></i> Discipline</div>
+                                <div class="critere-bar"><div class="critere-fill" style="width:${(m.scoreDiscipline / 4) * 100}%"></div></div>
+                                <div class="critere-val">${m.scoreDiscipline} / 4</div>
+                            </div>
+                            <div class="critere-item">
+                                <div class="critere-label"><i class="fas fa-fire"></i> Rage</div>
+                                <div class="critere-bar"><div class="critere-fill" style="width:${(m.scoreRage / 3) * 100}%"></div></div>
+                                <div class="critere-val">${m.scoreRage} / 3</div>
+                            </div>
+                            <div class="critere-item">
+                                <div class="critere-label"><i class="fas fa-star"></i> Exemplarité</div>
+                                <div class="critere-bar"><div class="critere-fill" style="width:${(m.scoreExemplarite / 2) * 100}%"></div></div>
+                                <div class="critere-val">${m.scoreExemplarite} / 2</div>
+                            </div>
+                        </div>
+
+                        <div class="membre-surv-actions">
+                            <button class="btn-feliciter" onclick="feliciterMembre('${m.id}', '${m.nom.replace(/'/g, "\\'")}')">
+                                <i class="fas fa-thumbs-up"></i> FÉLICITER
+                            </button>
+                            <button class="btn-recompenser" onclick="recompenserMembre('${m.id}', '${m.nom.replace(/'/g, "\\'")}')">
+                                <i class="fas fa-trophy"></i> RÉCOMPENSER
+                            </button>
+                            <button class="btn-avertir" onclick="avertirMembre('${m.id}', '${m.nom.replace(/'/g, "\\'")}')">
+                                <i class="fas fa-exclamation-triangle"></i> AVERTIR
+                            </button>
+                        </div>
+
+                        <div style="margin-top:0.8rem; font-size:0.78rem; color:var(--text-secondary); font-family:'JetBrains Mono';">
+                            ⏱️ ${m.tempsTotalMin} min • 📅 ${m.nbJoursActifs}j actifs • 🖱️ ${m.nbActivites} actions • 🚀 ${m.nbProjetsConsultes} projets • 🔔 ${m.nbAlertes} alertes • 🕐 ${derniereActivite}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function formatRelativeTime(ts) {
+            if (!ts) return 'Jamais';
+            const diff = (Date.now() - ts) / 1000;
+            if (diff < 60) return 'À l\'instant';
+            if (diff < 3600) return `Il y a ${Math.floor(diff/60)} min`;
+            if (diff < 86400) return `Il y a ${Math.floor(diff/3600)}h`;
+            return `Il y a ${Math.floor(diff/86400)}j`;
+        }
+
+        async function feliciterMembre(mId, mNom) {
+            const message = prompt(`🎉 Message de félicitations pour ${mNom} :\n\n(Il recevra une notification)`, `Félicitations ${mNom} ! Ton assiduité et ton engagement sont remarquables. Continue comme ça !`);
+            if (message === null || !message.trim()) return;
+
+            try {
+                await supabaseClient.from('travaux_membres').insert([{
+                    membre_id: mId,
+                    membre_nom: mNom,
+                    fichier_nom: `🏆 FÉLICITATIONS DU RESPONSABLE PROJETS`,
+                    fichier_url: 'felicitation',
+                    storage_path: null,
+                    commentaire: message.trim(),
+                    statut: 'felicitation',
+                    source_type: 'felicitation',
+                    date_depot: new Date().toLocaleDateString('fr-FR') + ' ' + new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
+                    timestamp: Date.now()
+                }]);
+                showToast(`✅ Félicitations envoyées à ${mNom} !`, 'success');
             } catch (e) {
                 showToast('❌ ' + e.message);
             }
         }
 
-        // ==================== MODÈLE DE RAPPORT TECHNIQUE ====================
-        function ouvrirModeleRapport() {
-            document.getElementById('modeleRapportOverlay').classList.add('active');
-            const today = new Date().toISOString().split('T')[0];
-            if (!document.getElementById('mrDate').value) {
-                document.getElementById('mrDate').value = today;
-            }
-            if (!document.getElementById('mrRedigePar').value) {
-                document.getElementById('mrRedigePar').value = `${memberPrenom} ${memberNom} (Responsable Projets)`;
+        async function recompenserMembre(mId, mNom) {
+            const recompense = prompt(`🏆 Récompense pour ${mNom} :\n\nEx: Prime, jour de congé, projet prioritaire...`, `Récompense pour excellence : ${mNom} reçoit une mention spéciale et un accès prioritaire aux nouveaux projets.`);
+            if (recompense === null || !recompense.trim()) return;
+
+            try {
+                await supabaseClient.from('travaux_membres').insert([{
+                    membre_id: mId,
+                    membre_nom: mNom,
+                    fichier_nom: `🏆 RÉCOMPENSE OFFICIELLE`,
+                    fichier_url: 'recompense',
+                    storage_path: null,
+                    commentaire: recompense.trim(),
+                    statut: 'recompense',
+                    source_type: 'recompense',
+                    date_depot: new Date().toLocaleDateString('fr-FR') + ' ' + new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
+                    timestamp: Date.now()
+                }]);
+                showToast(`🏆 Récompense attribuée à ${mNom} !`, 'success');
+            } catch (e) {
+                showToast('❌ ' + e.message);
             }
         }
 
-        function fermerModeleRapport() {
-            document.getElementById('modeleRapportOverlay').classList.remove('active');
+        async function avertirMembre(mId, mNom) {
+            const message = prompt(`⚠️ Message d'avertissement pour ${mNom} :\n\nSois constructif.`, `Attention ${mNom}, ton assiduité a baissé ces derniers jours. Nous croyons en toi, reviens plus fort !`);
+            if (message === null || !message.trim()) return;
+
+            try {
+                await supabaseClient.from('travaux_membres').insert([{
+                    membre_id: mId,
+                    membre_nom: mNom,
+                    fichier_nom: `⚠️ AVERTISSEMENT DU RESPONSABLE PROJETS`,
+                    fichier_url: 'avertissement',
+                    storage_path: null,
+                    commentaire: message.trim(),
+                    statut: 'avertissement',
+                    source_type: 'avertissement',
+                    date_depot: new Date().toLocaleDateString('fr-FR') + ' ' + new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
+                    timestamp: Date.now()
+                }]);
+                showToast(`⚠️ Avertissement envoyé à ${mNom}`, 'warning');
+            } catch (e) {
+                showToast('❌ ' + e.message);
+            }
         }
+
+        // ==================== MODÈLE RAPPORT TECHNIQUE ====================
+        function ouvrirModeleRapport() {
+            document.getElementById('modeleRapportOverlay').classList.add('active');
+            const today = new Date().toISOString().split('T')[0];
+            if (!document.getElementById('mrDate').value) document.getElementById('mrDate').value = today;
+            if (!document.getElementById('mrRedigePar').value) document.getElementById('mrRedigePar').value = `${memberPrenom} ${memberNom} (Responsable Projets)`;
+        }
+        function fermerModeleRapport() { document.getElementById('modeleRapportOverlay').classList.remove('active'); }
 
         function genererRapportTechniquePDF() {
             const titre = document.getElementById('mrTitre').value.trim() || 'RAPPORT TECHNIQUE ET D\'ACTIVITÉ';
@@ -1601,7 +1961,6 @@
             const date = document.getElementById('mrDate').value;
             const version = document.getElementById('mrVersion').value.trim() || 'v1.0';
             const statut = document.getElementById('mrStatut').value;
-
             const intro = document.getElementById('mrIntro').value.trim();
             const objectifs = document.getElementById('mrObjectifs').value.trim();
             const deroulement = document.getElementById('mrDeroulement').value.trim();
@@ -1609,194 +1968,63 @@
             const recommandations = document.getElementById('mrRecommandations').value.trim();
             const conclusion = document.getElementById('mrConclusion').value.trim();
 
-            if (!intro && !objectifs && !deroulement) {
-                alert("⚠️ Veuillez remplir au moins la section 01 (Introduction) ou 02 (Objectifs).");
-                return;
-            }
+            if (!intro && !objectifs && !deroulement) { alert("⚠️ Remplissez au moins l'Introduction ou les Objectifs."); return; }
 
             let dateFormatted = date;
-            if (date) {
-                const d = new Date(date);
-                dateFormatted = d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            }
+            if (date) dateFormatted = new Date(date).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
             const printWindow = window.open('', '_blank');
-            if (!printWindow) {
-                alert('❌ Autorisez les popups pour générer le PDF.');
-                return;
-            }
+            if (!printWindow) { alert('❌ Autorisez les popups.'); return; }
 
             printWindow.document.write(`
                 <!DOCTYPE html>
-                <html lang="fr">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>${titre} — AFRICA.TECH21</title>
-                    <style>
-                        @page { size: A4; margin: 2cm; }
-                        body {
-                            font-family: 'Segoe UI', Arial, sans-serif;
-                            color: #1a1a1a;
-                            line-height: 1.6;
-                            font-size: 11pt;
-                        }
-                        .header {
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: flex-start;
-                            margin-bottom: 2rem;
-                            border-bottom: 2px solid #6a0dad;
-                            padding-bottom: 1rem;
-                        }
-                        .header-left h1 { margin: 0; color: #6a0dad; font-size: 1.5rem; }
-                        .header-left h2 { margin: 0.2rem 0 0 0; font-size: 1rem; color: #333; }
-                        .header-right { text-align: right; font-size: 0.9rem; }
-                        .ref-box {
-                            border: 2px solid #333;
-                            padding: 1rem;
-                            margin-bottom: 1.5rem;
-                            display: grid;
-                            grid-template-columns: 180px 1fr;
-                            gap: 0.5rem;
-                            font-size: 0.95rem;
-                        }
-                        .ref-box strong { font-weight: bold; }
-                        .titre-rapport {
-                            font-size: 1.4rem;
-                            font-weight: bold;
-                            text-align: center;
-                            color: #6a0dad;
-                            margin: 1.5rem 0;
-                            padding: 1rem;
-                            background: #f5f2f7;
-                            border-radius: 8px;
-                        }
-                        .sous-titre {
-                            text-align: center;
-                            font-size: 1rem;
-                            color: #555;
-                            font-style: italic;
-                            margin-bottom: 2rem;
-                        }
-                        h3 {
-                            font-size: 1.15rem;
-                            color: #6a0dad;
-                            margin-top: 2rem;
-                            margin-bottom: 0.6rem;
-                            border-bottom: 1px solid #ccc;
-                            padding-bottom: 0.3rem;
-                        }
-                        p { margin-bottom: 0.8rem; text-align: justify; }
-                        .footer {
-                            margin-top: 3rem;
-                            display: flex;
-                            justify-content: space-between;
-                            gap: 2rem;
-                        }
-                        .signature-block {
-                            flex: 1;
-                            border-top: 1px solid #333;
-                            padding-top: 0.5rem;
-                            font-size: 0.9rem;
-                        }
-                        .final-footer {
-                            margin-top: 2rem;
-                            font-size: 0.8rem;
-                            color: #666;
-                            text-align: center;
-                            border-top: 1px solid #ddd;
-                            padding-top: 1rem;
-                        }
-                        .sommaire {
-                            background: #f8f5fa;
-                            border: 1px solid #ddd;
-                            border-radius: 8px;
-                            padding: 1.5rem;
-                            margin: 1.5rem 0;
-                        }
-                        .sommaire h4 {
-                            color: #6a0dad;
-                            margin-bottom: 0.8rem;
-                            font-size: 1.1rem;
-                        }
-                        .sommaire ol {
-                            padding-left: 1.5rem;
-                            line-height: 1.9;
-                        }
-                    </style>
-                </head>
-                <body>
+                <html lang="fr"><head><meta charset="UTF-8"><title>${titre} — AFRICA.TECH21</title>
+                <style>
+                    @page { size: A4; margin: 2cm; }
+                    body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a1a1a; line-height: 1.6; font-size: 11pt; }
+                    .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; border-bottom: 2px solid #6a0dad; padding-bottom: 1rem; }
+                    .header-left h1 { margin: 0; color: #6a0dad; font-size: 1.5rem; }
+                    .header-left h2 { margin: 0.2rem 0 0 0; font-size: 1rem; color: #333; }
+                    .header-right { text-align: right; font-size: 0.9rem; }
+                    .ref-box { border: 2px solid #333; padding: 1rem; margin-bottom: 1.5rem; display: grid; grid-template-columns: 180px 1fr; gap: 0.5rem; font-size: 0.95rem; }
+                    .titre-rapport { font-size: 1.4rem; font-weight: bold; text-align: center; color: #6a0dad; margin: 1.5rem 0; padding: 1rem; background: #f5f2f7; border-radius: 8px; }
+                    .sous-titre { text-align: center; font-size: 1rem; color: #555; font-style: italic; margin-bottom: 2rem; }
+                    h3 { font-size: 1.15rem; color: #6a0dad; margin-top: 2rem; margin-bottom: 0.6rem; border-bottom: 1px solid #ccc; padding-bottom: 0.3rem; }
+                    p { margin-bottom: 0.8rem; text-align: justify; }
+                    .footer { margin-top: 3rem; display: flex; justify-content: space-between; gap: 2rem; }
+                    .signature-block { flex: 1; border-top: 1px solid #333; padding-top: 0.5rem; font-size: 0.9rem; }
+                    .final-footer { margin-top: 2rem; font-size: 0.8rem; color: #666; text-align: center; border-top: 1px solid #ddd; padding-top: 1rem; }
+                    .sommaire { background: #f8f5fa; border: 1px solid #ddd; border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; }
+                    .sommaire h4 { color: #6a0dad; margin-bottom: 0.8rem; font-size: 1.1rem; }
+                    .sommaire ol { padding-left: 1.5rem; line-height: 1.9; }
+                </style></head><body>
                     <div class="header">
-                        <div class="header-left">
-                            <h1>AFRICA.TECH21</h1>
-                            <h2>RAPPORT TECHNIQUE ET D'ACTIVITÉ</h2>
-                        </div>
-                        <div class="header-right">
-                            <div><strong>Statut :</strong> ${statut}</div>
-                            <div><strong>Version :</strong> ${version}</div>
-                        </div>
+                        <div class="header-left"><h1>AFRICA.TECH21</h1><h2>RAPPORT TECHNIQUE ET D'ACTIVITÉ</h2></div>
+                        <div class="header-right"><div><strong>Statut :</strong> ${statut}</div><div><strong>Version :</strong> ${version}</div></div>
                     </div>
-
                     <div class="ref-box">
-                        <div><strong>RÉDIGÉ PAR :</strong></div>
-                        <div>${redigePar || '—'}</div>
-                        <div><strong>DESTINATAIRE :</strong></div>
-                        <div>${destinataire || 'Bureau exécutif'}</div>
-                        <div><strong>DATE DE FINALISATION :</strong></div>
-                        <div>${dateFormatted || '—'}</div>
-                        <div><strong>VERSION :</strong></div>
-                        <div>${version}</div>
-                        <div><strong>STATUT :</strong></div>
-                        <div>${statut}</div>
+                        <div><strong>RÉDIGÉ PAR :</strong></div><div>${redigePar || '—'}</div>
+                        <div><strong>DESTINATAIRE :</strong></div><div>${destinataire || 'Bureau exécutif'}</div>
+                        <div><strong>DATE :</strong></div><div>${dateFormatted || '—'}</div>
+                        <div><strong>VERSION :</strong></div><div>${version}</div>
+                        <div><strong>STATUT :</strong></div><div>${statut}</div>
                     </div>
-
                     <div class="titre-rapport">${titre}</div>
                     ${sousTitre ? `<div class="sous-titre">${sousTitre}</div>` : ''}
-
-                    <div class="sommaire">
-                        <h4>SOMMAIRE</h4>
-                        <ol>
-                            <li>Introduction & Contexte</li>
-                            <li>Objectifs et Périmètre</li>
-                            <li>Déroulement & Réalisations</li>
-                            <li>Bilan Financier / Ressources</li>
-                            <li>Recommandations & Étapes</li>
-                            <li>Conclusion</li>
-                        </ol>
-                    </div>
-
+                    <div class="sommaire"><h4>SOMMAIRE</h4><ol><li>Introduction & Contexte</li><li>Objectifs et Périmètre</li><li>Déroulement & Réalisations</li><li>Bilan Financier / Ressources</li><li>Recommandations & Étapes</li><li>Conclusion</li></ol></div>
                     ${intro ? `<h3>01. Introduction & Contexte</h3><p>${intro.replace(/\n/g, '</p><p>')}</p>` : ''}
                     ${objectifs ? `<h3>02. Objectifs et Périmètre</h3><p>${objectifs.replace(/\n/g, '</p><p>')}</p>` : ''}
                     ${deroulement ? `<h3>03. Déroulement & Réalisations</h3><p>${deroulement.replace(/\n/g, '</p><p>')}</p>` : ''}
                     ${bilan ? `<h3>04. Bilan Financier / Ressources Utilisées</h3><p>${bilan.replace(/\n/g, '</p><p>')}</p>` : ''}
                     ${recommandations ? `<h3>05. Recommandations & Prochaines Étapes</h3><p>${recommandations.replace(/\n/g, '</p><p>')}</p>` : ''}
                     ${conclusion ? `<h3>06. Conclusion</h3><p>${conclusion.replace(/\n/g, '</p><p>')}</p>` : ''}
-
                     <div class="footer">
-                        <div class="signature-block">
-                            <strong>LE RÉDACTEUR</strong><br>
-                            ${redigePar || 'Nom & Signature'}<br>
-                            <em>(Signature)</em>
-                        </div>
-                        <div class="signature-block">
-                            <strong>LE RESPONSABLE AFRICA.TECH21</strong><br>
-                            Nom & Signature<br>
-                            <em>(Signature)</em>
-                        </div>
+                        <div class="signature-block"><strong>LE RÉDACTEUR</strong><br>${redigePar || 'Nom & Signature'}<br><em>(Signature)</em></div>
+                        <div class="signature-block"><strong>LE RESPONSABLE AFRICA.TECH21</strong><br>Nom & Signature<br><em>(Signature)</em></div>
                     </div>
-
-                    <div class="final-footer">
-                        Fait à Dakar, le ${dateFormatted || '—'}<br>
-                        Document généré par AFRICA.TECH21 — Responsable Projets
-                    </div>
-
-                    <script>
-                        window.onload = function() {
-                            setTimeout(function() { window.print(); }, 300);
-                        };
-                    <\/script>
-                </body>
-                </html>
+                    <div class="final-footer">Fait à Dakar, le ${dateFormatted || '—'}<br>Document généré par AFRICA.TECH21 — Responsable Projets</div>
+                    <script>window.onload = function() { setTimeout(function() { window.print(); }, 300); };<\/script>
+                </body></html>
             `);
             printWindow.document.close();
             fermerModeleRapport();
@@ -1809,12 +2037,9 @@
         loadTravaux();
         loadRapportsCsiv();
 
-        // Recharger les travaux + rapports toutes les 30s
         setInterval(() => {
             loadTravaux();
-            if (document.getElementById('sectionRapportsCsiv')?.classList.contains('active')) {
-                loadRapportsCsiv();
-            }
+            if (document.getElementById('sectionRapportsCsiv')?.classList.contains('active')) loadRapportsCsiv();
         }, 30000);
     </script>
 </body>
