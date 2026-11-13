@@ -150,14 +150,31 @@
         let membreActuel = null;
         let rapportsData = [];
 
-        // ==================== INIT ====================
-        document.addEventListener('DOMContentLoaded', function() {
-            localStorage.removeItem('rapport_memberId');
-            document.getElementById('idInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') verifierId();
-            });
-        });
+        // ==================== EXPOSITION GLOBALE ====================
+        window.verifierId = verifierId;
+        window.sauvegarderRapport = sauvegarderRapport;
+        window.modifierRapport = modifierRapport;
+        window.supprimerRapport = supprimerRapport;
+        window.reinitialiserFormulaire = reinitialiserFormulaire;
 
+        // ==================== INIT ====================
+        function initPage() {
+            const idInput = document.getElementById('idInput');
+            if (idInput) {
+                idInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') verifierId();
+                });
+                idInput.focus();
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPage);
+        } else {
+            initPage();
+        }
+
+        // ==================== VÉRIFICATION ID ====================
         function verifierId() {
             const id = document.getElementById('idInput').value.trim();
             const errorMsg = document.getElementById('idError');
@@ -208,8 +225,8 @@
             try {
                 const querySnapshot = await getDocs(collection(db, "rapports"));
                 rapportsData = [];
-                querySnapshot.forEach((doc) => {
-                    rapportsData.push({ id: doc.id, ...doc.data() });
+                querySnapshot.forEach((docSnap) => {
+                    rapportsData.push({ id: docSnap.id, ...docSnap.data() });
                 });
 
                 const mesRapports = rapportsData.filter(r => r.memberId === membreActuel.id);
@@ -242,7 +259,7 @@
         }
 
         // ==================== SAUVEGARDER ====================
-        window.sauvegarderRapport = async function() {
+        async function sauvegarderRapport() {
             const objet = document.getElementById('objetSelect').value;
             const contenu = document.getElementById('contenuInput').value.trim();
             const editId = document.getElementById('editId').value;
@@ -275,18 +292,18 @@
             } catch (error) {
                 showToast('❌ Erreur : ' + error.message, 'error');
             }
-        };
+        }
 
-        window.modifierRapport = function(id) {
+        function modifierRapport(id) {
             const rapport = rapportsData.find(r => r.id === id);
             if (!rapport) return;
             document.getElementById('objetSelect').value = rapport.objet;
             document.getElementById('contenuInput').value = rapport.contenu;
             document.getElementById('editId').value = id;
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
+        }
 
-        window.supprimerRapport = async function(id) {
+        async function supprimerRapport(id) {
             if (!confirm('⚠️ Supprimer ce rapport ?')) return;
             try {
                 await deleteDoc(doc(db, "rapports", id));
@@ -295,16 +312,14 @@
             } catch (error) {
                 showToast('❌ Erreur : ' + error.message, 'error');
             }
-        };
+        }
 
-        window.reinitialiserFormulaire = function() {
+        function reinitialiserFormulaire() {
             document.getElementById('objetSelect').value = '';
             document.getElementById('contenuInput').value = '';
             document.getElementById('editId').value = '';
             mettreAJourDateHeure();
-        };
-
-        window.verifierId = verifierId;
+        }
     </script>
 </body>
 </html>
