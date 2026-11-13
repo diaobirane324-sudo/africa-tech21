@@ -5,102 +5,606 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | AFRICA.TECH21</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Exo 2', 'Segoe UI', sans-serif; }
         :root {
-            --neon-blue: #00f0ff; --neon-purple: #7b2cbf; --neon-pink: #ff00ff; --neon-green: #00ff88;
-            --dark-space: #0a0a12; --deep-space: #050510; --panel-dark: rgba(16, 16, 32, 0.95);
+            --neon-blue: #00f0ff;
+            --neon-purple: #7b2cbf;
+            --neon-violet: #9d00ff;
+            --neon-pink: #ff00ff;
+            --neon-green: #00ff88;
+            --neon-gold: #ffd700;
+            --neon-red: #ff003c;
+            --dark-space: #0a0a12;
+            --deep-space: #050510;
+            --panel-dark: rgba(16, 16, 32, 0.95);
             --panel-glow: 0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(123, 44, 191, 0.2);
-            --text-primary: #ffffff; --text-secondary: #a0a8c0; --accent-glow: 0 0 15px var(--neon-blue);
-            --glass: rgba(255, 255, 255, 0.08); --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a8c0;
+            --accent-glow: 0 0 15px var(--neon-blue);
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
-        body { background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%); color: var(--text-primary); min-height: 100vh; position: relative; overflow-x: hidden; }
-        .hologram-grid { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px), linear-gradient(180deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px); background-size: 50px 50px; animation: gridScan 20s linear infinite; pointer-events: none; z-index: -2; }
-        .ambient-light { position: fixed; width: 500px; height: 500px; border-radius: 50%; filter: blur(100px); opacity: 0.1; z-index: -1; }
+
+        html, body {
+            margin: 0; padding: 0; min-height: 100vh;
+            background: linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ============================================================ */
+        /* DÉCOR DE FOND                                                */
+        /* ============================================================ */
+        .hologram-grid {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background:
+                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridScan 20s linear infinite;
+            pointer-events: none; z-index: -2;
+        }
+        @keyframes gridScan { 0% { transform: translate(0, 0); } 100% { transform: translate(50px, 50px); } }
+
+        .ambient-light {
+            position: fixed; width: 600px; height: 600px;
+            border-radius: 50%; filter: blur(120px); opacity: 0.12;
+            z-index: -1; pointer-events: none;
+        }
         .light-1 { background: var(--neon-blue); top: -200px; right: -100px; animation: floatLight 8s ease-in-out infinite; }
         .light-2 { background: var(--neon-purple); bottom: -150px; left: -100px; animation: floatLight 10s ease-in-out infinite reverse; }
-        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
-        .particle { position: absolute; width: 3px; height: 3px; background: var(--neon-blue); border-radius: 50%; animation: float 15s infinite linear; box-shadow: 0 0 10px var(--neon-blue); }
-        @keyframes gridScan { 0% { transform: translate(0, 0); } 100% { transform: translate(50px, 50px); } }
+        .light-3 { background: var(--neon-gold); top: 40%; left: 40%; opacity: 0.05; animation: floatLight 12s ease-in-out infinite; }
         @keyframes floatLight { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(50px, -30px) scale(1.1); } }
-        @keyframes float { 0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100px) translateX(100px) rotate(360deg); opacity: 0; } }
-        .neuro-header { background: rgba(20, 20, 35, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 240, 255, 0.2); padding: 1.5rem 3rem; position: relative; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); }
-        .neuro-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--neon-blue), transparent); }
-        .header-content { display: flex; justify-content: space-between; align-items: center; max-width: 1600px; margin: 0 auto; }
-        .logo-container h1 { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: var(--accent-glow); letter-spacing: 2px; font-weight: 900; }
-        .logo-container .subtitle { font-size: 0.9rem; color: var(--text-secondary); letter-spacing: 3px; text-transform: uppercase; margin-top: 0.5rem; }
-        .user-panel { display: flex; align-items: center; gap: 2rem; }
-        .user-badge { background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 15px; padding: 0.8rem 1.5rem; backdrop-filter: blur(10px); text-align: center; }
-        .user-email { color: var(--neon-blue); font-weight: 600; font-size: 0.95rem; }
-        .user-role { color: var(--neon-green); font-size: 0.8rem; margin-top: 5px; }
-        .nav-buttons { display: flex; gap: 1rem; }
-        .nav-btn { background: transparent; border: 2px solid; border-image: linear-gradient(45deg, var(--neon-blue), var(--neon-green)) 1; color: var(--neon-blue); padding: 0.7rem 1.2rem; border-radius: 10px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; text-decoration: none; }
-        .nav-btn:hover { background: rgba(0, 240, 255, 0.1); box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); transform: translateY(-2px); }
-        .logout-btn { background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue)); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 10px; cursor: pointer; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4); }
-        .logout-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(123, 44, 191, 0.6); }
-        .dashboard-container { padding: 3rem; max-width: 1600px; margin: 0 auto; }
-        .info-banner { background: linear-gradient(90deg, #00f0ff, #7b2cbf, #ff00ff, #00f0ff); background-size: 300%; padding: 1.2rem 2rem; border-radius: 15px; margin-bottom: 2rem; text-align: center; font-size: 1.3rem; font-weight: 700; color: #ffffff; text-shadow: 0 0 20px rgba(0, 240, 255, 0.8); box-shadow: 0 0 40px rgba(0, 240, 255, 0.3); animation: clignoter 1.5s infinite, bgMove 4s linear infinite; position: relative; overflow: hidden; border: 2px solid rgba(255, 255, 255, 0.2); }
+
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
+        .particle {
+            position: absolute; width: 3px; height: 3px;
+            background: var(--neon-blue); border-radius: 50%;
+            animation: float 15s infinite linear;
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* ============================================================ */
+        /* HEADER                                                       */
+        /* ============================================================ */
+        .neuro-header {
+            background: rgba(20, 20, 35, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            padding: 1.2rem 2rem;
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        .neuro-header::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+        }
+        .header-content {
+            display: flex; justify-content: space-between; align-items: center;
+            max-width: 1800px; margin: 0 auto; gap: 1rem; flex-wrap: wrap;
+        }
+        .logo-container h1 {
+            font-family: 'Orbitron', sans-serif; font-size: 2rem;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; text-shadow: var(--accent-glow);
+            letter-spacing: 2px; font-weight: 900;
+        }
+        .logo-container .subtitle {
+            font-size: 0.75rem; color: var(--text-secondary);
+            letter-spacing: 3px; text-transform: uppercase; margin-top: 0.3rem;
+        }
+        .user-panel { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+        .user-badge {
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 12px; padding: 0.6rem 1.2rem;
+            backdrop-filter: blur(10px); text-align: center;
+        }
+        .user-email { color: var(--neon-blue); font-weight: 600; font-size: 0.9rem; }
+        .user-role { color: var(--neon-green); font-size: 0.75rem; margin-top: 3px; }
+        .nav-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .nav-btn {
+            background: transparent; border: 1.5px solid rgba(0, 240, 255, 0.4);
+            color: var(--neon-blue); padding: 0.5rem 0.9rem; border-radius: 8px;
+            cursor: pointer; font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem; text-transform: uppercase;
+            letter-spacing: 1px; transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .nav-btn:hover {
+            background: rgba(0, 240, 255, 0.15);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .logout-btn {
+            background: linear-gradient(135deg, var(--neon-red), #cc0033);
+            color: white; border: none; padding: 0.6rem 1.2rem;
+            border-radius: 8px; cursor: pointer; font-weight: 700;
+            font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 1px; transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 0, 60, 0.4);
+            font-family: 'Orbitron', sans-serif;
+        }
+        .logout-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(255, 0, 60, 0.6); }
+
+        /* ============================================================ */
+        /* CONTENEUR PRINCIPAL                                          */
+        /* ============================================================ */
+        .dashboard-container {
+            padding: 2rem; max-width: 1800px; margin: 0 auto;
+        }
+
+        .info-banner {
+            background: linear-gradient(90deg, #00f0ff, #7b2cbf, #ff00ff, #00f0ff);
+            background-size: 300%;
+            padding: 1rem 2rem; border-radius: 15px; margin-bottom: 1.5rem;
+            text-align: center; font-size: 1.1rem; font-weight: 700;
+            color: #ffffff; text-shadow: 0 0 20px rgba(0, 240, 255, 0.8);
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.3);
+            animation: clignoter 1.5s infinite, bgMove 4s linear infinite;
+            position: relative; overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
         @keyframes clignoter { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.85; transform: scale(1.01); } }
         @keyframes bgMove { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
-        .info-banner::before { content: ''; position: absolute; top: -100%; left: -100%; width: 300%; height: 300%; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%); animation: rotateGlow 4s linear infinite; }
-        @keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .info-banner .icon { margin-right: 1rem; font-size: 1.8rem; animation: pulseIcon 1.5s ease-in-out infinite; }
+        .info-banner .icon { margin-right: 0.8rem; font-size: 1.5rem; animation: pulseIcon 1.5s ease-in-out infinite; }
         @keyframes pulseIcon { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
-        .info-banner .message-text { position: relative; z-index: 1; }
-        .info-banner .message-text i { margin-right: 0.8rem; }
-        .hero-section { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 25px; padding: 4rem; margin-bottom: 3rem; position: relative; overflow: hidden; box-shadow: var(--panel-glow); }
-        .hero-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(123, 44, 191, 0.1) 0%, transparent 50%); pointer-events: none; }
-        .hero-title { font-family: 'Orbitron', sans-serif; font-size: 3.5rem; background: linear-gradient(45deg, var(--neon-blue), #ffffff, var(--neon-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; margin-bottom: 1rem; text-shadow: 0 0 30px rgba(0, 240, 255, 0.5); }
-        .hero-subtitle { font-size: 1.3rem; color: var(--text-secondary); text-align: center; max-width: 600px; margin: 0 auto; line-height: 1.6; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.5rem; margin-bottom: 4rem; }
-        .feature-card { position: relative; padding: 3rem 2.5rem; background: rgba(10, 10, 20, 0.75); backdrop-filter: blur(15px); cursor: pointer; transition: all 0.4s ease; clip-path: polygon(30px 0%, 100% 0%, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0% 100%, 0% 30px); overflow: hidden; }
-        .feature-card::before { content: ''; position: absolute; inset: 0; padding: 2px; background: linear-gradient(90deg, #00f0ff, #7b2cbf, #ff00ff, #00f0ff); background-size: 300% 300%; -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; animation: borderShift 4s linear infinite; pointer-events: none; clip-path: polygon(30px 0%, 100% 0%, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0% 100%, 0% 30px); }
-        @keyframes borderShift { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
-        .feature-card::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.08), transparent); transition: 0.6s; pointer-events: none; }
-        .feature-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 240, 255, 0.4); }
-        .feature-card:hover::after { left: 100%; }
-        .feature-card .corner { position: absolute; width: 20px; height: 20px; border-color: var(--neon-blue); opacity: 0.6; transition: all 0.3s ease; pointer-events: none; }
-        .feature-card .corner.tl { top: 10px; left: 10px; border-top: 2px solid; border-left: 2px solid; }
-        .feature-card .corner.br { bottom: 10px; right: 10px; border-bottom: 2px solid; border-right: 2px solid; }
-        .feature-card:hover .corner { opacity: 1; width: 30px; height: 30px; }
-        .feature-icon { font-size: 4rem; color: var(--neon-blue); margin-bottom: 2rem; text-shadow: var(--accent-glow); text-align: center; position: relative; z-index: 2; }
-        .feature-title { font-size: 1.8rem; color: var(--neon-blue); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px; text-align: center; font-weight: 700; position: relative; z-index: 2; }
-        .feature-description { color: var(--text-secondary); line-height: 1.7; text-align: center; margin-bottom: 2rem; font-size: 1.1rem; position: relative; z-index: 2; }
-        .feature-status { text-align: center; font-weight: 700; letter-spacing: 1px; position: relative; z-index: 2; }
-        .status-active { color: var(--neon-blue); text-shadow: var(--accent-glow); }
-        .forum-section { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 25px; padding: 3rem; margin-bottom: 4rem; box-shadow: var(--panel-glow); }
-        .section-title { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; color: var(--neon-blue); text-align: center; margin-bottom: 3rem; text-transform: uppercase; letter-spacing: 2px; text-shadow: var(--accent-glow); }
-        .messages-container { max-height: 500px; overflow-y: auto; margin-bottom: 2.5rem; border: 1px solid var(--glass-border); border-radius: 15px; padding: 2rem; background: rgba(10, 10, 20, 0.6); }
-        .message { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); border-radius: 15px; padding: 2rem; margin-bottom: 1.5rem; transition: all 0.3s ease; position: relative; }
-        .message::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, var(--neon-blue), var(--neon-purple)); border-radius: 15px 0 0 15px; }
-        .message:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(0, 240, 255, 0.3); transform: translateX(5px); }
-        .message-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-        .message-user { color: var(--neon-blue); font-weight: 700; font-size: 1.1rem; }
-        .message-time { color: var(--text-secondary); font-size: 0.9rem; }
-        .message-content { color: var(--text-primary); line-height: 1.6; font-size: 1.05rem; }
-        .input-group { display: flex; gap: 1.5rem; align-items: center; }
-        .message-input { flex-grow: 1; padding: 1.5rem 2rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); border-radius: 15px; color: var(--text-primary); font-size: 1.1rem; transition: all 0.3s ease; backdrop-filter: blur(10px); }
-        .message-input:focus { outline: none; border-color: var(--neon-blue); box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); background: rgba(255, 255, 255, 0.08); }
+
+        /* ============================================================ */
+        /* HERO SECTION                                                 */
+        /* ============================================================ */
+        .hero-section {
+            background: var(--glass); backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border); border-radius: 25px;
+            padding: 2.5rem 2rem; margin-bottom: 2rem;
+            position: relative; overflow: hidden;
+            box-shadow: var(--panel-glow);
+            text-align: center;
+        }
+        .hero-section::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(0, 240, 255, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(123, 44, 191, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .hero-title {
+            font-family: 'Orbitron', sans-serif; font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--neon-blue), #ffffff, var(--neon-pink));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 0.8rem;
+            text-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+            position: relative; z-index: 1;
+        }
+        .hero-subtitle {
+            font-size: 1.05rem; color: var(--text-secondary);
+            max-width: 800px; margin: 0 auto; line-height: 1.6;
+            position: relative; z-index: 1;
+        }
+
+        /* ============================================================ */
+        /* 🆕 STRUCTURE EN RAMIFICATION TECHNOLOGIQUE                   */
+        /* ============================================================ */
+        .tech-tree {
+            position: relative;
+            width: 100%;
+            min-height: 1400px;
+            margin: 3rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* SVG pour les lignes de circuit */
+        .circuit-lines {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .circuit-lines path {
+            fill: none;
+            stroke: url(#circuitGradient);
+            stroke-width: 2;
+            stroke-dasharray: 8 4;
+            animation: dashFlow 3s linear infinite;
+            filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.6));
+        }
+        @keyframes dashFlow {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -24; }
+        }
+        .circuit-lines path.branch {
+            stroke-width: 1.5;
+            opacity: 0.7;
+        }
+        .circuit-node {
+            fill: var(--neon-blue);
+            filter: drop-shadow(0 0 8px var(--neon-blue));
+            animation: nodePulse 2s ease-in-out infinite;
+        }
+        @keyframes nodePulse {
+            0%, 100% { r: 3; opacity: 1; }
+            50% { r: 5; opacity: 0.6; }
+        }
+
+        /* Conteneur des cartes */
+        .tree-nodes {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        /* CARTE CENTRALE - ESPACE DIRECTION (PROCESSEUR) */
+        .node-core {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 320px;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .node-core-inner {
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.15), rgba(157, 0, 255, 0.15));
+            backdrop-filter: blur(20px);
+            border: 3px solid var(--neon-red);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 0 40px rgba(255, 0, 60, 0.4),
+                0 0 80px rgba(157, 0, 255, 0.2),
+                inset 0 0 30px rgba(255, 0, 60, 0.1);
+            animation: corePulse 3s ease-in-out infinite;
+            transition: transform 0.4s ease;
+        }
+        @keyframes corePulse {
+            0%, 100% {
+                box-shadow: 0 0 40px rgba(255, 0, 60, 0.4), 0 0 80px rgba(157, 0, 255, 0.2), inset 0 0 30px rgba(255, 0, 60, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 60px rgba(255, 0, 60, 0.7), 0 0 120px rgba(157, 0, 255, 0.4), inset 0 0 50px rgba(255, 0, 60, 0.2);
+            }
+        }
+        .node-core-inner::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            animation: shimmer 4s linear infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        .node-core:hover .node-core-inner {
+            transform: scale(1.05);
+        }
+        .node-core .core-icon {
+            font-size: 3rem; color: var(--neon-gold);
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 20px var(--neon-gold));
+            animation: iconFloat 2.5s ease-in-out infinite;
+            position: relative; z-index: 2;
+        }
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .node-core .core-title {
+            font-family: 'Orbitron', sans-serif; font-size: 1.3rem;
+            color: var(--neon-gold); font-weight: 900;
+            letter-spacing: 1.5px; margin-bottom: 0.6rem;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            position: relative; z-index: 2;
+        }
+        .node-core .core-sub {
+            font-size: 0.8rem; color: var(--text-secondary);
+            letter-spacing: 2px; text-transform: uppercase;
+            position: relative; z-index: 2;
+        }
+        .node-core .core-badge {
+            display: inline-block; margin-top: 1rem;
+            padding: 0.4rem 1rem; font-size: 0.7rem;
+            background: rgba(255, 0, 60, 0.15);
+            border: 1px solid var(--neon-red);
+            border-radius: 20px; color: var(--neon-red);
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 1px; position: relative; z-index: 2;
+        }
+
+        /* Broches du processeur (petits carrés autour) */
+        .chip-pins {
+            position: absolute; inset: -15px;
+            pointer-events: none;
+        }
+        .chip-pin {
+            position: absolute; width: 8px; height: 8px;
+            background: var(--neon-gold);
+            box-shadow: 0 0 10px var(--neon-gold);
+            border-radius: 2px;
+        }
+        .chip-pin.top { top: 0; }
+        .chip-pin.bottom { bottom: 0; }
+        .chip-pin.left { left: 0; }
+        .chip-pin.right { right: 0; }
+
+        /* CARTES SATELLITES */
+        .node-satellite {
+            position: absolute;
+            width: 240px;
+            cursor: pointer;
+            z-index: 5;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .node-satellite:hover { transform: scale(1.1); z-index: 20; }
+
+        .node-satellite-inner {
+            background: rgba(10, 10, 25, 0.92);
+            backdrop-filter: blur(15px);
+            border: 1.5px solid var(--neon-blue);
+            border-radius: 16px;
+            padding: 1.2rem 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+        }
+        .node-satellite-inner::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+            opacity: 0.6;
+        }
+        .node-satellite-inner::after {
+            content: '';
+            position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+            background: linear-gradient(180deg, transparent, var(--neon-blue), transparent);
+            opacity: 0.6;
+        }
+        .node-satellite:hover .node-satellite-inner {
+            border-color: var(--neon-gold);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.5), 0 15px 40px rgba(0, 0, 0, 0.5);
+            background: rgba(15, 15, 35, 0.98);
+        }
+
+        .node-satellite .sat-icon {
+            font-size: 1.8rem; color: var(--neon-blue);
+            margin-bottom: 0.6rem;
+            filter: drop-shadow(0 0 10px var(--neon-blue));
+            transition: all 0.3s ease;
+        }
+        .node-satellite:hover .sat-icon {
+            color: var(--neon-gold);
+            filter: drop-shadow(0 0 15px var(--neon-gold));
+            transform: scale(1.15);
+        }
+        .node-satellite .sat-title {
+            font-family: 'Orbitron', sans-serif; font-size: 0.8rem;
+            font-weight: 700; color: var(--text-primary);
+            letter-spacing: 0.5px; margin-bottom: 0.3rem;
+            line-height: 1.3;
+        }
+        .node-satellite .sat-desc {
+            font-size: 0.68rem; color: var(--text-secondary);
+            line-height: 1.3; margin-top: 0.3rem;
+        }
+        .node-satellite .sat-status {
+            display: inline-block; margin-top: 0.6rem;
+            padding: 0.2rem 0.6rem; font-size: 0.6rem;
+            border-radius: 10px; font-weight: 700;
+            letter-spacing: 0.5px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .sat-status.active { color: var(--neon-green); border: 1px solid var(--neon-green); background: rgba(0, 255, 136, 0.08); }
+        .sat-status.locked { color: var(--neon-gold); border: 1px solid var(--neon-gold); background: rgba(255, 215, 0, 0.08); }
+        .sat-status.restricted { color: var(--neon-red); border: 1px solid var(--neon-red); background: rgba(255, 0, 60, 0.08); }
+        .sat-status.special { color: var(--neon-purple); border: 1px solid var(--neon-violet); background: rgba(157, 0, 255, 0.08); }
+
+        /* Positionnement circulaire des satellites */
+        /* Rayon : ~420px du centre */
+        .node-satellite.pos-1 { top: 50%; left: 50%; transform: translate(calc(-50% + 0px), calc(-50% - 380px)); }
+        .node-satellite.pos-1:hover { transform: translate(calc(-50% + 0px), calc(-50% - 380px)) scale(1.1); }
+        
+        .node-satellite.pos-2 { top: 50%; left: 50%; transform: translate(calc(-50% + 330px), calc(-50% - 220px)); }
+        .node-satellite.pos-2:hover { transform: translate(calc(-50% + 330px), calc(-50% - 220px)) scale(1.1); }
+        
+        .node-satellite.pos-3 { top: 50%; left: 50%; transform: translate(calc(-50% + 420px), calc(-50% + 0px)); }
+        .node-satellite.pos-3:hover { transform: translate(calc(-50% + 420px), calc(-50% + 0px)) scale(1.1); }
+        
+        .node-satellite.pos-4 { top: 50%; left: 50%; transform: translate(calc(-50% + 330px), calc(-50% + 220px)); }
+        .node-satellite.pos-4:hover { transform: translate(calc(-50% + 330px), calc(-50% + 220px)) scale(1.1); }
+        
+        .node-satellite.pos-5 { top: 50%; left: 50%; transform: translate(calc(-50% + 0px), calc(-50% + 380px)); }
+        .node-satellite.pos-5:hover { transform: translate(calc(-50% + 0px), calc(-50% + 380px)) scale(1.1); }
+        
+        .node-satellite.pos-6 { top: 50%; left: 50%; transform: translate(calc(-50% - 330px), calc(-50% + 220px)); }
+        .node-satellite.pos-6:hover { transform: translate(calc(-50% - 330px), calc(-50% + 220px)) scale(1.1); }
+        
+        .node-satellite.pos-7 { top: 50%; left: 50%; transform: translate(calc(-50% - 420px), calc(-50% + 0px)); }
+        .node-satellite.pos-7:hover { transform: translate(calc(-50% - 420px), calc(-50% + 0px)) scale(1.1); }
+        
+        .node-satellite.pos-8 { top: 50%; left: 50%; transform: translate(calc(-50% - 330px), calc(-50% - 220px)); }
+        .node-satellite.pos-8:hover { transform: translate(calc(-50% - 330px), calc(-50% - 220px)) scale(1.1); }
+
+        /* Rayon intérieur (petites cartes) */
+        .node-satellite.inner.pos-9 { top: 50%; left: 50%; transform: translate(calc(-50% + 200px), calc(-50% - 100px)); }
+        .node-satellite.inner.pos-9:hover { transform: translate(calc(-50% + 200px), calc(-50% - 100px)) scale(1.1); }
+        
+        .node-satellite.inner.pos-10 { top: 50%; left: 50%; transform: translate(calc(-50% - 200px), calc(-50% + 100px)); }
+        .node-satellite.inner.pos-10:hover { transform: translate(calc(-50% - 200px), calc(-50% + 100px)) scale(1.1); }
+        
+        .node-satellite.inner.pos-11 { top: 50%; left: 50%; transform: translate(calc(-50% - 200px), calc(-50% - 100px)); }
+        .node-satellite.inner.pos-11:hover { transform: translate(calc(-50% - 200px), calc(-50% - 100px)) scale(1.1); }
+        
+        .node-satellite.inner.pos-12 { top: 50%; left: 50%; transform: translate(calc(-50% + 200px), calc(-50% + 100px)); }
+        .node-satellite.inner.pos-12:hover { transform: translate(calc(-50% + 200px), calc(-50% + 100px)) scale(1.1); }
+
+        /* MOBILE : fallback en grille */
+        @media (max-width: 1100px) {
+            .tech-tree { display: none; }
+            .mobile-grid { display: grid; }
+        }
+        @media (min-width: 1101px) {
+            .mobile-grid { display: none; }
+        }
+
+        .mobile-grid {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .mobile-grid .feature-card {
+            position: relative;
+            padding: 2rem 1.5rem;
+            background: rgba(10, 10, 20, 0.85);
+            backdrop-filter: blur(15px);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 18px;
+            overflow: hidden;
+        }
+        .mobile-grid .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--neon-gold);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.4);
+        }
+        .mobile-grid .feature-icon {
+            font-size: 2.5rem; color: var(--neon-blue);
+            margin-bottom: 1rem; text-align: center;
+            text-shadow: var(--accent-glow);
+        }
+        .mobile-grid .feature-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem; color: var(--neon-blue);
+            margin-bottom: 0.8rem; text-transform: uppercase;
+            letter-spacing: 1px; text-align: center; font-weight: 700;
+        }
+        .mobile-grid .feature-desc {
+            color: var(--text-secondary); font-size: 0.85rem;
+            text-align: center; line-height: 1.5; margin-bottom: 1rem;
+        }
+        .mobile-grid .feature-status {
+            text-align: center; font-size: 0.75rem;
+            font-weight: 700; letter-spacing: 1px;
+            color: var(--neon-green);
+        }
+
+        /* ============================================================ */
+        /* FORUM                                                        */
+        /* ============================================================ */
+        .forum-section {
+            background: var(--glass); backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border); border-radius: 25px;
+            padding: 2.5rem; margin: 3rem 0; box-shadow: var(--panel-glow);
+        }
+        .section-title {
+            font-family: 'Orbitron', sans-serif; font-size: 2rem;
+            color: var(--neon-blue); text-align: center; margin-bottom: 2rem;
+            text-transform: uppercase; letter-spacing: 2px;
+            text-shadow: var(--accent-glow);
+        }
+        .messages-container {
+            max-height: 400px; overflow-y: auto; margin-bottom: 2rem;
+            border: 1px solid var(--glass-border); border-radius: 15px;
+            padding: 1.5rem; background: rgba(10, 10, 20, 0.6);
+        }
+        .message {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px; padding: 1.5rem; margin-bottom: 1rem;
+            transition: all 0.3s ease; position: relative;
+        }
+        .message::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 4px; height: 100%;
+            background: linear-gradient(180deg, var(--neon-blue), var(--neon-purple));
+            border-radius: 15px 0 0 15px;
+        }
+        .message:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 240, 255, 0.3);
+            transform: translateX(5px);
+        }
+        .message-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 0.8rem;
+        }
+        .message-user { color: var(--neon-blue); font-weight: 700; font-size: 1rem; }
+        .message-time { color: var(--text-secondary); font-size: 0.8rem; }
+        .message-content { color: var(--text-primary); line-height: 1.6; font-size: 0.95rem; }
+        .input-group { display: flex; gap: 1rem; align-items: center; }
+        .message-input {
+            flex-grow: 1; padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border); border-radius: 15px;
+            color: var(--text-primary); font-size: 1rem;
+            transition: all 0.3s ease; backdrop-filter: blur(10px);
+        }
+        .message-input:focus {
+            outline: none; border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
         .message-input::placeholder { color: var(--text-secondary); }
-        .send-btn { background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue)); color: white; border: none; padding: 1.5rem 3rem; border-radius: 15px; cursor: pointer; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4); min-width: 180px; }
-        .send-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(123, 44, 191, 0.6); }
+        .send-btn {
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+            color: white; border: none; padding: 1rem 2rem;
+            border-radius: 15px; cursor: pointer; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
+            font-family: 'Orbitron', sans-serif; font-size: 0.85rem;
+        }
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(123, 44, 191, 0.6);
+        }
+
+        /* ============================================================ */
+        /* SCROLLBAR                                                    */
+        /* ============================================================ */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--neon-blue), var(--neon-purple)); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--neon-blue), var(--neon-purple));
+            border-radius: 10px;
+        }
+
+        /* ============================================================ */
+        /* RESPONSIVE                                                   */
+        /* ============================================================ */
         @media (max-width: 768px) {
-            .neuro-header { padding: 1rem 1.5rem; }
+            .neuro-header { padding: 1rem; }
             .header-content { flex-direction: column; gap: 1rem; }
-            .user-panel { flex-direction: column; gap: 1rem; }
-            .dashboard-container { padding: 1.5rem; }
-            .hero-section { padding: 2rem 1.5rem; }
-            .hero-title { font-size: 2.5rem; }
-            .features-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-            .feature-card { padding: 2rem 1.5rem; clip-path: polygon(20px 0%, 100% 0%, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0% 100%, 0% 20px); }
+            .user-panel { flex-direction: column; gap: 0.8rem; width: 100%; }
+            .nav-buttons { justify-content: center; }
+            .dashboard-container { padding: 1rem; }
+            .hero-section { padding: 1.5rem 1rem; }
+            .hero-title { font-size: 1.8rem; }
+            .hero-subtitle { font-size: 0.9rem; }
+            .info-banner { font-size: 0.9rem; padding: 0.8rem 1rem; }
+            .info-banner .icon { font-size: 1.1rem; }
             .input-group { flex-direction: column; }
             .send-btn { width: 100%; }
-            .info-banner { font-size: 1rem; padding: 0.8rem 1rem; }
-            .info-banner .icon { font-size: 1.2rem; }
+            .forum-section { padding: 1.5rem; }
+            .section-title { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -108,6 +612,7 @@
     <div class="hologram-grid"></div>
     <div class="ambient-light light-1"></div>
     <div class="ambient-light light-2"></div>
+    <div class="ambient-light light-3"></div>
     <div class="particles" id="particles"></div>
 
     <header class="neuro-header">
@@ -123,15 +628,8 @@
                 </div>
                 <div class="nav-buttons">
                     <a href="profile.html" class="nav-btn"><i class="fas fa-user"></i> Profil</a>
-                    <a href="rsma.html" class="nav-btn"><i class="fas fa-water"></i> RSMA</a>
-                    <a href="oxy.html" class="nav-btn"><i class="fas fa-wind"></i> OXY</a>
-                    <a href="rga.html" class="nav-btn"><i class="fas fa-robot"></i> RGA</a>
-                    <a href="irritech.html" class="nav-btn"><i class="fas fa-tint"></i> IRRITECH</a>
-                    <a href="mk40.html" class="nav-btn"><i class="fas fa-egg"></i> MK-40</a>
                     <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> Accueil</a>
-                    <a href="sagaf.html" class="nav-btn"><i class="fas fa-exclamation-triangle"></i> SAGAF</a>
-                    <a href="binv.html" class="nav-btn"><i class="fas fa-eye-slash"></i> BINV</a>
-                    <a href="cours.html" class="nav-btn"><i class="fas fa-graduation-cap"></i> COURS</a>
+                    <a href="cours.html" class="nav-btn"><i class="fas fa-graduation-cap"></i> Cours</a>
                     <a href="ia.html" class="nav-btn"><i class="fas fa-brain"></i> IA</a>
                 </div>
                 <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> DÉCONNEXION</button>
@@ -142,7 +640,7 @@
     <div class="dashboard-container">
         <div class="info-banner" id="infoBanner">
             <span class="icon"><i class="fas fa-bullhorn"></i></span>
-            <span class="message-text" id="infoMessage"><i class="fas fa-spinner fa-spin"></i>Bienvenue sur AFRICA.TECH21 !</span>
+            <span class="message-text" id="infoMessage"><i class="fas fa-spinner fa-spin"></i> Bienvenue sur AFRICA.TECH21 !</span>
         </div>
 
         <section class="hero-section">
@@ -150,173 +648,280 @@
             <p class="hero-subtitle">Interface de collaboration avancée pour les membres d'AFRICA.TECH21. Accédez aux projets confidentiels, communiquez avec l'équipe et gérez les développements techniques.</p>
         </section>
 
-        <div class="features-grid">
-            <div class="feature-card" onclick="accederEspaceDirection()">
-                <span class="corner tl"></span>
-                <span class="corner br"></span>
-                <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
-                <h3 class="feature-title">ESPACE DIRECTION</h3>
-                <p class="feature-description">Postes de travail des membres de la direction. Secrétariat, Gestion des Stocks, Admin Examens, Espace Major. Accès strictement réservé.</p>
-                <div class="feature-status status-active"><i class="fas fa-lock"></i> ACCÈS: DIRECTION</div>
-            </div>
+        <!-- ============================================================ -->
+        <!-- 🆕 STRUCTURE EN RAMIFICATION TECHNOLOGIQUE (DESKTOP)         -->
+        <!-- ============================================================ -->
+        <div class="tech-tree" id="techTree">
+            <!-- SVG pour les lignes de circuit -->
+            <svg class="circuit-lines" id="circuitSVG" viewBox="0 0 1800 1400" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="circuitGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.9"/>
+                        <stop offset="50%" stop-color="#9d00ff" stop-opacity="0.7"/>
+                        <stop offset="100%" stop-color="#ffd700" stop-opacity="0.9"/>
+                    </linearGradient>
+                </defs>
+                <!-- Lignes seront générées en JS -->
+            </svg>
 
-            <div class="feature-card" onclick="window.location.href='rapport.html'">
-                <span class="corner tl"></span>
-                <span class="corner br"></span>
-                <div class="feature-icon"><i class="fas fa-clipboard-check"></i></div>
-                <h3 class="feature-title">RAPPORT DE FIN DE JOURNÉE</h3>
-                <p class="feature-description">Rédigez votre rapport d'activité quotidien.</p>
-                <div class="feature-status status-active"><i class="fas fa-users"></i> ACCÈS: MEMBRES</div>
-            </div>
+            <div class="tree-nodes">
+                <!-- CARTE CENTRALE : ESPACE DIRECTION (PROCESSEUR) -->
+                <div class="node-core" onclick="accederEspaceDirection()">
+                    <div class="chip-pins">
+                        <div class="chip-pin top" style="left: 20%;"></div>
+                        <div class="chip-pin top" style="left: 40%;"></div>
+                        <div class="chip-pin top" style="left: 60%;"></div>
+                        <div class="chip-pin top" style="left: 80%;"></div>
+                        <div class="chip-pin bottom" style="left: 20%;"></div>
+                        <div class="chip-pin bottom" style="left: 40%;"></div>
+                        <div class="chip-pin bottom" style="left: 60%;"></div>
+                        <div class="chip-pin bottom" style="left: 80%;"></div>
+                        <div class="chip-pin left" style="top: 20%;"></div>
+                        <div class="chip-pin left" style="top: 40%;"></div>
+                        <div class="chip-pin left" style="top: 60%;"></div>
+                        <div class="chip-pin left" style="top: 80%;"></div>
+                        <div class="chip-pin right" style="top: 20%;"></div>
+                        <div class="chip-pin right" style="top: 40%;"></div>
+                        <div class="chip-pin right" style="top: 60%;"></div>
+                        <div class="chip-pin right" style="top: 80%;"></div>
+                    </div>
+                    <div class="node-core-inner">
+                        <i class="fas fa-shield-alt core-icon"></i>
+                        <div class="core-title">ESPACE DIRECTION</div>
+                        <div class="core-sub">PROCESSEUR CENTRAL</div>
+                        <div class="core-badge"><i class="fas fa-lock"></i> ACCÈS RESTREINT</div>
+                    </div>
+                </div>
 
-            <div class="feature-card" onclick="window.location.href='examiner.html'">
-                <span class="corner tl"></span>
-                <span class="corner br"></span>
-                <div class="feature-icon"><i class="fas fa-file-pdf"></i></div>
-                <h3 class="feature-title"> DÉPOSER MON TRAVAIL</h3>
-                <p class="feature-description">Soumettez votre travail (PDF) à l'examen ultra-rigoureux.</p>
-                <div class="feature-status status-active"><i class="fas fa-lock"></i> RÉSERVÉ AUX MEMBRES</div>
-            </div>
+                <!-- CARTES SATELLITES -->
+                <!-- Position 1 : Haut -->
+                <div class="node-satellite pos-1" onclick="window.location.href='rapport.html'">
+                    <div class="node-satellite-inner">
+                        <i class="fas fa-clipboard-check sat-icon"></i>
+                        <div class="sat-title">RAPPORT JOURNALIER</div>
+                        <div class="sat-desc">Rapport d'activité quotidien</div>
+                        <div class="sat-status active">ACCÈS MEMBRES</div>
+                    </div>
+                </div>
 
-            <div class="feature-card" onclick="window.location.href='cours.html'">
-                <span class="corner tl"></span>
-                <span class="corner br"></span>
-                <div class="feature-icon"><i class="fas fa-graduation-cap"></i></div>
-                <h3 class="feature-title">COURS AFRICA.TECH21</h3>
-                <p class="feature-description">Formation Future Members Africa.tech21 (FFAM).</p>
-                <div class="feature-status status-active">✅ ACCÈS: OUVERT</div>
-            </div>
+                <!-- Position 2 : Haut-Droite -->
+                <div class="node-satellite pos-2" onclick="window.location.href='examiner.html'">
+                    <div class="node-satellite-inner">
+                        <i class="fas fa-file-pdf sat-icon"></i>
+                        <div class="sat-title">DÉPOSER MON TRAVAIL</div>
+                        <div class="sat-desc">Soumission PDF</div>
+                        <div class="sat-status active">MEMBRES</div>
+                    </div>
+                </div>
 
-            <div class="feature-card" onclick="window.location.href='examen-ffam.html'">
-                <span class="corner tl"></span>
-                <span class="corner br"></span>
-                <div class="feature-icon"><i class="fas fa-graduation-cap"></i></div>
-                <h3 class="feature-title">EXAMEN FFAM</h3>
-                <p class="feature-description">Évaluation technique pour les Future Members.</p>
-                <div class="feature-status status-active"><i class="fas fa-lock"></i> ACCÈS: RÉSERVÉ</div>
-            </div>
+                <!-- Position 3 : Droite -->
+                <div class="node-satellite pos-3" onclick="window.location.href='cours.html'">
+                    <div class="node-satellite-inner">
+                        <i class="fas fa-graduation-cap sat-icon"></i>
+                        <div class="sat-title">COURS AFRICA.TECH21</div>
+                        <div class="sat-desc">Formation FFAM</div>
+                        <div class="sat-status active">OUVERT</div>
+                    </div>
+                </div>
 
-            <div class="feature-card" onclick="window.location.href='quiz.html'">
-                <span class="corner tl"></span>
-                <span class="corner br"></span>
-                <div class="feature-icon"><i class="fas fa-brain"></i></div>
-                <h3 class="feature-title">PAUSE QUIZ</h3>
-                <p class="feature-description">100 questions sur l'électronique et la robotique.</p>
-                <div class="feature-status status-active"><i class="fas fa-gamepad"></i> DISPONIBLE</div>
-            </div>
+                <!-- Position 4 : Bas-Droite -->
+                <div class="node-satellite pos-4" onclick="window.location.href='examen-ffam.html'">
+                    <div class="node-satellite-inner">
+                        <i class="fas fa-certificate sat-icon"></i>
+                        <div class="sat-title">EXAMEN FFAM</div>
+                        <div class="sat-desc">Évaluation technique</div>
+                        <div class="sat-status locked">RÉSERVÉ</div>
+                    </div>
+                </div>
 
-            <div class="feature-card" onclick="window.location.href='qr-generator.html'">
-                <span class="corner tl"></span>
-                <span class="corner br"></span>
-                <div class="feature-icon"><i class="fas fa-qrcode"></i></div>
-                <h3 class="feature-title">GÉNÉRATEUR QR</h3>
-                <p class="feature-description">Génération des QR codes officiels pour les cartes membres de la direction. Accès à l'Espace Direction par scan.</p>
-                <div class="feature-status status-active"><i class="fas fa-lock"></i> ACCÈS: PRÉSIDENT</div>
-            </div>
+                <!-- Position 5 : Bas -->
+                <div class="node-satellite pos-5" onclick="window.location.href='quiz.html'">
+                    <div class="node-satellite-inner">
+                        <i class="fas fa-brain sat-icon"></i>
+                        <div class="sat-title">PAUSE QUIZ</div>
+                        <div class="sat-desc">100 questions tech</div>
+                        <div class="sat-status active">DISPONIBLE</div>
+                    </div>
+                </div>
 
-            <div class="feature-card" onclick="window.location.href='centre-controle.html'">
-                <span class="corner tl"></span>
-                <span class="corner br"></span>
-                <div class="feature-icon"><i class="fas fa-satellite-dish"></i></div>
-                <h3 class="feature-title">CENTRE DE CONTRÔLE</h3>
-                <p class="feature-description">Pilotez vos robots et systèmes automatiques (ESP32, Raspberry, ROS2). Manettes, panneau industriel, simulation, combat.</p>
-                <div class="feature-status status-active"><i class="fas fa-lock"></i> ACCÈS: PRÉSIDENT</div>
-            </div>
+                <!-- Position 6 : Bas-Gauche -->
+                <div class="node-satellite pos-6" onclick="window.location.href='qr-generator.html'">
+                    <div class="node-satellite-inner">
+                        <i class="fas fa-qrcode sat-icon"></i>
+                        <div class="sat-title">GÉNÉRATEUR QR</div>
+                        <div class="sat-desc">Cartes membres</div>
+                        <div class="sat-status locked">PRÉSIDENT</div>
+                    </div>
+                </div>
 
-            <!-- ============================================================ -->
-            <!-- 🆕 NOUVELLE CARTE : SURVEILLANCE MAJOR                        -->
-            <!-- ============================================================ -->
-            <div class="feature-card" onclick="ouvrirSurveillance()" style="border-color: var(--neon-red);">
-                <span class="corner tl" style="border-color: var(--neon-red);"></span>
-                <span class="corner br" style="border-color: var(--neon-red);"></span>
-                <div class="feature-icon" style="color: var(--neon-red);"><i class="fas fa-eye"></i></div>
-                <h3 class="feature-title" style="color: var(--neon-red);">SURVEILLANCE</h3>
-                <p class="feature-description">Tableau de bord confidentiel : suivi en temps réel de l'activité, de l'assiduité et des centres d'intérêt de tous les membres. Réservé au Major.</p>
-                <div class="feature-status" style="color: var(--neon-red);"><i class="fas fa-lock"></i> ACCÈS: MAJOR UNIQUEMENT</div>
-            </div>
+                <!-- Position 7 : Gauche -->
+                <div class="node-satellite pos-7" onclick="window.location.href='centre-controle.html'">
+                    <div class="node-satellite-inner">
+                        <i class="fas fa-satellite-dish sat-icon"></i>
+                        <div class="sat-title">CENTRE DE CONTRÔLE</div>
+                        <div class="sat-desc">ESP32 · ROS2 · Robots</div>
+                        <div class="sat-status locked">PRÉSIDENT</div>
+                    </div>
+                </div>
 
-            <div class="feature-card" onclick="verifierAcces('oxy.html')">
-                <span class="corner tl"></span>
-                <span class="corner br"></span>
-                <div class="feature-icon"><i class="fas fa-wind"></i></div>
-                <h3 class="feature-title">PROJET OXY</h3>
-                <p class="feature-description">Système d'assistance respiratoire automatique.</p>
-                <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
-            </div>
+                <!-- Position 8 : Haut-Gauche -->
+                <div class="node-satellite pos-8" onclick="ouvrirSurveillance()">
+                    <div class="node-satellite-inner" style="border-color: var(--neon-red);">
+                        <i class="fas fa-eye sat-icon" style="color: var(--neon-red); filter: drop-shadow(0 0 10px var(--neon-red));"></i>
+                        <div class="sat-title" style="color: var(--neon-red);">SURVEILLANCE</div>
+                        <div class="sat-desc">Suivi des membres</div>
+                        <div class="sat-status restricted">MAJOR</div>
+                    </div>
+                </div>
 
-            <div class="feature-card" onclick="verifierAcces('mk40.html')">
-                <span class="corner tl"></span>
-                <span class="corner br"></span>
-                <div class="feature-icon"><i class="fas fa-egg"></i></div>
-                <h3 class="feature-title">MK-40</h3>
-                <p class="feature-description">Couveuse automatique intelligente nouvelle génération.</p>
-                <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
-            </div>
+                <!-- Positions intérieures (projets) -->
+                <div class="node-satellite inner pos-9" onclick="verifierAcces('oxy.html')">
+                    <div class="node-satellite-inner">
+                        <i class="fas fa-wind sat-icon"></i>
+                        <div class="sat-title">OXY</div>
+                        <div class="sat-status restricted">RESTREINT</div>
+                    </div>
+                </div>
 
-            <div class="feature-card" onclick="verifierAcces('binv.html')">
-                <span class="corner tl"></span>
-                <span class="corner br"></span>
-                <div class="feature-icon"><i class="fas fa-eye-slash"></i></div>
-                <h3 class="feature-title">BINV</h3>
-                <p class="feature-description">Bâton Intelligent pour les Non-Voyants.</p>
-                <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
-            </div>
+                <div class="node-satellite inner pos-10" onclick="verifierAcces('mk40.html')">
+                    <div class="node-satellite-inner">
+                        <i class="fas fa-egg sat-icon"></i>
+                        <div class="sat-title">MK-40</div>
+                        <div class="sat-status restricted">RESTREINT</div>
+                    </div>
+                </div>
 
-            <div class="feature-card" onclick="verifierAcces('sagaf.html')">
-                <span class="corner tl"></span>
-                <span class="corner br"></span>
-                <div class="feature-icon"><i class="fas fa-exclamation-triangle"></i></div>
-                <h3 class="feature-title">SAGAF</h3>
-                <p class="feature-description">Système d'Alerte pour Fuite de Gaz. Détection précoce pour la sécurité domestique et industrielle.</p>
-                <div class="feature-status status-active"><i class="fas fa-lock"></i> ACCÈS: RESTREINT</div>
-            </div>
+                <div class="node-satellite inner pos-11" onclick="verifierAcces('binv.html')">
+                    <div class="node-satellite-inner">
+                        <i class="fas fa-eye-slash sat-icon"></i>
+                        <div class="sat-title">BINV</div>
+                        <div class="sat-status restricted">RESTREINT</div>
+                    </div>
+                </div>
 
-            <div class="feature-card" onclick="verifierAcces('irritech.html')">
-                <span class="corner tl"></span>
-                <span class="corner br"></span>
-                <div class="feature-icon"><i class="fas fa-tint"></i></div>
-                <h3 class="feature-title">IRRITECH V1.0</h3>
-                <p class="feature-description">Système d'arrosage automatique intelligent.</p>
-                <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
-            </div>
-
-            <div class="feature-card" onclick="verifierAcces('rga.html')">
-                <span class="corner tl"></span>
-                <span class="corner br"></span>
-                <div class="feature-icon"><i class="fas fa-robot"></i></div>
-                <h3 class="feature-title">ROBOT DE GUIDE (RGA)</h3>
-                <p class="feature-description">Robot intelligent autonome pour l'accueil et l'assistance.</p>
-                <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
-            </div>
-
-            <div class="feature-card" onclick="verifierAcces('rsma.html')">
-                <span class="corner tl"></span>
-                <span class="corner br"></span>
-                <div class="feature-icon"><i class="fas fa-water"></i></div>
-                <h3 class="feature-title">RSMA V1.0</h3>
-                <p class="feature-description">Système de robot sous-marin autonome pour l'exploration marine.</p>
-                <div class="feature-status status-active">🔒 ACCÈS: RESTREINT</div>
-            </div>
-
-            <div class="feature-card" onclick="window.location.href='rejoindre-csiv.html'">
-                <span class="corner tl"></span>
-                <span class="corner br"></span>
-                <div class="feature-icon"><i class="fas fa-crown"></i></div>
-                <h3 class="feature-title">REJOINDRE LA CSIV</h3>
-                <p class="feature-description">Postuler pour intégrer la Cellule Stratégique d'Innovation et de Veille, ou demander un transfert de poste.</p>
-                <div class="feature-status status-active"><i class="fas fa-user-plus"></i> ACCÈS: TOUS</div>
-            </div>
-
-            <div class="feature-card" onclick="window.location.href='collaboratif.html'">
-                <span class="corner tl"></span>
-                <span class="corner br"></span>
-                <div class="feature-icon"><i class="fas fa-users-cog"></i></div>
-                <h3 class="feature-title">RÉSEAU COLLABORATIF</h3>
-                <p class="feature-description">Plateforme de collaboration en temps réel avec les membres.</p>
-                <div class="feature-status status-active">ACCÈS: DISPONIBLE</div>
+                <div class="node-satellite inner pos-12" onclick="verifierAcces('sagaf.html')">
+                    <div class="node-satellite-inner">
+                        <i class="fas fa-exclamation-triangle sat-icon"></i>
+                        <div class="sat-title">SAGAF</div>
+                        <div class="sat-status restricted">RESTREINT</div>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <!-- FALLBACK MOBILE : GRILLE -->
+        <div class="mobile-grid">
+            <div class="feature-card" onclick="accederEspaceDirection()" style="border-color: var(--neon-red);">
+                <div class="feature-icon" style="color: var(--neon-red);"><i class="fas fa-shield-alt"></i></div>
+                <h3 class="feature-title" style="color: var(--neon-red);">ESPACE DIRECTION</h3>
+                <p class="feature-desc">Postes de travail direction</p>
+                <div class="feature-status" style="color: var(--neon-red);">🔒 DIRECTION</div>
+            </div>
+            <div class="feature-card" onclick="window.location.href='rapport.html'">
+                <div class="feature-icon"><i class="fas fa-clipboard-check"></i></div>
+                <h3 class="feature-title">RAPPORT JOURNALIER</h3>
+                <p class="feature-desc">Rapport d'activité quotidien</p>
+                <div class="feature-status">ACCÈS MEMBRES</div>
+            </div>
+            <div class="feature-card" onclick="window.location.href='examiner.html'">
+                <div class="feature-icon"><i class="fas fa-file-pdf"></i></div>
+                <h3 class="feature-title">DÉPOSER MON TRAVAIL</h3>
+                <p class="feature-desc">Soumission PDF</p>
+                <div class="feature-status">MEMBRES</div>
+            </div>
+            <div class="feature-card" onclick="window.location.href='cours.html'">
+                <div class="feature-icon"><i class="fas fa-graduation-cap"></i></div>
+                <h3 class="feature-title">COURS AFRICA.TECH21</h3>
+                <p class="feature-desc">Formation FFAM</p>
+                <div class="feature-status">OUVERT</div>
+            </div>
+            <div class="feature-card" onclick="window.location.href='examen-ffam.html'">
+                <div class="feature-icon"><i class="fas fa-certificate"></i></div>
+                <h3 class="feature-title">EXAMEN FFAM</h3>
+                <p class="feature-desc">Évaluation technique</p>
+                <div class="feature-status">RÉSERVÉ</div>
+            </div>
+            <div class="feature-card" onclick="window.location.href='quiz.html'">
+                <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                <h3 class="feature-title">PAUSE QUIZ</h3>
+                <p class="feature-desc">100 questions tech</p>
+                <div class="feature-status">DISPONIBLE</div>
+            </div>
+            <div class="feature-card" onclick="window.location.href='qr-generator.html'">
+                <div class="feature-icon"><i class="fas fa-qrcode"></i></div>
+                <h3 class="feature-title">GÉNÉRATEUR QR</h3>
+                <p class="feature-desc">Cartes membres</p>
+                <div class="feature-status">PRÉSIDENT</div>
+            </div>
+            <div class="feature-card" onclick="window.location.href='centre-controle.html'">
+                <div class="feature-icon"><i class="fas fa-satellite-dish"></i></div>
+                <h3 class="feature-title">CENTRE DE CONTRÔLE</h3>
+                <p class="feature-desc">ESP32 · ROS2 · Robots</p>
+                <div class="feature-status">PRÉSIDENT</div>
+            </div>
+            <div class="feature-card" onclick="ouvrirSurveillance()" style="border-color: var(--neon-red);">
+                <div class="feature-icon" style="color: var(--neon-red);"><i class="fas fa-eye"></i></div>
+                <h3 class="feature-title" style="color: var(--neon-red);">SURVEILLANCE</h3>
+                <p class="feature-desc">Suivi des membres</p>
+                <div class="feature-status" style="color: var(--neon-red);">MAJOR</div>
+            </div>
+            <div class="feature-card" onclick="verifierAcces('oxy.html')">
+                <div class="feature-icon"><i class="fas fa-wind"></i></div>
+                <h3 class="feature-title">PROJET OXY</h3>
+                <p class="feature-desc">Assistance respiratoire</p>
+                <div class="feature-status">RESTREINT</div>
+            </div>
+            <div class="feature-card" onclick="verifierAcces('mk40.html')">
+                <div class="feature-icon"><i class="fas fa-egg"></i></div>
+                <h3 class="feature-title">MK-40</h3>
+                <p class="feature-desc">Couveuse intelligente</p>
+                <div class="feature-status">RESTREINT</div>
+            </div>
+            <div class="feature-card" onclick="verifierAcces('binv.html')">
+                <div class="feature-icon"><i class="fas fa-eye-slash"></i></div>
+                <h3 class="feature-title">BINV</h3>
+                <p class="feature-desc">Bâton non-voyants</p>
+                <div class="feature-status">RESTREINT</div>
+            </div>
+            <div class="feature-card" onclick="verifierAcces('sagaf.html')">
+                <div class="feature-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                <h3 class="feature-title">SAGAF</h3>
+                <p class="feature-desc">Alerte fuite de gaz</p>
+                <div class="feature-status">RESTREINT</div>
+            </div>
+            <div class="feature-card" onclick="verifierAcces('irritech.html')">
+                <div class="feature-icon"><i class="fas fa-tint"></i></div>
+                <h3 class="feature-title">IRRITECH</h3>
+                <p class="feature-desc">Arrosage intelligent</p>
+                <div class="feature-status">RESTREINT</div>
+            </div>
+            <div class="feature-card" onclick="verifierAcces('rga.html')">
+                <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                <h3 class="feature-title">RGA</h3>
+                <p class="feature-desc">Robot guide autonome</p>
+                <div class="feature-status">RESTREINT</div>
+            </div>
+            <div class="feature-card" onclick="verifierAcces('rsma.html')">
+                <div class="feature-icon"><i class="fas fa-water"></i></div>
+                <h3 class="feature-title">RSMA</h3>
+                <p class="feature-desc">Robot sous-marin</p>
+                <div class="feature-status">RESTREINT</div>
+            </div>
+            <div class="feature-card" onclick="window.location.href='rejoindre-csiv.html'">
+                <div class="feature-icon"><i class="fas fa-crown"></i></div>
+                <h3 class="feature-title">REJOINDRE LA CSIV</h3>
+                <p class="feature-desc">Postuler / transfert</p>
+                <div class="feature-status">TOUS</div>
+            </div>
+            <div class="feature-card" onclick="window.location.href='collaboratif.html'">
+                <div class="feature-icon"><i class="fas fa-users-cog"></i></div>
+                <h3 class="feature-title">RÉSEAU COLLABORATIF</h3>
+                <p class="feature-desc">Collaboration temps réel</p>
+                <div class="feature-status">DISPONIBLE</div>
+            </div>
+        </div>
+
+        <!-- FORUM -->
         <section class="forum-section">
             <h2 class="section-title">CANAL DE COMMUNICATION</h2>
             <div class="messages-container" id="forumMessages">
@@ -335,10 +940,13 @@
         </section>
     </div>
 
-    <!-- 🆕 INCLURE LE TRACKER (surveillance) -->
+    <!-- TRACKER SURVEILLANCE -->
     <script src="tracker.js"></script>
 
     <script>
+        // ============================================================
+        // CONFIGURATION
+        // ============================================================
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyV86rnSYPMRVIyZ-sE62lQXoVRDvhfKPOppMW7Z2IACqM8s2pGbpXC0BcKUNydxs/exec';
         const INFO_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwESkPKPu4svg_ZDnCj-LSTZWlCE_GRLNAP00F_GQXqTBKhqxcmsRjHGk7aXBn5GbfF/exec';
 
@@ -357,11 +965,94 @@
         }
         document.getElementById('userRole').textContent = '🎯 ' + memberFonction;
 
-        // ==================== MESSAGE VOCAL DE BIENVENUE ====================
+        // ============================================================
+        // GÉNÉRATION DES LIGNES DE CIRCUIT SVG
+        // ============================================================
+        function generateCircuitLines() {
+            const svg = document.getElementById('circuitSVG');
+            if (!svg) return;
+
+            // Centre du processeur (ESPACE DIRECTION) — position approximative
+            const centerX = 900;
+            const centerY = 700;
+
+            // Positions des satellites (doivent correspondre au CSS)
+            const satellites = [
+                { x: centerX, y: centerY - 380 },      // pos-1 Haut
+                { x: centerX + 330, y: centerY - 220 }, // pos-2 Haut-Droite
+                { x: centerX + 420, y: centerY },       // pos-3 Droite
+                { x: centerX + 330, y: centerY + 220 }, // pos-4 Bas-Droite
+                { x: centerX, y: centerY + 380 },       // pos-5 Bas
+                { x: centerX - 330, y: centerY + 220 }, // pos-6 Bas-Gauche
+                { x: centerX - 420, y: centerY },       // pos-7 Gauche
+                { x: centerX - 330, y: centerY - 220 }, // pos-8 Haut-Gauche
+                // Intérieurs
+                { x: centerX + 200, y: centerY - 100 }, // pos-9
+                { x: centerX - 200, y: centerY + 100 }, // pos-10
+                { x: centerX - 200, y: centerY - 100 }, // pos-11
+                { x: centerX + 200, y: centerY + 100 }  // pos-12
+            ];
+
+            // Effacer les anciennes lignes
+            const oldPaths = svg.querySelectorAll('path');
+            oldPaths.forEach(p => p.remove());
+            const oldNodes = svg.querySelectorAll('.circuit-node');
+            oldNodes.forEach(n => n.remove());
+
+            // Générer une ligne pour chaque satellite
+            satellites.forEach((sat, idx) => {
+                // Créer un chemin en L (Manhattan routing) pour un look "circuit"
+                const midX = (centerX + sat.x) / 2;
+                const midY = (centerY + sat.y) / 2;
+
+                // Chemin avec segments droits
+                const pathData = `M ${centerX} ${centerY} 
+                                  L ${midX} ${centerY} 
+                                  L ${midX} ${sat.y} 
+                                  L ${sat.x} ${sat.y}`;
+
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', pathData);
+                path.setAttribute('class', 'branch');
+                // Délai d'animation différent pour chaque ligne
+                path.style.animationDelay = (idx * 0.2) + 's';
+                svg.appendChild(path);
+
+                // Nœud de connexion au centre
+                const nodeStart = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                nodeStart.setAttribute('cx', centerX);
+                nodeStart.setAttribute('cy', centerY);
+                nodeStart.setAttribute('r', '4');
+                nodeStart.setAttribute('class', 'circuit-node');
+                svg.appendChild(nodeStart);
+
+                // Nœud de connexion au satellite
+                const nodeEnd = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                nodeEnd.setAttribute('cx', sat.x);
+                nodeEnd.setAttribute('cy', sat.y);
+                nodeEnd.setAttribute('r', '3');
+                nodeEnd.setAttribute('class', 'circuit-node');
+                nodeEnd.style.animationDelay = (idx * 0.2) + 's';
+                svg.appendChild(nodeEnd);
+
+                // Petit point au milieu pour le routage
+                const nodeMid = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                nodeMid.setAttribute('cx', midX);
+                nodeMid.setAttribute('cy', sat.y);
+                nodeMid.setAttribute('r', '2');
+                nodeMid.setAttribute('class', 'circuit-node');
+                nodeMid.setAttribute('fill', '#9d00ff');
+                nodeMid.style.animationDelay = (idx * 0.15) + 's';
+                svg.appendChild(nodeMid);
+            });
+        }
+
+        // ============================================================
+        // MESSAGE VOCAL DE BIENVENUE
+        // ============================================================
         function messageVocalBienvenue() {
             if (!window.speechSynthesis) return;
             if (!memberPrenom && !memberNom) return;
-
             if (sessionStorage.getItem('bienvenue_dite') === 'true') return;
 
             const prenom = memberPrenom || '';
@@ -369,9 +1060,7 @@
             const fonction = memberFonction || '';
 
             let texte = `Bienvenue ${prenom} ${nom}`;
-            if (fonction) {
-                texte += `, ${fonction.toLowerCase()}`;
-            }
+            if (fonction) texte += `, ${fonction.toLowerCase()}`;
             texte += `, sur AFRICA.TECH21.`;
 
             window.speechSynthesis.cancel();
@@ -380,28 +1069,34 @@
             utterance.rate = 0.95;
             utterance.pitch = 1;
             utterance.volume = 1;
-
             utterance.onend = function() {
                 sessionStorage.setItem('bienvenue_dite', 'true');
             };
-
-            setTimeout(() => {
-                window.speechSynthesis.speak(utterance);
-            }, 800);
+            setTimeout(() => window.speechSynthesis.speak(utterance), 800);
         }
 
+        // ============================================================
+        // PARTICULES
+        // ============================================================
         function createParticles() {
             const container = document.getElementById('particles');
+            const colors = ['#00f0ff', '#00ff88', '#9d00ff', '#ffd700'];
             for (let i = 0; i < 50; i++) {
                 const p = document.createElement('div');
                 p.className = 'particle';
                 p.style.left = Math.random() * 100 + 'vw';
                 p.style.animationDelay = Math.random() * 15 + 's';
                 p.style.animationDuration = (8 + Math.random() * 12) + 's';
+                const c = colors[Math.floor(Math.random() * colors.length)];
+                p.style.background = c;
+                p.style.boxShadow = `0 0 10px ${c}`;
                 container.appendChild(p);
             }
         }
 
+        // ============================================================
+        // FORUM
+        // ============================================================
         function sendMessage() {
             const input = document.getElementById('newMessage');
             const msg = input.value.trim();
@@ -409,7 +1104,7 @@
             const container = document.getElementById('forumMessages');
             const now = new Date();
             const dateStr = now.toLocaleDateString('fr-FR') + ' - ' + now.toLocaleTimeString('fr-FR');
-            const email = localStorage.getItem('memberEmail');
+            const email = localStorage.getItem('memberEmail') || 'Membre';
             const div = document.createElement('div');
             div.className = 'message';
             div.innerHTML = `
@@ -470,6 +1165,9 @@
             }
         }
 
+        // ============================================================
+        // ACCÈS
+        // ============================================================
         const ACCES_AUTORISES = ['Birane186@00', 'AT21_0036', 'AT21-001', 'AT21_ZAM68','AT21_0071','AT21_0072'];
 
         function verifierAcces(page) {
@@ -485,16 +1183,12 @@
             window.location.href = 'direction.html';
         }
 
-        // ============================================================
-        // 🆕 FONCTION D'ACCÈS À LA SURVEILLANCE (MAJOR)
-        // ============================================================
-        const MAJOR_CODE = 'MAJOR2024'; // ⚠️ CHANGEZ CE CODE SI VOUS VOULEZ
+        const MAJOR_CODE = 'MAJOR2024';
 
         function ouvrirSurveillance() {
             const codeSaisi = prompt("🔒 ACCÈS RÉSERVÉ AU MAJOR\n\nEntrez votre code MAJOR :");
-            if (codeSaisi === null) return; // annulé
+            if (codeSaisi === null) return;
             if (codeSaisi === MAJOR_CODE) {
-                // Déverrouiller pour cette session
                 sessionStorage.setItem('major_unlocked', 'true');
                 window.location.href = 'surveillance.html';
             } else {
@@ -514,11 +1208,20 @@
             window.location.href = 'index.html';
         }
 
+        // ============================================================
+        // INIT
+        // ============================================================
         window.addEventListener('load', () => {
             createParticles();
             loadMessages();
             chargerInfoJour();
             messageVocalBienvenue();
+            generateCircuitLines();
+        });
+
+        window.addEventListener('resize', () => {
+            // Régénérer les lignes au redimensionnement
+            setTimeout(generateCircuitLines, 200);
         });
     </script>
 </body>
