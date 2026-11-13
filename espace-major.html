@@ -636,6 +636,27 @@
             10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
             20%, 40%, 60%, 80% { transform: translateX(10px); }
         }
+
+        /* === BOUTON COMMUNIQUÉ (NOUVEAU) === */
+        .btn-communique {
+            background: linear-gradient(135deg, var(--major-red), #CC0033);
+            color: #fff;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(255, 0, 60, 0.3);
+        }
+        .btn-communique:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255, 0, 60, 0.5);
+        }
     </style>
 </head>
 <body>
@@ -676,6 +697,9 @@
                     Infos lues : <strong id="headerInfosCount">0</strong>
                 </div>
                 <div class="nav-buttons">
+                    <button onclick="ouvrirCommunique()" class="btn-communique">
+                        <i class="fas fa-bullhorn"></i> COMMUNIQUÉ
+                    </button>
                     <button onclick="retourDashboard()" class="nav-btn nav-btn-dashboard">
                         <i class="fas fa-arrow-left"></i> DASHBOARD
                     </button>
@@ -876,6 +900,73 @@ placeholder="// Écrivez votre code ici...
                     letter-spacing: 1px;
                 ">
                     <i class="fas fa-times"></i> FERMER
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- === OVERLAY COMMUNIQUÉ INTERNE === -->
+    <div class="info-overlay" id="communiqueOverlay" style="z-index: 100002;">
+        <div class="info-card" style="max-width: 850px;">
+            <div class="info-card-header">
+                <span class="info-card-tag" style="background:rgba(255,0,60,0.2); border-color:var(--major-red); color:var(--major-red);">
+                    <i class="fas fa-bullhorn"></i> COMMUNIQUÉ INTERNE
+                </span>
+                <button onclick="fermerCommunique()" style="background:transparent; border:none; color:var(--major-red); cursor:pointer; font-size:1.5rem;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <h2 class="info-card-title" style="font-size: 1.3rem; color: var(--major-gold);">Rédiger un nouveau communiqué</h2>
+
+            <div style="display:flex; flex-direction:column; gap:1rem; margin-top:1.5rem; text-align:left;">
+                <!-- Réf & Priorité -->
+                <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+                    <div style="flex:1; min-width:200px;">
+                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">N° RÉFÉRENCE</label>
+                        <input type="text" id="commRef" placeholder="INT/AT21/2026/001" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
+                    </div>
+                    <div style="flex:1; min-width:200px;">
+                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">PRIORITÉ</label>
+                        <select id="commPriorite" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
+                            <option value="INFORMATION">Information</option>
+                            <option value="IMPORTANT">Important</option>
+                            <option value="URGENT">Urgent</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Objet -->
+                <div>
+                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">OBJET DU COMMUNIQUÉ</label>
+                    <input type="text" id="commObjet" placeholder="Objet clair et direct..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
+                </div>
+
+                <!-- Émetteur / Destinataire / Date -->
+                <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+                    <div style="flex:1; min-width:150px;">
+                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">DE</label>
+                        <input type="text" id="commDe" placeholder="Bureau exécutif" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
+                    </div>
+                    <div style="flex:1; min-width:150px;">
+                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">À</label>
+                        <input type="text" id="commA" placeholder="Tous les membres" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
+                    </div>
+                    <div style="flex:1; min-width:150px;">
+                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">DATE</label>
+                        <input type="date" id="commDate" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
+                    </div>
+                </div>
+
+                <!-- Message -->
+                <div>
+                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">MESSAGE PRINCIPAL</label>
+                    <textarea id="commMessage" rows="4" placeholder="Annonce ou information à transmettre..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; resize:vertical;"></textarea>
+                </div>
+
+                <!-- Actions -->
+                <button onclick="genererCommuniquePDF()" class="btn-communique" style="width:100%; justify-content:center; padding:1rem; margin-top:1rem;">
+                    <i class="fas fa-file-pdf"></i> GÉNÉRER LE PDF OFFICIEL
                 </button>
             </div>
         </div>
@@ -1672,7 +1763,6 @@ initialiserProjet();
         function demarrerCycleInfos() {
             if (infoTimer) clearInterval(infoTimer);
             workspaceActif = true;
-            // ⏱️ 10 minutes réelles = 10 * 60 * 1000 ms
             infoTimer = setInterval(() => {
                 if (document.hidden) return;
                 if (!infoActive) afficherInfo();
@@ -1687,7 +1777,6 @@ initialiserProjet();
             if (ov) ov.classList.remove('active');
         }
                 // ==================== GESTION DES IMAGES DE COURS ====================
-        // Liste complète des placeholders attendus dans les cours
         const PLACEHOLDERS_IMAGES = [
             { id: 'ch1_courant_alternatif', label: 'Courant alternatif (sinusoïde)' },
             { id: 'ch1_courant_continu', label: 'Courant continu (ligne droite)' },
@@ -1963,6 +2052,188 @@ initialiserProjet();
                 document.getElementById('accessCode').focus();
             }, 500);
         });
+
+        // ==================== COMMUNIQUÉ INTERNE ====================
+        function ouvrirCommunique() {
+            document.getElementById('communiqueOverlay').classList.add('active');
+            // Pré-remplir la date du jour
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('commDate').value = today;
+        }
+
+        function fermerCommunique() {
+            document.getElementById('communiqueOverlay').classList.remove('active');
+        }
+
+        function genererCommuniquePDF() {
+            const ref = document.getElementById('commRef').value.trim();
+            const priorite = document.getElementById('commPriorite').value;
+            const objet = document.getElementById('commObjet').value.trim();
+            const de = document.getElementById('commDe').value.trim();
+            const a = document.getElementById('commA').value.trim();
+            const date = document.getElementById('commDate').value;
+            const message = document.getElementById('commMessage').value.trim();
+
+            if (!objet || !message) {
+                alert("⚠️ Veuillez remplir l'OBJET et le MESSAGE PRINCIPAL.");
+                return;
+            }
+
+            const printWindow = window.open('', '_blank');
+            if (!printWindow) {
+                alert('❌ Autorisez les popups pour générer le PDF.');
+                return;
+            }
+
+            // Formater la date
+            let dateFormatted = date;
+            if (date) {
+                const d = new Date(date);
+                dateFormatted = d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            }
+
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="fr">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Communiqué Interne — AFRICA.TECH21</title>
+                    <style>
+                        @page { size: A4; margin: 2cm; }
+                        body {
+                            font-family: 'Segoe UI', Arial, sans-serif;
+                            color: #1a1a1a;
+                            line-height: 1.6;
+                            font-size: 11pt;
+                        }
+                        .header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: flex-start;
+                            margin-bottom: 2rem;
+                            border-bottom: 2px solid #333;
+                            padding-bottom: 1rem;
+                        }
+                        .header-left h1 { margin: 0; color: #6a0dad; font-size: 1.5rem; }
+                        .header-left h2 { margin: 0.2rem 0 0 0; font-size: 1rem; color: #333; }
+                        .header-right { text-align: right; font-size: 0.9rem; }
+                        .ref-box {
+                            border: 2px solid #333;
+                            padding: 1rem;
+                            margin-bottom: 1.5rem;
+                            display: grid;
+                            grid-template-columns: 150px 1fr;
+                            gap: 0.5rem;
+                            font-size: 0.95rem;
+                        }
+                        .ref-box strong { font-weight: bold; }
+                        .priorite {
+                            display: inline-block;
+                            padding: 0.3rem 0.8rem;
+                            border-radius: 4px;
+                            font-weight: bold;
+                            font-size: 0.85rem;
+                            text-transform: uppercase;
+                        }
+                        .priorite.INFORMATION { background: #e0e0e0; color: #333; }
+                        .priorite.IMPORTANT { background: #ffe0b2; color: #e65100; }
+                        .priorite.URGENT { background: #ffcdd2; color: #b71c1c; }
+                        .objet {
+                            font-size: 1.2rem;
+                            font-weight: bold;
+                            margin: 1.5rem 0;
+                            color: #1a1a1a;
+                        }
+                        h3 {
+                            font-size: 1.1rem;
+                            color: #6a0dad;
+                            margin-top: 1.5rem;
+                            margin-bottom: 0.5rem;
+                            border-bottom: 1px solid #ccc;
+                            padding-bottom: 0.3rem;
+                        }
+                        p { margin-bottom: 0.8rem; text-align: justify; }
+                        .signatures {
+                            margin-top: 3rem;
+                            display: flex;
+                            justify-content: space-between;
+                            gap: 2rem;
+                        }
+                        .signature-block {
+                            flex: 1;
+                            border-top: 1px solid #333;
+                            padding-top: 0.5rem;
+                            font-size: 0.9rem;
+                        }
+                        .footer {
+                            margin-top: 2rem;
+                            font-size: 0.8rem;
+                            color: #666;
+                            text-align: center;
+                            border-top: 1px solid #ddd;
+                            padding-top: 1rem;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="header-left">
+                            <h1>AFRICA.TECH21</h1>
+                            <h2>COMMUNIQUÉ INTERNE</h2>
+                        </div>
+                        <div class="header-right">
+                            <div><strong>USAGE INTERNE</strong></div>
+                            <div style="color: #b71c1c;">NE PAS DIFFUSER</div>
+                        </div>
+                    </div>
+
+                    <div class="ref-box">
+                        <div><strong>N° Réf :</strong></div>
+                        <div>${ref || 'INT/AT21/[ANNÉE]/[N°]'}</div>
+                        <div><strong>Priorité :</strong></div>
+                        <div><span class="priorite ${priorite}">${priorite}</span></div>
+                        <div><strong>DE :</strong></div>
+                        <div>${de || 'Bureau exécutif'}</div>
+                        <div><strong>À :</strong></div>
+                        <div>${a || 'Tous les membres'}</div>
+                        <div><strong>DATE :</strong></div>
+                        <div>${dateFormatted}</div>
+                    </div>
+
+                    <div class="objet">Objet : ${objet}</div>
+
+                    <h3>1. Message Principal</h3>
+                    <p>Chers membres de la communauté <strong>Africa.Tech21</strong>,</p>
+                    <p>${message.replace(/\n/g, '</p><p>')}</p>
+
+                    <div class="signatures">
+                        <div class="signature-block">
+                            <strong>L'ÉMETTEUR</strong><br>
+                            ${de || 'Nom, fonction'}<br>
+                            <em>(Signature)</em>
+                        </div>
+                        <div class="signature-block">
+                            <strong>LE RESPONSABLE AFRICA.TECH21</strong><br>
+                            Nom, fonction<br>
+                            <em>(Signature)</em>
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        Ce document est réservé aux membres d'Africa.Tech21 et ne doit pas être diffusé en dehors de la communauté.<br>
+                        Fait à Dakar, le ${dateFormatted}
+                    </div>
+
+                    <script>
+                        window.onload = function() {
+                            setTimeout(function() { window.print(); }, 300);
+                        };
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
     </script>
 </body>
 </html>
