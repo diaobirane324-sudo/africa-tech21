@@ -543,6 +543,28 @@
             50% { transform: scale(1.2); opacity: 0.7; }
         }
 
+        /* ===== MODELE RAPPORT TECHNIQUE (NOUVEAU) ===== */
+        .btn-modele-rapport {
+            background: linear-gradient(135deg, #b8860b, #ffd700);
+            color: #1a0033;
+            border: none;
+            padding: 0.9rem 1.6rem;
+            border-radius: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            margin-bottom: 1rem;
+        }
+        .btn-modele-rapport:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255, 215, 0, 0.5);
+        }
+
         @media (max-width: 768px) {
             body { padding: 1rem; }
             .page-header h1 { font-size: 1.8rem; }
@@ -588,6 +610,9 @@
             </div>
             <div class="tab" onclick="switchTab('rapportsCsiv')" id="tabRapportsCsiv">
                 <i class="fas fa-file-signature"></i> RAPPORTS CSIV
+            </div>
+            <div class="tab" onclick="switchTab('monRapport')">
+                <i class="fas fa-file-alt"></i> MON RAPPORT TECHNIQUE
             </div>
         </div>
 
@@ -715,6 +740,34 @@
                 </div>
             </div>
         </div>
+
+        <!-- SECTION MON RAPPORT TECHNIQUE (NOUVEAU) -->
+        <div class="section" id="sectionMonRapport">
+            <div class="card-box">
+                <h2><i class="fas fa-file-alt"></i> GÉNÉRER MON RAPPORT TECHNIQUE</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                    Utilisez le modèle officiel AFRICA.TECH21 pour rédiger votre rapport d'activité technique.
+                    Le PDF sera généré avec l'en-tête officiel et prêt à être transmis au Bureau Exécutif.
+                </p>
+
+                <button class="btn-modele-rapport" onclick="ouvrirModeleRapport()">
+                    <i class="fas fa-file-alt"></i> OUVRIR LE MODÈLE DE RAPPORT TECHNIQUE
+                </button>
+
+                <div style="margin-top:2rem; padding:1.5rem; background:rgba(255,0,51,0.05); border:1px solid rgba(255,0,51,0.2); border-radius:12px;">
+                    <h3 style="color:var(--neon-red); font-family:'Orbitron'; font-size:1rem; margin-bottom:0.8rem;">
+                        <i class="fas fa-info-circle"></i> À PROPOS DU MODÈLE
+                    </h3>
+                    <ul style="color:var(--text-secondary); font-size:0.92rem; line-height:1.8; padding-left:1.5rem;">
+                        <li>Le modèle contient 6 sections obligatoires (Introduction, Objectifs, Déroulement, Bilan, Recommandations, Conclusion)</li>
+                        <li>Un en-tête officiel AFRICA.TECH21 est automatiquement ajouté</li>
+                        <li>Les champs Rédacteur, Destinataire, Date, Version et Statut sont inclus</li>
+                        <li>Le PDF généré est prêt à être imprimé ou transmis au Bureau Exécutif</li>
+                        <li>Les signatures du Rédacteur et du Responsable AFRICA.TECH21 sont prévues</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- MODAL VIEW PROJET / RAPPORT -->
@@ -778,7 +831,87 @@
             <input type="hidden" id="decisionRapportId" value="">
         </div>
     </div>
-        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- === NOUVEAU MODAL : MODÈLE DE RAPPORT TECHNIQUE === -->
+    <div class="modal-overlay" id="modeleRapportOverlay" style="z-index: 10002;">
+        <div class="modal-content" style="max-width: 950px; max-height: 95vh;">
+            <h2><i class="fas fa-file-alt"></i> MODÈLE DE RAPPORT TECHNIQUE</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Remplissez les champs ci-dessous pour générer votre rapport technique au format officiel AFRICA.TECH21.</p>
+
+            <div style="display:flex; flex-direction:column; gap:1rem;">
+                <!-- Titre & Sous-titre -->
+                <div>
+                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">TITRE DU RAPPORT</label>
+                    <input type="text" id="mrTitre" placeholder="Ex: CONCEPTION DU PROTOTYPE DE RADAR SONORE" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
+                </div>
+                <div>
+                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">SOUS-TITRE / THÈME</label>
+                    <input type="text" id="mrSousTitre" placeholder="Ex: Rapport d'activité mensuel — Pôle Responsable Projets" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
+                </div>
+                <!-- Rédigé par / Destinataire -->
+                <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+                    <div style="flex:1; min-width:200px;">
+                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">RÉDIGÉ PAR</label>
+                        <input type="text" id="mrRedigePar" placeholder="Nom & Prénom / Pôle" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
+                    </div>
+                    <div style="flex:1; min-width:200px;">
+                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">DESTINATAIRE</label>
+                        <input type="text" id="mrDestinataire" placeholder="Bureau exécutif" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
+                    </div>
+                </div>
+                <!-- Date / Version / Statut -->
+                <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+                    <div style="flex:1; min-width:150px;">
+                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">DATE DE FINALISATION</label>
+                        <input type="date" id="mrDate" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
+                    </div>
+                    <div style="flex:1; min-width:150px;">
+                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">VERSION</label>
+                        <input type="text" id="mrVersion" value="v1.0" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
+                    </div>
+                    <div style="flex:1; min-width:150px;">
+                        <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">STATUT</label>
+                        <select id="mrStatut" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
+                            <option value="Interne">Interne</option>
+                            <option value="Confidentiel">Confidentiel</option>
+                            <option value="Public">Public</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Contenu : Sections -->
+                <div style="border-top:1px solid rgba(255,215,0,0.2); padding-top:1rem; margin-top:0.5rem;">
+                    <h3 style="color:var(--neon-red); font-size:1rem; margin-bottom:0.8rem;"><i class="fas fa-list-ol"></i> CONTENU DU RAPPORT</h3>
+
+                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">01. INTRODUCTION & CONTEXTE</label>
+                    <textarea id="mrIntro" rows="3" placeholder="Contexte du rapport..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
+
+                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">02. OBJECTIFS ET PÉRIMÈTRE</label>
+                    <textarea id="mrObjectifs" rows="3" placeholder="Objectif principal, objectifs secondaires, périmètre..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
+
+                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">03. DÉROULEMENT & RÉALISATIONS</label>
+                    <textarea id="mrDeroulement" rows="4" placeholder="Étapes clés, technologies utilisées, résultats..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
+
+                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">04. BILAN FINANCIER / RESSOURCES</label>
+                    <textarea id="mrBilan" rows="3" placeholder="Éléments, quantités, coûts (optionnel)..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
+
+                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">05. RECOMMANDATIONS & PROCHAINES ÉTAPES</label>
+                    <textarea id="mrRecommandations" rows="3" placeholder="Actions à mener..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
+
+                    <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">06. CONCLUSION</label>
+                    <textarea id="mrConclusion" rows="3" placeholder="Synthèse globale et perspectives..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
+                </div>
+
+                <!-- Boutons -->
+                <div style="display:flex; gap:1rem; justify-content:flex-end; flex-wrap:wrap; margin-top:1rem;">
+                    <button class="btn btn-dark" onclick="fermerModeleRapport()">ANNULER</button>
+                    <button class="btn btn-gold" style="background:linear-gradient(135deg,#b8860b,#ffd700); color:#1a0033;" onclick="genererRapportTechniquePDF()"><i class="fas fa-file-pdf"></i> GÉNÉRER LE PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
@@ -1204,7 +1337,7 @@
             } catch (e) { showToast('❌ ' + e.message); }
         }
 
-        // ==================== RAPPORTS CSIV (NOUVEAU) ====================
+        // ==================== RAPPORTS CSIV ====================
 
         let rapportsCsivData = [];
 
@@ -1442,6 +1575,231 @@
             } catch (e) {
                 showToast('❌ ' + e.message);
             }
+        }
+
+        // ==================== MODÈLE DE RAPPORT TECHNIQUE ====================
+        function ouvrirModeleRapport() {
+            document.getElementById('modeleRapportOverlay').classList.add('active');
+            const today = new Date().toISOString().split('T')[0];
+            if (!document.getElementById('mrDate').value) {
+                document.getElementById('mrDate').value = today;
+            }
+            if (!document.getElementById('mrRedigePar').value) {
+                document.getElementById('mrRedigePar').value = `${memberPrenom} ${memberNom} (Responsable Projets)`;
+            }
+        }
+
+        function fermerModeleRapport() {
+            document.getElementById('modeleRapportOverlay').classList.remove('active');
+        }
+
+        function genererRapportTechniquePDF() {
+            const titre = document.getElementById('mrTitre').value.trim() || 'RAPPORT TECHNIQUE ET D\'ACTIVITÉ';
+            const sousTitre = document.getElementById('mrSousTitre').value.trim();
+            const redigePar = document.getElementById('mrRedigePar').value.trim();
+            const destinataire = document.getElementById('mrDestinataire').value.trim();
+            const date = document.getElementById('mrDate').value;
+            const version = document.getElementById('mrVersion').value.trim() || 'v1.0';
+            const statut = document.getElementById('mrStatut').value;
+
+            const intro = document.getElementById('mrIntro').value.trim();
+            const objectifs = document.getElementById('mrObjectifs').value.trim();
+            const deroulement = document.getElementById('mrDeroulement').value.trim();
+            const bilan = document.getElementById('mrBilan').value.trim();
+            const recommandations = document.getElementById('mrRecommandations').value.trim();
+            const conclusion = document.getElementById('mrConclusion').value.trim();
+
+            if (!intro && !objectifs && !deroulement) {
+                alert("⚠️ Veuillez remplir au moins la section 01 (Introduction) ou 02 (Objectifs).");
+                return;
+            }
+
+            let dateFormatted = date;
+            if (date) {
+                const d = new Date(date);
+                dateFormatted = d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            }
+
+            const printWindow = window.open('', '_blank');
+            if (!printWindow) {
+                alert('❌ Autorisez les popups pour générer le PDF.');
+                return;
+            }
+
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="fr">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>${titre} — AFRICA.TECH21</title>
+                    <style>
+                        @page { size: A4; margin: 2cm; }
+                        body {
+                            font-family: 'Segoe UI', Arial, sans-serif;
+                            color: #1a1a1a;
+                            line-height: 1.6;
+                            font-size: 11pt;
+                        }
+                        .header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: flex-start;
+                            margin-bottom: 2rem;
+                            border-bottom: 2px solid #6a0dad;
+                            padding-bottom: 1rem;
+                        }
+                        .header-left h1 { margin: 0; color: #6a0dad; font-size: 1.5rem; }
+                        .header-left h2 { margin: 0.2rem 0 0 0; font-size: 1rem; color: #333; }
+                        .header-right { text-align: right; font-size: 0.9rem; }
+                        .ref-box {
+                            border: 2px solid #333;
+                            padding: 1rem;
+                            margin-bottom: 1.5rem;
+                            display: grid;
+                            grid-template-columns: 180px 1fr;
+                            gap: 0.5rem;
+                            font-size: 0.95rem;
+                        }
+                        .ref-box strong { font-weight: bold; }
+                        .titre-rapport {
+                            font-size: 1.4rem;
+                            font-weight: bold;
+                            text-align: center;
+                            color: #6a0dad;
+                            margin: 1.5rem 0;
+                            padding: 1rem;
+                            background: #f5f2f7;
+                            border-radius: 8px;
+                        }
+                        .sous-titre {
+                            text-align: center;
+                            font-size: 1rem;
+                            color: #555;
+                            font-style: italic;
+                            margin-bottom: 2rem;
+                        }
+                        h3 {
+                            font-size: 1.15rem;
+                            color: #6a0dad;
+                            margin-top: 2rem;
+                            margin-bottom: 0.6rem;
+                            border-bottom: 1px solid #ccc;
+                            padding-bottom: 0.3rem;
+                        }
+                        p { margin-bottom: 0.8rem; text-align: justify; }
+                        .footer {
+                            margin-top: 3rem;
+                            display: flex;
+                            justify-content: space-between;
+                            gap: 2rem;
+                        }
+                        .signature-block {
+                            flex: 1;
+                            border-top: 1px solid #333;
+                            padding-top: 0.5rem;
+                            font-size: 0.9rem;
+                        }
+                        .final-footer {
+                            margin-top: 2rem;
+                            font-size: 0.8rem;
+                            color: #666;
+                            text-align: center;
+                            border-top: 1px solid #ddd;
+                            padding-top: 1rem;
+                        }
+                        .sommaire {
+                            background: #f8f5fa;
+                            border: 1px solid #ddd;
+                            border-radius: 8px;
+                            padding: 1.5rem;
+                            margin: 1.5rem 0;
+                        }
+                        .sommaire h4 {
+                            color: #6a0dad;
+                            margin-bottom: 0.8rem;
+                            font-size: 1.1rem;
+                        }
+                        .sommaire ol {
+                            padding-left: 1.5rem;
+                            line-height: 1.9;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="header-left">
+                            <h1>AFRICA.TECH21</h1>
+                            <h2>RAPPORT TECHNIQUE ET D'ACTIVITÉ</h2>
+                        </div>
+                        <div class="header-right">
+                            <div><strong>Statut :</strong> ${statut}</div>
+                            <div><strong>Version :</strong> ${version}</div>
+                        </div>
+                    </div>
+
+                    <div class="ref-box">
+                        <div><strong>RÉDIGÉ PAR :</strong></div>
+                        <div>${redigePar || '—'}</div>
+                        <div><strong>DESTINATAIRE :</strong></div>
+                        <div>${destinataire || 'Bureau exécutif'}</div>
+                        <div><strong>DATE DE FINALISATION :</strong></div>
+                        <div>${dateFormatted || '—'}</div>
+                        <div><strong>VERSION :</strong></div>
+                        <div>${version}</div>
+                        <div><strong>STATUT :</strong></div>
+                        <div>${statut}</div>
+                    </div>
+
+                    <div class="titre-rapport">${titre}</div>
+                    ${sousTitre ? `<div class="sous-titre">${sousTitre}</div>` : ''}
+
+                    <div class="sommaire">
+                        <h4>SOMMAIRE</h4>
+                        <ol>
+                            <li>Introduction & Contexte</li>
+                            <li>Objectifs et Périmètre</li>
+                            <li>Déroulement & Réalisations</li>
+                            <li>Bilan Financier / Ressources</li>
+                            <li>Recommandations & Étapes</li>
+                            <li>Conclusion</li>
+                        </ol>
+                    </div>
+
+                    ${intro ? `<h3>01. Introduction & Contexte</h3><p>${intro.replace(/\n/g, '</p><p>')}</p>` : ''}
+                    ${objectifs ? `<h3>02. Objectifs et Périmètre</h3><p>${objectifs.replace(/\n/g, '</p><p>')}</p>` : ''}
+                    ${deroulement ? `<h3>03. Déroulement & Réalisations</h3><p>${deroulement.replace(/\n/g, '</p><p>')}</p>` : ''}
+                    ${bilan ? `<h3>04. Bilan Financier / Ressources Utilisées</h3><p>${bilan.replace(/\n/g, '</p><p>')}</p>` : ''}
+                    ${recommandations ? `<h3>05. Recommandations & Prochaines Étapes</h3><p>${recommandations.replace(/\n/g, '</p><p>')}</p>` : ''}
+                    ${conclusion ? `<h3>06. Conclusion</h3><p>${conclusion.replace(/\n/g, '</p><p>')}</p>` : ''}
+
+                    <div class="footer">
+                        <div class="signature-block">
+                            <strong>LE RÉDACTEUR</strong><br>
+                            ${redigePar || 'Nom & Signature'}<br>
+                            <em>(Signature)</em>
+                        </div>
+                        <div class="signature-block">
+                            <strong>LE RESPONSABLE AFRICA.TECH21</strong><br>
+                            Nom & Signature<br>
+                            <em>(Signature)</em>
+                        </div>
+                    </div>
+
+                    <div class="final-footer">
+                        Fait à Dakar, le ${dateFormatted || '—'}<br>
+                        Document généré par AFRICA.TECH21 — Responsable Projets
+                    </div>
+
+                    <script>
+                        window.onload = function() {
+                            setTimeout(function() { window.print(); }, 300);
+                        };
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            fermerModeleRapport();
         }
 
         // ==================== INIT ====================
