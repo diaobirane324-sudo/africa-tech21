@@ -7,12 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Exo 2', 'Segoe UI', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Exo 2', 'Segoe UI', sans-serif; }
 
         :root {
             --neon-blue: #00f0ff;
@@ -36,18 +31,13 @@
         }
 
         .hologram-grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: 
                 linear-gradient(90deg, rgba(255, 165, 0, 0.02) 1px, transparent 1px),
                 linear-gradient(180deg, rgba(255, 165, 0, 0.02) 1px, transparent 1px);
             background-size: 50px 50px;
             animation: gridScan 20s linear infinite;
-            pointer-events: none;
-            z-index: -2;
+            pointer-events: none; z-index: -2;
         }
 
         @keyframes gridScan {
@@ -56,15 +46,10 @@
         }
 
         .back-btn {
-            display: inline-block;
-            padding: 0.8rem 2rem;
-            margin-bottom: 2rem;
+            display: inline-block; padding: 0.8rem 2rem; margin-bottom: 2rem;
             background: rgba(255, 165, 0, 0.1);
-            border: 1px solid #ffa500;
-            border-radius: 10px;
-            color: #ffa500;
-            text-decoration: none;
-            font-weight: 600;
+            border: 1px solid #ffa500; border-radius: 10px;
+            color: #ffa500; text-decoration: none; font-weight: 600;
             transition: all 0.3s ease;
         }
 
@@ -73,31 +58,19 @@
             box-shadow: 0 0 20px rgba(255, 165, 0, 0.3);
         }
 
-        .page-container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+        .page-container { max-width: 1400px; margin: 0 auto; }
 
         .project-header {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
+            background: var(--glass); backdrop-filter: blur(15px);
             border: 1px solid var(--glass-border);
-            border-radius: 25px;
-            padding: 4rem;
-            margin-bottom: 3rem;
-            text-align: center;
-            box-shadow: var(--panel-glow);
-            position: relative;
-            overflow: hidden;
+            border-radius: 25px; padding: 4rem; margin-bottom: 3rem;
+            text-align: center; box-shadow: var(--panel-glow);
+            position: relative; overflow: hidden;
         }
 
         .project-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
+            content: ''; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
             background: radial-gradient(circle at center, rgba(255, 165, 0, 0.05) 0%, transparent 60%);
             animation: rotateGlow 20s linear infinite;
         }
@@ -108,212 +81,81 @@
         }
 
         .project-header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 4rem;
+            font-family: 'Orbitron', sans-serif; font-size: 4rem;
             background: linear-gradient(45deg, #ffa500, #ff6348);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 30px rgba(255, 165, 0, 0.3);
-            position: relative;
-            z-index: 1;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; text-shadow: 0 0 30px rgba(255, 165, 0, 0.3);
+            position: relative; z-index: 1;
         }
 
         .project-header .subtitle {
-            font-size: 1.3rem;
-            color: var(--text-secondary);
-            margin-top: 1rem;
-            position: relative;
-            z-index: 1;
+            font-size: 1.3rem; color: var(--text-secondary);
+            margin-top: 1rem; position: relative; z-index: 1;
         }
 
         .project-header .status-badge {
-            display: inline-block;
-            margin-top: 1.5rem;
+            display: inline-block; margin-top: 1.5rem;
             padding: 0.5rem 2rem;
             background: rgba(255, 165, 0, 0.1);
+            border: 1px solid #ffa500; border-radius: 20px;
+            color: #ffa500; font-weight: 700; letter-spacing: 1px;
+            position: relative; z-index: 1;
+        }
+
+        /* ============ LECTEUR TTS ============ */
+        .tts-player {
+            background: var(--glass); backdrop-filter: blur(15px);
+            border: 1px solid #ffa500; border-radius: 20px;
+            padding: 1.5rem 2rem; margin-bottom: 3rem;
+            box-shadow: 0 0 30px rgba(255, 165, 0, 0.2);
+            display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem;
+            position: sticky; top: 1rem; z-index: 100;
+        }
+        .tts-controls { display: flex; align-items: center; gap: 0.8rem; }
+        .tts-btn {
+            width: 48px; height: 48px; border-radius: 50%;
             border: 1px solid #ffa500;
-            border-radius: 20px;
-            color: #ffa500;
-            font-weight: 700;
-            letter-spacing: 1px;
-            position: relative;
-            z-index: 1;
+            background: rgba(255, 165, 0, 0.1);
+            color: #ffa500; font-size: 1.1rem;
+            cursor: pointer; transition: all 0.3s ease;
+            display: flex; align-items: center; justify-content: center;
         }
-
-        .section {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 25px;
-            padding: 3rem;
-            margin-bottom: 3rem;
-            box-shadow: var(--panel-glow);
-        }
-
-        .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
-            color: var(--neon-blue);
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .section-title i {
-            color: #ffa500;
-        }
-
-        .section-content {
-            color: var(--text-secondary);
-            line-height: 1.8;
-            font-size: 1.05rem;
-        }
-
-        .section-content p {
-            margin-bottom: 1.5rem;
-        }
-
-        .section-content strong {
+        .tts-btn:hover:not(:disabled) {
+            background: rgba(255, 165, 0, 0.3);
+            box-shadow: 0 0 15px rgba(255, 165, 0, 0.4);
             color: var(--text-primary);
         }
-
-        .section-content ul, .section-content ol {
-            padding-left: 2rem;
-            margin-bottom: 1.5rem;
+        .tts-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .tts-btn.play-active {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: var(--neon-green);
+            color: var(--neon-green);
         }
-
-        .section-content li {
-            margin-bottom: 0.8rem;
+        .tts-speed {
+            display: flex; align-items: center; gap: 0.8rem;
+            color: var(--text-secondary); font-size: 0.9rem;
         }
-
-        .component-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
+        .tts-speed label { font-weight: 600; color: #ffa500; }
+        .tts-speed input[type="range"] {
+            width: 120px; accent-color: #ffa500; cursor: pointer;
         }
-
-        .component-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 1.5rem;
+        .tts-speed .speed-value {
+            color: var(--neon-green); font-weight: 700;
+            min-width: 40px; text-align: center;
+        }
+        .tts-status {
+            flex: 1; min-width: 200px;
+            color: var(--text-secondary); font-size: 0.9rem;
+            font-style: italic; white-space: nowrap;
+            overflow: hidden; text-overflow: ellipsis;
+        }
+        .tts-status.active {
+            color: var(--neon-green); font-style: normal; font-weight: 600;
+        }
+        .section.speaking {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
             transition: all 0.3s ease;
-            border-left: 3px solid #ffa500;
-        }
-
-        .component-item:hover {
-            border-color: #ffa500;
-            background: rgba(255, 165, 0, 0.05);
-        }
-
-        .component-item h4 {
-            color: #ffa500;
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .component-item p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .component-item .tag {
-            display: inline-block;
-            margin-top: 0.5rem;
-            padding: 0.2rem 0.8rem;
-            background: rgba(255, 165, 0, 0.1);
-            border-radius: 10px;
-            font-size: 0.8rem;
-            color: #ffa500;
-        }
-
-        .note-box {
-            background: rgba(0, 240, 255, 0.05);
-            border-left: 4px solid var(--neon-blue);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1.5rem 0;
-        }
-
-        .note-box strong {
-            color: var(--neon-blue);
-        }
-
-        .warning-box {
-            background: rgba(255, 0, 0, 0.05);
-            border-left: 4px solid #ff0000;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1.5rem 0;
-        }
-
-        .warning-box strong {
-            color: #ff0000;
-        }
-
-        .step-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .step-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .step-card .step-number {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            color: #ffa500;
-            margin-bottom: 0.5rem;
-        }
-
-        .step-card h4 {
-            color: var(--neon-green);
-            margin-bottom: 0.5rem;
-        }
-
-        .step-card p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .evolution-box {
-            background: rgba(0, 255, 136, 0.03);
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            text-align: center;
-        }
-
-        .evolution-box .icon {
-            font-size: 2.5rem;
-            color: var(--neon-green);
-            margin-bottom: 0.5rem;
-        }
-
-        .evolution-box h4 {
-            color: var(--neon-green);
-            margin-bottom: 0.5rem;
-        }
-
-        .evolution-box p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.6;
         }
 
         @media (max-width: 768px) {
@@ -324,6 +166,127 @@
             .section-title { font-size: 1.5rem; }
             .component-list { grid-template-columns: 1fr; }
             .step-grid { grid-template-columns: 1fr; }
+            .tts-player { padding: 1rem; gap: 1rem; }
+            .tts-speed input[type="range"] { width: 80px; }
+        }
+
+        .section {
+            background: var(--glass); backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px; padding: 3rem; margin-bottom: 3rem;
+            box-shadow: var(--panel-glow);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif; font-size: 2.2rem;
+            color: var(--neon-blue); margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            display: flex; align-items: center; gap: 1rem;
+        }
+
+        .section-title i { color: #ffa500; }
+
+        .section-content {
+            color: var(--text-secondary); line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .section-content p { margin-bottom: 1.5rem; }
+        .section-content strong { color: var(--text-primary); }
+        .section-content ul, .section-content ol {
+            padding-left: 2rem; margin-bottom: 1.5rem;
+        }
+        .section-content li { margin-bottom: 0.8rem; }
+
+        .component-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem; margin-top: 2rem;
+        }
+
+        .component-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px; padding: 1.5rem;
+            transition: all 0.3s ease;
+            border-left: 3px solid #ffa500;
+        }
+
+        .component-item:hover {
+            border-color: #ffa500;
+            background: rgba(255, 165, 0, 0.05);
+        }
+
+        .component-item h4 {
+            color: #ffa500; font-size: 1.1rem; margin-bottom: 0.5rem;
+        }
+
+        .component-item p {
+            color: var(--text-secondary); font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .component-item .tag {
+            display: inline-block; margin-top: 0.5rem;
+            padding: 0.2rem 0.8rem;
+            background: rgba(255, 165, 0, 0.1);
+            border-radius: 10px; font-size: 0.8rem; color: #ffa500;
+        }
+
+        .note-box {
+            background: rgba(0, 240, 255, 0.05);
+            border-left: 4px solid var(--neon-blue);
+            padding: 1.5rem; border-radius: 10px; margin: 1.5rem 0;
+        }
+
+        .note-box strong { color: var(--neon-blue); }
+
+        .warning-box {
+            background: rgba(255, 0, 0, 0.05);
+            border-left: 4px solid #ff0000;
+            padding: 1.5rem; border-radius: 10px; margin: 1.5rem 0;
+        }
+
+        .warning-box strong { color: #ff0000; }
+
+        .step-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem; margin-top: 1.5rem;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px; padding: 1.5rem; text-align: center;
+        }
+
+        .step-card .step-number {
+            font-family: 'Orbitron', sans-serif; font-size: 2.5rem;
+            color: #ffa500; margin-bottom: 0.5rem;
+        }
+
+        .step-card h4 { color: var(--neon-green); margin-bottom: 0.5rem; }
+        .step-card p {
+            color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;
+        }
+
+        .evolution-box {
+            background: rgba(0, 255, 136, 0.03);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px; padding: 1.5rem;
+            margin: 1.5rem 0; text-align: center;
+        }
+
+        .evolution-box .icon {
+            font-size: 2.5rem; color: var(--neon-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .evolution-box h4 { color: var(--neon-green); margin-bottom: 0.5rem; }
+        .evolution-box p {
+            color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;
         }
     </style>
 </head>
@@ -331,12 +294,10 @@
     <div class="hologram-grid"></div>
 
     <div class="page-container">
-        <!-- Bouton retour -->
         <a href="dashboard.html" class="back-btn">
             <i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD
         </a>
 
-        <!-- En-tête du projet -->
         <header class="project-header">
             <h1>SAGAF</h1>
             <p class="subtitle">Système d'Alerte pour Fuite de Gaz</p>
@@ -345,7 +306,27 @@
             </div>
         </header>
 
-        <!-- ==================== PARTIE 1 : DÉFINITION ==================== -->
+        <!-- ============ LECTEUR TTS ============ -->
+        <div class="tts-player" id="ttsPlayer">
+            <div class="tts-controls">
+                <button class="tts-btn" id="ttsPlayBtn" title="Lire le projet">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="tts-btn" id="ttsPauseBtn" title="Pause" disabled>
+                    <i class="fas fa-pause"></i>
+                </button>
+                <button class="tts-btn" id="ttsStopBtn" title="Arrêter" disabled>
+                    <i class="fas fa-stop"></i>
+                </button>
+            </div>
+            <div class="tts-speed">
+                <label for="ttsSpeedRange"><i class="fas fa-tachometer-alt"></i> Vitesse</label>
+                <input type="range" id="ttsSpeedRange" min="0.5" max="2" step="0.1" value="1">
+                <span class="speed-value" id="ttsSpeedValue">1.0×</span>
+            </div>
+            <div class="tts-status" id="ttsStatus">Prêt à lire le projet</div>
+        </div>
+
         <section class="section">
             <h2 class="section-title"><i class="fas fa-exclamation-triangle"></i> DÉFINITION DU PROJET</h2>
             <div class="section-content">
@@ -358,7 +339,6 @@
             </div>
         </section>
 
-        <!-- ==================== PARTIE 2 : CONTEXTE ==================== -->
         <section class="section">
             <h2 class="section-title"><i class="fas fa-globe-africa"></i> CONTEXTE</h2>
             <div class="section-content">
@@ -374,7 +354,6 @@
             </div>
         </section>
 
-        <!-- ==================== PARTIE 3 : FONCTIONNEMENT ==================== -->
         <section class="section">
             <h2 class="section-title"><i class="fas fa-cogs"></i> COMMENT FONCTIONNE LE SYSTÈME ?</h2>
             <div class="section-content">
@@ -423,7 +402,6 @@
             </div>
         </section>
 
-        <!-- ==================== PARTIE 4 : COMPOSANTS ÉLECTRONIQUES ==================== -->
         <section class="section">
             <h2 class="section-title"><i class="fas fa-microchip"></i> DÉTAILS TECHNIQUES ET COMPOSANTS</h2>
             <div class="section-content">
@@ -439,37 +417,31 @@
                         <p>Carte mère du système, servant de microcontrôleur. Réputée pour être très dynamique grâce à ses deux modules WiFi et Bluetooth intégrés.</p>
                         <span class="tag">Carte mère</span>
                     </div>
-
                     <div class="component-item">
                         <h4>Capteur MQ-2</h4>
                         <p>Capteur de gaz polyvalent détectant le GPL, le propane, le méthane et la fumée. Fonctionne par variation de résistance en présence des gaz cibles, avec sortie analogique pour interface avec les microcontrôleurs.</p>
                         <span class="tag">Capteur</span>
                     </div>
-
                     <div class="component-item">
                         <h4>Capteur MQ-4 / MQ-5</h4>
                         <p>Capteurs spécialement construits pour détecter les fuites de gaz comme le butane (C4H10). Offrent une sensibilité accrue pour les gaz domestiques.</p>
                         <span class="tag">Capteur</span>
                     </div>
-
                     <div class="component-item">
                         <h4>Buzzer</h4>
                         <p>Alarme sonore permettant d'alerter le propriétaire ou toute personne à côté de la cuisine ou dans l'enceinte de la maison. Reçoit un signal de la carte ESP32 après détection de gaz.</p>
                         <span class="tag">Actionneur</span>
                     </div>
-
                     <div class="component-item">
                         <h4>LEDS (2 minimum)</h4>
                         <p>Lumières bleues pour alerter de manière visuelle. Fournissent un signal lumineux clair en cas de détection de gaz, complétant l'alerte sonore.</p>
                         <span class="tag">Actionneur</span>
                     </div>
-
                     <div class="component-item">
                         <h4>Platine de soudure</h4>
                         <p>Rend le circuit fixe et compact, facilitant l'intégration dans un boîtier réduit comme un smartphone.</p>
                         <span class="tag">Composant passif</span>
                     </div>
-
                     <div class="component-item">
                         <h4>Batterie rechargeable 5V</h4>
                         <p>Alimentation à longue durée, rechargeable, assurant l'autonomie du système. Permet un fonctionnement continu sans être dépendant du secteur.</p>
@@ -483,7 +455,6 @@
             </div>
         </section>
 
-        <!-- ==================== PARTIE 5 : ÉVOLUTIONS POSSIBLES ==================== -->
         <section class="section">
             <h2 class="section-title"><i class="fas fa-rocket"></i> ÉVOLUTIONS ET AMÉLIORATIONS</h2>
             <div class="section-content">
@@ -521,7 +492,6 @@
             </div>
         </section>
 
-        <!-- Footer -->
         <div style="text-align: center; padding: 2rem 0; color: var(--text-secondary); font-size: 0.9rem; border-top: 1px solid var(--glass-border);">
             <p>
                 <i class="fas fa-copyright"></i> AFRICA.TECH21 - Projet SAGAF | Système d'Alerte pour Fuite de Gaz
@@ -530,7 +500,6 @@
                 Document technique par la direction • Tous droits réservés
             </p>
         </div>
-
     </div>
 
     <script>
@@ -538,6 +507,224 @@
         if (localStorage.getItem('memberLoggedIn') !== 'true') {
             window.location.href = 'espace-membres.html';
         }
+    </script>
+
+    <script>
+        /* ============================================================
+           LECTEUR TTS — Text To Speech
+           ============================================================ */
+        (function () {
+            const synth = window.speechSynthesis;
+            const playBtn = document.getElementById('ttsPlayBtn');
+            const pauseBtn = document.getElementById('ttsPauseBtn');
+            const stopBtn = document.getElementById('ttsStopBtn');
+            const speedRange = document.getElementById('ttsSpeedRange');
+            const speedValue = document.getElementById('ttsSpeedValue');
+            const statusEl = document.getElementById('ttsStatus');
+
+            let sections = [];
+            let currentIndex = 0;
+            let isPlaying = false;
+            let isPaused = false;
+            let chosenVoice = null;
+            let currentUtterance = null;
+
+            function pickBestFrenchVoice() {
+                const voices = synth.getVoices();
+                if (!voices || voices.length === 0) return null;
+                const frVoices = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith('fr'));
+                if (frVoices.length === 0) return null;
+                const priorityKeywords = ['natural', 'neural', 'google', 'microsoft', 'amelie', 'amélie', 'thomas', 'audrey', 'marie', 'julie'];
+                let best = null;
+                let bestScore = -1;
+                for (const v of frVoices) {
+                    const name = (v.name || '').toLowerCase();
+                    const lang = (v.lang || '').toLowerCase();
+                    let score = 0;
+                    priorityKeywords.forEach((kw, i) => {
+                        if (name.includes(kw)) score += (priorityKeywords.length - i) * 10;
+                    });
+                    if (lang === 'fr-fr') score += 5;
+                    if (lang.startsWith('fr')) score += 2;
+                    if (name.includes('compact') || name.includes('espeak')) score -= 20;
+                    if (score > bestScore) { bestScore = score; best = v; }
+                }
+                return best || frVoices[0];
+            }
+
+            function refreshVoices() {
+                chosenVoice = pickBestFrenchVoice();
+                if (!chosenVoice) {
+                    statusEl.textContent = '⚠️ Aucune voix française détectée';
+                } else {
+                    statusEl.textContent = 'Voix : ' + chosenVoice.name;
+                }
+            }
+
+            if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = refreshVoices;
+            refreshVoices();
+
+            function cleanText(raw) {
+                let t = raw;
+                t = t.replace(/\s+/g, ' ');
+                t = t.replace(/[\u200B-\u200D\uFEFF]/g, '');
+                return t.trim();
+            }
+
+            function extractSectionText(sectionEl) {
+                const clone = sectionEl.cloneNode(true);
+                clone.querySelectorAll('i').forEach(el => el.remove());
+                clone.querySelectorAll('.tag').forEach(el => el.remove());
+                clone.querySelectorAll('script, style').forEach(el => el.remove());
+
+                let title = '';
+                const titleEl = clone.querySelector('.section-title');
+                if (titleEl) {
+                    title = titleEl.textContent.replace(/\s+/g, ' ').trim();
+                    titleEl.remove();
+                }
+
+                let body = '';
+                const contentEl = clone.querySelector('.section-content');
+                if (contentEl) {
+                    body = contentEl.textContent.replace(/\s+/g, ' ').trim();
+                } else {
+                    body = clone.textContent.replace(/\s+/g, ' ').trim();
+                }
+
+                body = body.replace(/\bNB\s*:/g, 'Note importante :');
+                body = body.replace(/\bAttention\s*:/g, 'Attention :');
+                body = body.replace(/\bUrgence\s*:/g, 'Urgence :');
+
+                return cleanText(title + '. ' + body);
+            }
+
+            function buildSections() {
+                sections = Array.from(document.querySelectorAll('section.section'));
+                return sections.length > 0;
+            }
+
+            function updateButtons() {
+                if (isPlaying && !isPaused) {
+                    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    playBtn.classList.add('play-active');
+                    playBtn.disabled = true;
+                    pauseBtn.disabled = false;
+                    stopBtn.disabled = false;
+                } else if (isPaused) {
+                    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    playBtn.classList.add('play-active');
+                    playBtn.disabled = false;
+                    pauseBtn.disabled = true;
+                    stopBtn.disabled = false;
+                } else {
+                    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    playBtn.classList.remove('play-active');
+                    playBtn.disabled = false;
+                    pauseBtn.disabled = true;
+                    stopBtn.disabled = true;
+                }
+            }
+
+            function highlightSection(index) {
+                sections.forEach((s, i) => s.classList.toggle('speaking', i === index));
+            }
+
+            function clearHighlight() {
+                sections.forEach(s => s.classList.remove('speaking'));
+            }
+
+            function speakSection(index) {
+                if (index >= sections.length) { finishReading(); return; }
+                currentIndex = index;
+                highlightSection(index);
+
+                const text = extractSectionText(sections[index]);
+                if (!text) { speakSection(index + 1); return; }
+
+                const utter = new SpeechSynthesisUtterance(text);
+                currentUtterance = utter;
+                if (chosenVoice) {
+                    utter.voice = chosenVoice;
+                    utter.lang = chosenVoice.lang;
+                } else {
+                    utter.lang = 'fr-FR';
+                }
+                utter.rate = parseFloat(speedRange.value) || 1;
+                utter.pitch = 1;
+                utter.volume = 1;
+
+                const sectionTitle = sections[index].querySelector('.section-title');
+                const titleTxt = sectionTitle ? sectionTitle.textContent.replace(/\s+/g, ' ').trim() : ('Section ' + (index + 1));
+                statusEl.textContent = 'Lecture : ' + titleTxt;
+                statusEl.classList.add('active');
+
+                utter.onend = () => {
+                    if (isPaused) return;
+                    if (currentIndex === index) speakSection(index + 1);
+                };
+
+                utter.onerror = (e) => {
+                    if (e.error === 'interrupted' || e.error === 'canceled') return;
+                    console.warn('TTS error:', e.error);
+                    speakSection(index + 1);
+                };
+
+                synth.speak(utter);
+            }
+
+            function finishReading() {
+                isPlaying = false; isPaused = false; currentUtterance = null;
+                clearHighlight(); updateButtons();
+                statusEl.textContent = 'Lecture terminée';
+                statusEl.classList.remove('active');
+            }
+
+            playBtn.addEventListener('click', () => {
+                if (!buildSections()) {
+                    statusEl.textContent = 'Aucune section à lire';
+                    return;
+                }
+                if (isPaused) {
+                    isPaused = false; isPlaying = true;
+                    updateButtons(); synth.resume();
+                    statusEl.textContent = 'Lecture en cours…';
+                    statusEl.classList.add('active');
+                    return;
+                }
+                synth.cancel();
+                isPlaying = true; isPaused = false; currentIndex = 0;
+                updateButtons();
+                setTimeout(() => speakSection(0), 100);
+            });
+
+            pauseBtn.addEventListener('click', () => {
+                if (!isPlaying) return;
+                isPaused = true; updateButtons(); synth.pause();
+                statusEl.textContent = 'Pause';
+                statusEl.classList.remove('active');
+            });
+
+            stopBtn.addEventListener('click', () => {
+                synth.cancel();
+                isPlaying = false; isPaused = false; currentUtterance = null;
+                clearHighlight(); updateButtons();
+                statusEl.textContent = 'Arrêté';
+                statusEl.classList.remove('active');
+            });
+
+            speedRange.addEventListener('input', () => {
+                const v = parseFloat(speedRange.value).toFixed(1);
+                speedValue.textContent = v + '×';
+                if (isPlaying && !isPaused && currentUtterance) {
+                    const idx = currentIndex;
+                    synth.cancel();
+                    setTimeout(() => { if (isPlaying) speakSection(idx); }, 80);
+                }
+            });
+
+            window.addEventListener('beforeunload', () => synth.cancel());
+        })();
     </script>
 </body>
 </html>
