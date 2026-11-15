@@ -194,7 +194,7 @@
         }
 
         /* ============================================================ */
-        /* 🆕 STRUCTURE EN RAMIFICATION TECHNOLOGIQUE                   */
+        /* STRUCTURE EN RAMIFICATION TECHNOLOGIQUE                      */
         /* ============================================================ */
         .tech-tree {
             position: relative;
@@ -206,7 +206,6 @@
             justify-content: center;
         }
 
-        /* SVG pour les lignes de circuit */
         .circuit-lines {
             position: absolute;
             top: 0; left: 0;
@@ -240,7 +239,6 @@
             50% { r: 5; opacity: 0.6; }
         }
 
-        /* Conteneur des cartes */
         .tree-nodes {
             position: relative;
             width: 100%;
@@ -248,7 +246,6 @@
             z-index: 2;
         }
 
-        /* CARTE CENTRALE - ESPACE DIRECTION (PROCESSEUR) */
         .node-core {
             position: absolute;
             top: 50%; left: 50%;
@@ -327,7 +324,6 @@
             letter-spacing: 1px; position: relative; z-index: 2;
         }
 
-        /* Broches du processeur (petits carrés autour) */
         .chip-pins {
             position: absolute; inset: -15px;
             pointer-events: none;
@@ -343,7 +339,6 @@
         .chip-pin.left { left: 0; }
         .chip-pin.right { right: 0; }
 
-        /* CARTES SATELLITES */
         .node-satellite {
             position: absolute;
             width: 240px;
@@ -417,7 +412,6 @@
         .sat-status.special { color: var(--neon-purple); border: 1px solid var(--neon-violet); background: rgba(157, 0, 255, 0.08); }
 
         /* Positionnement circulaire des satellites */
-        /* Rayon : ~420px du centre */
         .node-satellite.pos-1 { top: 50%; left: 50%; transform: translate(calc(-50% + 0px), calc(-50% - 380px)); }
         .node-satellite.pos-1:hover { transform: translate(calc(-50% + 0px), calc(-50% - 380px)) scale(1.1); }
         
@@ -442,7 +436,6 @@
         .node-satellite.pos-8 { top: 50%; left: 50%; transform: translate(calc(-50% - 330px), calc(-50% - 220px)); }
         .node-satellite.pos-8:hover { transform: translate(calc(-50% - 330px), calc(-50% - 220px)) scale(1.1); }
 
-        /* Rayon intérieur (petites cartes) */
         .node-satellite.inner.pos-9 { top: 50%; left: 50%; transform: translate(calc(-50% + 200px), calc(-50% - 100px)); }
         .node-satellite.inner.pos-9:hover { transform: translate(calc(-50% + 200px), calc(-50% - 100px)) scale(1.1); }
         
@@ -469,7 +462,47 @@
             gap: 1.5rem;
             margin: 2rem 0;
         }
-        .mobile-grid .feature-card {
+
+        /* ============================================================ */
+        /* 🆕 SECTION PROJETS TECHNIQUES (desktop)                      */
+        /* ============================================================ */
+        .projects-section {
+            margin: 3rem 0;
+            padding: 2.5rem;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            box-shadow: var(--panel-glow);
+        }
+        .projects-section .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--neon-blue);
+            text-align: center;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: var(--accent-glow);
+        }
+        .projects-section .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Cartes réutilisables (utilisées aussi dans mobile-grid) */
+        .feature-card {
             position: relative;
             padding: 2rem 1.5rem;
             background: rgba(10, 10, 20, 0.85);
@@ -480,27 +513,27 @@
             border-radius: 18px;
             overflow: hidden;
         }
-        .mobile-grid .feature-card:hover {
+        .feature-card:hover {
             transform: translateY(-8px);
             border-color: var(--neon-gold);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.4);
         }
-        .mobile-grid .feature-icon {
+        .feature-card .feature-icon {
             font-size: 2.5rem; color: var(--neon-blue);
             margin-bottom: 1rem; text-align: center;
             text-shadow: var(--accent-glow);
         }
-        .mobile-grid .feature-title {
+        .feature-card .feature-title {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.1rem; color: var(--neon-blue);
             margin-bottom: 0.8rem; text-transform: uppercase;
             letter-spacing: 1px; text-align: center; font-weight: 700;
         }
-        .mobile-grid .feature-desc {
+        .feature-card .feature-desc {
             color: var(--text-secondary); font-size: 0.85rem;
             text-align: center; line-height: 1.5; margin-bottom: 1rem;
         }
-        .mobile-grid .feature-status {
+        .feature-card .feature-status {
             text-align: center; font-size: 0.75rem;
             font-weight: 700; letter-spacing: 1px;
             color: var(--neon-green);
@@ -605,6 +638,8 @@
             .send-btn { width: 100%; }
             .forum-section { padding: 1.5rem; }
             .section-title { font-size: 1.5rem; }
+            .projects-section { padding: 1.5rem; }
+            .projects-section .section-title { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -648,10 +683,9 @@
         </section>
 
         <!-- ============================================================ -->
-        <!-- 🆕 STRUCTURE EN RAMIFICATION TECHNOLOGIQUE (DESKTOP)         -->
+        <!-- STRUCTURE EN RAMIFICATION TECHNOLOGIQUE (DESKTOP)            -->
         <!-- ============================================================ -->
         <div class="tech-tree" id="techTree">
-            <!-- SVG pour les lignes de circuit -->
             <svg class="circuit-lines" id="circuitSVG" viewBox="0 0 1800 1400" preserveAspectRatio="none">
                 <defs>
                     <linearGradient id="circuitGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -660,11 +694,10 @@
                         <stop offset="100%" stop-color="#ffd700" stop-opacity="0.9"/>
                     </linearGradient>
                 </defs>
-                <!-- Lignes seront générées en JS -->
             </svg>
 
             <div class="tree-nodes">
-                <!-- CARTE CENTRALE : ESPACE DIRECTION (PROCESSEUR) -->
+                <!-- CARTE CENTRALE : ESPACE DIRECTION -->
                 <div class="node-core" onclick="accederEspaceDirection()">
                     <div class="chip-pins">
                         <div class="chip-pin top" style="left: 20%;"></div>
@@ -693,7 +726,6 @@
                 </div>
 
                 <!-- CARTES SATELLITES -->
-                <!-- Position 1 : Haut -->
                 <div class="node-satellite pos-1" onclick="window.location.href='rapport.html'">
                     <div class="node-satellite-inner">
                         <i class="fas fa-clipboard-check sat-icon"></i>
@@ -703,7 +735,6 @@
                     </div>
                 </div>
 
-                <!-- Position 2 : Haut-Droite -->
                 <div class="node-satellite pos-2" onclick="window.location.href='examiner.html'">
                     <div class="node-satellite-inner">
                         <i class="fas fa-file-pdf sat-icon"></i>
@@ -713,7 +744,6 @@
                     </div>
                 </div>
 
-                <!-- Position 3 : Droite -->
                 <div class="node-satellite pos-3" onclick="window.location.href='cours.html'">
                     <div class="node-satellite-inner">
                         <i class="fas fa-graduation-cap sat-icon"></i>
@@ -723,7 +753,6 @@
                     </div>
                 </div>
 
-                <!-- Position 4 : Bas-Droite -->
                 <div class="node-satellite pos-4" onclick="window.location.href='examen-ffam.html'">
                     <div class="node-satellite-inner">
                         <i class="fas fa-certificate sat-icon"></i>
@@ -733,7 +762,6 @@
                     </div>
                 </div>
 
-                <!-- Position 5 : Bas -->
                 <div class="node-satellite pos-5" onclick="window.location.href='quiz.html'">
                     <div class="node-satellite-inner">
                         <i class="fas fa-brain sat-icon"></i>
@@ -743,7 +771,6 @@
                     </div>
                 </div>
 
-                <!-- Position 6 : Bas-Gauche -->
                 <div class="node-satellite pos-6" onclick="window.location.href='qr-generator.html'">
                     <div class="node-satellite-inner">
                         <i class="fas fa-qrcode sat-icon"></i>
@@ -753,7 +780,6 @@
                     </div>
                 </div>
 
-                <!-- Position 7 : Gauche -->
                 <div class="node-satellite pos-7" onclick="window.location.href='centre-controle.html'">
                     <div class="node-satellite-inner">
                         <i class="fas fa-satellite-dish sat-icon"></i>
@@ -763,7 +789,6 @@
                     </div>
                 </div>
 
-                <!-- Position 8 : Haut-Gauche -->
                 <div class="node-satellite pos-8" onclick="ouvrirSurveillance()">
                     <div class="node-satellite-inner" style="border-color: var(--neon-red);">
                         <i class="fas fa-eye sat-icon" style="color: var(--neon-red); filter: drop-shadow(0 0 10px var(--neon-red));"></i>
@@ -781,16 +806,6 @@
                         <div class="sat-status restricted">RESTREINT</div>
                     </div>
                 </div>
-
-                <!-- Carte QUALIWASH - Position 13 (bas-gauche intérieur) -->
-<div class="node-satellite inner pos-13" onclick="verifierAcces('qualwash.html')">
-    <div class="node-satellite-inner" style="border-color: var(--neon-cyan);">
-        <i class="fas fa-soap sat-icon" style="color: var(--neon-cyan); filter: drop-shadow(0 0 10px var(--neon-cyan));"></i>
-        <div class="sat-title" style="color: var(--neon-cyan);">QUALIWASH</div>
-        <div class="sat-desc">Machine à laver locale</div>
-        <div class="sat-status active">NOUVEAU</div>
-    </div>
-</div>
 
                 <div class="node-satellite inner pos-10" onclick="verifierAcces('mk40.html')">
                     <div class="node-satellite-inner">
@@ -817,6 +832,57 @@
                 </div>
             </div>
         </div>
+
+        <!-- ============================================================ -->
+        <!-- 🆕 SECTION PROJETS TECHNIQUES (desktop)                      -->
+        <!-- ============================================================ -->
+        <section class="projects-section">
+            <h2 class="section-title"><i class="fas fa-cubes"></i> PROJETS TECHNIQUES</h2>
+            <p class="section-subtitle">Découvrez les projets développés par l'équipe AFRICA.TECH21. Certains nécessitent un code d'accès.</p>
+            <div class="projects-grid">
+                <div class="feature-card" onclick="verifierAcces('irritech.html')">
+                    <div class="feature-icon"><i class="fas fa-tint"></i></div>
+                    <h3 class="feature-title">IRRITECH</h3>
+                    <p class="feature-desc">Arrosage intelligent</p>
+                    <div class="feature-status">RESTREINT</div>
+                </div>
+
+                <div class="feature-card" onclick="verifierAcces('rga.html')">
+                    <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                    <h3 class="feature-title">RGA</h3>
+                    <p class="feature-desc">Robot guide autonome</p>
+                    <div class="feature-status">RESTREINT</div>
+                </div>
+
+                <div class="feature-card" onclick="verifierAcces('rsma.html')">
+                    <div class="feature-icon"><i class="fas fa-water"></i></div>
+                    <h3 class="feature-title">RSMA</h3>
+                    <p class="feature-desc">Robot sous-marin</p>
+                    <div class="feature-status">RESTREINT</div>
+                </div>
+
+                <div class="feature-card" onclick="verifierAcces('qualwash.html')" style="border-color: var(--neon-blue);">
+                    <div class="feature-icon" style="color: var(--neon-blue);"><i class="fas fa-soap"></i></div>
+                    <h3 class="feature-title" style="color: var(--neon-blue);">QUALIWASH</h3>
+                    <p class="feature-desc">Machine à laver locale</p>
+                    <div class="feature-status" style="color: var(--neon-blue);">NOUVEAU</div>
+                </div>
+
+                <div class="feature-card" onclick="window.location.href='rejoindre-csiv.html'">
+                    <div class="feature-icon"><i class="fas fa-crown"></i></div>
+                    <h3 class="feature-title">REJOINDRE LA CSIV</h3>
+                    <p class="feature-desc">Postuler / transfert</p>
+                    <div class="feature-status">TOUS</div>
+                </div>
+
+                <div class="feature-card" onclick="window.location.href='collaboratif.html'">
+                    <div class="feature-icon"><i class="fas fa-users-cog"></i></div>
+                    <h3 class="feature-title">RÉSEAU COLLABORATIF</h3>
+                    <p class="feature-desc">Collaboration temps réel</p>
+                    <div class="feature-status">DISPONIBLE</div>
+                </div>
+            </div>
+        </section>
 
         <!-- FALLBACK MOBILE : GRILLE -->
         <div class="mobile-grid">
@@ -981,40 +1047,32 @@
             const svg = document.getElementById('circuitSVG');
             if (!svg) return;
 
-            // Centre du processeur (ESPACE DIRECTION) — position approximative
             const centerX = 900;
             const centerY = 700;
 
-            // Positions des satellites (doivent correspondre au CSS)
             const satellites = [
-                { x: centerX, y: centerY - 380 },      // pos-1 Haut
-                { x: centerX + 330, y: centerY - 220 }, // pos-2 Haut-Droite
-                { x: centerX + 420, y: centerY },       // pos-3 Droite
-                { x: centerX + 330, y: centerY + 220 }, // pos-4 Bas-Droite
-                { x: centerX, y: centerY + 380 },       // pos-5 Bas
-                { x: centerX - 330, y: centerY + 220 }, // pos-6 Bas-Gauche
-                { x: centerX - 420, y: centerY },       // pos-7 Gauche
-                { x: centerX - 330, y: centerY - 220 }, // pos-8 Haut-Gauche
-                // Intérieurs
-                { x: centerX + 200, y: centerY - 100 }, // pos-9
-                { x: centerX - 200, y: centerY + 100 }, // pos-10
-                { x: centerX - 200, y: centerY - 100 }, // pos-11
-                { x: centerX + 200, y: centerY + 100 }  // pos-12
+                { x: centerX, y: centerY - 380 },
+                { x: centerX + 330, y: centerY - 220 },
+                { x: centerX + 420, y: centerY },
+                { x: centerX + 330, y: centerY + 220 },
+                { x: centerX, y: centerY + 380 },
+                { x: centerX - 330, y: centerY + 220 },
+                { x: centerX - 420, y: centerY },
+                { x: centerX - 330, y: centerY - 220 },
+                { x: centerX + 200, y: centerY - 100 },
+                { x: centerX - 200, y: centerY + 100 },
+                { x: centerX - 200, y: centerY - 100 },
+                { x: centerX + 200, y: centerY + 100 }
             ];
 
-            // Effacer les anciennes lignes
             const oldPaths = svg.querySelectorAll('path');
             oldPaths.forEach(p => p.remove());
             const oldNodes = svg.querySelectorAll('.circuit-node');
             oldNodes.forEach(n => n.remove());
 
-            // Générer une ligne pour chaque satellite
             satellites.forEach((sat, idx) => {
-                // Créer un chemin en L (Manhattan routing) pour un look "circuit"
                 const midX = (centerX + sat.x) / 2;
-                const midY = (centerY + sat.y) / 2;
 
-                // Chemin avec segments droits
                 const pathData = `M ${centerX} ${centerY} 
                                   L ${midX} ${centerY} 
                                   L ${midX} ${sat.y} 
@@ -1023,11 +1081,9 @@
                 const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
                 path.setAttribute('d', pathData);
                 path.setAttribute('class', 'branch');
-                // Délai d'animation différent pour chaque ligne
                 path.style.animationDelay = (idx * 0.2) + 's';
                 svg.appendChild(path);
 
-                // Nœud de connexion au centre
                 const nodeStart = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                 nodeStart.setAttribute('cx', centerX);
                 nodeStart.setAttribute('cy', centerY);
@@ -1035,7 +1091,6 @@
                 nodeStart.setAttribute('class', 'circuit-node');
                 svg.appendChild(nodeStart);
 
-                // Nœud de connexion au satellite
                 const nodeEnd = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                 nodeEnd.setAttribute('cx', sat.x);
                 nodeEnd.setAttribute('cy', sat.y);
@@ -1044,7 +1099,6 @@
                 nodeEnd.style.animationDelay = (idx * 0.2) + 's';
                 svg.appendChild(nodeEnd);
 
-                // Petit point au milieu pour le routage
                 const nodeMid = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                 nodeMid.setAttribute('cx', midX);
                 nodeMid.setAttribute('cy', sat.y);
@@ -1229,7 +1283,6 @@
         });
 
         window.addEventListener('resize', () => {
-            // Régénérer les lignes au redimensionnement
             setTimeout(generateCircuitLines, 200);
         });
     </script>
