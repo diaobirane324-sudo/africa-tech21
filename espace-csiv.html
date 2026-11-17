@@ -53,8 +53,7 @@
         }
         @keyframes float {
             0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.9; }
-            90% { opacity: 0.9; }
+            10% { opacity: 0.9; } 90% { opacity: 0.9; }
             100% { transform: translateY(-100px) translateX(100px) rotate(360deg); opacity: 0; }
         }
         .back-btn {
@@ -67,28 +66,21 @@
         .page-container { max-width: 1400px; margin: 0 auto; }
         .page-header {
             background: linear-gradient(135deg, rgba(106, 13, 173, 0.2), rgba(255, 215, 0, 0.05));
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: 28px;
-            padding: 3rem 2.5rem;
-            margin-bottom: 2.5rem;
-            text-align: center;
-            box-shadow: 0 0 60px rgba(155, 48, 255, 0.2);
-            position: relative;
-            overflow: hidden;
+            backdrop-filter: blur(20px); border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 28px; padding: 3rem 2.5rem; margin-bottom: 2.5rem;
+            text-align: center; box-shadow: 0 0 60px rgba(155, 48, 255, 0.2);
+            position: relative; overflow: hidden;
         }
         .page-header::before {
-            content: '';
-            position: absolute; top: -50%; left: -50%;
+            content: ''; position: absolute; top: -50%; left: -50%;
             width: 200%; height: 200%;
             background: radial-gradient(circle, rgba(255, 215, 0, 0.06) 0%, transparent 60%);
             animation: rotateGlow 20s linear infinite;
         }
         @keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .crown-icon {
-            font-size: 4rem; color: var(--gold);
-            margin-bottom: 1rem; text-shadow: var(--gold-glow);
-            animation: pulseCrown 2s ease-in-out infinite;
+            font-size: 4rem; color: var(--gold); margin-bottom: 1rem;
+            text-shadow: var(--gold-glow); animation: pulseCrown 2s ease-in-out infinite;
             position: relative; z-index: 1;
         }
         @keyframes pulseCrown {
@@ -96,191 +88,114 @@
             50% { transform: scale(1.05); filter: drop-shadow(0 0 30px var(--gold)); }
         }
         .page-header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.8rem;
+            font-family: 'Orbitron', sans-serif; font-size: 2.8rem;
             background: linear-gradient(45deg, var(--gold), #ffffff, var(--purple-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 3px;
-            font-weight: 900;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; letter-spacing: 3px; font-weight: 900;
             position: relative; z-index: 1;
         }
         .page-header .subtitle {
-            color: var(--text-secondary);
-            margin-top: 0.5rem;
-            font-size: 1.05rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            color: var(--text-secondary); margin-top: 0.5rem;
+            font-size: 1.05rem; letter-spacing: 2px; text-transform: uppercase;
             position: relative; z-index: 1;
         }
         .user-info {
-            margin-top: 1.5rem;
-            display: inline-block;
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            padding: 0.8rem 2rem;
-            border-radius: 20px;
-            color: var(--gold);
-            font-weight: 600;
-            position: relative; z-index: 1;
+            margin-top: 1.5rem; display: inline-block;
+            background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 0.8rem 2rem; border-radius: 20px; color: var(--gold);
+            font-weight: 600; position: relative; z-index: 1;
         }
-        .tabs {
-            display: flex;
-            gap: 0.8rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
+        .tabs { display: flex; gap: 0.8rem; margin-bottom: 2rem; flex-wrap: wrap; }
         .tab {
-            padding: 0.9rem 1.6rem;
-            background: rgba(155, 48, 255, 0.05);
-            border: 1px solid rgba(155, 48, 255, 0.25);
-            border-radius: 12px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.78rem;
+            padding: 0.9rem 1.6rem; background: rgba(155, 48, 255, 0.05);
+            border: 1px solid rgba(155, 48, 255, 0.25); border-radius: 12px;
+            color: var(--text-secondary); cursor: pointer; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif; font-size: 0.78rem;
             position: relative;
         }
         .tab:hover { background: rgba(155, 48, 255, 0.12); }
         .tab.active {
             background: linear-gradient(135deg, var(--purple-royal), var(--purple-light));
-            border-color: var(--gold);
-            color: white;
+            border-color: var(--gold); color: white;
             box-shadow: 0 0 25px rgba(155, 48, 255, 0.5);
         }
         .section { display: none; }
         .section.active { display: block; }
         .card-box {
             background: linear-gradient(135deg, rgba(20, 0, 40, 0.75), rgba(10, 0, 25, 0.75));
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(155, 48, 255, 0.25);
-            border-radius: 22px;
-            padding: 2rem;
-            margin-bottom: 2rem;
+            backdrop-filter: blur(15px); border: 1px solid rgba(155, 48, 255, 0.25);
+            border-radius: 22px; padding: 2rem; margin-bottom: 2rem;
             box-shadow: 0 0 40px rgba(155, 48, 255, 0.12);
         }
         .card-box h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.4rem;
-            color: var(--gold);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
+            font-family: 'Orbitron', sans-serif; font-size: 1.4rem;
+            color: var(--gold); margin-bottom: 1.5rem;
+            display: flex; align-items: center; gap: 0.8rem;
             text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
         }
         .editor-toolbar {
             display: flex; flex-wrap: wrap; gap: 0.4rem;
             margin-bottom: 1rem; padding: 0.7rem;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 10px; border: 1px solid rgba(155, 48, 255, 0.2);
+            background: rgba(0, 0, 0, 0.4); border-radius: 10px;
+            border: 1px solid rgba(155, 48, 255, 0.2);
         }
         .editor-toolbar button {
-            background: rgba(155, 48, 255, 0.1);
-            border: 1px solid rgba(155, 48, 255, 0.25);
-            border-radius: 6px; padding: 0.45rem 0.75rem;
-            color: var(--text-primary); cursor: pointer;
-            transition: all 0.3s ease; font-size: 0.85rem;
+            background: rgba(155, 48, 255, 0.1); border: 1px solid rgba(155, 48, 255, 0.25);
+            border-radius: 6px; padding: 0.45rem 0.75rem; color: var(--text-primary);
+            cursor: pointer; transition: all 0.3s ease; font-size: 0.85rem;
         }
         .editor-toolbar button:hover {
-            background: rgba(255, 215, 0, 0.15);
-            border-color: var(--gold);
+            background: rgba(255, 215, 0, 0.15); border-color: var(--gold);
             box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
         }
-        #editorContent {
+        #editorContent, #rapportEditorContent {
             width: 100%; min-height: 420px; padding: 1.5rem;
             background: linear-gradient(135deg, #d8d2dc 0%, #e0d5e2 50%, #d4c8d8 100%);
-            border: 1px solid rgba(155, 48, 255, 0.4);
-            border-radius: 12px; color: #1a0033;
-            font-size: 1rem; line-height: 1.8; outline: none;
-            transition: all 0.3s ease;
-            caret-color: #6a0dad;
-        }
-        #editorContent:focus {
-            border-color: var(--gold);
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.35);
-        }
-        #editorContent:empty::before {
-            content: attr(placeholder);
-            color: #6a5a7a;
-            font-style: italic;
-        }
-        #editorContent img { max-width: 100%; border-radius: 10px; margin: 1rem 0; }
-        #editorContent table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-        #editorContent table td, #editorContent table th {
-            border: 1px solid rgba(155, 48, 255, 0.4); padding: 0.5rem;
+            border: 1px solid rgba(155, 48, 255, 0.4); border-radius: 12px;
+            color: #1a0033; font-size: 1rem; line-height: 1.8; outline: none;
+            transition: all 0.3s ease; caret-color: #6a0dad;
         }
         #rapportEditorContent {
-            width: 100%; min-height: 480px; padding: 2rem;
+            min-height: 480px; padding: 2rem;
             background: linear-gradient(135deg, #f5f2f7 0%, #ebe5ee 50%, #e8e0ec 100%);
-            border: 1px solid rgba(155, 48, 255, 0.4);
-            border-radius: 12px; color: #1a0033;
-            font-size: 1rem; line-height: 1.8; outline: none;
-            font-family: 'Exo 2', sans-serif;
         }
-        #rapportEditorContent:focus {
-            border-color: var(--gold);
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.35);
+        #editorContent:focus, #rapportEditorContent:focus {
+            border-color: var(--gold); box-shadow: 0 0 25px rgba(255, 215, 0, 0.35);
         }
-        #rapportEditorContent img { max-width: 100%; border-radius: 10px; margin: 1rem 0; }
-        #rapportEditorContent table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-        #rapportEditorContent table td, #rapportEditorContent table th {
-            border: 1px solid rgba(106, 13, 173, 0.4); padding: 0.5rem;
+        #editorContent:empty::before {
+            content: attr(placeholder); color: #6a5a7a; font-style: italic;
         }
-
-        /* ===== PANNEAU D'ANALYSE ===== */
         .analyse-panel {
             margin-top: 1rem;
             background: linear-gradient(135deg, rgba(30, 15, 45, 0.95), rgba(20, 10, 35, 0.95));
-            border: 1px solid rgba(155, 48, 255, 0.3);
-            border-radius: 15px;
-            padding: 1.2rem 1.5rem;
-            box-shadow: 0 0 25px rgba(155, 48, 255, 0.2);
+            border: 1px solid rgba(155, 48, 255, 0.3); border-radius: 15px;
+            padding: 1.2rem 1.5rem; box-shadow: 0 0 25px rgba(155, 48, 255, 0.2);
         }
         .analyse-panel .analyse-title {
-            color: var(--gold);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
+            color: var(--gold); font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 0.8rem;
+            display: flex; align-items: center; gap: 0.6rem;
         }
         .analyse-panel .analyse-title .dot {
             width: 10px; height: 10px; border-radius: 50%;
-            background: #00ff88;
-            box-shadow: 0 0 10px #00ff88;
+            background: #00ff88; box-shadow: 0 0 10px #00ff88;
             animation: pulseDot 1.5s infinite;
         }
         @keyframes pulseDot {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.5; transform: scale(1.3); }
         }
-        .analyse-list {
-            list-style: none;
-            max-height: 180px;
-            overflow-y: auto;
-        }
+        .analyse-list { list-style: none; max-height: 180px; overflow-y: auto; }
         .analyse-list li {
-            padding: 0.5rem 0.8rem;
-            margin-bottom: 0.4rem;
-            border-radius: 8px;
-            font-size: 0.9rem;
+            padding: 0.5rem 0.8rem; margin-bottom: 0.4rem;
+            border-radius: 8px; font-size: 0.9rem;
             background: rgba(255, 215, 0, 0.05);
-            border-left: 3px solid var(--gold);
-            color: #e0d5e2;
+            border-left: 3px solid var(--gold); color: #e0d5e2;
         }
         .analyse-list li.warn { border-left-color: #ffc800; background: rgba(255, 200, 0, 0.08); }
         .analyse-list li.info { border-left-color: #00a0ff; background: rgba(0, 160, 255, 0.08); }
         .analyse-list li.ok { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.08); color: #a0ffc0; }
-        .analyse-list li strong { color: var(--gold); }
-
         .editor-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1rem; }
         .btn {
             padding: 0.85rem 1.8rem; border: none; border-radius: 10px;
@@ -288,22 +203,16 @@
             text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem;
         }
         .btn-purple { background: linear-gradient(135deg, var(--purple-royal), var(--purple-light)); color: white; }
-        .btn-purple:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(155, 48, 255, 0.5); }
         .btn-gold { background: linear-gradient(135deg, #b8860b, var(--gold)); color: #1a0033; }
-        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(255, 215, 0, 0.5); }
         .btn-green { background: linear-gradient(135deg, #00b894, #00ff88); color: #031a0a; }
-        .btn-green:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0, 255, 136, 0.5); }
         .btn-danger { background: linear-gradient(135deg, #8b0000, #ff0033); color: white; }
-        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(255, 0, 51, 0.5); }
         .btn-dark { background: rgba(255, 255, 255, 0.05); color: var(--text-secondary); border: 1px solid rgba(155, 48, 255, 0.3); }
-        .btn-dark:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(155, 48, 255, 0.4); }
         .input-full {
             width: 100%; padding: 1rem 1.3rem;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(155, 48, 255, 0.25);
+            background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(155, 48, 255, 0.25);
             border-radius: 12px; color: var(--text-primary);
-            font-size: 1rem; outline: none; transition: 0.3s;
-            margin-bottom: 1rem;
+            font-size: 1rem; outline: none; transition: 0.3s; margin-bottom: 1rem;
         }
         .input-full:focus { border-color: var(--gold); box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); }
         .form-row {
@@ -317,8 +226,7 @@
         }
         .form-group input, .form-group select, .form-group textarea {
             width: 100%; padding: 0.9rem 1.1rem;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(155, 48, 255, 0.25);
+            background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(155, 48, 255, 0.25);
             border-radius: 10px; color: var(--text-primary);
             font-size: 1rem; outline: none; transition: 0.3s;
         }
@@ -327,22 +235,19 @@
         }
         .form-group select option { background: var(--deep-space); }
         .list-item {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(155, 48, 255, 0.15);
+            background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(155, 48, 255, 0.15);
             border-radius: 14px; padding: 1.5rem; margin-bottom: 1rem;
             transition: all 0.3s ease;
         }
         .list-item:hover {
-            border-color: var(--purple-light);
-            background: rgba(155, 48, 255, 0.06);
+            border-color: var(--purple-light); background: rgba(155, 48, 255, 0.06);
             transform: translateX(5px);
         }
         .list-item .title { color: var(--gold); font-weight: 700; font-size: 1.1rem; margin-bottom: 0.3rem; }
         .list-item .meta { color: var(--text-secondary); font-size: 0.85rem; }
         .list-item .actions { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
         .list-item .actions button {
-            background: rgba(155, 48, 255, 0.1);
-            border: 1px solid rgba(155, 48, 255, 0.3);
+            background: rgba(155, 48, 255, 0.1); border: 1px solid rgba(155, 48, 255, 0.3);
             border-radius: 8px; color: var(--purple-light);
             padding: 0.4rem 0.9rem; cursor: pointer;
             font-size: 0.82rem; font-weight: 600; transition: 0.3s;
@@ -365,19 +270,13 @@
         .statut-en_cours { background: rgba(0, 160, 255, 0.15); border: 1px solid #00a0ff; color: #00a0ff; }
         .statut-termine { background: rgba(0, 255, 136, 0.15); border: 1px solid #00ff88; color: #00ff88; }
         .retour-box {
-            margin-top: 1rem;
-            padding: 1rem 1.2rem;
-            background: rgba(0, 160, 255, 0.08);
-            border-left: 4px solid #00a0ff;
-            border-radius: 10px;
-            font-size: 0.92rem;
-            color: #cfe8ff;
+            margin-top: 1rem; padding: 1rem 1.2rem;
+            background: rgba(0, 160, 255, 0.08); border-left: 4px solid #00a0ff;
+            border-radius: 10px; font-size: 0.92rem; color: #cfe8ff;
         }
         .retour-box strong { color: #00a0ff; }
         .retour-box.valide { background: rgba(0, 255, 136, 0.08); border-left-color: #00ff88; color: #b0ffd0; }
-        .retour-box.valide strong { color: #00ff88; }
         .retour-box.rejete { background: rgba(255, 0, 51, 0.08); border-left-color: #ff0033; color: #ffb0b0; }
-        .retour-box.rejete strong { color: #ff0033; }
         .empty-state { text-align: center; color: var(--text-secondary); padding: 3rem; }
         .empty-state i { font-size: 3rem; color: rgba(155, 48, 255, 0.2); margin-bottom: 1rem; display: block; }
         .loading-text { text-align: center; color: var(--text-secondary); padding: 2rem; }
@@ -389,40 +288,29 @@
             margin-bottom: 1rem;
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        
-        /* ===== MODAL PLEIN ÉCRAN ===== */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 9999; align-items: center; justify-content: center;
-            padding: 1rem;
+            width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px); z-index: 9999;
+            align-items: center; justify-content: center; padding: 1rem;
         }
         .modal-overlay.active { display: flex; }
         .modal-content {
             background: linear-gradient(135deg, #0a0014 0%, #14002a 100%);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: 15px; 
-            max-width: 98vw;
-            width: 100%;
-            max-height: 98vh;
-            overflow-y: auto;
-            padding: 2rem;
+            border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 15px;
+            max-width: 98vw; width: 100%; max-height: 98vh;
+            overflow-y: auto; padding: 2rem;
             box-shadow: 0 0 60px rgba(155, 48, 255, 0.4);
         }
         .modal-content h2 {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--gold); margin-bottom: 1.5rem;
-            display: flex; align-items: center; gap: 1rem;
+            font-family: 'Orbitron', sans-serif; color: var(--gold);
+            margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;
         }
         .toast {
             position: fixed; bottom: 2rem; left: 50%;
-            transform: translateX(-50%);
-            background: rgba(155, 48, 255, 0.95);
-            color: white; padding: 1rem 2rem;
-            border-radius: 12px; font-weight: 700;
-            z-index: 10001; animation: fadeInUp 0.3s ease;
+            transform: translateX(-50%); background: rgba(155, 48, 255, 0.95);
+            color: white; padding: 1rem 2rem; border-radius: 12px;
+            font-weight: 700; z-index: 10001; animation: fadeInUp 0.3s ease;
         }
         .toast.success { background: rgba(0, 255, 136, 0.95); color: #050510; }
         .toast.error { background: rgba(255, 0, 51, 0.95); color: white; }
@@ -433,15 +321,9 @@
         .alerte-rapport {
             display: none;
             background: linear-gradient(90deg, var(--gold), #b8860b, var(--gold));
-            background-size: 300%;
-            border: 2px solid var(--gold);
-            border-radius: 18px;
-            padding: 1.2rem 2rem;
-            margin-bottom: 2rem;
-            text-align: center;
-            font-weight: 700;
-            font-size: 1.05rem;
-            color: #1a0033;
+            background-size: 300%; border: 2px solid var(--gold); border-radius: 18px;
+            padding: 1.2rem 2rem; margin-bottom: 2rem; text-align: center;
+            font-weight: 700; font-size: 1.05rem; color: #1a0033;
             box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
             animation: alertePulse 1.2s infinite, bgMoveAlerte 3s linear infinite;
         }
@@ -453,90 +335,46 @@
             gap: 1rem; margin-bottom: 2rem;
         }
         .stat-card {
-            background: rgba(155, 48, 255, 0.06);
-            border: 1px solid rgba(155, 48, 255, 0.25);
+            background: rgba(155, 48, 255, 0.06); border: 1px solid rgba(155, 48, 255, 0.25);
             border-radius: 15px; padding: 1.5rem; text-align: center;
         }
         .stat-card .num { font-family: 'Orbitron', sans-serif; font-size: 2rem; color: var(--gold); }
         .stat-card .label { color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 0.3rem; }
         .equipe-item {
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(155, 48, 255, 0.2);
-            border-radius: 12px; padding: 1rem 1.5rem;
-            margin-bottom: 0.8rem;
+            background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(155, 48, 255, 0.2);
+            border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 0.8rem;
         }
         .equipe-item .info .nom { color: var(--gold); font-weight: 700; }
         .equipe-item .info .role { color: var(--text-secondary); font-size: 0.85rem; }
-
-        /* ===== PRINT (EXPORT PDF) ===== */
         @media print {
             body { background: white !important; color: black !important; padding: 0 !important; }
             .hologram-grid, .particles, .back-btn, .page-header, .tabs,
             .stats-grid, .card-box h2, .editor-toolbar, .editor-actions,
-            .alerte-rapport, .toast, .modal-overlay, .btn, input, select {
-                display: none !important;
-            }
-            .card-box {
-                background: white !important;
-                border: none !important;
-                box-shadow: none !important;
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-            #rapportEditorContent {
-                background: white !important;
-                color: black !important;
-                border: none !important;
-                box-shadow: none !important;
-                padding: 2cm !important;
-                min-height: auto !important;
-                font-size: 11pt !important;
-                line-height: 1.6 !important;
-            }
-            #rapportEditorContent h1 { color: #6a0dad !important; font-size: 18pt !important; }
-            #rapportEditorContent h2 { color: #6a0dad !important; font-size: 15pt !important; }
-            #rapportEditorContent h3 { color: #6a0dad !important; font-size: 13pt !important; }
-            #rapportEditorContent table { border-collapse: collapse !important; }
-            #rapportEditorContent table td, #rapportEditorContent table th {
-                border: 1px solid #333 !important;
-                padding: 6px !important;
-            }
-            #rapportEditorContent img { max-width: 100% !important; }
+            .alerte-rapport, .toast, .modal-overlay, .btn, input, select { display: none !important; }
+            .card-box { background: white !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; }
+            #rapportEditorContent { background: white !important; color: black !important; border: none !important; box-shadow: none !important; padding: 2cm !important; min-height: auto !important; font-size: 11pt !important; line-height: 1.6 !important; }
             .section { display: none !important; }
             .section.active { display: block !important; }
-            .print-header { display: block !important; }
             @page { size: A4; margin: 1cm; }
         }
         .print-header { display: none; }
-
         @media (max-width: 768px) {
             body { padding: 1rem; }
             .page-header h1 { font-size: 1.8rem; }
             .card-box { padding: 1.5rem; }
             .tabs { flex-direction: column; }
         }
-
-        /* === NOUVEAU BOUTON MODÈLE DE RAPPORT === */
         .btn-modele-rapport {
             background: linear-gradient(135deg, var(--gold), #b8860b);
-            color: #1a0033;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 10px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 700;
-            cursor: pointer;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
+            color: #1a0033; border: none; padding: 0.8rem 1.5rem;
+            border-radius: 10px; font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem; font-weight: 700; cursor: pointer;
+            letter-spacing: 1px; transition: all 0.3s ease;
             display: inline-flex; align-items: center; gap: 0.5rem;
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
         }
-        .btn-modele-rapport:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(255, 215, 0, 0.5);
-        }
+        .btn-modele-rapport:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(255, 215, 0, 0.5); }
     </style>
 </head>
 <body>
@@ -562,27 +400,13 @@
         </div>
 
         <div class="tabs">
-            <div class="tab active" onclick="switchTab('communication')">
-                <i class="fas fa-bullhorn"></i> COMMUNICATION
-            </div>
-            <div class="tab" onclick="switchTab('veille')">
-                <i class="fas fa-binoculars"></i> VEILLE
-            </div>
-            <div class="tab" onclick="switchTab('problemes')">
-                <i class="fas fa-exclamation-circle"></i> PROBLÈMES
-            </div>
-            <div class="tab" onclick="switchTab('cahiers')">
-                <i class="fas fa-file-contract"></i> CAHIERS
-            </div>
-            <div class="tab" onclick="switchTab('rapports')">
-                <i class="fas fa-chart-line"></i> RAPPORTS
-            </div>
-            <div class="tab" onclick="switchTab('equipe')">
-                <i class="fas fa-users"></i> ÉQUIPE
-            </div>
-            <div class="tab" onclick="switchTab('candidatures')">
-                <i class="fas fa-user-plus"></i> CANDIDATURES
-            </div>
+            <div class="tab active" onclick="switchTab('communication')"><i class="fas fa-bullhorn"></i> COMMUNICATION</div>
+            <div class="tab" onclick="switchTab('veille')"><i class="fas fa-binoculars"></i> VEILLE</div>
+            <div class="tab" onclick="switchTab('problemes')"><i class="fas fa-exclamation-circle"></i> PROBLÈMES</div>
+            <div class="tab" onclick="switchTab('cahiers')"><i class="fas fa-file-contract"></i> CAHIERS</div>
+            <div class="tab" onclick="switchTab('rapports')"><i class="fas fa-chart-line"></i> RAPPORTS</div>
+            <div class="tab" onclick="switchTab('equipe')"><i class="fas fa-users"></i> ÉQUIPE</div>
+            <div class="tab" onclick="switchTab('candidatures')"><i class="fas fa-user-plus"></i> CANDIDATURES</div>
         </div>
 
         <!-- SECTION COMMUNICATION -->
@@ -616,7 +440,6 @@
                     <button onclick="insertImage()" title="Image"><i class="fas fa-image"></i></button>
                     <button onclick="insertTable()" title="Tableau"><i class="fas fa-table"></i></button>
                     <button onclick="execCmd('insertHorizontalRule')" title="Séparateur"><i class="fas fa-minus"></i></button>
-                    <button onclick="execCmd('insertHTML','&nbsp;&nbsp;&nbsp;&nbsp;')" title="Tabulation">⇥ Tab</button>
                     <span style="width:1px; height:24px; background:rgba(155,48,255,0.3); align-self:center;"></span>
                     <button onclick="execCmd('superscript')" title="Exposant">x²</button>
                     <button onclick="execCmd('subscript')" title="Indice">x₂</button>
@@ -624,13 +447,8 @@
                 </div>
                 <div id="editorContent" contenteditable="true" spellcheck="true" lang="fr" placeholder="Rédigez votre communication ici..."></div>
                 <div class="analyse-panel">
-                    <div class="analyse-title">
-                        <span class="dot"></span>
-                        <i class="fas fa-magic"></i> ANALYSE EN TEMPS RÉEL
-                    </div>
-                    <ul class="analyse-list" id="analyseList">
-                        <li class="ok">✅ Commencez à écrire pour voir les suggestions...</li>
-                    </ul>
+                    <div class="analyse-title"><span class="dot"></span><i class="fas fa-magic"></i> ANALYSE EN TEMPS RÉEL</div>
+                    <ul class="analyse-list" id="analyseList"><li class="ok">✅ Commencez à écrire pour voir les suggestions...</li></ul>
                 </div>
                 <div class="editor-actions">
                     <button class="btn btn-gold" onclick="saveComm()"><i class="fas fa-save"></i> PUBLIER</button>
@@ -642,9 +460,7 @@
 
             <div class="card-box">
                 <h2><i class="fas fa-archive"></i> PUBLICATIONS</h2>
-                <div id="commList">
-                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
-                </div>
+                <div id="commList"><div class="loading-text"><div class="loading-spinner"></div> Chargement...</div></div>
             </div>
         </div>
 
@@ -683,9 +499,7 @@
 
             <div class="card-box">
                 <h2><i class="fas fa-list"></i> VEILLE EN COURS</h2>
-                <div id="veilleList">
-                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
-                </div>
+                <div id="veilleList"><div class="loading-text"><div class="loading-spinner"></div> Chargement...</div></div>
             </div>
         </div>
 
@@ -718,9 +532,7 @@
 
             <div class="card-box">
                 <h2><i class="fas fa-list"></i> PROBLÈMES RECENSÉS</h2>
-                <div id="probList">
-                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
-                </div>
+                <div id="probList"><div class="loading-text"><div class="loading-spinner"></div> Chargement...</div></div>
             </div>
         </div>
 
@@ -738,9 +550,7 @@
 
             <div class="card-box">
                 <h2><i class="fas fa-paper-plane"></i> CAHIERS CRÉÉS</h2>
-                <div id="cahierList">
-                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
-                </div>
+                <div id="cahierList"><div class="loading-text"><div class="loading-spinner"></div> Chargement...</div></div>
             </div>
         </div>
 
@@ -755,11 +565,8 @@
 
             <div class="card-box">
                 <h2><i class="fas fa-chart-line"></i> RÉDIGER UN RAPPORT CSIV</h2>
-                
                 <div style="margin-bottom: 1.5rem;">
-                    <button class="btn-modele-rapport" onclick="ouvrirModeleRapport()">
-                        <i class="fas fa-file-alt"></i> UTILISER LE MODÈLE DE RAPPORT TECHNIQUE
-                    </button>
+                    <button class="btn-modele-rapport" onclick="ouvrirModeleRapport()"><i class="fas fa-file-alt"></i> UTILISER LE MODÈLE DE RAPPORT TECHNIQUE</button>
                 </div>
 
                 <div class="form-row">
@@ -779,7 +586,6 @@
                     </div>
                 </div>
 
-                <!-- Barre d'outils éditeur riche -->
                 <div class="editor-toolbar" style="margin-top:1rem;">
                     <button onclick="execCmd('bold')" title="Gras"><i class="fas fa-bold"></i></button>
                     <button onclick="execCmd('italic')" title="Italique"><i class="fas fa-italic"></i></button>
@@ -806,8 +612,6 @@
                     <button onclick="insertTable()" title="Tableau"><i class="fas fa-table"></i></button>
                     <button onclick="execCmd('insertHorizontalRule')" title="Séparateur"><i class="fas fa-minus"></i></button>
                     <button onclick="execCmd('removeFormat')" title="Effacer format"><i class="fas fa-eraser"></i></button>
-                    
-                    <!-- TAILLE DE POLICE -->
                     <span style="width:1px; height:24px; background:rgba(155,48,255,0.3); align-self:center;"></span>
                     <select onchange="execCmd('fontSize', this.value); this.selectedIndex=0;" style="background:#14002a; color:#fff; border:1px solid rgba(155,48,255,0.3); border-radius:6px; padding:0.3rem; font-size:0.8rem;">
                         <option value="">Taille</option>
@@ -819,13 +623,9 @@
                         <option value="6">Très grand</option>
                         <option value="7">Énorme</option>
                     </select>
-                    <!-- COULEUR PERSONNALISÉE -->
                     <input type="color" onchange="execCmd('foreColor', this.value)" title="Couleur du texte" style="width:30px; height:30px; border:none; background:none; cursor:pointer;" value="#1a0033">
-                    
-                    <!-- PALETTE DE 30 COULEURS -->
                     <div style="display:flex; flex-wrap:wrap; gap:4px; margin-top:0.5rem; padding:0.5rem; background:rgba(0,0,0,0.3); border-radius:8px; width:100%;">
                         <span style="font-size:0.75rem; color:#c0a0e0; width:100%; margin-bottom:4px;">Palette de couleurs :</span>
-                        <!-- Couleurs de base (10) -->
                         <button onclick="execCmd('foreColor', '#000000')" style="width:24px;height:24px;background:#000000;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Noir"></button>
                         <button onclick="execCmd('foreColor', '#ffffff')" style="width:24px;height:24px;background:#ffffff;border:2px solid #000;border-radius:4px;cursor:pointer;" title="Blanc"></button>
                         <button onclick="execCmd('foreColor', '#ff0000')" style="width:24px;height:24px;background:#ff0000;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Rouge"></button>
@@ -836,7 +636,6 @@
                         <button onclick="execCmd('foreColor', '#00ffff')" style="width:24px;height:24px;background:#00ffff;border:2px solid #000;border-radius:4px;cursor:pointer;" title="Cyan"></button>
                         <button onclick="execCmd('foreColor', '#ff8800')" style="width:24px;height:24px;background:#ff8800;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Orange"></button>
                         <button onclick="execCmd('foreColor', '#8800ff')" style="width:24px;height:24px;background:#8800ff;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Violet"></button>
-                        <!-- Couleurs professionnelles (20) -->
                         <button onclick="execCmd('foreColor', '#1a0033')" style="width:24px;height:24px;background:#1a0033;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Prune"></button>
                         <button onclick="execCmd('foreColor', '#6a0dad')" style="width:24px;height:24px;background:#6a0dad;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Pourpre"></button>
                         <button onclick="execCmd('foreColor', '#9b30ff')" style="width:24px;height:24px;background:#9b30ff;border:2px solid #fff;border-radius:4px;cursor:pointer;" title="Violet clair"></button>
@@ -862,53 +661,28 @@
                     </div>
                 </div>
 
-                <!-- En-tête imprimable -->
-                <div class="print-header" id="rapportPrintHeader">
-                    <div style="text-align:center; border-bottom:3px solid #6a0dad; padding-bottom:1rem; margin-bottom:2rem;">
-                        <div style="font-size:1.8rem; font-weight:900; color:#6a0dad; letter-spacing:3px;">AFRICA.TECH21</div>
-                        <div style="font-size:0.9rem; color:#6a0dad; letter-spacing:2px; text-transform:uppercase; margin-top:0.3rem;">
-                            Cellule Stratégique d'Innovation et de Veille — CSIV
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Éditeur principal -->
                 <div id="rapportEditorContent" contenteditable="true" spellcheck="true" lang="fr">
                     <div style="text-align:center; border-bottom:2px solid #6a0dad; padding-bottom:1rem; margin-bottom:1.5rem;">
                         <div style="font-size:1.6rem; font-weight:900; color:#6a0dad; letter-spacing:2px;">AFRICA.TECH21</div>
                         <div style="font-size:0.85rem; color:#6a0dad; letter-spacing:1px; text-transform:uppercase;">Cellule Stratégique d'Innovation et de Veille — CSIV</div>
                     </div>
                     <h1 style="color:#1a0033; text-align:center; font-size:1.5rem; margin-bottom:1rem;">Titre du rapport</h1>
-                    <p style="text-align:center; color:#4a3050; font-size:0.9rem; margin-bottom:2rem;">
-                        Rédigé par : <strong id="rapportAuteurAuto">—</strong> — Date : <em id="rapportDateAuto">—</em>
-                    </p>
+                    <p style="text-align:center; color:#4a3050; font-size:0.9rem; margin-bottom:2rem;">Rédigé par : <strong id="rapportAuteurAuto">—</strong> — Date : <em id="rapportDateAuto">—</em></p>
                     <p style="margin-bottom:1rem;">Commencez la rédaction de votre rapport ici...</p>
                 </div>
 
                 <div class="editor-actions" style="margin-top:1rem;">
-                    <button class="btn btn-purple" onclick="saveRapportBrouillon()">
-                        <i class="fas fa-save"></i> SAUVEGARDER BROUILLON
-                    </button>
-                    <button class="btn btn-green" onclick="transmettreRapport()">
-                        <i class="fas fa-paper-plane"></i> TRANSMETTRE AU RESP. PROJETS
-                    </button>
-                    <button class="btn btn-gold" onclick="exporterRapportPDF()">
-                        <i class="fas fa-file-pdf"></i> EXPORTER PDF
-                    </button>
-                    <button class="btn btn-dark" onclick="clearRapportEditor()">
-                        <i class="fas fa-eraser"></i> EFFACER
-                    </button>
+                    <button class="btn btn-purple" onclick="saveRapportBrouillon()"><i class="fas fa-save"></i> SAUVEGARDER BROUILLON</button>
+                    <button class="btn btn-green" onclick="transmettreRapport()"><i class="fas fa-paper-plane"></i> TRANSMETTRE AU RESP. PROJETS</button>
+                    <button class="btn btn-gold" onclick="exporterRapportPDF()"><i class="fas fa-file-pdf"></i> EXPORTER PDF</button>
+                    <button class="btn btn-dark" onclick="clearRapportEditor()"><i class="fas fa-eraser"></i> EFFACER</button>
                 </div>
                 <input type="hidden" id="editRapportId" value="">
-                <input type="hidden" id="editRapportStatut" value="">
             </div>
 
-            <!-- HISTORIQUE DES RAPPORTS -->
             <div class="card-box">
                 <h2><i class="fas fa-history"></i> MES RAPPORTS</h2>
-                <div id="rapportList">
-                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
-                </div>
+                <div id="rapportList"><div class="loading-text"><div class="loading-spinner"></div> Chargement...</div></div>
             </div>
         </div>
 
@@ -935,9 +709,7 @@
 
             <div class="card-box">
                 <h2><i class="fas fa-users"></i> MON ÉQUIPE CSIV</h2>
-                <div id="equipeList">
-                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
-                </div>
+                <div id="equipeList"><div class="loading-text"><div class="loading-spinner"></div> Chargement...</div></div>
             </div>
         </div>
 
@@ -953,9 +725,7 @@
                         <option value="tous">📋 Toutes</option>
                     </select>
                 </div>
-                <div id="candidaturesList">
-                    <div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>
-                </div>
+                <div id="candidaturesList"><div class="loading-text"><div class="loading-spinner"></div> Chargement...</div></div>
             </div>
         </div>
     </div>
@@ -967,9 +737,7 @@
             <div class="meta" id="viewMeta" style="color: var(--text-secondary); margin-bottom: 1.5rem;"></div>
             <div id="viewBody" style="line-height: 1.8;"></div>
             <div style="margin-top: 2rem; display:flex; gap:0.8rem; flex-wrap:wrap;">
-                <button class="btn btn-gold" onclick="exportViewToPDF()">
-                    <i class="fas fa-file-pdf"></i> EXPORTER PDF
-                </button>
+                <button class="btn btn-gold" onclick="exportViewToPDF()"><i class="fas fa-file-pdf"></i> EXPORTER PDF</button>
                 <button class="btn btn-dark" onclick="closeViewModal()">FERMER</button>
             </div>
         </div>
@@ -996,14 +764,12 @@
         </div>
     </div>
 
-    <!-- === NOUVEAU MODAL : MODÈLE DE RAPPORT TECHNIQUE === -->
+    <!-- MODAL MODÈLE RAPPORT -->
     <div class="modal-overlay" id="modeleRapportOverlay" style="z-index: 10002;">
         <div class="modal-content" style="max-width: 900px;">
             <h2><i class="fas fa-file-alt"></i> MODÈLE DE RAPPORT TECHNIQUE</h2>
             <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Remplissez les champs ci-dessous pour générer votre rapport technique au format officiel AFRICA.TECH21.</p>
-
             <div style="display:flex; flex-direction:column; gap:1rem;">
-                <!-- Titre & Sous-titre -->
                 <div>
                     <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">TITRE DU RAPPORT</label>
                     <input type="text" id="mrTitre" placeholder="Ex: CONCEPTION DU PROTOTYPE DE RADAR SONORE" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
@@ -1012,7 +778,6 @@
                     <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">SOUS-TITRE / THÈME</label>
                     <input type="text" id="mrSousTitre" placeholder="Ex: Rapport d'activité mensuel — Pôle CSIV" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
                 </div>
-                <!-- Rédigé par / Destinataire -->
                 <div style="display:flex; gap:1rem; flex-wrap:wrap;">
                     <div style="flex:1; min-width:200px;">
                         <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">RÉDIGÉ PAR</label>
@@ -1023,7 +788,6 @@
                         <input type="text" id="mrDestinataire" placeholder="Bureau exécutif" style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem;">
                     </div>
                 </div>
-                <!-- Date / Version / Statut -->
                 <div style="display:flex; gap:1rem; flex-wrap:wrap;">
                     <div style="flex:1; min-width:150px;">
                         <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">DATE DE FINALISATION</label>
@@ -1042,31 +806,21 @@
                         </select>
                     </div>
                 </div>
-
-                <!-- Contenu : Sections -->
                 <div style="border-top:1px solid rgba(255,215,0,0.2); padding-top:1rem; margin-top:0.5rem;">
                     <h3 style="color:var(--gold); font-size:1rem; margin-bottom:0.8rem;"><i class="fas fa-list-ol"></i> CONTENU DU RAPPORT</h3>
-
                     <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">01. INTRODUCTION & CONTEXTE</label>
                     <textarea id="mrIntro" rows="3" placeholder="Contexte du rapport..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
-
                     <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">02. OBJECTIFS ET PÉRIMÈTRE</label>
                     <textarea id="mrObjectifs" rows="3" placeholder="Objectif principal, objectifs secondaires, périmètre..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
-
                     <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">03. DÉROULEMENT & RÉALISATIONS</label>
                     <textarea id="mrDeroulement" rows="4" placeholder="Étapes clés, technologies utilisées, résultats..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
-
                     <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">04. BILAN FINANCIER / RESSOURCES</label>
                     <textarea id="mrBilan" rows="3" placeholder="Éléments, quantités, coûts (optionnel)..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
-
                     <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">05. RECOMMANDATIONS & PROCHAINES ÉTAPES</label>
                     <textarea id="mrRecommandations" rows="3" placeholder="Actions à mener..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
-
                     <label style="color:var(--text-secondary); font-size:0.85rem; font-weight:700; letter-spacing:1px;">06. CONCLUSION</label>
                     <textarea id="mrConclusion" rows="3" placeholder="Synthèse globale et perspectives..." style="width:100%; padding:0.8rem; background:#000; border:1px solid rgba(255,215,0,0.3); border-radius:8px; color:#fff; margin-top:0.3rem; margin-bottom:0.8rem; resize:vertical;"></textarea>
                 </div>
-
-                <!-- Boutons -->
                 <div style="display:flex; gap:1rem; justify-content:flex-end; flex-wrap:wrap; margin-top:1rem;">
                     <button class="btn btn-dark" onclick="fermerModeleRapport()">ANNULER</button>
                     <button class="btn btn-gold" onclick="genererRapportTechniquePDF()"><i class="fas fa-file-pdf"></i> GÉNÉRER LE PDF</button>
@@ -1162,22 +916,16 @@
 
             const now = new Date();
             const payload = {
-                type: 'communication',
-                titre: title,
-                contenu: content,
-                statut: 'actif',
-                auteur: `${memberPrenom} ${memberNom}`,
-                auteur_id: memberId,
+                type: 'communication', titre: title, contenu: content, statut: 'actif',
+                auteur: `${memberPrenom} ${memberNom}`, auteur_id: memberId,
                 date_creation: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
                 timestamp: Date.now()
             };
-
             try {
                 let res;
                 if (editId) res = await supabaseClient.from('csiv_data').update(payload).eq('id', editId);
                 else res = await supabaseClient.from('csiv_data').insert([payload]);
                 if (res.error) throw res.error;
-
                 showToast('✅ Publication enregistrée !', 'success');
                 document.getElementById('editorContent').innerHTML = '';
                 document.getElementById('commTitle').value = '';
@@ -1225,21 +973,13 @@
             const deadline = document.getElementById('veilleDeadline').value;
             const lien = document.getElementById('veilleLien').value.trim();
             const desc = document.getElementById('veilleDesc').value.trim();
-
             if (!titre) { showToast('⚠️ Titre obligatoire.', 'error'); return; }
-
             const now = new Date();
             const metadata = JSON.stringify({ type_opp: type, deadline, lien });
-
             try {
                 const { error } = await supabaseClient.from('csiv_data').insert([{
-                    type: 'veille',
-                    titre: titre,
-                    contenu: desc,
-                    statut: 'actif',
-                    auteur: `${memberPrenom} ${memberNom}`,
-                    auteur_id: memberId,
-                    metadata: metadata,
+                    type: 'veille', titre, contenu: desc, statut: 'actif',
+                    auteur: `${memberPrenom} ${memberNom}`, auteur_id: memberId, metadata,
                     date_creation: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
                     timestamp: Date.now()
                 }]);
@@ -1285,16 +1025,11 @@
             const domaine = document.getElementById('probDomaine').value;
             const desc = document.getElementById('probDesc').value.trim();
             if (!titre) { showToast('⚠️ Titre obligatoire.', 'error'); return; }
-
             const now = new Date();
             try {
                 const { error } = await supabaseClient.from('csiv_data').insert([{
-                    type: 'probleme',
-                    titre: titre,
-                    contenu: desc,
-                    statut: 'actif',
-                    auteur: `${memberPrenom} ${memberNom}`,
-                    auteur_id: memberId,
+                    type: 'probleme', titre, contenu: desc, statut: 'actif',
+                    auteur: `${memberPrenom} ${memberNom}`, auteur_id: memberId,
                     metadata: JSON.stringify({ domaine }),
                     date_creation: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
                     timestamp: Date.now()
@@ -1336,15 +1071,11 @@
             const titre = document.getElementById('cahierTitre').value.trim();
             const contenu = document.getElementById('cahierContenu').value.trim();
             if (!titre || !contenu) { showToast('⚠️ Titre et contenu obligatoires.', 'error'); return; }
-
             const now = new Date();
             try {
                 const { error } = await supabaseClient.from('cahiers_charges').insert([{
-                    titre: titre,
-                    contenu: contenu,
-                    emetteur: `${memberPrenom} ${memberNom}`,
-                    emetteur_id: memberId,
-                    statut: 'en_attente',
+                    titre, contenu, emetteur: `${memberPrenom} ${memberNom}`,
+                    emetteur_id: memberId, statut: 'en_attente',
                     date_envoi: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
                     timestamp: Date.now()
                 }]);
@@ -1393,30 +1124,22 @@
             try {
                 const { data: cahier } = await supabaseClient.from('cahiers_charges').select('*').eq('id', id).single();
                 if (!cahier) throw new Error('Cahier introuvable');
-
                 const now = new Date();
                 const contenuFull = cahier.contenu + (message ? `\n\n---\nMessage : ${message}` : '');
-
                 const { error: err1 } = await supabaseClient.from('travaux_membres').insert([{
-                    membre_id: memberId,
-                    membre_nom: `${memberPrenom} ${memberNom}`,
-                    fichier_nom: `CAHIER: ${cahier.titre}`,
-                    fichier_url: 'cahier-csiv',
-                    storage_path: null,
-                    commentaire: contenuFull.substring(0, 500),
-                    statut: 'en_attente',
-                    source_type: 'cahier_csiv',
+                    membre_id: memberId, membre_nom: `${memberPrenom} ${memberNom}`,
+                    fichier_nom: `CAHIER: ${cahier.titre}`, fichier_url: 'cahier-csiv',
+                    storage_path: null, commentaire: contenuFull.substring(0, 500),
+                    statut: 'en_attente', source_type: 'cahier_csiv',
                     date_depot: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
                     timestamp: Date.now()
                 }]);
                 if (err1) throw err1;
-
                 const { error: err2 } = await supabaseClient.from('cahiers_charges').update({
                     statut: 'en_cours',
                     date_retour: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})
                 }).eq('id', id);
                 if (err2) throw err2;
-
                 showToast('✅ Cahier transmis au Responsable Projets !', 'success');
                 closeTransModal();
                 loadCahiers();
@@ -1469,7 +1192,6 @@
             document.getElementById('rapportEditorContent').innerHTML = contenuRapportVide();
             document.getElementById('rapportTitre').value = '';
             document.getElementById('editRapportId').value = '';
-            document.getElementById('editRapportStatut').value = '';
         }
 
         async function saveRapportBrouillon() {
@@ -1477,38 +1199,25 @@
             const typeRapport = document.getElementById('rapportType').value;
             const contenuHtml = document.getElementById('rapportEditorContent').innerHTML.trim();
             const editId = document.getElementById('editRapportId').value;
-
             if (!titre) { showToast('⚠️ Donnez un titre au rapport.', 'error'); return; }
-            if (!contenuHtml || contenuHtml.length < 100) {
-                showToast('⚠️ Le contenu du rapport est trop court.', 'error'); return;
-            }
-
+            if (!contenuHtml || contenuHtml.length < 100) { showToast('⚠️ Le contenu du rapport est trop court.', 'error'); return; }
             const payload = {
-                titre,
-                reference: genererReferenceRapport(),
-                contenu_html: contenuHtml,
-                auteur_id: memberId,
-                auteur_nom: `${memberPrenom} ${memberNom}`,
-                statut: 'brouillon',
-                metadata: { type_rapport: typeRapport },
-                date_creation: new Date().toISOString(),
-                timestamp: Date.now()
+                titre, reference: genererReferenceRapport(), contenu_html: contenuHtml,
+                auteur_id: memberId, auteur_nom: `${memberPrenom} ${memberNom}`,
+                statut: 'brouillon', metadata: { type_rapport: typeRapport },
+                date_creation: new Date().toISOString(), timestamp: Date.now()
             };
-
             try {
                 let res;
                 if (editId) {
-                    delete payload.reference;
-                    delete payload.date_creation;
+                    delete payload.reference; delete payload.date_creation;
                     res = await supabaseClient.from('csiv_rapports').update(payload).eq('id', editId);
                 } else {
                     res = await supabaseClient.from('csiv_rapports').insert([payload]);
                 }
                 if (res.error) throw res.error;
-
                 showToast('💾 Brouillon sauvegardé !', 'success');
                 document.getElementById('editRapportId').value = '';
-                document.getElementById('editRapportStatut').value = '';
                 loadRapports();
             } catch (e) { showToast('❌ ' + e.message, 'error'); }
         }
@@ -1518,79 +1227,46 @@
             const contenuHtml = document.getElementById('rapportEditorContent').innerHTML.trim();
             const typeRapport = document.getElementById('rapportType').value;
             const editId = document.getElementById('editRapportId').value;
-
             if (!titre) { showToast('⚠️ Donnez un titre au rapport.', 'error'); return; }
-            if (!contenuHtml || contenuHtml.length < 100) {
-                showToast('⚠️ Le contenu du rapport est trop court.', 'error'); return;
-            }
-
-            const ok = confirm(
-                `📤 TRANSMETTRE AU RESPONSABLE PROJETS\n\n` +
-                `Titre : ${titre}\n\n` +
-                `Le rapport sera envoyé à Mouhamed DIALLO (AT21_0011) et apparaîtra dans son espace.\n` +
-                `Vous pourrez suivre son statut dans "MES RAPPORTS".\n\n` +
-                `Confirmer l'envoi ?`
-            );
+            if (!contenuHtml || contenuHtml.length < 100) { showToast('⚠️ Le contenu du rapport est trop court.', 'error'); return; }
+            const ok = confirm(`📤 Transmettre "${titre}" au Responsable Projets ?`);
             if (!ok) return;
-
-            const reference = genererReferenceRapport();
             const now = new Date();
             const nowIso = now.toISOString();
-
             try {
                 let rapportId = editId;
-
                 if (editId) {
                     const { error } = await supabaseClient.from('csiv_rapports').update({
-                        titre,
-                        contenu_html: contenuHtml,
-                        statut: 'transmis',
-                        date_transmission: nowIso,
-                        destinataire_id: 'AT21_0011',
-                        destinataire_nom: 'DIALLO MOUHAMED',
-                        metadata: { type_rapport: typeRapport }
+                        titre, contenu_html: contenuHtml, statut: 'transmis',
+                        date_transmission: nowIso, destinataire_id: 'AT21_0011',
+                        destinataire_nom: 'DIALLO MOUHAMED', metadata: { type_rapport: typeRapport }
                     }).eq('id', editId);
                     if (error) throw error;
                 } else {
                     const { data, error } = await supabaseClient.from('csiv_rapports').insert([{
-                        titre,
-                        reference,
-                        contenu_html: contenuHtml,
-                        auteur_id: memberId,
-                        auteur_nom: `${memberPrenom} ${memberNom}`,
-                        statut: 'transmis',
-                        destinataire_id: 'AT21_0011',
-                        destinataire_nom: 'DIALLO MOUHAMED',
-                        date_creation: nowIso,
-                        date_transmission: nowIso,
-                        metadata: { type_rapport: typeRapport },
+                        titre, reference: genererReferenceRapport(), contenu_html: contenuHtml,
+                        auteur_id: memberId, auteur_nom: `${memberPrenom} ${memberNom}`,
+                        statut: 'transmis', destinataire_id: 'AT21_0011',
+                        destinataire_nom: 'DIALLO MOUHAMED', date_creation: nowIso,
+                        date_transmission: nowIso, metadata: { type_rapport: typeRapport },
                         timestamp: Date.now()
                     }]).select();
                     if (error) throw error;
                     rapportId = data[0].id;
                 }
-
-                // Insertion dans travaux_membres pour la cloche de Mouhamed
                 const contenuTexte = contenuHtml.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
                 const { error: errTravaux } = await supabaseClient.from('travaux_membres').insert([{
-                    membre_id: memberId,
-                    membre_nom: `${memberPrenom} ${memberNom}`,
-                    fichier_nom: `📄 RAPPORT CSIV : ${titre}`,
-                    fichier_url: 'rapport-csiv',
-                    storage_path: null,
-                    commentaire: contenuTexte.substring(0, 300),
-                    statut: 'en_attente',
-                    source_type: 'rapport_csiv',
-                    source_rapport_id: rapportId,
+                    membre_id: memberId, membre_nom: `${memberPrenom} ${memberNom}`,
+                    fichier_nom: `📄 RAPPORT CSIV : ${titre}`, fichier_url: 'rapport-csiv',
+                    storage_path: null, commentaire: contenuTexte.substring(0, 300),
+                    statut: 'en_attente', source_type: 'rapport_csiv', source_rapport_id: rapportId,
                     date_depot: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
                     timestamp: Date.now()
                 }]);
                 if (errTravaux) throw errTravaux;
-
                 showToast('✅ Rapport transmis au Responsable Projets !', 'success');
                 document.getElementById('rapportTitre').value = '';
                 document.getElementById('editRapportId').value = '';
-                document.getElementById('editRapportStatut').value = '';
                 document.getElementById('rapportEditorContent').innerHTML = contenuRapportVide();
                 loadRapports();
             } catch (e) { showToast('❌ ' + e.message, 'error'); }
@@ -1600,50 +1276,24 @@
             const c = document.getElementById('rapportList');
             c.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
             try {
-                const { data, error } = await supabaseClient
-                    .from('csiv_rapports')
-                    .select('*')
-                    .order('timestamp', { ascending: false });
+                const { data, error } = await supabaseClient.from('csiv_rapports').select('*').order('timestamp', { ascending: false });
                 if (error) throw error;
-
-                if (!data || data.length === 0) {
-                    c.innerHTML = '<div class="empty-state"><i class="fas fa-chart-line"></i><p>Aucun rapport pour le moment.</p></div>';
-                    return;
-                }
-
+                if (!data || data.length === 0) { c.innerHTML = '<div class="empty-state"><i class="fas fa-chart-line"></i><p>Aucun rapport pour le moment.</p></div>'; return; }
                 c.innerHTML = data.map(r => {
                     let meta = {};
                     try { meta = typeof r.metadata === 'string' ? JSON.parse(r.metadata) : (r.metadata || {}); } catch(e) {}
-                    const statutLabel = {
-                        'brouillon': 'BROUILLON',
-                        'transmis': 'TRANSMIS',
-                        'lu': 'LU',
-                        'valide': 'VALIDÉ',
-                        'rejete': 'REJETÉ'
-                    }[r.statut] || r.statut.toUpperCase();
-
-                    const retourHtml = r.retour_responsable ? `
-                        <div class="retour-box ${r.statut === 'valide' ? 'valide' : (r.statut === 'rejete' ? 'rejete' : '')}">
-                            <strong>↩️ Retour du Responsable Projets :</strong><br>
-                            ${r.retour_responsable}
-                            ${r.note_responsable != null ? `<br><em>Note : ${r.note_responsable}/20</em>` : ''}
-                        </div>
-                    ` : '';
-
+                    const statutLabel = {'brouillon':'BROUILLON','transmis':'TRANSMIS','lu':'LU','valide':'VALIDÉ','rejete':'REJETÉ'}[r.statut] || r.statut.toUpperCase();
+                    const retourHtml = r.retour_responsable ? `<div class="retour-box ${r.statut === 'valide' ? 'valide' : (r.statut === 'rejete' ? 'rejete' : '')}"><strong>↩️ Retour :</strong><br>${r.retour_responsable}${r.note_responsable != null ? `<br><em>Note : ${r.note_responsable}/20</em>` : ''}</div>` : '';
                     return `
                         <div class="list-item">
                             <div class="title">${r.titre}</div>
-                            <div class="meta">
-                                🆔 ${r.reference || '—'} — 📅 ${new Date(r.date_creation).toLocaleDateString('fr-FR')}
-                                ${r.date_transmission ? ` — 📤 Transmis le ${new Date(r.date_transmission).toLocaleDateString('fr-FR')}` : ''}
-                            </div>
+                            <div class="meta">🆔 ${r.reference || '—'} — 📅 ${new Date(r.date_creation).toLocaleDateString('fr-FR')}${r.date_transmission ? ` — 📤 ${new Date(r.date_transmission).toLocaleDateString('fr-FR')}` : ''}</div>
                             <div class="meta">✍️ ${r.auteur_nom} ${meta.type_rapport ? ` — 📌 ${meta.type_rapport}` : ''}</div>
                             <div class="statut-badge statut-${r.statut}">${statutLabel}</div>
                             ${retourHtml}
                             <div class="actions">
                                 <button onclick="viewRapport('${r.id}')"><i class="fas fa-eye"></i> Voir</button>
                                 ${r.statut === 'brouillon' || r.statut === 'rejete' ? `<button onclick="ouvrirRapportEnEdition('${r.id}')"><i class="fas fa-edit"></i> Modifier</button>` : ''}
-                                ${r.statut === 'brouillon' || r.statut === 'rejete' ? `<button class="transmettre" onclick="transmettreDepuisListe('${r.id}')"><i class="fas fa-paper-plane"></i> Transmettre</button>` : ''}
                                 <button class="delete" onclick="deleteRapport('${r.id}')"><i class="fas fa-trash"></i> Supprimer</button>
                             </div>
                         </div>
@@ -1652,85 +1302,12 @@
             } catch (e) { c.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>'; }
         }
 
-        async function ouvrirRapportEnEdition(id) {
-            const { data, error } = await supabaseClient.from('csiv_rapports').select('*').eq('id', id).single();
-            if (error || !data) { showToast('❌ Rapport introuvable.', 'error'); return; }
-
-            let meta = {};
-            try { meta = typeof data.metadata === 'string' ? JSON.parse(data.metadata) : (data.metadata || {}); } catch(e) {}
-
-            document.getElementById('rapportTitre').value = data.titre;
-            document.getElementById('rapportType').value = meta.type_rapport || 'mensuel';
-            document.getElementById('rapportEditorContent').innerHTML = data.contenu_html;
-            document.getElementById('editRapportId').value = id;
-            document.getElementById('editRapportStatut').value = data.statut;
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            showToast('✏️ Rapport chargé en édition', 'success');
-        }
-
-        async function transmettreDepuisListe(id) {
-            const { data, error } = await supabaseClient.from('csiv_rapports').select('*').eq('id', id).single();
-            if (error || !data) { showToast('❌ Rapport introuvable.', 'error'); return; }
-
-            const ok = confirm(`📤 Transmettre "${data.titre}" au Responsable Projets ?`);
-            if (!ok) return;
-
-            const now = new Date();
-            const nowIso = now.toISOString();
-
-            try {
-                const { error: e1 } = await supabaseClient.from('csiv_rapports').update({
-                    statut: 'transmis',
-                    date_transmission: nowIso,
-                    destinataire_id: 'AT21_0011',
-                    destinataire_nom: 'DIALLO MOUHAMED'
-                }).eq('id', id);
-                if (e1) throw e1;
-
-                const contenuTexte = (data.contenu_html || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
-                const { error: e2 } = await supabaseClient.from('travaux_membres').insert([{
-                    membre_id: data.auteur_id,
-                    membre_nom: data.auteur_nom,
-                    fichier_nom: `📄 RAPPORT CSIV : ${data.titre}`,
-                    fichier_url: 'rapport-csiv',
-                    storage_path: null,
-                    commentaire: contenuTexte.substring(0, 300),
-                    statut: 'en_attente',
-                    source_type: 'rapport_csiv',
-                    source_rapport_id: id,
-                    date_depot: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
-                    timestamp: Date.now()
-                }]);
-                if (e2) throw e2;
-
-                showToast('✅ Rapport transmis !', 'success');
-                loadRapports();
-            } catch (e) { showToast('❌ ' + e.message, 'error'); }
-        }
-
         async function viewRapport(id) {
             const { data, error } = await supabaseClient.from('csiv_rapports').select('*').eq('id', id).single();
             if (error || !data) { showToast('❌ Rapport introuvable.', 'error'); return; }
-
             document.getElementById('viewTitle').textContent = data.titre;
-            document.getElementById('viewMeta').innerHTML = `
-                🆔 ${data.reference || '—'} — 📅 ${new Date(data.date_creation).toLocaleDateString('fr-FR')}
-                ${data.date_transmission ? ` — 📤 Transmis le ${new Date(data.date_transmission).toLocaleDateString('fr-FR')}` : ''}<br>
-                ✍️ ${data.auteur_nom} — Statut : <strong>${data.statut.toUpperCase()}</strong>
-            `;
-            document.getElementById('viewBody').innerHTML = `
-                <div id="rapportViewPrintable" style="background:#f5f2f7; color:#1a0033; padding:2rem; border-radius:12px;">
-                    ${data.contenu_html}
-                </div>
-                ${data.retour_responsable ? `
-                    <div class="retour-box ${data.statut === 'valide' ? 'valide' : (data.statut === 'rejete' ? 'rejete' : '')}" style="margin-top:1.5rem;">
-                        <strong>↩️ Retour du Responsable Projets :</strong><br>
-                        ${data.retour_responsable}
-                        ${data.note_responsable != null ? `<br><em>Note : ${data.note_responsable}/20</em>` : ''}
-                    </div>
-                ` : ''}
-            `;
+            document.getElementById('viewMeta').innerHTML = `🆔 ${data.reference || '—'} — 📅 ${new Date(data.date_creation).toLocaleDateString('fr-FR')} — ✍️ ${data.auteur_nom} — Statut : <strong>${data.statut.toUpperCase()}</strong>`;
+            document.getElementById('viewBody').innerHTML = `<div style="background:#f5f2f7; color:#1a0033; padding:2rem; border-radius:12px;">${data.contenu_html}</div>`;
             document.getElementById('viewModal').classList.add('active');
         }
 
@@ -1749,91 +1326,18 @@
             if (!contenu || !contenu.innerHTML.trim() || contenu.innerHTML.trim().length < 100) {
                 showToast('⚠️ Rédigez d\'abord le rapport.', 'error'); return;
             }
-
             const titre = document.getElementById('rapportTitre').value.trim() || 'Rapport CSIV';
             const printWindow = window.open('', '_blank', 'width=900,height=700');
-            if (!printWindow) { showToast('❌ Popup bloquée. Autorisez les popups.', 'error'); return; }
-
+            if (!printWindow) { showToast('❌ Popup bloquée.', 'error'); return; }
             const date = new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            const ref = genererReferenceRapport();
-
             printWindow.document.write(`
-                <!DOCTYPE html>
-                <html lang="fr">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>${titre} — AFRICA.TECH21 CSIV</title>
-                    <style>
-                        @page { size: A4; margin: 2cm; }
-                        * { box-sizing: border-box; }
-                        body {
-                            font-family: 'Segoe UI', 'Exo 2', Arial, sans-serif;
-                            color: #1a0033; line-height: 1.65;
-                            padding: 0; margin: 0;
-                            font-size: 11pt;
-                        }
-                        .header {
-                            text-align: center;
-                            border-bottom: 3px solid #6a0dad;
-                            padding-bottom: 1rem;
-                            margin-bottom: 2rem;
-                        }
-                        .header .logo {
-                            font-size: 1.8rem; font-weight: 900;
-                            color: #6a0dad; letter-spacing: 3px;
-                        }
-                        .header .sub {
-                            font-size: 0.85rem; color: #6a0dad;
-                            letter-spacing: 2px; text-transform: uppercase;
-                            margin-top: 0.3rem;
-                        }
-                        h1 { color: #6a0dad; text-align: center; font-size: 1.5rem; margin: 1rem 0; }
-                        h2 { color: #6a0dad; font-size: 1.25rem; margin: 1.3rem 0 0.6rem; }
-                        h3 { color: #6a0dad; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
-                        p { margin-bottom: 0.8rem; }
-                        ul, ol { padding-left: 1.8rem; margin-bottom: 0.8rem; }
-                        li { margin-bottom: 0.35rem; }
-                        table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
-                        td, th { border: 1px solid #333; padding: 6px 10px; }
-                        th { background: #e8e0ec; }
-                        img { max-width: 100%; height: auto; }
-                        .footer {
-                            margin-top: 3rem;
-                            padding-top: 1rem;
-                            border-top: 1px solid #ccc;
-                            font-size: 0.8rem;
-                            color: #666;
-                            text-align: center;
-                        }
-                        .meta-info {
-                            text-align: center;
-                            color: #4a3050;
-                            font-size: 0.9rem;
-                            margin-bottom: 2rem;
-                            padding-bottom: 1rem;
-                            border-bottom: 1px dashed #b0a0b8;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="header">
-                        <div class="logo">AFRICA.TECH21</div>
-                        <div class="sub">Cellule Stratégique d'Innovation et de Veille — CSIV</div>
-                    </div>
-                    <div class="meta-info">
-                        <strong>Référence :</strong> ${ref} — <strong>Date :</strong> ${date}<br>
-                        <strong>Rédigé par :</strong> ${memberPrenom} ${memberNom}
-                    </div>
-                    ${contenu.innerHTML}
-                    <div class="footer">
-                        Document généré automatiquement par la plateforme AFRICA.TECH21 — CSIV<br>
-                        ${ref} — ${date}
-                    </div>
-                    <script>
-                        window.onload = function() { setTimeout(function() { window.print(); }, 300); };
-                    <\/script>
-                </body>
-                </html>
+                <!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>${titre}</title>
+                <style>@page { size: A4; margin: 2cm; } body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a0033; line-height: 1.65; font-size: 11pt; } .header { text-align: center; border-bottom: 3px solid #6a0dad; padding-bottom: 1rem; margin-bottom: 2rem; } .header .logo { font-size: 1.8rem; font-weight: 900; color: #6a0dad; letter-spacing: 3px; } .header .sub { font-size: 0.85rem; color: #6a0dad; letter-spacing: 2px; text-transform: uppercase; margin-top: 0.3rem; } h1, h2, h3 { color: #6a0dad; } table { border-collapse: collapse; width: 100%; margin: 1rem 0; } td, th { border: 1px solid #333; padding: 6px 10px; } .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ccc; font-size: 0.8rem; color: #666; text-align: center; }</style></head><body>
+                <div class="header"><div class="logo">AFRICA.TECH21</div><div class="sub">Cellule Stratégique d'Innovation et de Veille — CSIV</div></div>
+                ${contenu.innerHTML}
+                <div class="footer">Document généré par la plateforme AFRICA.TECH21 — ${date}</div>
+                <script>window.onload = function() { setTimeout(function() { window.print(); }, 300); };<\/script>
+                </body></html>
             `);
             printWindow.document.close();
         }
@@ -1842,42 +1346,136 @@
             const viewBody = document.getElementById('viewBody');
             const viewTitle = document.getElementById('viewTitle').textContent;
             if (!viewBody) return;
-
             const printWindow = window.open('', '_blank', 'width=900,height=700');
             if (!printWindow) { showToast('❌ Popup bloquée.', 'error'); return; }
-
             printWindow.document.write(`
-                <!DOCTYPE html>
-                <html lang="fr">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>${viewTitle} — AFRICA.TECH21 CSIV</title>
-                    <style>
-                        @page { size: A4; margin: 2cm; }
-                        body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a0033; line-height: 1.65; font-size: 11pt; }
-                        .header { text-align: center; border-bottom: 3px solid #6a0dad; padding-bottom: 1rem; margin-bottom: 2rem; }
-                        .header .logo { font-size: 1.8rem; font-weight: 900; color: #6a0dad; letter-spacing: 3px; }
-                        .header .sub { font-size: 0.85rem; color: #6a0dad; letter-spacing: 2px; text-transform: uppercase; margin-top: 0.3rem; }
-                        h1, h2, h3 { color: #6a0dad; }
-                        table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
-                        td, th { border: 1px solid #333; padding: 6px 10px; }
-                        .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ccc; font-size: 0.8rem; color: #666; text-align: center; }
-                        .retour-box { padding: 1rem; margin-top: 1.5rem; border-left: 4px solid #00a0ff; background: #e8f4ff; border-radius: 6px; }
-                    </style>
-                </head>
-                <body>
-                    <div class="header">
-                        <div class="logo">AFRICA.TECH21</div>
-                        <div class="sub">Cellule Stratégique d'Innovation et de Veille — CSIV</div>
-                    </div>
-                    <h1>${viewTitle}</h1>
-                    ${viewBody.innerHTML}
-                    <div class="footer">Document généré par AFRICA.TECH21 — CSIV — ${new Date().toLocaleDateString('fr-FR')}</div>
-                    <script>window.onload = function(){ setTimeout(function(){ window.print(); }, 300); };<\/script>
-                </body>
-                </html>
+                <!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>${viewTitle}</title>
+                <style>@page { size: A4; margin: 2cm; } body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a0033; line-height: 1.65; font-size: 11pt; } .header { text-align: center; border-bottom: 3px solid #6a0dad; padding-bottom: 1rem; margin-bottom: 2rem; } .header .logo { font-size: 1.8rem; font-weight: 900; color: #6a0dad; letter-spacing: 3px; } .header .sub { font-size: 0.85rem; color: #6a0dad; letter-spacing: 2px; text-transform: uppercase; margin-top: 0.3rem; } h1, h2, h3 { color: #6a0dad; } table { border-collapse: collapse; width: 100%; margin: 1rem 0; } td, th { border: 1px solid #333; padding: 6px 10px; } .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ccc; font-size: 0.8rem; color: #666; text-align: center; } .retour-box { padding: 1rem; margin-top: 1.5rem; border-left: 4px solid #00a0ff; background: #e8f4ff; border-radius: 6px; }</style></head><body>
+                <div class="header"><div class="logo">AFRICA.TECH21</div><div class="sub">Cellule Stratégique d'Innovation et de Veille — CSIV</div></div>
+                <h1>${viewTitle}</h1>
+                ${viewBody.innerHTML}
+                <div class="footer">Document généré par AFRICA.TECH21 — CSIV — ${new Date().toLocaleDateString('fr-FR')}</div>
+                <script>window.onload = function() { setTimeout(function() { window.print(); }, 300); };<\/script>
+                </body></html>
             `);
             printWindow.document.close();
+        }
+
+        function closeViewModal() { document.getElementById('viewModal').classList.remove('active'); }
+
+        // ==================== VIEW / DELETE GÉNÉRIQUE ====================
+        async function viewItem(id, type = null) {
+            let table = 'csiv_data';
+            let dataType = null;
+            if (type === 'cahier') { table = 'cahiers_charges'; }
+            else {
+                // Chercher dans csiv_data
+                const { data } = await supabaseClient.from('csiv_data').select('*').eq('id', id).single();
+                if (!data) { showToast('❌ Élément introuvable.', 'error'); return; }
+                document.getElementById('viewTitle').textContent = data.titre;
+                document.getElementById('viewMeta').innerHTML = `📅 ${data.date_creation} — ✍️ ${data.auteur}`;
+                document.getElementById('viewBody').innerHTML = `<div style="white-space:pre-wrap; color:#e0d5e2;">${data.contenu || ''}</div>`;
+                if (data.metadata) {
+                    try {
+                        const meta = JSON.parse(data.metadata);
+                        if (meta.lien) {
+                            document.getElementById('viewBody').innerHTML += `<div style="margin-top:1rem;"><a href="${meta.lien}" target="_blank" style="color:#ffd700;">🔗 ${meta.lien}</a></div>`;
+                        }
+                    } catch(e) {}
+                }
+                document.getElementById('viewModal').classList.add('active');
+                return;
+            }
+            // Cahier
+            const { data } = await supabaseClient.from('cahiers_charges').select('*').eq('id', id).single();
+            if (!data) { showToast('❌ Cahier introuvable.', 'error'); return; }
+            document.getElementById('viewTitle').textContent = data.titre;
+            document.getElementById('viewMeta').innerHTML = `📅 ${data.date_envoi} — ✍️ ${data.emetteur} — Statut : ${data.statut.toUpperCase()}`;
+            document.getElementById('viewBody').innerHTML = `<div style="white-space:pre-wrap; color:#e0d5e2;">${data.contenu}</div>`;
+            document.getElementById('viewModal').classList.add('active');
+        }
+
+        async function deleteItem(id, type = 'comm') {
+            if (!confirm('Supprimer cet élément ?')) return;
+            try {
+                const { error } = await supabaseClient.from('csiv_data').delete().eq('id', id);
+                if (error) throw error;
+                showToast('🗑️ Supprimé.', 'success');
+                if (type === 'veille') loadVeille();
+                else if (type === 'prob') loadProblemes();
+                else loadComm();
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+        }
+
+        // ==================== MODÈLE RAPPORT ====================
+        function ouvrirModeleRapport() {
+            document.getElementById('modeleRapportOverlay').classList.add('active');
+            const el = document.getElementById('mrDate');
+            if (el) el.value = new Date().toISOString().split('T')[0];
+            const el2 = document.getElementById('mrRedigePar');
+            if (el2) el2.value = `${memberPrenom} ${memberNom}`;
+        }
+        function fermerModeleRapport() {
+            document.getElementById('modeleRapportOverlay').classList.remove('active');
+        }
+        function genererRapportTechniquePDF() {
+            const titre = document.getElementById('mrTitre').value.trim() || 'RAPPORT TECHNIQUE';
+            const sousTitre = document.getElementById('mrSousTitre').value.trim();
+            const redigePar = document.getElementById('mrRedigePar').value.trim() || `${memberPrenom} ${memberNom}`;
+            const destinataire = document.getElementById('mrDestinataire').value.trim() || 'Bureau exécutif';
+            const date = document.getElementById('mrDate').value || new Date().toISOString().split('T')[0];
+            const version = document.getElementById('mrVersion').value.trim() || 'v1.0';
+            const statut = document.getElementById('mrStatut').value;
+            const intro = document.getElementById('mrIntro').value.trim();
+            const objectifs = document.getElementById('mrObjectifs').value.trim();
+            const deroulement = document.getElementById('mrDeroulement').value.trim();
+            const bilan = document.getElementById('mrBilan').value.trim();
+            const recommandations = document.getElementById('mrRecommandations').value.trim();
+            const conclusion = document.getElementById('mrConclusion').value.trim();
+            const dateFmt = new Date(date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+            const html = `
+                <div style="text-align:center; border-bottom:2px solid #6a0dad; padding-bottom:1rem; margin-bottom:1.5rem;">
+                    <div style="font-size:1.6rem; font-weight:900; color:#6a0dad; letter-spacing:2px;">AFRICA.TECH21</div>
+                    <div style="font-size:0.85rem; color:#6a0dad; letter-spacing:1px; text-transform:uppercase;">Cellule Stratégique d'Innovation et de Veille — CSIV</div>
+                </div>
+                <h1 style="color:#1a0033; text-align:center; font-size:1.6rem; margin-bottom:0.5rem;">${titre}</h1>
+                ${sousTitre ? `<h2 style="color:#6a0dad; text-align:center; font-size:1.1rem; font-weight:600; margin-bottom:1.5rem;">${sousTitre}</h2>` : ''}
+                <table style="width:100%; border-collapse:collapse; margin-bottom:2rem; font-size:0.9rem;">
+                    <tr><td style="border:1px solid #6a0dad; padding:6px 10px; background:#e8e0ec;"><strong>Référence</strong></td><td style="border:1px solid #6a0dad; padding:6px 10px;">RAP-CSIV-${Date.now()}</td></tr>
+                    <tr><td style="border:1px solid #6a0dad; padding:6px 10px; background:#e8e0ec;"><strong>Rédigé par</strong></td><td style="border:1px solid #6a0dad; padding:6px 10px;">${redigePar}</td></tr>
+                    <tr><td style="border:1px solid #6a0dad; padding:6px 10px; background:#e8e0ec;"><strong>Destinataire</strong></td><td style="border:1px solid #6a0dad; padding:6px 10px;">${destinataire}</td></tr>
+                    <tr><td style="border:1px solid #6a0dad; padding:6px 10px; background:#e8e0ec;"><strong>Date</strong></td><td style="border:1px solid #6a0dad; padding:6px 10px;">${dateFmt}</td></tr>
+                    <tr><td style="border:1px solid #6a0dad; padding:6px 10px; background:#e8e0ec;"><strong>Version</strong></td><td style="border:1px solid #6a0dad; padding:6px 10px;">${version} — ${statut}</td></tr>
+                </table>
+                ${intro ? `<h2 style="color:#6a0dad; margin-top:1.5rem; margin-bottom:0.6rem; font-size:1.15rem;">01. INTRODUCTION & CONTEXTE</h2><p style="margin-bottom:1rem;">${intro.replace(/\n/g, '<br>')}</p>` : ''}
+                ${objectifs ? `<h2 style="color:#6a0dad; margin-top:1.5rem; margin-bottom:0.6rem; font-size:1.15rem;">02. OBJECTIFS ET PÉRIMÈTRE</h2><p style="margin-bottom:1rem;">${objectifs.replace(/\n/g, '<br>')}</p>` : ''}
+                ${deroulement ? `<h2 style="color:#6a0dad; margin-top:1.5rem; margin-bottom:0.6rem; font-size:1.15rem;">03. DÉROULEMENT & RÉALISATIONS</h2><p style="margin-bottom:1rem;">${deroulement.replace(/\n/g, '<br>')}</p>` : ''}
+                ${bilan ? `<h2 style="color:#6a0dad; margin-top:1.5rem; margin-bottom:0.6rem; font-size:1.15rem;">04. BILAN FINANCIER / RESSOURCES</h2><p style="margin-bottom:1rem;">${bilan.replace(/\n/g, '<br>')}</p>` : ''}
+                ${recommandations ? `<h2 style="color:#6a0dad; margin-top:1.5rem; margin-bottom:0.6rem; font-size:1.15rem;">05. RECOMMANDATIONS & PROCHAINES ÉTAPES</h2><p style="margin-bottom:1rem;">${recommandations.replace(/\n/g, '<br>')}</p>` : ''}
+                ${conclusion ? `<h2 style="color:#6a0dad; margin-top:1.5rem; margin-bottom:0.6rem; font-size:1.15rem;">06. CONCLUSION</h2><p style="margin-bottom:1rem;">${conclusion.replace(/\n/g, '<br>')}</p>` : ''}
+                <div style="margin-top:3rem; padding-top:1.5rem; border-top:1px solid #6a0dad; text-align:center; font-size:0.85rem; color:#4a3050;">
+                    Document généré par la plateforme AFRICA.TECH21 — CSIV<br>${version} — ${dateFmt}
+                </div>
+            `;
+            document.getElementById('rapportEditorContent').innerHTML = html;
+            document.getElementById('rapportTitre').value = titre;
+            fermerModeleRapport();
+
+            // Générer le PDF
+            const printWindow = window.open('', '_blank', 'width=900,height=700');
+            if (printWindow) {
+                printWindow.document.write(`
+                    <!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>${titre}</title>
+                    <style>@page { size: A4; margin: 2cm; } body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a0033; line-height: 1.65; font-size: 11pt; } .header { text-align: center; border-bottom: 3px solid #6a0dad; padding-bottom: 1rem; margin-bottom: 2rem; } .header .logo { font-size: 1.8rem; font-weight: 900; color: #6a0dad; letter-spacing: 3px; } .header .sub { font-size: 0.85rem; color: #6a0dad; letter-spacing: 2px; text-transform: uppercase; margin-top: 0.3rem; } h1, h2, h3 { color: #6a0dad; } table { border-collapse: collapse; width: 100%; margin: 1rem 0; } td, th { border: 1px solid #333; padding: 6px 10px; } .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ccc; font-size: 0.8rem; color: #666; text-align: center; }</style></head><body>
+                    <div class="header"><div class="logo">AFRICA.TECH21</div><div class="sub">Cellule Stratégique d'Innovation et de Veille — CSIV</div></div>
+                    ${html}
+                    <script>window.onload = function() { setTimeout(function() { window.print(); }, 300); };<\/script>
+                    </body></html>
+                `);
+                printWindow.document.close();
+            }
+            showToast('✅ Rapport généré et PDF ouvert !', 'success');
         }
 
         // ==================== ÉQUIPE ====================
@@ -1885,17 +1483,11 @@
             const id = document.getElementById('eqId').value.trim();
             const nom = document.getElementById('eqNom').value.trim();
             const role = document.getElementById('eqRole').value.trim();
-            if (!id || !nom) { showToast('⚠️ ID et Nom obligatoires.', 'error'); return; }
-
-            const now = new Date();
+            if (!id || !nom) { showToast('⚠️ ID et nom obligatoires.', 'error'); return; }
             try {
                 const { error } = await supabaseClient.from('csiv_equipe').insert([{
-                    membre_id: id,
-                    membre_nom: nom,
-                    role: role || 'Membre CSIV',
-                    ajoute_par: `${memberPrenom} ${memberNom}`,
-                    date_ajout: now.toLocaleDateString('fr-FR'),
-                    timestamp: Date.now()
+                    membre_id: id, nom, role: role || 'Membre CSIV',
+                    ajoute_par: memberId, timestamp: Date.now()
                 }]);
                 if (error) throw error;
                 showToast('✅ Membre ajouté !', 'success');
@@ -1916,17 +1508,17 @@
                 c.innerHTML = data.map(m => `
                     <div class="equipe-item">
                         <div class="info">
-                            <div class="nom">${m.membre_nom} (${m.membre_id})</div>
-                            <div class="role">${m.role} — Ajouté le ${m.date_ajout}</div>
+                            <div class="nom">${m.nom} (${m.membre_id})</div>
+                            <div class="role">${m.role}</div>
                         </div>
-                        <button class="delete" style="background:rgba(255,71,87,0.1); border:1px solid rgba(255,71,87,0.3); color:#ff4757; padding:0.4rem 0.9rem; border-radius:8px; cursor:pointer; font-size:0.82rem; font-weight:600;" onclick="retirerEquipe('${m.id}')"><i class="fas fa-user-minus"></i> Retirer</button>
+                        <button class="btn btn-dark" style="padding:0.4rem 0.9rem; font-size:0.8rem;" onclick="supprimerEquipe('${m.id}')"><i class="fas fa-trash"></i> Retirer</button>
                     </div>
                 `).join('');
             } catch (e) { c.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>'; }
         }
 
-        async function retirerEquipe(id) {
-            if (!confirm('Retirer ce membre de l\'équipe CSIV ?')) return;
+        async function supprimerEquipe(id) {
+            if (!confirm('Retirer ce membre de l\'équipe ?')) return;
             try {
                 const { error } = await supabaseClient.from('csiv_equipe').delete().eq('id', id);
                 if (error) throw error;
@@ -1937,537 +1529,131 @@
 
         // ==================== CANDIDATURES ====================
         async function chargerCandidatures() {
-            const cont = document.getElementById('candidaturesList');
-            if (!cont) return;
-            const filtreEl = document.getElementById('filtreCandidatures');
-            const filtre = filtreEl ? filtreEl.value : 'en_attente';
-            cont.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
-
+            const c = document.getElementById('candidaturesList');
+            const filtre = document.getElementById('filtreCandidatures').value;
+            c.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div> Chargement...</div>';
             try {
-                let query = supabaseClient.from('csiv_candidatures').select('*').order('timestamp', { ascending: false });
-                if (filtre !== 'tous') {
-                    query = query.eq('statut', filtre);
-                }
+                let query = supabaseClient.from('candidatures_csiv').select('*').order('timestamp', {ascending: false});
+                if (filtre !== 'tous') query = query.eq('statut', filtre);
                 const { data, error } = await query;
                 if (error) throw error;
-
-                if (!data || data.length === 0) {
-                    cont.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>Aucune candidature.</p></div>';
-                    return;
-                }
-
-                cont.innerHTML = data.map(c => {
-                    const typeLabel = c.type === 'nouveau' ? '🆕 Nouveau membre' : '🔄 Transfert';
-                    let statutBadge = '';
-                    let actions = '';
-
-                    if (c.statut === 'en_attente') {
-                        statutBadge = '<div class="statut-badge statut-en_attente"><i class="fas fa-clock"></i> EN ATTENTE</div>';
-                        actions = `
-                            <button onclick="validerCandidature('${c.id}')" style="color:#00ff88; border:1px solid #00ff88; background:rgba(0,255,136,0.1); padding:0.4rem 0.9rem; border-radius:8px; cursor:pointer; font-size:0.82rem; font-weight:600;">
-                                <i class="fas fa-check"></i> Valider
-                            </button>
-                            <button onclick="refuserCandidature('${c.id}')" style="color:#ff4757; border:1px solid rgba(255,71,87,0.3); background:rgba(255,71,87,0.05); padding:0.4rem 0.9rem; border-radius:8px; cursor:pointer; font-size:0.82rem; font-weight:600;">
-                                <i class="fas fa-times"></i> Refuser
-                            </button>
-                        `;
-                    } else if (c.statut === 'valide') {
-                        statutBadge = '<div class="statut-badge statut-termine"><i class="fas fa-check-circle"></i> VALIDÉE</div>';
-                    } else {
-                        statutBadge = '<div class="statut-badge statut-en_attente" style="border-color:#ff0033; color:#ff0033;"><i class="fas fa-times-circle"></i> REFUSÉE</div>';
-                    }
-
-                    return `
-                        <div class="list-item">
-                            <div class="title">${c.prenom} ${c.nom} — ${c.member_id}</div>
-                            <div class="meta">${typeLabel} — 📅 ${c.date_soumission}</div>
-                            ${c.motivation ? `<div class="meta" style="margin-top:0.5rem; color:#fff;">💬 ${c.motivation}</div>` : ''}
-                            ${c.motif_refus ? `<div class="meta" style="margin-top:0.5rem; color:#ff0033;">Motif refus : ${c.motif_refus}</div>` : ''}
-                            ${statutBadge}
+                if (!data || data.length === 0) { c.innerHTML = '<div class="empty-state"><i class="fas fa-user-plus"></i><p>Aucune candidature.</p></div>'; return; }
+                c.innerHTML = data.map(cand => `
+                    <div class="list-item">
+                        <div class="title">${cand.nom} ${cand.prenom || ''} — ${cand.membre_id || ''}</div>
+                        <div class="meta">📧 ${cand.email || '—'} — 📅 ${cand.date_demande || '—'}</div>
+                        <div class="meta">💼 ${cand.poste || '—'}</div>
+                        <div class="meta" style="margin-top:0.5rem;">💬 ${cand.motivation || ''}</div>
+                        <div class="statut-badge statut-${cand.statut === 'en_attente' ? 'en_attente' : (cand.statut === 'valide' ? 'valide' : 'rejete')}">${(cand.statut || 'en_attente').toUpperCase()}</div>
+                        ${cand.statut === 'en_attente' ? `
                             <div class="actions">
-                                ${actions}
-                                <button onclick="supprimerCandidature('${c.id}')" style="color:#ff4757; border:1px solid rgba(255,71,87,0.3); background:rgba(255,71,87,0.05); padding:0.4rem 0.9rem; border-radius:8px; cursor:pointer; font-size:0.82rem; font-weight:600;"><i class="fas fa-trash"></i></button>
+                                <button class="transmettre" onclick="traiterCandidature('${cand.id}', 'valide')"><i class="fas fa-check"></i> Valider</button>
+                                <button class="delete" onclick="traiterCandidature('${cand.id}', 'refuse')"><i class="fas fa-times"></i> Refuser</button>
                             </div>
-                        </div>
-                    `;
-                }).join('');
-            } catch (e) {
-                cont.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>';
-            }
+                        ` : ''}
+                    </div>
+                `).join('');
+            } catch (e) { c.innerHTML = '<div class="empty-state">❌ ' + e.message + '</div>'; }
         }
 
-        async function validerCandidature(id) {
-            if (!confirm('Valider cette candidature ? Le candidat sera automatiquement ajouté à l\'équipe CSIV.')) return;
+        async function traiterCandidature(id, decision) {
+            if (!confirm(`Confirmer la décision : ${decision === 'valide' ? 'VALIDER' : 'REFUSER'} ?`)) return;
             try {
-                const { data: candidature, error: err1 } = await supabaseClient
-                    .from('csiv_candidatures').select('*').eq('id', id).single();
-                if (err1) throw err1;
+                const { error } = await supabaseClient.from('candidatures_csiv').update({
+                    statut: decision, traite_par: memberId, date_traitement: new Date().toISOString()
+                }).eq('id', id);
+                if (error) throw error;
+                showToast(`✅ Candidature ${decision === 'valide' ? 'validée' : 'refusée'}.`, 'success');
+                chargerCandidatures();
+            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+        }
 
-                const { data: existant } = await supabaseClient
-                    .from('csiv_equipe').select('*').eq('membre_id', candidature.member_id);
-                if (existant && existant.length > 0) {
-                    showToast('⚠️ Ce membre est déjà dans l\'équipe CSIV.', 'error');
-                    return;
-                }
+        // ==================== TRACKER D'ACTIVITÉ ====================
+        let trackerSessionId = null;
+        let trackerLastActivity = Date.now();
+        let trackerHeartbeatInterval = null;
 
-                const { error: err2 } = await supabaseClient.from('csiv_equipe').insert([{
-                    membre_id: candidature.member_id,
-                    membre_nom: `${candidature.prenom} ${candidature.nom}`,
-                    role: 'Membre CSIV',
-                    ajoute_par: `Validation candidature`,
-                    date_ajout: new Date().toLocaleDateString('fr-FR'),
-                    timestamp: Date.now()
+        function trackerInit() {
+            trackerSessionId = sessionStorage.getItem('trackerSessionId');
+            if (!trackerSessionId) {
+                trackerSessionId = 'SESS_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10);
+                sessionStorage.setItem('trackerSessionId', trackerSessionId);
+            }
+            trackerLog('page_view', { page: 'csiv.html', referrer: document.referrer || 'direct' });
+            trackerHeartbeatInterval = setInterval(() => {
+                if (document.visibilityState === 'visible') trackerLog('heartbeat', {});
+            }, 30000);
+        }
+
+        async function trackerLog(action, details = {}) {
+            try {
+                const now = new Date();
+                await supabaseClient.from('activite_membres').insert([{
+                    membre_id: memberId,
+                    membre_nom: `${memberPrenom} ${memberNom}`.trim(),
+                    membre_fonction: fonction,
+                    session_id: trackerSessionId,
+                    page: 'csiv.html',
+                    action,
+                    details: JSON.stringify(details),
+                    url: window.location.href,
+                    user_agent: navigator.userAgent,
+                    timestamp: Date.now(),
+                    date_lisible: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit', second:'2-digit'})
                 }]);
-                if (err2) throw err2;
-
-                const now = new Date();
-                const { error: err3 } = await supabaseClient.from('csiv_candidatures').update({
-                    statut: 'valide',
-                    date_decision: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})
-                }).eq('id', id);
-                if (err3) throw err3;
-
-                showToast('✅ Candidature validée et membre ajouté à l\'équipe !', 'success');
-                chargerCandidatures();
-                loadEquipe();
-            } catch (e) { showToast('❌ ' + e.message, 'error'); }
+            } catch (e) { console.warn('Tracker error:', e); }
         }
 
-        async function refuserCandidature(id) {
-            const motif = prompt('Motif du refus (optionnel) :');
-            if (motif === null) return;
+        function trackerMarkActivity() { trackerLastActivity = Date.now(); }
+        ['mousemove','keydown','click','scroll','touchstart'].forEach(evt => {
+            window.addEventListener(evt, trackerMarkActivity, { passive: true });
+        });
+
+        window.addEventListener('beforeunload', () => {
+            if (trackerHeartbeatInterval) clearInterval(trackerHeartbeatInterval);
             try {
                 const now = new Date();
-                const { error } = await supabaseClient.from('csiv_candidatures').update({
-                    statut: 'refuse',
-                    motif_refus: motif.trim() || '',
-                    date_decision: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})
-                }).eq('id', id);
-                if (error) throw error;
-                showToast('❌ Candidature refusée.', 'success');
-                chargerCandidatures();
-            } catch (e) { showToast('❌ ' + e.message, 'error'); }
-        }
-
-        async function supprimerCandidature(id) {
-            if (!confirm('Supprimer définitivement cette candidature ?')) return;
-            try {
-                const { error } = await supabaseClient.from('csiv_candidatures').delete().eq('id', id);
-                if (error) throw error;
-                showToast('🗑️ Candidature supprimée.', 'success');
-                chargerCandidatures();
-            } catch (e) { showToast('❌ ' + e.message, 'error'); }
-        }
-
-        // ==================== VUE / SUPPRESSION GÉNÉRIQUE ====================
-        async function viewItem(id, source='csiv') {
-            let data;
-            if (source === 'cahier') {
-                const res = await supabaseClient.from('cahiers_charges').select('*').eq('id', id).single();
-                data = res.data;
-                if (data) {
-                    document.getElementById('viewTitle').textContent = data.titre;
-                    document.getElementById('viewMeta').textContent = `📅 ${data.date_envoi} - ✍️ ${data.emetteur}`;
-                    document.getElementById('viewBody').innerHTML = data.contenu.replace(/\n/g, '<br>');
-                }
-            } else {
-                const res = await supabaseClient.from('csiv_data').select('*').eq('id', id).single();
-                data = res.data;
-                if (data) {
-                    document.getElementById('viewTitle').textContent = data.titre;
-                    document.getElementById('viewMeta').textContent = `📅 ${data.date_creation} - ✍️ ${data.auteur}`;
-                    document.getElementById('viewBody').innerHTML = data.contenu.includes('<') ? data.contenu : data.contenu.replace(/\n/g, '<br>');
-                }
-            }
-            if (data) document.getElementById('viewModal').classList.add('active');
-        }
-        function closeViewModal() { document.getElementById('viewModal').classList.remove('active'); }
-
-        async function deleteItem(id, source='csiv') {
-            if (!confirm('Supprimer cet élément ?')) return;
-            try {
-                let res;
-                if (source === 'cahier') res = await supabaseClient.from('cahiers_charges').delete().eq('id', id);
-                else res = await supabaseClient.from('csiv_data').delete().eq('id', id);
-                if (res.error) throw res.error;
-                showToast('🗑️ Supprimé.', 'success');
-                loadAll();
-            } catch (e) { showToast('❌ ' + e.message, 'error'); }
-        }
-
-        // ==================== STATS ====================
-        async function loadStats() {
-            try {
-                const { data } = await supabaseClient.from('csiv_data').select('*');
-                if (!data) return;
-                const veille = data.filter(d => d.type === 'veille').length;
-                const prob = data.filter(d => d.type === 'probleme').length;
-                document.getElementById('statVeille').textContent = veille;
-                document.getElementById('statProb').textContent = prob;
-
-                const { data: cahiers } = await supabaseClient.from('cahiers_charges').select('*');
-                document.getElementById('statCahier').textContent = cahiers ? cahiers.length : 0;
-
-                const { data: rapports } = await supabaseClient.from('csiv_rapports').select('*');
-                document.getElementById('statRapport').textContent = rapports ? rapports.length : 0;
-            } catch (e) { console.warn(e); }
-        }
-
-        // ==================== CORRECTEUR & ANALYSE ====================
-        const DICO_SIMPLE = [
-            'bonjour','bonsoir','merci','africa','tech21','communauté','projet','innovation',
-            'veille','rapport','cellule','stratégique','communication','membre','équipe',
-            'président','responsable','secrétariat','réunion','compte','rendu','document',
-            'technique','développement','recherche','analyse','solution','problème','objectif',
-            'résultat','avancement','blocage','proposition','concours','opportunité','cahier',
-            'charge','spécification','prototype','faisabilité','énergie','santé','éducation',
-            'agriculture','numérique','environnement','transport','société','communautaire'
-        ];
-
-        function analyserTexte() {
-            const editor = document.getElementById('editorContent');
-            const liste = document.getElementById('analyseList');
-            if (!editor || !liste) return;
-
-            const texte = editor.innerText.trim();
-            const suggestions = [];
-
-            if (!texte) {
-                liste.innerHTML = '<li class="ok">✅ Commencez à écrire pour voir les suggestions...</li>';
-                return;
-            }
-
-            if (/  +/.test(texte)) {
-                suggestions.push({ type: 'warn', txt: '⚠️ <strong>Doubles espaces</strong> détectés. Utilisez un seul espace.' });
-            }
-
-            if (/\s+[,.;!?]/.test(texte)) {
-                suggestions.push({ type: 'warn', txt: '⚠️ <strong>Espace avant ponctuation</strong>. En français, pas d\'espace avant , . ; ! ?' });
-            }
-
-            const phrases = texte.split(/[.!?]+/).filter(p => p.trim().length > 5);
-            const sansMaj = phrases.filter(p => /^[a-zàâäéèêëîïôöùûüç]/.test(p.trim()));
-            if (sansMaj.length > 0) {
-                suggestions.push({ type: 'warn', txt: `⚠️ <strong>${sansMaj.length} phrase(s)</strong> sans majuscule au début.` });
-            }
-
-            const tropLongues = phrases.filter(p => p.trim().split(/\s+/).length > 30);
-            if (tropLongues.length > 0) {
-                suggestions.push({ type: 'info', txt: `💡 <strong>${tropLongues.length} phrase(s)</strong> très longue(s). Pensez à couper.` });
-            }
-
-            const mots = texte.toLowerCase().split(/\s+/);
-            for (let i = 0; i < mots.length - 1; i++) {
-                if (mots[i].length > 3 && mots[i] === mots[i+1]) {
-                    suggestions.push({ type: 'warn', txt: `⚠️ Mot répété : <strong>"${mots[i]}"</strong>` });
-                    break;
-                }
-            }
-
-            const freq = {};
-            mots.forEach(m => {
-                const clean = m.replace(/[^a-zàâäéèêëîïôöùûüç]/g, '');
-                if (clean.length > 4) freq[clean] = (freq[clean] || 0) + 1;
-            });
-            const tresFreq = Object.entries(freq).filter(([_, n]) => n >= 5);
-            if (tresFreq.length > 0) {
-                suggestions.push({ type: 'info', txt: `💡 Mot trop répété : <strong>"${tresFreq[0][0]}"</strong> (${tresFreq[0][1]}x). Variez le vocabulaire.` });
-            }
-
-            const nbMots = mots.filter(m => m.length > 0).length;
-            const nbPhrases = phrases.length || 1;
-            const moyMots = Math.round(nbMots / nbPhrases);
-            suggestions.push({ type: 'ok', txt: `📊 <strong>${nbMots} mots</strong> • ${nbPhrases} phrases • ~${moyMots} mots/phrase` });
-
-            if (suggestions.length === 0) {
-                liste.innerHTML = '<li class="ok">✅ Aucune erreur détectée. Excellent travail !</li>';
-            } else {
-                liste.innerHTML = suggestions.map(s => `<li class="${s.type}">${s.txt}</li>`).join('');
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const editor = document.getElementById('editorContent');
-            if (editor) {
-                let timeout;
-                editor.addEventListener('input', () => {
-                    clearTimeout(timeout);
-                    timeout = setTimeout(analyserTexte, 800);
+                fetch(`${SUPABASE_URL}/rest/v1/activite_membres`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({
+                        membre_id: memberId,
+                        membre_nom: `${memberPrenom} ${memberNom}`.trim(),
+                        membre_fonction: fonction,
+                        session_id: trackerSessionId,
+                        page: 'csiv.html',
+                        action: 'page_leave',
+                        details: JSON.stringify({ duree_session_ms: Date.now() - trackerLastActivity }),
+                        url: window.location.href,
+                        timestamp: Date.now(),
+                        date_lisible: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit', second:'2-digit'})
+                    }),
+                    keepalive: true
                 });
-                editor.addEventListener('blur', analyserTexte);
-            }
-            remplirEnteteRapport();
+            } catch (e) {}
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') trackerLog('focus_return', {});
+            else trackerLog('focus_leave', {});
         });
 
         // ==================== INIT ====================
-        function loadAll() {
-            loadComm();
-            loadVeille();
-            loadProblemes();
-            loadCahiers();
-            loadRapports();
-            loadEquipe();
-            loadStats();
-            verifierRapportMensuel();
-            chargerCandidatures();
-        }
+        loadComm();
+        loadVeille();
+        loadProblemes();
+        loadCahiers();
+        loadRapports();
+        loadEquipe();
+        chargerCandidatures();
+        remplirEnteteRapport();
 
-        async function verifierRapportMensuel() {
-            try {
-                const { data } = await supabaseClient
-                    .from('csiv_rapports')
-                    .select('*')
-                    .order('timestamp', { ascending: false })
-                    .limit(1);
-                const alerte = document.getElementById('alerteRapport');
-                if (!alerte) return;
-                if (!data || data.length === 0) {
-                    alerte.classList.add('active');
-                    return;
-                }
-                const dernier = data[0];
-                const tsDernier = typeof dernier.timestamp === 'number' ? dernier.timestamp : new Date(dernier.date_creation).getTime();
-                const diffJours = (Date.now() - tsDernier) / (1000 * 60 * 60 * 24);
-                if (diffJours > 30) alerte.classList.add('active');
-                else alerte.classList.remove('active');
-            } catch (e) { console.warn(e); }
-        }
-
-        // Auto-refresh toutes les 60s pour voir les retours du Responsable
-        setInterval(() => {
-            if (document.getElementById('sectionRapports')?.classList.contains('active')) {
-                loadRapports();
-            }
-        }, 60000);
-
-        createParticles();
-        loadAll();
-
-        // ==================== MODÈLE DE RAPPORT TECHNIQUE ====================
-        function ouvrirModeleRapport() {
-            document.getElementById('modeleRapportOverlay').classList.add('active');
-            // Pré-remplir quelques champs utiles
-            const today = new Date().toISOString().split('T')[0];
-            if (!document.getElementById('mrDate').value) {
-                document.getElementById('mrDate').value = today;
-            }
-            if (!document.getElementById('mrRedigePar').value) {
-                document.getElementById('mrRedigePar').value = `${memberPrenom} ${memberNom} (${memberFonction})`;
-            }
-        }
-
-        function fermerModeleRapport() {
-            document.getElementById('modeleRapportOverlay').classList.remove('active');
-        }
-
-        function genererRapportTechniquePDF() {
-            const titre = document.getElementById('mrTitre').value.trim() || 'RAPPORT TECHNIQUE ET D\'ACTIVITÉ';
-            const sousTitre = document.getElementById('mrSousTitre').value.trim();
-            const redigePar = document.getElementById('mrRedigePar').value.trim();
-            const destinataire = document.getElementById('mrDestinataire').value.trim();
-            const date = document.getElementById('mrDate').value;
-            const version = document.getElementById('mrVersion').value.trim() || 'v1.0';
-            const statut = document.getElementById('mrStatut').value;
-
-            const intro = document.getElementById('mrIntro').value.trim();
-            const objectifs = document.getElementById('mrObjectifs').value.trim();
-            const deroulement = document.getElementById('mrDeroulement').value.trim();
-            const bilan = document.getElementById('mrBilan').value.trim();
-            const recommandations = document.getElementById('mrRecommandations').value.trim();
-            const conclusion = document.getElementById('mrConclusion').value.trim();
-
-            if (!intro && !objectifs && !deroulement) {
-                alert("⚠️ Veuillez remplir au moins la section 01 (Introduction) ou 02 (Objectifs).");
-                return;
-            }
-
-            let dateFormatted = date;
-            if (date) {
-                const d = new Date(date);
-                dateFormatted = d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            }
-
-            const printWindow = window.open('', '_blank');
-            if (!printWindow) {
-                alert('❌ Autorisez les popups pour générer le PDF.');
-                return;
-            }
-
-            printWindow.document.write(`
-                <!DOCTYPE html>
-                <html lang="fr">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>${titre} — AFRICA.TECH21</title>
-                    <style>
-                        @page { size: A4; margin: 2cm; }
-                        body {
-                            font-family: 'Segoe UI', Arial, sans-serif;
-                            color: #1a1a1a;
-                            line-height: 1.6;
-                            font-size: 11pt;
-                        }
-                        .header {
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: flex-start;
-                            margin-bottom: 2rem;
-                            border-bottom: 2px solid #6a0dad;
-                            padding-bottom: 1rem;
-                        }
-                        .header-left h1 { margin: 0; color: #6a0dad; font-size: 1.5rem; }
-                        .header-left h2 { margin: 0.2rem 0 0 0; font-size: 1rem; color: #333; }
-                        .header-right { text-align: right; font-size: 0.9rem; }
-                        .ref-box {
-                            border: 2px solid #333;
-                            padding: 1rem;
-                            margin-bottom: 1.5rem;
-                            display: grid;
-                            grid-template-columns: 180px 1fr;
-                            gap: 0.5rem;
-                            font-size: 0.95rem;
-                        }
-                        .ref-box strong { font-weight: bold; }
-                        .titre-rapport {
-                            font-size: 1.4rem;
-                            font-weight: bold;
-                            text-align: center;
-                            color: #6a0dad;
-                            margin: 1.5rem 0;
-                            padding: 1rem;
-                            background: #f5f2f7;
-                            border-radius: 8px;
-                        }
-                        .sous-titre {
-                            text-align: center;
-                            font-size: 1rem;
-                            color: #555;
-                            font-style: italic;
-                            margin-bottom: 2rem;
-                        }
-                        h3 {
-                            font-size: 1.15rem;
-                            color: #6a0dad;
-                            margin-top: 2rem;
-                            margin-bottom: 0.6rem;
-                            border-bottom: 1px solid #ccc;
-                            padding-bottom: 0.3rem;
-                        }
-                        p { margin-bottom: 0.8rem; text-align: justify; }
-                        .footer {
-                            margin-top: 3rem;
-                            display: flex;
-                            justify-content: space-between;
-                            gap: 2rem;
-                        }
-                        .signature-block {
-                            flex: 1;
-                            border-top: 1px solid #333;
-                            padding-top: 0.5rem;
-                            font-size: 0.9rem;
-                        }
-                        .final-footer {
-                            margin-top: 2rem;
-                            font-size: 0.8rem;
-                            color: #666;
-                            text-align: center;
-                            border-top: 1px solid #ddd;
-                            padding-top: 1rem;
-                        }
-                        .sommaire {
-                            background: #f8f5fa;
-                            border: 1px solid #ddd;
-                            border-radius: 8px;
-                            padding: 1.5rem;
-                            margin: 1.5rem 0;
-                        }
-                        .sommaire h4 {
-                            color: #6a0dad;
-                            margin-bottom: 0.8rem;
-                            font-size: 1.1rem;
-                        }
-                        .sommaire ol {
-                            padding-left: 1.5rem;
-                            line-height: 1.9;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="header">
-                        <div class="header-left">
-                            <h1>AFRICA.TECH21</h1>
-                            <h2>RAPPORT TECHNIQUE ET D'ACTIVITÉ</h2>
-                        </div>
-                        <div class="header-right">
-                            <div><strong>Statut :</strong> ${statut}</div>
-                            <div><strong>Version :</strong> ${version}</div>
-                        </div>
-                    </div>
-
-                    <div class="ref-box">
-                        <div><strong>RÉDIGÉ PAR :</strong></div>
-                        <div>${redigePar || '—'}</div>
-                        <div><strong>DESTINATAIRE :</strong></div>
-                        <div>${destinataire || 'Bureau exécutif'}</div>
-                        <div><strong>DATE DE FINALISATION :</strong></div>
-                        <div>${dateFormatted || '—'}</div>
-                        <div><strong>VERSION :</strong></div>
-                        <div>${version}</div>
-                        <div><strong>STATUT :</strong></div>
-                        <div>${statut}</div>
-                    </div>
-
-                    <div class="titre-rapport">${titre}</div>
-                    ${sousTitre ? `<div class="sous-titre">${sousTitre}</div>` : ''}
-
-                    <div class="sommaire">
-                        <h4>SOMMAIRE</h4>
-                        <ol>
-                            <li>Introduction & Contexte</li>
-                            <li>Objectifs et Périmètre</li>
-                            <li>Déroulement & Réalisations</li>
-                            <li>Bilan Financier / Ressources</li>
-                            <li>Recommandations & Étapes</li>
-                            <li>Conclusion</li>
-                        </ol>
-                    </div>
-
-                    ${intro ? `<h3>01. Introduction & Contexte</h3><p>${intro.replace(/\n/g, '</p><p>')}</p>` : ''}
-                    ${objectifs ? `<h3>02. Objectifs et Périmètre</h3><p>${objectifs.replace(/\n/g, '</p><p>')}</p>` : ''}
-                    ${deroulement ? `<h3>03. Déroulement & Réalisations</h3><p>${deroulement.replace(/\n/g, '</p><p>')}</p>` : ''}
-                    ${bilan ? `<h3>04. Bilan Financier / Ressources Utilisées</h3><p>${bilan.replace(/\n/g, '</p><p>')}</p>` : ''}
-                    ${recommandations ? `<h3>05. Recommandations & Prochaines Étapes</h3><p>${recommandations.replace(/\n/g, '</p><p>')}</p>` : ''}
-                    ${conclusion ? `<h3>06. Conclusion</h3><p>${conclusion.replace(/\n/g, '</p><p>')}</p>` : ''}
-
-                    <div class="footer">
-                        <div class="signature-block">
-                            <strong>LE RÉDACTEUR</strong><br>
-                            ${redigePar || 'Nom & Signature'}<br>
-                            <em>(Signature)</em>
-                        </div>
-                        <div class="signature-block">
-                            <strong>LE RESPONSABLE AFRICA.TECH21</strong><br>
-                            Nom & Signature<br>
-                            <em>(Signature)</em>
-                        </div>
-                    </div>
-
-                    <div class="final-footer">
-                        Fait à Dakar, le ${dateFormatted || '—'}<br>
-                        Document généré par AFRICA.TECH21 — CSIV
-                    </div>
-
-                    <script>
-                        window.onload = function() {
-                            setTimeout(function() { window.print(); }, 300);
-                        };
-                    <\/script>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
-            fermerModeleRapport();
-        }
+        window.addEventListener('load', () => { setTimeout(trackerInit, 500); });
     </script>
 </body>
 </html>
