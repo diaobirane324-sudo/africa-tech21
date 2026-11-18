@@ -16,7 +16,7 @@
             background: #050510; color: var(--text-primary); min-height: 100vh;
             display: flex; flex-direction: column;
         }
-        
+
         /* ÉCRAN DE VERROUILLAGE */
         .lock-screen {
             display: flex; align-items: center; justify-content: center;
@@ -49,14 +49,14 @@
         /* DASHBOARD */
         .dashboard { display: none; padding: 2rem; max-width: 1400px; margin: 0 auto; width: 100%; }
         .dashboard.active { display: block; }
-        
+
         .header {
             background: #0a0a18; border: 1px solid var(--neon-red);
             border-radius: 15px; padding: 1.5rem; margin-bottom: 2rem;
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
         }
         .header h1 { font-family: 'Orbitron'; color: var(--neon-red); font-size: 1.5rem; }
-        
+
         .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
         .stat {
             background: #0a0a18; border: 1px solid #333; border-radius: 10px;
@@ -65,14 +65,14 @@
         .stat-val { font-size: 2rem; font-weight: bold; color: var(--neon-blue); font-family: 'Orbitron'; }
         .stat-lbl { font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 0.5rem; }
 
-        .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid #333; }
+        .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid #333; flex-wrap: wrap; }
         .tab {
             padding: 1rem 1.5rem; background: transparent; border: none;
             color: var(--text-secondary); font-family: 'Orbitron'; font-size: 0.8rem;
             cursor: pointer; transition: 0.3s;
         }
         .tab.active { color: var(--neon-blue); border-bottom: 3px solid var(--neon-blue); }
-        
+
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
@@ -92,11 +92,12 @@
             font-size: 0.75rem; font-family: monospace;
         }
         .meta-green { background: rgba(0,255,136,0.1); border-color: var(--neon-green); color: var(--neon-green); }
-        
+        .meta-red { background: rgba(255,0,60,0.1); border-color: var(--neon-red); color: var(--neon-red); }
+
         table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
         th { text-align: left; padding: 0.8rem; color: var(--neon-blue); border-bottom: 2px solid #333; }
         td { padding: 0.8rem; border-bottom: 1px solid #222; color: var(--text-secondary); }
-        
+
         .loading { text-align: center; padding: 2rem; color: var(--text-secondary); }
         .btn-refresh {
             background: var(--neon-blue); color: #000; border: none;
@@ -106,7 +107,6 @@
         .btn-refresh:disabled { opacity: 0.5; cursor: not-allowed; }
         .btn-refresh i { margin-right: 0.4rem; }
 
-        /* Alerte d'erreur */
         .error-banner {
             background: rgba(255,0,60,0.1); border: 1px solid var(--neon-red);
             color: var(--neon-red); padding: 1rem; border-radius: 8px;
@@ -162,14 +162,14 @@
 
     <div class="tab-content active" id="tab-online">
         <div class="panel">
-            <h2>Membres connectés</h2>
+            <h2>Membres connectés (dernières 2 minutes)</h2>
             <div id="onlineList"><div class="loading">Chargement...</div></div>
         </div>
     </div>
 
     <div class="tab-content" id="tab-assiduite">
         <div class="panel">
-            <h2>Temps de travail (7j)</h2>
+            <h2>Temps de travail (7 derniers jours)</h2>
             <div id="assiduiteContent"><div class="loading">Chargement...</div></div>
         </div>
     </div>
@@ -189,7 +189,7 @@
 // ============================================
 const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
-const MAJOR_PASSWORD = 'MAJOR2024'; // Changez ce mot de passe
+const MAJOR_PASSWORD = 'MAJOR2024';
 
 let supabaseClient = null;
 let allData = { online: [], assiduite: [], activites: [] };
@@ -208,7 +208,6 @@ function unlock() {
     }
 }
 
-// Permettre d'appuyer sur Entrée
 document.getElementById('pwdInput').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') unlock();
 });
@@ -220,15 +219,12 @@ function initSupabase() {
     try {
         supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         loadData();
-        setInterval(loadData, 30000); // Auto-refresh 30s
+        setInterval(loadData, 30000);
     } catch (e) {
         showError("Erreur d'initialisation Supabase : " + e.message);
     }
 }
 
-// ============================================
-// AFFICHAGE DES ERREURS
-// ============================================
 function showError(msg) {
     const banner = document.getElementById('errorBanner');
     banner.textContent = "⚠️ " + msg;
@@ -247,7 +243,7 @@ function showTab(id, btn) {
 }
 
 // ============================================
-// CHARGEMENT DES DONNÉES
+// CHARGEMENT DES DONNÉES (depuis activite_membres)
 // ============================================
 async function loadData() {
     if (!supabaseClient) return;
@@ -257,36 +253,95 @@ async function loadData() {
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> CHARGEMENT...';
 
     try {
-        // 1. En ligne
-        const resOnline = await supabaseClient.from('vue_connectes').select('*');
-        if (resOnline.error) throw new Error("Table 'vue_connectes' : " + resOnline.error.message);
-        allData.online = resOnline.data || [];
+        // Récupérer toutes les activités des 7 derniers jours
+        const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+        const { data, error } = await supabaseClient
+            .from('activite_membres')
+            .select('*')
+            .gte('timestamp', sevenDaysAgo)
+            .order('timestamp', { ascending: false });
+
+        if (error) throw new Error("Table 'activite_membres' : " + error.message);
+
+        const activities = data || [];
+        const now = Date.now();
+
+        // ---- 1. EN LIGNE (heartbeat dans les 2 dernières minutes) ----
+        const onlineMap = new Map();
+        activities
+            .filter(a => a.action === 'heartbeat' && (now - a.timestamp) < 2 * 60 * 1000)
+            .forEach(a => {
+                if (!onlineMap.has(a.membre_id)) {
+                    onlineMap.set(a.membre_id, {
+                        membre_id: a.membre_id,
+                        membre_nom: a.membre_nom || 'Inconnu',
+                        membre_fonction: a.membre_fonction || 'Membre',
+                        page: a.page,
+                        session_id: a.session_id,
+                        dernier_heartbeat: a.timestamp
+                    });
+                }
+            });
+        allData.online = Array.from(onlineMap.values());
         document.getElementById('statOnline').textContent = allData.online.length;
-        renderOnline();
 
-        // 2. Assiduité
-        const resAssid = await supabaseClient.from('vue_activite_7j').select('*');
-        if (resAssid.error) throw new Error("Table 'vue_activite_7j' : " + resAssid.error.message);
-        allData.assiduite = resAssid.data || [];
+        // ---- 2. ASSIDUITÉ (temps total par membre sur 7 jours) ----
+        const statsMap = new Map();
+        activities.forEach(a => {
+            if (!a.membre_id) return;
+            if (!statsMap.has(a.membre_id)) {
+                statsMap.set(a.membre_id, {
+                    membre_id: a.membre_id,
+                    membre_nom: a.membre_nom || 'Inconnu',
+                    membre_fonction: a.membre_fonction || 'Membre',
+                    total_seconds: 0,
+                    jours_set: new Set(),
+                    actions_count: 0
+                });
+            }
+            const s = statsMap.get(a.membre_id);
+            s.actions_count++;
+            const date = new Date(a.timestamp);
+            s.jours_set.add(date.toISOString().split('T')[0]);
+            if (a.action === 'heartbeat') s.total_seconds += 30;
+            if (a.action === 'page_leave' && a.details) {
+                try {
+                    const d = typeof a.details === 'string' ? JSON.parse(a.details) : a.details;
+                    if (d.duree_session_ms) s.total_seconds += Math.floor(d.duree_session_ms / 1000);
+                } catch(e) {}
+            }
+        });
+        allData.assiduite = Array.from(statsMap.values())
+            .map(s => ({
+                ...s,
+                temps_total_min: Math.round(s.total_seconds / 60),
+                nb_jours_actifs: s.jours_set.size
+            }))
+            .sort((a, b) => b.temps_total_min - a.temps_total_min);
         document.getElementById('statTotal').textContent = allData.assiduite.length;
+
+        // ---- 3. ACTIVITÉS (50 dernières, hors heartbeat) ----
+        allData.activites = activities
+            .filter(a => a.action !== 'heartbeat')
+            .slice(0, 50);
+
+        // ---- 4. ALERTES (actions critiques dans les 24h) ----
+        const dayAgo = now - 24 * 60 * 60 * 1000;
+        const alertes = activities.filter(a => {
+            if (a.timestamp < dayAgo) return false;
+            const criticalActions = ['rapport_transmis', 'document_pdf_upload', 'document_pdf_supprime', 'rapport_brouillon_sauvegarde'];
+            return criticalActions.includes(a.action);
+        });
+        document.getElementById('statAlertes').textContent = alertes.length;
+
+        // Render
+        renderOnline();
         renderAssiduite();
-
-        // 3. Activités
-        const resAct = await supabaseClient.from('surveillance_activites').select('*').order('timestamp', { ascending: false }).limit(50);
-        if (resAct.error) throw new Error("Table 'surveillance_activites' : " + resAct.error.message);
-        allData.activites = resAct.data || [];
         renderActivites();
-
-        // 4. Alertes
-        const resAlert = await supabaseClient.from('surveillance_alertes').select('*').eq('statut', 'nouvelle');
-        if (!resAlert.error) {
-            document.getElementById('statAlertes').textContent = (resAlert.data || []).length;
-        }
 
     } catch (e) {
         console.error("Erreur:", e);
         showError(e.message);
-        // Même en cas d'erreur, on affiche un message dans chaque section
         document.getElementById('onlineList').innerHTML = '<div class="loading" style="color:#ff003c;">Erreur de chargement. Vérifiez la console (F12).</div>';
     } finally {
         btn.disabled = false;
@@ -303,16 +358,22 @@ function renderOnline() {
         container.innerHTML = '<div class="loading">Aucun membre connecté actuellement.</div>';
         return;
     }
-    container.innerHTML = allData.online.map(m => `
-        <div class="member-row">
-            <div class="member-name">${m.member_nom || 'Inconnu'}</div>
-            <div class="member-meta">
-                <span class="meta-badge meta-green">EN LIGNE</span>
-                <span class="meta-badge">${Math.floor((m.duree_actuelle_sec||0)/60)} min</span>
-                <span class="meta-badge">${m.fonction || 'Membre'}</span>
+    container.innerHTML = allData.online.map(m => {
+        const minutes = Math.floor((Date.now() - m.dernier_heartbeat) / 60000);
+        const sec = Math.floor((Date.now() - m.dernier_heartbeat) / 1000);
+        const temps = sec < 60 ? `${sec} sec` : `${minutes} min`;
+        return `
+            <div class="member-row">
+                <div class="member-name">${m.membre_nom} <small style="color:#666; font-size:0.8rem;">(${m.membre_id})</small></div>
+                <div class="member-meta">
+                    <span class="meta-badge meta-green">EN LIGNE</span>
+                    <span class="meta-badge">${m.membre_fonction}</span>
+                    <span class="meta-badge">📄 ${m.page}</span>
+                    <span class="meta-badge">⏱️ ${temps}</span>
+                </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 // ============================================
@@ -326,14 +387,17 @@ function renderAssiduite() {
     }
     container.innerHTML = `
         <table>
-            <thead><tr><th>Membre</th><th>Fonction</th><th>Temps (min)</th><th>Jours actifs</th></tr></thead>
+            <thead>
+                <tr><th>Membre</th><th>Fonction</th><th>Temps (min)</th><th>Jours actifs</th><th>Actions</th></tr>
+            </thead>
             <tbody>
                 ${allData.assiduite.map(a => `
                     <tr>
-                        <td style="color:var(--neon-blue);">${a.member_nom || '?'}</td>
-                        <td>${a.fonction || 'Membre'}</td>
-                        <td>${a.temps_total_min || 0}</td>
-                        <td>${a.nb_jours_actifs || 0}</td>
+                        <td style="color:var(--neon-blue);">${a.membre_nom}</td>
+                        <td>${a.membre_fonction}</td>
+                        <td><strong style="color:var(--neon-green);">${a.temps_total_min}</strong></td>
+                        <td>${a.nb_jours_actifs}</td>
+                        <td>${a.actions_count}</td>
                     </tr>
                 `).join('')}
             </tbody>
@@ -347,17 +411,33 @@ function renderAssiduite() {
 function renderActivites() {
     const container = document.getElementById('activitesContent');
     if (allData.activites.length === 0) {
-        container.innerHTML = '<div class="loading">Aucune activité récente. (Le tracker n\'a peut-être pas encore enregistré d\'activité).</div>';
+        container.innerHTML = '<div class="loading">Aucune activité récente.</div>';
         return;
     }
+    // Traduire les actions en libellés lisibles
+    const actionLabels = {
+        'page_view': '👁️ Visite page',
+        'page_leave': '🚪 Quitte page',
+        'focus_return': '🔄 Retour focus',
+        'focus_leave': '💤 Perte focus',
+        'compte_rendu_sauvegarde': '💾 Sauvegarde compte rendu',
+        'compte_rendu_supprime': '🗑️ Suppression compte rendu',
+        'rapport_brouillon_sauvegarde': '💾 Sauvegarde brouillon',
+        'rapport_transmis': '📤 Rapport transmis',
+        'rapport_exporte_pdf': '📄 Export PDF',
+        'document_pdf_upload': '📎 Upload PDF',
+        'document_pdf_supprime': '🗑️ Suppression PDF',
+        'commande_vocale_toggle': '🎤 Commande vocale',
+        'modele_rapport_charge': '📋 Modèle rapport'
+    };
     container.innerHTML = `
         <table>
             <thead><tr><th>Membre</th><th>Action</th><th>Page</th><th>Date</th></tr></thead>
             <tbody>
                 ${allData.activites.map(a => `
                     <tr>
-                        <td style="color:var(--neon-blue);">${a.member_nom || '?'}</td>
-                        <td>${a.type_action || '?'}</td>
+                        <td style="color:var(--neon-blue);">${a.membre_nom || '?'}</td>
+                        <td>${actionLabels[a.action] || a.action}</td>
                         <td>${a.page || '—'}</td>
                         <td>${new Date(a.timestamp).toLocaleString('fr-FR')}</td>
                     </tr>
