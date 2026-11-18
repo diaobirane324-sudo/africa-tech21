@@ -5274,7 +5274,7 @@ void loop() {
                 // ============================================================
         // BILAN FINAL
         // ============================================================
-     async function afficherBilan() {
+        async function afficherBilan() {
             if (!membreActuel) return;
 
             document.getElementById('mainScreen').classList.remove('active');
@@ -5359,155 +5359,31 @@ void loop() {
                 console.error('Erreur bilan :', e);
             }
         }
-
-        // ============================================================
-        // TRACKER D'ACTIVITÉ — cours.html
-        // ============================================================
-        let trackerSessionId = null;
-        let trackerLastActivity = Date.now();
-        let trackerHeartbeatInterval = null;
-        let trackerStarted = false;
-
-        function trackerInit() {
-            if (trackerStarted) return;
-            trackerStarted = true;
-            trackerSessionId = sessionStorage.getItem('trackerSessionId');
-            if (!trackerSessionId) {
-                trackerSessionId = 'SESS_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10);
-                sessionStorage.setItem('trackerSessionId', trackerSessionId);
-            }
-            trackerLog('page_view', {
-                page: 'cours.html',
-                referrer: document.referrer || 'direct'
-            });
-            trackerHeartbeatInterval = setInterval(() => {
-                if (document.visibilityState === 'visible') {
-                    trackerLog('heartbeat', {});
-                }
-            }, 30000);
-        }
-
-        async function trackerLog(action, details = {}) {
-            if (!membreActuel || !membreActuel.id) return;
-            try {
-                const now = new Date();
-                await supabaseClient.from('activite_membres').insert([{
-                    membre_id: membreActuel.id,
-                    membre_nom: `${membreActuel.prenom || ''} ${membreActuel.nom || ''}`.trim() || 'Inconnu',
-                    membre_fonction: membreActuel.fonction || 'Membre',
-                    session_id: trackerSessionId,
-                    page: 'cours.html',
-                    action: action,
-                    details: JSON.stringify(details),
-                    url: window.location.href,
-                    user_agent: navigator.userAgent,
-                    timestamp: Date.now(),
-                    date_lisible: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit', second:'2-digit'})
-                }]);
-            } catch (e) {
-                console.warn('Tracker error (silencieux):', e);
-            }
-        }
-
-        function trackerMarkActivity() { trackerLastActivity = Date.now(); }
-        ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(evt => {
-            window.addEventListener(evt, trackerMarkActivity, { passive: true });
-        });
-
-        // ============================================================
-        // BEFOREUNLOAD (sauvegarde finale + tracker page_leave)
+                // ============================================================
+        // BEFOREUNLOAD (sauvegarde finale)
         // ============================================================
         window.addEventListener('beforeunload', function(e) {
             if (membreActuel && tempsTotalSecondes > 0) {
                 localStorage.setItem('cours_temps_' + membreActuel.id, tempsTotalSecondes.toString());
             }
-            if (trackerHeartbeatInterval) clearInterval(trackerHeartbeatInterval);
-            if (!membreActuel || !membreActuel.id) return;
-            try {
-                const now = new Date();
-                fetch(`${SUPABASE_URL}/rest/v1/activite_membres`, {
-                    method: 'POST',
-                    headers: {
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${SUPABASE_KEY}`,
-                        'Content-Type': 'application/json',
-                        'Prefer': 'return=minimal'
-                    },
-                    body: JSON.stringify({
-                        membre_id: membreActuel.id,
-                        membre_nom: `${membreActuel.prenom || ''} ${membreActuel.nom || ''}`.trim() || 'Inconnu',
-                        membre_fonction: membreActuel.fonction || 'Membre',
-                        session_id: trackerSessionId,
-                        page: 'cours.html',
-                        action: 'page_leave',
-                        details: JSON.stringify({
-                            duree_session_ms: Date.now() - trackerLastActivity,
-                            temps_cours_secondes: tempsTotalSecondes
-                        }),
-                        url: window.location.href,
-                        timestamp: Date.now(),
-                        date_lisible: now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit', second:'2-digit'})
-                    }),
-                    keepalive: true
-                });
-            } catch (e) {}
-        });
-
-        document.addEventListener('visibilitychange', () => {
-            if (membreActuel && membreActuel.id) {
-                if (document.visibilityState === 'visible') trackerLog('focus_return', {});
-                else trackerLog('focus_leave', {});
-            }
         });
 
         // ============================================================
-        // EXPOSER GLOBALEMENT POUR onclick HTML + WRAPPERS TRACKER
+        // EXPOSER GLOBALEMENT POUR onclick HTML
         // ============================================================
-        window.ouvrirChapitre = function(id) {
-            trackerLog('cours_ouvrir_chapitre', { chapitre_id: id });
-            return ouvrirChapitre(id);
-        };
+        window.ouvrirChapitre = ouvrirChapitre;
         window.retourAccueilCours = retourAccueilCours;
-        window.terminerLecon = function() {
-            trackerLog('cours_terminer_lecon', {});
-            return terminerLecon();
-        };
+        window.terminerLecon = terminerLecon;
         window.repondreQuiz = repondreQuiz;
         window.quizSuivant = quizSuivant;
-        window.demarrerExamen = function() {
-            trackerLog('cours_demarrer_examen', {});
-            return demarrerExamen();
-        };
+        window.demarrerExamen = demarrerExamen;
         window.selectExamOption = selectExamOption;
-        window.soumettreExamen = async function() {
-            const r = await soumettreExamen();
-            trackerLog('cours_soumettre_examen', {});
-            return r;
-        };
+        window.soumettreExamen = soumettreExamen;
         window.fermerResultatExamen = fermerResultatExamen;
-        window.afficherBilan = async function() {
-            trackerLog('cours_afficher_bilan', {});
-            return afficherBilan();
-        };
-        window.validerIdentification = async function() {
-            const r = await validerIdentification();
-            setTimeout(() => {
-                if (membreActuel && membreActuel.id) trackerInit();
-            }, 500);
-            return r;
-        };
-        window.deconnecterMembre = function() {
-            trackerLog('cours_deconnexion', {});
-            return deconnecterMembre();
-        };
+        window.afficherBilan = afficherBilan;
+        window.validerIdentification = validerIdentification;
+        window.deconnecterMembre = deconnecterMembre;
         window.fermerOverlayGenerique = fermerOverlayGenerique;
-
-        // Lancer le tracker si le membre est déjà identifié (session existante)
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                if (membreActuel && membreActuel.id) trackerInit();
-            }, 1000);
-        });
             </script>
 </body>
 </html>
