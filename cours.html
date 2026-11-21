@@ -4617,7 +4617,3844 @@ void loop() {
                     { type: 'quiz', question: 'Un moteur brushless utilisé dans les drones est :', options: ['Inrunner', 'Outrunner', 'Bipolaire', 'Pas à pas', 'Servo'], bonne: 1 }
                 ]
             }
-        ];
+        },
+
+        // ============================================================
+// CHAPITRE 9 — PROGRAMMATION ARDUINO UNO
+// ============================================================
+{
+    id: 'ch9',
+    numero: 9,
+    titre: 'Programmation Arduino Uno',
+    description: 'De zéro à la maîtrise : apprenez à programmer la carte Arduino Uno. LEDs, boutons, capteurs, servomoteurs, LCD… Chaque leçon inclut un quiz et un exercice de code corrigé automatiquement.',
+    noteRequise: 10,
+    lecons: [
+        // ============================================================
+        // MODULE 1 — DÉCOUVERTE
+        // ============================================================
+        {
+            id: 'ch9_l1',
+            titre: 'Qu\'est-ce qu\'Arduino Uno ?',
+            sousTitre: 'Chapitre 9 — Leçon 1',
+            contenu: `
+<h3>Une petite carte, un grand pouvoir</h3>
+<p>L'<strong>Arduino Uno</strong> est une carte électronique programmable. Elle contient un <strong>microcontrôleur</strong> (une puce qui peut exécuter des programmes) et tout ce qu'il faut pour la connecter à des composants : LEDs, capteurs, moteurs…</p>
+
+<div class="term-def">
+    <strong>Microcontrôleur</strong>
+    Un petit ordinateur sur une puce. Il reçoit des informations, les traite et agit selon le programme qu'on lui a chargé.
+</div>
+
+<div class="analogy">
+    <strong>Analogie :</strong> L'Arduino, c'est comme un chef d'orchestre. Il lit une partition (ton programme) et dirige tous les instruments (capteurs, LEDs, moteurs) pour qu'ils jouent ensemble.
+</div>
+
+<h3>À quoi ça sert ?</h3>
+<ul>
+    <li>Créer des robots</li>
+    <li>Automatiser une maison (domotique)</li>
+    <li>Lire des capteurs (température, lumière, distance)</li>
+    <li>Contrôler des moteurs, LEDs, écrans</li>
+</ul>
+
+<div class="key-point">
+    <strong>À retenir :</strong> L'Arduino Uno est une carte programmable qui permet de contrôler des composants électroniques à l'aide d'un programme écrit sur ordinateur.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Qu\'est-ce qu\'un microcontrôleur ?',
+                    options: [
+                        'Un écran d\'affichage',
+                        'Un petit ordinateur sur une puce',
+                        'Une batterie',
+                        'Un capteur de température',
+                        'Un moteur'
+                    ],
+                    bonne: 1,
+                    explication: 'Un microcontrôleur est un petit ordinateur sur une puce. Il contient un processeur, de la mémoire et des entrées/sorties pour contrôler des composants électroniques.'
+                },
+                {
+                    question: 'Que peut contrôler un Arduino Uno ?',
+                    options: [
+                        'Uniquement des LEDs',
+                        'Uniquement des moteurs',
+                        'Des LEDs, capteurs, moteurs, écrans…',
+                        'Rien du tout',
+                        'Uniquement des écrans'
+                    ],
+                    bonne: 2,
+                    explication: 'L\'Arduino peut contrôler une grande variété de composants : LEDs, capteurs, moteurs, écrans, relais, buzzers… C\'est ce qui en fait une carte si populaire.'
+                },
+                {
+                    question: 'Comment programme-t-on une carte Arduino ?',
+                    options: [
+                        'On lui parle',
+                        'On la peint',
+                        'On lui charge un programme via un ordinateur',
+                        'On la branche simplement',
+                        'On la secoue'
+                    ],
+                    bonne: 2,
+                    explication: 'On écrit un programme sur ordinateur (dans l\'Arduino IDE), puis on le charge dans la carte via le câble USB.'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris un programme Arduino qui contient les deux fonctions OBLIGATOIRES de base. Pour l\'instant, laisse-les vides.',
+                regles: [
+                    { type: 'contient', valeur: 'void setup', message: 'Il manque la fonction setup().' },
+                    { type: 'contient', valeur: 'void loop', message: 'Il manque la fonction loop().' },
+                    { type: 'contient', valeur: '{', message: 'Il manque des accolades { }.' },
+                    { type: 'contient', valeur: '}', message: 'Il manque des accolades { }.' }
+                ],
+                indice: 'Un programme Arduino a TOUJOURS void setup() { } et void loop() { }.',
+                solution: `void setup() {
+  // exécuté une seule fois
+}
+
+void loop() {
+  // exécuté en boucle
+}`
+            }
+        },
+        {
+            id: 'ch9_l2',
+            titre: 'Installer Arduino IDE et connecter la carte',
+            sousTitre: 'Chapitre 9 — Leçon 2',
+            contenu: `
+<h3>Le logiciel Arduino IDE</h3>
+<p>Pour programmer l'Arduino, il faut un logiciel appelé <strong>Arduino IDE</strong> (Integrated Development Environment = environnement de développement intégré). C'est un programme gratuit où tu écriras ton code.</p>
+
+<div class="term-def">
+    <strong>Arduino IDE</strong>
+    Logiciel officiel gratuit qui permet d'écrire, vérifier et envoyer du code vers la carte Arduino.
+</div>
+
+<h3>Étapes d'installation</h3>
+<ol>
+    <li>Télécharge Arduino IDE sur <strong>arduino.cc</strong> (version Windows / Mac / Linux)</li>
+    <li>Installe-le en suivant les instructions</li>
+    <li>Branche la carte Arduino Uno à l'ordinateur avec le câble USB</li>
+    <li>Dans Arduino IDE : <strong>Outils → Type de carte → Arduino Uno</strong></li>
+    <li>Dans Arduino IDE : <strong>Outils → Port → COM…</strong> (le bon port)</li>
+</ol>
+
+<div class="warning-note">
+    <strong>Attention :</strong> Si la carte n'apparaît pas, il manque parfois un <strong>driver USB</strong> (CH340 ou ATmega16U2). Installe-le puis rebranche la carte.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Arduino IDE = logiciel pour écrire et envoyer le code. Il faut choisir la bonne carte et le bon port avant de téléverser.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Quel logiciel utilise-t-on pour programmer Arduino ?',
+                    options: ['Word', 'Arduino IDE', 'Photoshop', 'Excel', 'Paint'],
+                    bonne: 1,
+                    explication: 'Arduino IDE est le logiciel officiel gratuit pour écrire et téléverser du code vers la carte Arduino.'
+                },
+                {
+                    question: 'Que signifie IDE ?',
+                    options: [
+                        'Internet Data Explorer',
+                        'Integrated Development Environment',
+                        'Internal Drive Engine',
+                        'Input Digital Entry',
+                        'Interface Design Element'
+                    ],
+                    bonne: 1,
+                    explication: 'IDE signifie Integrated Development Environment (environnement de développement intégré) : un logiciel qui regroupe l\'éditeur de code, la compilation et le téléversement.'
+                },
+                {
+                    question: 'Avant de téléverser, il faut choisir :',
+                    options: [
+                        'La couleur de la carte',
+                        'Le type de carte et le port',
+                        'La langue du clavier',
+                        'Le fond d\'écran',
+                        'Le navigateur'
+                    ],
+                    bonne: 1,
+                    explication: 'Il faut sélectionner le bon type de carte (ex. Arduino Uno) et le bon port COM dans le menu Outils. Sinon, le téléversement échoue.'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris un programme Arduino qui ne fait RIEN mais contient les deux fonctions setup() et loop() avec un commentaire dans chaque fonction.',
+                regles: [
+                    { type: 'contient', valeur: 'void setup', message: 'Il manque setup().' },
+                    { type: 'contient', valeur: 'void loop', message: 'Il manque loop().' },
+                    { type: 'contient', valeur: '//', message: 'Il manque au moins un commentaire (//).' }
+                ],
+                indice: 'Un commentaire commence par // et va jusqu\'à la fin de la ligne.',
+                solution: `void setup() {
+  // configuration
+}
+
+void loop() {
+  // boucle principale
+}`
+            }
+        },
+        {
+            id: 'ch9_l3',
+            titre: 'Structure d\'un programme : setup() et loop()',
+            sousTitre: 'Chapitre 9 — Leçon 3',
+            contenu: `
+<h3>Les deux fonctions obligatoires</h3>
+<p>Tout programme Arduino contient <strong>deux fonctions obligatoires</strong> :</p>
+<ul>
+    <li><strong>setup()</strong> : exécutée UNE SEULE FOIS au démarrage</li>
+    <li><strong>loop()</strong> : exécutée EN BOUCLE, sans fin, tant que la carte est alimentée</li>
+</ul>
+
+<div class="analogy">
+    <strong>Analogie :</strong> <code>setup()</code>, c'est comme préparer son matériel avant un match (une fois). <code>loop()</code>, c'est le match lui-même : ça se répète sans arrêt.
+</div>
+
+<h3>Structure de base</h3>
+<pre>void setup() {
+  // code exécuté une seule fois
+}
+
+void loop() {
+  // code exécuté en boucle
+}</pre>
+
+<div class="term-def">
+    <strong>void</strong>
+    Signifie « ne retourne rien ». Une fonction <code>void</code> exécute des instructions mais ne renvoie pas de valeur.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> setup() = une fois. loop() = en boucle. Ce sont les deux piliers de tout programme Arduino.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Combien de fois setup() s\'exécute-t-elle ?',
+                    options: ['Une seule fois', 'En boucle', 'Deux fois', 'Jamais', 'Cent fois'],
+                    bonne: 0,
+                    explication: 'setup() s\'exécute une seule fois au démarrage de la carte. C\'est là qu\'on configure les broches, initialise le Serial, etc.'
+                },
+                {
+                    question: 'Combien de fois loop() s\'exécute-t-elle ?',
+                    options: ['Une fois', 'Deux fois', 'En boucle infinie', 'Jamais', 'Cinq fois'],
+                    bonne: 2,
+                    explication: 'loop() s\'exécute en boucle infinie tant que la carte est alimentée. C\'est le cœur du programme.'
+                },
+                {
+                    question: 'Que signifie « void » devant une fonction ?',
+                    options: [
+                        'La fonction est vide',
+                        'La fonction ne retourne rien',
+                        'La fonction est obligatoire',
+                        'La fonction est désactivée',
+                        'La fonction est privée'
+                    ],
+                    bonne: 1,
+                    explication: 'void signifie que la fonction ne retourne aucune valeur. Elle exécute des instructions, mais ne renvoie pas de résultat.'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris un programme avec setup() et loop(). Dans setup(), mets le commentaire "// demarrage". Dans loop(), mets le commentaire "// boucle".',
+                regles: [
+                    { type: 'contient', valeur: 'void setup', message: 'Il manque setup().' },
+                    { type: 'contient', valeur: 'void loop', message: 'Il manque loop().' },
+                    { type: 'contient', valeur: '// demarrage', message: 'Il manque le commentaire "// demarrage" dans setup().' },
+                    { type: 'contient', valeur: '// boucle', message: 'Il manque le commentaire "// boucle" dans loop().' }
+                ],
+                indice: 'Place chaque commentaire à l\'intérieur des accolades de la bonne fonction.',
+                solution: `void setup() {
+  // demarrage
+}
+
+void loop() {
+  // boucle
+}`
+            }
+        },
+        {
+            id: 'ch9_l4',
+            titre: 'Premier code : faire clignoter la LED intégrée',
+            sousTitre: 'Chapitre 9 — Leçon 4',
+            contenu: `
+<h3>La LED intégrée (pin 13)</h3>
+<p>Sur la carte Arduino Uno, il y a une petite LED intégrée reliée à la broche <strong>13</strong>. On peut la faire clignoter sans rien brancher.</p>
+
+<h3>Les 3 instructions magiques</h3>
+<ul>
+    <li><strong>pinMode(13, OUTPUT);</strong> : configure la broche 13 en sortie</li>
+    <li><strong>digitalWrite(13, HIGH);</strong> : allume la LED</li>
+    <li><strong>digitalWrite(13, LOW);</strong> : éteint la LED</li>
+    <li><strong>delay(1000);</strong> : attend 1000 millisecondes (1 seconde)</li>
+</ul>
+
+<pre>void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(13, HIGH);
+  delay(1000);
+  digitalWrite(13, LOW);
+  delay(1000);
+}</pre>
+
+<div class="term-def">
+    <strong>HIGH / LOW</strong>
+    HIGH = 5V (allumé). LOW = 0V (éteint). Ce sont les deux états logiques d'une sortie numérique.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> pinMode configure. digitalWrite allume/éteint. delay attend. Avec ces 3 fonctions, on fait déjà clignoter une LED.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Quelle broche est reliée à la LED intégrée ?',
+                    options: ['Broche 1', 'Broche 5', 'Broche 13', 'Broche 20', 'Broche 0'],
+                    bonne: 2,
+                    explication: 'La LED intégrée de la carte Arduino Uno est reliée à la broche 13. C\'est pratique pour tester sans rien brancher.'
+                },
+                {
+                    question: 'Que fait digitalWrite(13, HIGH) ?',
+                    options: [
+                        'Éteint la LED',
+                        'Allume la LED',
+                        'Lit la LED',
+                        'Configure la LED',
+                        'Supprime la LED'
+                    ],
+                    bonne: 1,
+                    explication: 'digitalWrite(broche, HIGH) met la broche à 5V, ce qui allume la LED connectée. LOW la met à 0V, ce qui l\'éteint.'
+                },
+                {
+                    question: 'delay(500) attend combien de temps ?',
+                    options: ['500 secondes', '5 secondes', '0,5 seconde', '50 secondes', '5 minutes'],
+                    bonne: 2,
+                    explication: 'delay() prend des millisecondes. 500 ms = 0,5 seconde. 1000 ms = 1 seconde.'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris un programme qui fait clignoter la LED intégrée : allumée 1 seconde, éteinte 1 seconde, en boucle.',
+                regles: [
+                    { type: 'contient', valeur: 'pinMode(13, OUTPUT)', message: 'Il manque pinMode(13, OUTPUT) dans setup().' },
+                    { type: 'contient', valeur: 'digitalWrite(13, HIGH)', message: 'Il manque digitalWrite(13, HIGH) pour allumer.' },
+                    { type: 'contient', valeur: 'digitalWrite(13, LOW)', message: 'Il manque digitalWrite(13, LOW) pour éteindre.' },
+                    { type: 'contient', valeur: 'delay', message: 'Il manque delay() pour temporiser.' }
+                ],
+                indice: 'pinMode dans setup(). Les digitalWrite et delay dans loop().',
+                solution: `void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(13, HIGH);
+  delay(1000);
+  digitalWrite(13, LOW);
+  delay(1000);
+}`
+            }
+        },
+        {
+            id: 'ch9_l5',
+            titre: 'Les commentaires et bonnes pratiques',
+            sousTitre: 'Chapitre 9 — Leçon 5',
+            contenu: `
+<h3>Pourquoi commenter son code ?</h3>
+<p>Un <strong>commentaire</strong> est un texte ignoré par la carte. Il sert à expliquer le code pour soi-même ou pour les autres.</p>
+
+<h3>Deux types de commentaires</h3>
+<ul>
+    <li><strong>// commentaire sur une ligne</strong></li>
+    <li><strong>/* commentaire sur plusieurs lignes */</strong></li>
+</ul>
+
+<pre>// Ceci est un commentaire sur une ligne
+
+/*
+  Ceci est un commentaire
+  sur plusieurs lignes
+*/
+
+void setup() {
+  pinMode(13, OUTPUT); // configure la LED
+}</pre>
+
+<h3>Bonnes pratiques</h3>
+<ul>
+    <li>Indenter le code (2 espaces à chaque niveau)</li>
+    <li>Un nom de variable clair (ex. <code>ledRouge</code> plutôt que <code>x</code>)</li>
+    <li>Commenter les parties complexes</li>
+    <li>Une instruction par ligne</li>
+    <li>Respecter les majuscules : <code>pinMode</code>, pas <code>pinmode</code></li>
+</ul>
+
+<div class="warning-note">
+    <strong>Attention :</strong> Arduino est sensible à la casse. <code>pinMode</code> ≠ <code>PinMode</code> ≠ <code>pinmode</code>. Une erreur de casse = code qui ne compile pas.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Un bon code est lisible, indenté et commenté. Les majuscules comptent !
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Quel symbole commence un commentaire sur une ligne ?',
+                    options: ['#', '//', '/*', '--', '%%'],
+                    bonne: 1,
+                    explication: 'En Arduino (comme en C/C++), // commence un commentaire sur une ligne. /* ... */ encadre un commentaire multi-lignes.'
+                },
+                {
+                    question: 'Arduino fait-il la différence entre majuscules et minuscules ?',
+                    options: ['Non', 'Oui', 'Seulement pour les nombres', 'Seulement en commentaire', 'Parfois'],
+                    bonne: 1,
+                    explication: 'Oui, Arduino est sensible à la casse. pinMode et pinmode sont deux identifiants différents : seul pinMode existe.'
+                },
+                {
+                    question: 'Pourquoi indenter son code ?',
+                    options: [
+                        'Pour le rendre plus joli uniquement',
+                        'Pour qu\'il soit plus lisible et maintenable',
+                        'Pour qu\'il compile plus vite',
+                        'Pour économiser de la mémoire',
+                        'Ce n\'est pas utile'
+                    ],
+                    bonne: 1,
+                    explication: 'L\'indentation rend le code lisible et facilite la détection d\'erreurs (accolades manquantes, blocs mal fermés). C\'est une bonne pratique universelle.'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris un programme avec setup() et loop(). Dans setup(), configure la broche 13 en sortie. Ajoute un commentaire au-dessus de chaque fonction.',
+                regles: [
+                    { type: 'contient', valeur: '//', message: 'Il manque au moins un commentaire.' },
+                    { type: 'contient', valeur: 'void setup', message: 'Il manque setup().' },
+                    { type: 'contient', valeur: 'void loop', message: 'Il manque loop().' },
+                    { type: 'contient', valeur: 'pinMode(13, OUTPUT)', message: 'Il manque pinMode(13, OUTPUT).' }
+                ],
+                indice: 'Ajoute // au-dessus de void setup() et void loop().',
+                solution: `// configuration
+void setup() {
+  pinMode(13, OUTPUT);
+}
+
+// boucle principale
+void loop() {
+}`
+            }
+        },
+        // ============================================================
+        // MODULE 2 — SORTIES NUMÉRIQUES
+        // ============================================================
+        {
+            id: 'ch9_l6',
+            titre: 'pinMode() : configurer une broche',
+            sousTitre: 'Chapitre 9 — Leçon 6',
+            contenu: `
+<h3>Le rôle de pinMode()</h3>
+<p><strong>pinMode()</strong> indique à la carte comment utiliser une broche. Une broche peut être :</p>
+<ul>
+    <li><strong>OUTPUT</strong> (sortie) : la carte envoie du signal</li>
+    <li><strong>INPUT</strong> (entrée) : la carte lit un signal</li>
+    <li><strong>INPUT_PULLUP</strong> : entrée avec résistance interne</li>
+</ul>
+
+<pre>void setup() {
+  pinMode(13, OUTPUT); // broche 13 en sortie
+  pinMode(2, INPUT);   // broche 2 en entrée
+}</pre>
+
+<div class="analogy">
+    <strong>Analogie :</strong> pinMode, c'est choisir le sens de circulation d'une route. OUTPUT = sens unique vers l'extérieur. INPUT = sens unique vers l'intérieur.
+</div>
+
+<div class="term-def">
+    <strong>Broche (pin)</strong>
+    Point de connexion sur la carte Arduino. L'Uno a 14 broches numériques (0-13) et 6 entrées analogiques (A0-A5).
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> pinMode() se met dans setup(). OUTPUT pour envoyer, INPUT pour lire.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Où place-t-on habituellement pinMode() ?',
+                    options: ['Dans loop()', 'Dans setup()', 'Hors des fonctions', 'Dans un commentaire', 'Nulle part'],
+                    bonne: 1,
+                    explication: 'On configure les broches une seule fois, donc dans setup(). C\'est la convention standard.'
+                },
+                {
+                    question: 'Que signifie OUTPUT ?',
+                    options: ['Entrée', 'Sortie', 'Les deux', 'Aucun', 'Alimentation'],
+                    bonne: 1,
+                    explication: 'OUTPUT = sortie. La carte envoie un signal (allumer une LED, tourner un moteur…). INPUT = entrée (lire un bouton, un capteur…).'
+                },
+                {
+                    question: 'Combien de broches numériques a l\'Arduino Uno ?',
+                    options: ['6', '8', '14', '20', '30'],
+                    bonne: 2,
+                    explication: 'L\'Arduino Uno a 14 broches numériques (0 à 13) et 6 entrées analogiques (A0 à A5).'
+                }
+            ],
+            exercice: {
+                enonce: 'Configure la broche 7 en sortie et la broche 3 en entrée, dans setup().',
+                regles: [
+                    { type: 'contient', valeur: 'pinMode(7, OUTPUT)', message: 'Il manque pinMode(7, OUTPUT).' },
+                    { type: 'contient', valeur: 'pinMode(3, INPUT)', message: 'Il manque pinMode(3, INPUT).' },
+                    { type: 'contient', valeur: 'void setup', message: 'Il manque setup().' }
+                ],
+                indice: 'pinMode(numeroBroche, MODE);',
+                solution: `void setup() {
+  pinMode(7, OUTPUT);
+  pinMode(3, INPUT);
+}
+
+void loop() {
+}`
+            }
+        },
+        {
+            id: 'ch9_l7',
+            titre: 'digitalWrite() : allumer et éteindre',
+            sousTitre: 'Chapitre 9 — Leçon 7',
+            contenu: `
+<h3>Le rôle de digitalWrite()</h3>
+<p><strong>digitalWrite()</strong> met une broche en état HAUT (HIGH = 5V) ou BAS (LOW = 0V). Cela permet d'allumer ou éteindre un composant.</p>
+
+<pre>digitalWrite(13, HIGH); // allume
+digitalWrite(13, LOW);  // éteint</pre>
+
+<h3>Ce qu'il faut avant digitalWrite()</h3>
+<p>La broche doit être configurée en <strong>OUTPUT</strong> dans setup(). Sinon, elle reste en entrée et digitalWrite n'a pas d'effet visible.</p>
+
+<div class="warning-note">
+    <strong>Attention :</strong> HIGH ce n'est pas « allumé » dans l'absolu : c'est 5V. Si ton composant est câblé à l'envers, HIGH l'éteindra. HIGH/LOW = niveaux électriques, pas états logiques du composant.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> digitalWrite(broche, HIGH) = 5V. digitalWrite(broche, LOW) = 0V.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Que fait digitalWrite(5, LOW) ?',
+                    options: ['Allume la broche 5', 'Met la broche 5 à 0V', 'Lit la broche 5', 'Configure la broche 5', 'Supprime la broche 5'],
+                    bonne: 1,
+                    explication: 'LOW met la broche à 0V. HIGH la met à 5V. C\'est un niveau électrique, pas un état de composant.'
+                },
+                {
+                    question: 'Avant digitalWrite, la broche doit être :',
+                    options: ['En INPUT', 'En OUTPUT', 'Débranchée', 'En PWM', 'En analogique'],
+                    bonne: 1,
+                    explication: 'digitalWrite ne fonctionne correctement que sur une broche configurée en OUTPUT. En INPUT, elle est en haute impédance.'
+                },
+                {
+                    question: 'HIGH correspond à quelle tension ?',
+                    options: ['0V', '3,3V', '5V', '12V', '220V'],
+                    bonne: 2,
+                    explication: 'Sur l\'Arduino Uno, HIGH = 5V. LOW = 0V. Certaines cartes (ESP32, etc.) utilisent 3,3V.'
+                }
+            ],
+            exercice: {
+                enonce: 'Configure la broche 9 en sortie, puis allume-la, attends 1 seconde, éteins-la, attends 1 seconde.',
+                regles: [
+                    { type: 'contient', valeur: 'pinMode(9, OUTPUT)', message: 'Il manque pinMode(9, OUTPUT).' },
+                    { type: 'contient', valeur: 'digitalWrite(9, HIGH)', message: 'Il manque digitalWrite(9, HIGH).' },
+                    { type: 'contient', valeur: 'digitalWrite(9, LOW)', message: 'Il manque digitalWrite(9, LOW).' },
+                    { type: 'contient', valeur: 'delay(1000)', message: 'Il manque delay(1000).' }
+                ],
+                indice: 'Tout le code d\'allumage va dans loop(). pinMode va dans setup().',
+                solution: `void setup() {
+  pinMode(9, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(9, HIGH);
+  delay(1000);
+  digitalWrite(9, LOW);
+  delay(1000);
+}`
+            }
+        },
+        {
+            id: 'ch9_l8',
+            titre: 'delay() : temporiser',
+            sousTitre: 'Chapitre 9 — Leçon 8',
+            contenu: `
+<h3>Le rôle de delay()</h3>
+<p><strong>delay()</strong> met le programme en pause pendant un nombre de <strong>millisecondes</strong>.</p>
+
+<pre>delay(1000);  // 1 seconde
+delay(500);   // 0,5 seconde
+delay(100);   // 0,1 seconde
+delay(2000);  // 2 secondes</pre>
+
+<div class="term-def">
+    <strong>1 seconde = 1000 millisecondes (ms)</strong>
+</div>
+
+<div class="analogy">
+    <strong>Analogie :</strong> delay() c'est comme un sablier. Le programme s'arrête, attend que le sable coule, puis reprend.
+</div>
+
+<h3>Attention : delay() bloque tout</h3>
+<p>Pendant un delay(), la carte ne peut RIEN faire d'autre. Pour des projets avancés, on utilise <code>millis()</code> plutôt que delay(). Mais pour commencer, delay() est parfait.</p>
+
+<div class="key-point">
+    <strong>À retenir :</strong> delay(ms) = pause en millisecondes. 1000 ms = 1 seconde. Ça bloque la carte pendant l'attente.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'delay(2000) attend combien de temps ?',
+                    options: ['2 ms', '20 ms', '200 ms', '2 secondes', '2 minutes'],
+                    bonne: 3,
+                    explication: 'delay() prend des millisecondes. 2000 ms = 2 secondes.'
+                },
+                {
+                    question: 'Que fait la carte pendant un delay() ?',
+                    options: [
+                        'Elle continue à lire les capteurs',
+                        'Elle ne fait rien d\'autre',
+                        'Elle s\'éteint',
+                        'Elle accélère',
+                        'Elle se recharge'
+                    ],
+                    bonne: 1,
+                    explication: 'delay() est bloquant : la carte ne fait rien d\'autre pendant l\'attente. C\'est pourquoi on lui préfère parfois millis() dans les projets avancés.'
+                },
+                {
+                    question: 'Combien de millisecondes dans 3 secondes ?',
+                    options: ['30', '300', '3000', '30000', '300000'],
+                    bonne: 2,
+                    explication: '1 seconde = 1000 ms, donc 3 secondes = 3000 ms.'
+                }
+            ],
+            exercice: {
+                enonce: 'Dans loop(), allume la broche 13, attends 500 ms, éteins-la, attends 500 ms. N\'oublie pas pinMode dans setup().',
+                regles: [
+                    { type: 'contient', valeur: 'pinMode(13, OUTPUT)', message: 'Il manque pinMode(13, OUTPUT).' },
+                    { type: 'contient', valeur: 'digitalWrite(13, HIGH)', message: 'Il manque digitalWrite(13, HIGH).' },
+                    { type: 'contient', valeur: 'digitalWrite(13, LOW)', message: 'Il manque digitalWrite(13, LOW).' },
+                    { type: 'contient', valeur: 'delay(500)', message: 'Il manque delay(500).' }
+                ],
+                indice: 'Tu auras besoin de deux delay(500).',
+                solution: `void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(13, HIGH);
+  delay(500);
+  digitalWrite(13, LOW);
+  delay(500);
+}`
+            }
+        },
+        {
+            id: 'ch9_l9',
+            titre: 'Allumer une LED externe',
+            sousTitre: 'Chapitre 9 — Leçon 9',
+            contenu: `
+<h3>Montage</h3>
+<ul>
+    <li>LED : patte longue (anode, +) vers la broche 8</li>
+    <li>LED : patte courte (cathode, −) vers une résistance de 220 Ω</li>
+    <li>Résistance : autre extrémité vers GND</li>
+</ul>
+
+<div class="warning-note">
+    <strong>Attention :</strong> Ne JAMAIS brancher une LED sans résistance : elle grillerait instantanément. 220 Ω à 330 Ω est parfait pour une LED standard sur 5V.
+</div>
+
+<h3>Code</h3>
+<pre>void setup() {
+  pinMode(8, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(8, HIGH);
+  delay(1000);
+  digitalWrite(8, LOW);
+  delay(1000);
+}</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> LED = patte longue vers la broche, patte courte vers GND via une résistance. Une LED sans résistance = LED morte.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Pourquoi mettre une résistance en série avec une LED ?',
+                    options: [
+                        'Pour la décorer',
+                        'Pour limiter le courant et éviter qu\'elle grille',
+                        'Pour la rendre plus lumineuse',
+                        'Pour la relier au GND',
+                        'Ce n\'est pas utile'
+                    ],
+                    bonne: 1,
+                    explication: 'Sans résistance, la LED reçoit trop de courant et grille. La résistance (220-330 Ω) limite le courant à une valeur sûre.'
+                },
+                {
+                    question: 'Quelle patte de la LED va vers la broche Arduino ?',
+                    options: ['La plus courte', 'La plus longue (anode)', 'Les deux', 'Aucune', 'La patte cassée'],
+                    bonne: 1,
+                    explication: 'La patte longue est l\'anode (+). Elle va vers la broche Arduino. La patte courte est la cathode (−), elle va vers GND via une résistance.'
+                },
+                {
+                    question: 'Quelle valeur de résistance est recommandée pour une LED sur 5V ?',
+                    options: ['1 Ω', '10 Ω', '220-330 Ω', '10 kΩ', '1 MΩ'],
+                    bonne: 2,
+                    explication: '220-330 Ω est la plage classique pour une LED standard sur 5V. Plus la résistance est grande, moins la LED est lumineuse.'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris le code pour faire clignoter une LED branchée sur la broche 8 (1 seconde allumée, 1 seconde éteinte).',
+                regles: [
+                    { type: 'contient', valeur: 'pinMode(8, OUTPUT)', message: 'Il manque pinMode(8, OUTPUT).' },
+                    { type: 'contient', valeur: 'digitalWrite(8, HIGH)', message: 'Il manque digitalWrite(8, HIGH).' },
+                    { type: 'contient', valeur: 'digitalWrite(8, LOW)', message: 'Il manque digitalWrite(8, LOW).' },
+                    { type: 'contient', valeur: 'delay(1000)', message: 'Il manque delay(1000).' }
+                ],
+                indice: 'Broche 8 au lieu de 13. Le reste est identique.',
+                solution: `void setup() {
+  pinMode(8, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(8, HIGH);
+  delay(1000);
+  digitalWrite(8, LOW);
+  delay(1000);
+}`
+            }
+        },
+        {
+            id: 'ch9_l10',
+            titre: 'Chenillard : faire clignoter plusieurs LEDs',
+            sousTitre: 'Chapitre 9 — Leçon 10',
+            contenu: `
+<h3>Le principe du chenillard</h3>
+<p>Un <strong>chenillard</strong> allume les LEDs une par une, dans l'ordre, créant un effet de vague.</p>
+
+<h3>Montage</h3>
+<p>3 LEDs sur les broches 8, 9, 10. Chacune avec sa résistance vers GND.</p>
+
+<h3>Code simple (sans boucle)</h3>
+<pre>void setup() {
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(8, HIGH); delay(200); digitalWrite(8, LOW);
+  digitalWrite(9, HIGH); delay(200); digitalWrite(9, LOW);
+  digitalWrite(10, HIGH); delay(200); digitalWrite(10, LOW);
+}</pre>
+
+<div class="analogy">
+    <strong>Analogie :</strong> Comme un chapelet de lumières qui s'allument l'une après l'autre, ou les feux d'une piste d'atterrissage.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> On peut chaîner plusieurs digitalWrite avec de petits delay entre eux pour créer des animations.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Combien de pinMode faut-il pour 3 LEDs ?',
+                    options: ['1', '2', '3', '6', 'Aucun'],
+                    bonne: 2,
+                    explication: 'Une broche par LED = 3 pinMode(..., OUTPUT). Chaque broche utilisée doit être configurée.'
+                },
+                {
+                    question: 'Pourquoi un delay(200) après chaque allumage ?',
+                    options: [
+                        'Pour économiser de l\'énergie',
+                        'Pour voir l\'effet visuellement',
+                        'Pour éteindre la LED',
+                        'Pour compiler',
+                        'Ce n\'est pas nécessaire'
+                    ],
+                    bonne: 1,
+                    explication: 'Sans delay, les LEDs s\'allumeraient trop vite pour être vues. Le delay permet de visualiser le chenillard.'
+                },
+                {
+                    question: 'Combien de temps reste allumée chaque LED dans l\'exemple ?',
+                    options: ['200 secondes', '200 ms', '20 ms', '2 secondes', '2 ms'],
+                    bonne: 1,
+                    explication: 'delay(200) = 200 millisecondes = 0,2 seconde. C\'est un rythme rapide mais visible.'
+                }
+            ],
+            exercice: {
+                enonce: 'Fais un chenillard sur 3 LEDs (broches 8, 9, 10) : chaque LED s\'allume 300 ms puis s\'éteint, l\'une après l\'autre.',
+                regles: [
+                    { type: 'contient', valeur: 'pinMode(8, OUTPUT)', message: 'Il manque pinMode(8, OUTPUT).' },
+                    { type: 'contient', valeur: 'pinMode(9, OUTPUT)', message: 'Il manque pinMode(9, OUTPUT).' },
+                    { type: 'contient', valeur: 'pinMode(10, OUTPUT)', message: 'Il manque pinMode(10, OUTPUT).' },
+                    { type: 'contient', valeur: 'digitalWrite(8, HIGH)', message: 'Il manque digitalWrite(8, HIGH).' },
+                    { type: 'contient', valeur: 'digitalWrite(10, HIGH)', message: 'Il manque digitalWrite(10, HIGH).' },
+                    { type: 'contient', valeur: 'delay(300)', message: 'Il manque delay(300).' }
+                ],
+                indice: 'Allume chaque LED, attends 300 ms, éteins-la, puis passe à la suivante.',
+                solution: `void setup() {
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(8, HIGH); delay(300); digitalWrite(8, LOW);
+  digitalWrite(9, HIGH); delay(300); digitalWrite(9, LOW);
+  digitalWrite(10, HIGH); delay(300); digitalWrite(10, LOW);
+}`
+            }
+        },
+        {
+            id: 'ch9_l11',
+            titre: 'Exercice récap : feu de circulation',
+            sousTitre: 'Chapitre 9 — Leçon 11',
+            contenu: `
+<h3>Un mini-projet : le feu tricolore</h3>
+<p>3 LEDs : <strong>rouge</strong> (broche 8), <strong>jaune</strong> (broche 9), <strong>vert</strong> (broche 10).</p>
+
+<h3>Séquence</h3>
+<ol>
+    <li>Vert allumé 3 secondes</li>
+    <li>Jaune allumé 1 seconde</li>
+    <li>Rouge allumé 3 secondes</li>
+    <li>Puis on recommence</li>
+</ol>
+
+<h3>Logique</h3>
+<p>À chaque étape : allumer la bonne LED, éteindre les deux autres, attendre, passer à la suivante.</p>
+
+<pre>void loop() {
+  // Vert
+  digitalWrite(8, LOW);
+  digitalWrite(9, LOW);
+  digitalWrite(10, HIGH);
+  delay(3000);
+
+  // Jaune
+  digitalWrite(10, LOW);
+  digitalWrite(9, HIGH);
+  delay(1000);
+
+  // Rouge
+  digitalWrite(9, LOW);
+  digitalWrite(8, HIGH);
+  delay(3000);
+}</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Un projet simple, c'est une suite logique d'états. Chaque état = allumer X, éteindre Y, attendre.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Quel est le rôle du delay(3000) dans le feu rouge ?',
+                    options: [
+                        'Allumer le rouge',
+                        'Attendre 3 secondes avant de passer',
+                        'Éteindre le rouge',
+                        'Clignoter',
+                        'Aucun rôle'
+                    ],
+                    bonne: 1,
+                    explication: 'delay(3000) attend 3 secondes, ce qui simule la durée pendant laquelle le feu reste rouge avant de repasser au vert.'
+                },
+                {
+                    question: 'Pourquoi éteindre les autres LEDs avant d\'allumer la suivante ?',
+                    options: [
+                        'Pour économiser l\'énergie',
+                        'Pour qu\'un seul feu soit allumé à la fois (logique du feu tricolore)',
+                        'Pour éviter un bug',
+                        'Ce n\'est pas nécessaire',
+                        'Pour faire joli'
+                    ],
+                    bonne: 1,
+                    explication: 'Un feu tricolore n\'a qu\'une seule couleur active à la fois. Il faut donc éteindre les autres LEDs avant d\'allumer la nouvelle.'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris un programme complet du feu tricolore : vert (10) 2s, jaune (9) 1s, rouge (8) 2s, en boucle. Configure les 3 broches dans setup().',
+                regles: [
+                    { type: 'contient', valeur: 'pinMode(8, OUTPUT)', message: 'Il manque pinMode(8, OUTPUT).' },
+                    { type: 'contient', valeur: 'pinMode(9, OUTPUT)', message: 'Il manque pinMode(9, OUTPUT).' },
+                    { type: 'contient', valeur: 'pinMode(10, OUTPUT)', message: 'Il manque pinMode(10, OUTPUT).' },
+                    { type: 'contient', valeur: 'digitalWrite(10, HIGH)', message: 'Il manque digitalWrite(10, HIGH) pour le vert.' },
+                    { type: 'contient', valeur: 'digitalWrite(9, HIGH)', message: 'Il manque digitalWrite(9, HIGH) pour le jaune.' },
+                    { type: 'contient', valeur: 'digitalWrite(8, HIGH)', message: 'Il manque digitalWrite(8, HIGH) pour le rouge.' },
+                    { type: 'contient', valeur: 'delay(2000)', message: 'Il manque delay(2000) pour le vert/rouge.' },
+                    { type: 'contient', valeur: 'delay(1000)', message: 'Il manque delay(1000) pour le jaune.' }
+                ],
+                indice: 'Suis l\'ordre : vert → delay → jaune → delay → rouge → delay → recommence (loop).',
+                solution: `void setup() {
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+}
+
+void loop() {
+  // Vert
+  digitalWrite(8, LOW); digitalWrite(9, LOW); digitalWrite(10, HIGH);
+  delay(2000);
+
+  // Jaune
+  digitalWrite(10, LOW); digitalWrite(9, HIGH);
+  delay(1000);
+
+  // Rouge
+  digitalWrite(9, LOW); digitalWrite(8, HIGH);
+  delay(2000);
+}`
+            }
+        },
+        // ============================================================
+        // MODULE 3 — ENTRÉES NUMÉRIQUES
+        // ============================================================
+        {
+            id: 'ch9_l12',
+            titre: 'pinMode(INPUT) : broche en entrée',
+            sousTitre: 'Chapitre 9 — Leçon 12',
+            contenu: `
+<h3>Lire au lieu d'écrire</h3>
+<p>Jusqu'ici, on a <strong>envoyé</strong> du signal (OUTPUT). Maintenant, on va <strong>lire</strong> un signal venant d'un composant (bouton, capteur).</p>
+
+<pre>pinMode(2, INPUT); // broche 2 en entrée</pre>
+
+<div class="analogy">
+    <strong>Analogie :</strong> OUTPUT c'est une bouche qui parle. INPUT c'est une oreille qui écoute. Une broche ne peut pas être les deux à la fois.
+</div>
+
+<h3>Quand utiliser INPUT ?</h3>
+<ul>
+    <li>Lire un bouton</li>
+    <li>Lire un interrupteur</li>
+    <li>Lire un capteur numérique (ex. détecteur de mouvement)</li>
+</ul>
+
+<div class="key-point">
+    <strong>À retenir :</strong> INPUT = la carte lit une tension (0V ou 5V) sur la broche.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Pour lire un bouton, la broche doit être en :',
+                    options: ['OUTPUT', 'INPUT', 'PWM', 'GND', 'VCC'],
+                    bonne: 1,
+                    explication: 'Un bouton produit un signal que la carte doit LIRE, donc la broche est en INPUT.'
+                },
+                {
+                    question: 'Que fait la carte sur une broche INPUT ?',
+                    options: [
+                        'Elle envoie du 5V',
+                        'Elle lit la tension présente (0V ou 5V)',
+                        'Elle alimente un moteur',
+                        'Elle clignote',
+                        'Elle s\'éteint'
+                    ],
+                    bonne: 1,
+                    explication: 'En INPUT, la broche mesure la tension qui lui arrive. Elle renvoie HIGH (≈5V) ou LOW (≈0V).'
+                },
+                {
+                    question: 'Peut-on utiliser une broche INPUT et OUTPUT en même temps ?',
+                    options: ['Oui', 'Non, il faut choisir', 'Oui si on ajoute une résistance', 'Oui pour les broches paires', 'Cela dépend de la couleur'],
+                    bonne: 1,
+                    explication: 'Une broche est soit entrée, soit sortie à un instant donné. On peut changer via pinMode, mais pas être les deux simultanément.'
+                }
+            ],
+            exercice: {
+                enonce: 'Configure la broche 2 en entrée et la broche 13 en sortie.',
+                regles: [
+                    { type: 'contient', valeur: 'pinMode(2, INPUT)', message: 'Il manque pinMode(2, INPUT).' },
+                    { type: 'contient', valeur: 'pinMode(13, OUTPUT)', message: 'Il manque pinMode(13, OUTPUT).' }
+                ],
+                indice: 'Deux pinMode dans setup().',
+                solution: `void setup() {
+  pinMode(2, INPUT);
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+}`
+            }
+        },
+        {
+            id: 'ch9_l13',
+            titre: 'digitalRead() : lire un bouton',
+            sousTitre: 'Chapitre 9 — Leçon 13',
+            contenu: `
+<h3>Le rôle de digitalRead()</h3>
+<p><strong>digitalRead()</strong> lit l'état d'une broche et renvoie <strong>HIGH</strong> ou <strong>LOW</strong>.</p>
+
+<pre>int etat = digitalRead(2); // lit la broche 2</pre>
+
+<h3>Utilisation avec un bouton</h3>
+<p>Un bouton branché entre la broche 2 et le 5V :</p>
+<ul>
+    <li>Bouton appuyé → 5V → HIGH</li>
+    <li>Bouton relâché → 0V (via une résistance pull-down externe)</li>
+</ul>
+
+<h3>Allumer une LED avec un bouton</h3>
+<pre>void loop() {
+  int etat = digitalRead(2);
+  if (etat == HIGH) {
+    digitalWrite(13, HIGH);
+  } else {
+    digitalWrite(13, LOW);
+  }
+}</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> digitalRead() renvoie HIGH ou LOW. On l'utilise pour lire un bouton, un interrupteur…
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Que renvoie digitalRead() ?',
+                    options: ['Un nombre de 0 à 1023', 'HIGH ou LOW', 'Un texte', 'Une tension en volts', 'Rien'],
+                    bonne: 1,
+                    explication: 'digitalRead() renvoie HIGH (5V) ou LOW (0V). C\'est une lecture numérique, pas analogique.'
+                },
+                {
+                    question: 'Si le bouton est relâché et relié à GND via une résistance, digitalRead renvoie :',
+                    options: ['HIGH', 'LOW', '1023', 'Erreur', 'Rien'],
+                    bonne: 1,
+                    explication: 'Avec une résistance pull-down, la broche est tirée vers 0V quand le bouton est relâché. Elle renvoie donc LOW.'
+                },
+                {
+                    question: 'Pourquoi stocker digitalRead dans une variable ?',
+                    options: [
+                        'Pour faire joli',
+                        'Pour comparer et agir en fonction',
+                        'Pour économiser de l\'énergie',
+                        'C\'est obligatoire',
+                        'Pas utile'
+                    ],
+                    bonne: 1,
+                    explication: 'On stocke le résultat dans une variable (ex. etat) pour pouvoir le comparer dans un if/else et réagir.'
+                }
+            ],
+            exercice: {
+                enonce: 'Lis la broche 2 dans une variable "etat". Si etat vaut HIGH, allume la broche 13, sinon éteins-la.',
+                regles: [
+                    { type: 'contient', valeur: 'pinMode(2, INPUT)', message: 'Il manque pinMode(2, INPUT).' },
+                    { type: 'contient', valeur: 'pinMode(13, OUTPUT)', message: 'Il manque pinMode(13, OUTPUT).' },
+                    { type: 'contient', valeur: 'digitalRead(2)', message: 'Il manque digitalRead(2).' },
+                    { type: 'contient', valeur: 'if', message: 'Il manque un if.' },
+                    { type: 'contient', valeur: 'digitalWrite(13, HIGH)', message: 'Il manque digitalWrite(13, HIGH).' },
+                    { type: 'contient', valeur: 'digitalWrite(13, LOW)', message: 'Il manque digitalWrite(13, LOW).' }
+                ],
+                indice: 'Utilise if (etat == HIGH) { ... } else { ... }',
+                solution: `void setup() {
+  pinMode(2, INPUT);
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  int etat = digitalRead(2);
+  if (etat == HIGH) {
+    digitalWrite(13, HIGH);
+  } else {
+    digitalWrite(13, LOW);
+  }
+}`
+            }
+        },
+        {
+            id: 'ch9_l14',
+            titre: 'Pull-up et pull-down',
+            sousTitre: 'Chapitre 9 — Leçon 14',
+            contenu: `
+<h3>Le problème de la « broche flottante »</h3>
+<p>Si un bouton n'est relié à rien quand il est relâché, la broche est dite <strong>flottante</strong> : elle lit HIGH ou LOW au hasard, ce qui provoque des valeurs erratiques.</p>
+
+<h3>Solution 1 : résistance pull-down externe</h3>
+<p>Résistance de 10 kΩ entre la broche et GND. Quand le bouton est relâché, la broche est tirée vers 0V (LOW).</p>
+
+<h3>Solution 2 : résistance pull-up externe</h3>
+<p>Résistance de 10 kΩ entre la broche et 5V. Quand le bouton est relâché, la broche est tirée vers 5V (HIGH). Quand on appuie, elle passe à LOW.</p>
+
+<h3>Solution 3 : pull-up INTERNE (recommandé)</h3>
+<pre>pinMode(2, INPUT_PULLUP);</pre>
+
+<p>La carte active une résistance interne de ~20 kΩ. Pas besoin de composant externe. Attention : avec INPUT_PULLUP, la logique est inversée (appui = LOW).</p>
+
+<div class="warning-note">
+    <strong>Attention :</strong> Avec INPUT_PULLUP, un bouton appuyé renvoie LOW (pas HIGH). C'est une source d'erreur classique.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> INPUT_PULLUP active une résistance interne. Bouton appuyé = LOW. Simple et pratique.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Qu\'est-ce qu\'une broche flottante ?',
+                    options: [
+                        'Une broche cassée',
+                        'Une broche qui lit au hasard car non reliée',
+                        'Une broche en OUTPUT',
+                        'Une broche sans courant',
+                        'Une broche en 5V'
+                    ],
+                    bonne: 1,
+                    explication: 'Une broche flottante n\'a pas de niveau défini : elle lit HIGH ou LOW de manière aléatoire, souvent à cause du bruit électrique.'
+                },
+                {
+                    question: 'Avec INPUT_PULLUP, appuyer sur le bouton renvoie :',
+                    options: ['HIGH', 'LOW', '1023', 'Rien', 'Erreur'],
+                    bonne: 1,
+                    explication: 'Avec INPUT_PULLUP, la broche est tirée vers 5V au repos (HIGH). Quand on appuie, le bouton relie à GND, donc la broche passe à LOW.'
+                },
+                {
+                    question: 'Quel est l\'avantage de INPUT_PULLUP ?',
+                    options: [
+                        'Pas besoin de résistance externe',
+                        'Ça consomme moins',
+                        'Ça accélère le programme',
+                        'Ça rend la LED plus lumineuse',
+                        'Aucun'
+                    ],
+                    bonne: 0,
+                    explication: 'INPUT_PULLUP active une résistance interne : on n\'a pas besoin d\'ajouter un composant externe. C\'est plus simple et plus fiable.'
+                }
+            ],
+            exercice: {
+                enonce: 'Configure la broche 2 en INPUT_PULLUP et la broche 13 en OUTPUT. Puis, dans loop(), lis la broche 2 : si elle est LOW (appui), allume la 13, sinon éteins-la.',
+                regles: [
+                    { type: 'contient', valeur: 'pinMode(2, INPUT_PULLUP)', message: 'Il manque pinMode(2, INPUT_PULLUP).' },
+                    { type: 'contient', valeur: 'pinMode(13, OUTPUT)', message: 'Il manque pinMode(13, OUTPUT).' },
+                    { type: 'contient', valeur: 'digitalRead(2)', message: 'Il manque digitalRead(2).' },
+                    { type: 'contient', valeur: '== LOW', message: 'Il faut comparer à LOW (avec INPUT_PULLUP).' }
+                ],
+                indice: 'Avec INPUT_PULLUP, un appui = LOW. Ne te trompe pas sur la comparaison.',
+                solution: `void setup() {
+  pinMode(2, INPUT_PULLUP);
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  int etat = digitalRead(2);
+  if (etat == LOW) {
+    digitalWrite(13, HIGH);
+  } else {
+    digitalWrite(13, LOW);
+  }
+}`
+            }
+        },
+        {
+            id: 'ch9_l15',
+            titre: 'Allumer une LED avec un bouton',
+            sousTitre: 'Chapitre 9 — Leçon 15',
+            contenu: `
+<h3>Le montage</h3>
+<ul>
+    <li>Bouton : patte 1 → broche 2 (via INPUT_PULLUP)</li>
+    <li>Bouton : patte 2 → GND</li>
+    <li>LED : broche 13 → résistance 220 Ω → GND</li>
+</ul>
+
+<h3>Code</h3>
+<pre>void setup() {
+  pinMode(2, INPUT_PULLUP);
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  if (digitalRead(2) == LOW) {
+    digitalWrite(13, HIGH);
+  } else {
+    digitalWrite(13, LOW);
+  }
+}</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Bouton + INPUT_PULLUP + if = interaction simple. Appui → action.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Avec INPUT_PULLUP, quand la LED s\'allume-t-elle ?',
+                    options: [
+                        'Quand on appuie (LOW)',
+                        'Quand on relâche (HIGH)',
+                        'Toujours',
+                        'Jamais',
+                        'Au hasard'
+                    ],
+                    bonne: 0,
+                    explication: 'Avec INPUT_PULLUP, appuyer fait passer la broche à LOW. C\'est donc quand digitalRead renvoie LOW que la LED s\'allume.'
+                },
+                {
+                    question: 'Où brancher la deuxième patte du bouton ?',
+                    options: ['Au 5V', 'Au GND', 'À une LED', 'À rien', 'À la broche 13'],
+                    bonne: 1,
+                    explication: 'Avec INPUT_PULLUP, la deuxième patte du bouton va au GND. Appuyer relie la broche au GND, ce qui fait passer à LOW.'
+                }
+            ],
+            exercice: {
+                enonce: 'Fais un programme où la LED (broche 13) s\'allume uniquement quand le bouton (broche 2, INPUT_PULLUP) est appuyé.',
+                regles: [
+                    { type: 'contient', valeur: 'pinMode(2, INPUT_PULLUP)', message: 'Il manque pinMode(2, INPUT_PULLUP).' },
+                    { type: 'contient', valeur: 'pinMode(13, OUTPUT)', message: 'Il manque pinMode(13, OUTPUT).' },
+                    { type: 'contient', valeur: 'digitalRead(2)', message: 'Il manque digitalRead(2).' },
+                    { type: 'contient', valeur: '== LOW', message: 'Comparaison à LOW nécessaire.' },
+                    { type: 'contient', valeur: 'digitalWrite(13, HIGH)', message: 'Il manque digitalWrite(13, HIGH).' }
+                ],
+                indice: 'if (digitalRead(2) == LOW) { allumer } else { éteindre }',
+                solution: `void setup() {
+  pinMode(2, INPUT_PULLUP);
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  if (digitalRead(2) == LOW) {
+    digitalWrite(13, HIGH);
+  } else {
+    digitalWrite(13, LOW);
+  }
+}`
+            }
+        },
+        {
+            id: 'ch9_l16',
+            titre: 'Bouton toggle : allumer/éteindre au même appui',
+            sousTitre: 'Chapitre 9 — Leçon 16',
+            contenu: `
+<h3>Le principe du toggle</h3>
+<p>Un <strong>toggle</strong> : chaque appui sur le bouton bascule l'état de la LED (allumée ↔ éteinte).</p>
+
+<h3>Problème du rebond</h3>
+<p>Un bouton mécanique « rebondit » lors d'un appui, créant plusieurs impulsions en quelques millisecondes. Il faut gérer cela.</p>
+
+<h3>Code avec variable d'état</h3>
+<pre>int etatLed = LOW;
+int dernierEtatBouton = HIGH;
+
+void loop() {
+  int etatBouton = digitalRead(2);
+
+  if (etatBouton == LOW && dernierEtatBouton == HIGH) {
+    etatLed = (etatLed == HIGH) ? LOW : HIGH;
+    digitalWrite(13, etatLed);
+    delay(50); // anti-rebond
+  }
+  dernierEtatBouton = etatBouton;
+}</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Toggle = bascule d'état à chaque appui. Il faut mémoriser l'état précédent pour éviter les répétitions.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Que fait un « toggle » ?',
+                    options: [
+                        'Allume en continu',
+                        'Éteint en continu',
+                        'Bascule l\'état à chaque appui',
+                        'Clignote rapidement',
+                        'Rien'
+                    ],
+                    bonne: 2,
+                    explication: 'Un toggle change l\'état à chaque impulsion : allumé → éteint → allumé → etc.'
+                },
+                {
+                    question: 'Pourquoi un delay(50) après un toggle ?',
+                    options: [
+                        'Pour économiser de l\'énergie',
+                        'Pour éviter le rebond du bouton',
+                        'Pour faire clignoter',
+                        'Pour compiler',
+                        'Inutile'
+                    ],
+                    bonne: 1,
+                    explication: 'Le delay(50) est un anti-rebond basique : il ignore les impulsions multiples produites par un seul appui mécanique.'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris un programme toggle : chaque appui sur le bouton (broche 2, INPUT_PULLUP) bascule l\'état de la LED (broche 13). Utilise une variable et un delay(50).',
+                regles: [
+                    { type: 'contient', valeur: 'pinMode(2, INPUT_PULLUP)', message: 'Il manque pinMode(2, INPUT_PULLUP).' },
+                    { type: 'contient', valeur: 'digitalRead(2)', message: 'Il manque digitalRead(2).' },
+                    { type: 'contient', valeur: 'digitalWrite(13', message: 'Il manque digitalWrite(13, ...).' },
+                    { type: 'contient', valeur: 'delay(50)', message: 'Il manque delay(50) pour l\'anti-rebond.' },
+                    { type: 'contient', valeur: 'if', message: 'Il manque un if.' }
+                ],
+                indice: 'Mémorise l\'état précédent du bouton dans une variable.',
+                solution: `int etatLed = LOW;
+int dernierEtatBouton = HIGH;
+
+void setup() {
+  pinMode(2, INPUT_PULLUP);
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  int etatBouton = digitalRead(2);
+  if (etatBouton == LOW && dernierEtatBouton == HIGH) {
+    etatLed = (etatLed == HIGH) ? LOW : HIGH;
+    digitalWrite(13, etatLed);
+    delay(50);
+  }
+  dernierEtatBouton = etatBouton;
+}`
+            }
+        },
+        {
+            id: 'ch9_l17',
+            titre: 'if / else : prendre des décisions',
+            sousTitre: 'Chapitre 9 — Leçon 17',
+            contenu: `
+<h3>La condition if</h3>
+<p><strong>if</strong> permet d'exécuter du code seulement si une condition est vraie.</p>
+
+<pre>if (condition) {
+  // code si vrai
+} else {
+  // code si faux
+}</pre>
+
+<h3>Opérateurs de comparaison</h3>
+<ul>
+    <li><strong>==</strong> égal à (attention : deux signes =)</li>
+    <li><strong>!=</strong> différent de</li>
+    <li><strong>&lt;</strong> plus petit que</li>
+    <li><strong>&gt;</strong> plus grand que</li>
+    <li><strong>&lt;=</strong> plus petit ou égal</li>
+    <li><strong>&gt;=</strong> plus grand ou égal</li>
+</ul>
+
+<div class="warning-note">
+    <strong>Attention :</strong> <code>=</code> est une affectation. <code>==</code> est une comparaison. <code>if (x = 5)</code> est une erreur ; il faut <code>if (x == 5)</code>.
+</div>
+
+<h3>Opérateurs logiques</h3>
+<ul>
+    <li><strong>&amp;&amp;</strong> ET (les deux conditions vraies)</li>
+    <li><strong>||</strong> OU (au moins une vraie)</li>
+    <li><strong>!</strong> NON (inverse)</li>
+</ul>
+
+<div class="key-point">
+    <strong>À retenir :</strong> if (condition) { ... } else { ... }. == pour comparer, = pour affecter. && pour ET, || pour OU.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Quelle est la différence entre = et == ?',
+                    options: [
+                        'Aucune',
+                        '= affecte, == compare',
+                        '= compare, == affecte',
+                        '= est pour les nombres, == pour le texte',
+                        '== n\'existe pas'
+                    ],
+                    bonne: 1,
+                    explication: '= affecte une valeur à une variable. == compare deux valeurs. C\'est une erreur classique de débutant.'
+                },
+                {
+                    question: 'Que signifie && ?',
+                    options: ['OU', 'ET', 'NON', 'XOR', 'Égal'],
+                    bonne: 1,
+                    explication: '&& = ET logique : les deux conditions doivent être vraies. || = OU : au moins une doit être vraie.'
+                },
+                {
+                    question: 'if (x &gt;= 10) est vrai quand :',
+                    options: ['x vaut exactement 10', 'x est strictement plus grand que 10', 'x est plus grand ou égal à 10', 'x est plus petit que 10', 'Jamais'],
+                    bonne: 2,
+                    explication: '>= signifie supérieur ou égal. La condition est vraie si x ≥ 10 (donc 10, 11, 12… fonctionnent).'
+                }
+            ],
+            exercice: {
+                enonce: 'Lis la broche A0 avec analogRead et stocke dans une variable "valeur". Si valeur > 500, allume la broche 13, sinon éteins-la.',
+                regles: [
+                    { type: 'contient', valeur: 'analogRead', message: 'Il manque analogRead.' },
+                    { type: 'contient', valeur: 'if', message: 'Il manque un if.' },
+                    { type: 'contient', valeur: '> 500', message: 'Il manque la comparaison > 500.' },
+                    { type: 'contient', valeur: 'digitalWrite(13, HIGH)', message: 'Il manque digitalWrite(13, HIGH).' },
+                    { type: 'contient', valeur: 'digitalWrite(13, LOW)', message: 'Il manque digitalWrite(13, LOW).' }
+                ],
+                indice: 'if (valeur > 500) { allumer } else { éteindre }',
+                solution: `void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  int valeur = analogRead(A0);
+  if (valeur > 500) {
+    digitalWrite(13, HIGH);
+  } else {
+    digitalWrite(13, LOW);
+  }
+}`
+            }
+        }
+    ],
+    examen: []
+}
+                ,
+        // ============================================================
+        // MODULE 4 — SORTIES ANALOGIQUES / PWM
+        // ============================================================
+        {
+            id: 'ch9_l18',
+            titre: 'analogWrite() et le PWM',
+            sousTitre: 'Chapitre 9 — Leçon 18',
+            contenu: `
+<h3>Le PWM expliqué simplement</h3>
+<p><strong>PWM</strong> (Pulse Width Modulation) = modulation de largeur d'impulsion. La carte allume et éteint très vite une broche (environ 500 fois par seconde). Visuellement, on voit une luminosité intermédiaire.</p>
+
+<div class="analogy">
+    <strong>Analogie :</strong> Si tu allumes et éteins une lampe 500 fois par seconde, ton œil perçoit une lumière continue à intensité moyenne. Plus la lampe reste allumée longtemps à chaque cycle, plus c'est lumineux.
+</div>
+
+<h3>Les broches PWM sur Arduino Uno</h3>
+<p>Seules certaines broches supportent analogWrite : <strong>3, 5, 6, 9, 10, 11</strong>. Elles sont marquées d'un ~ sur la carte.</p>
+
+<pre>analogWrite(9, 0);    // éteint
+analogWrite(9, 127);  // luminosité moyenne
+analogWrite(9, 255);  // pleine luminosité</pre>
+
+<div class="term-def">
+    <strong>analogWrite(broche, valeur)</strong><br>
+    valeur de 0 à 255. 0 = 0% (éteint), 255 = 100% (allumé).
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> analogWrite utilise PWM. Broches 3, 5, 6, 9, 10, 11. Valeur 0 à 255.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Que signifie PWM ?',
+                    options: [
+                        'Power Wide Mode',
+                        'Pulse Width Modulation',
+                        'Pin Wire Method',
+                        'Positive Wave Mode',
+                        'Parallel Wiring Method'
+                    ],
+                    bonne: 1,
+                    explication: 'PWM = Pulse Width Modulation (modulation de largeur d\'impulsion). C\'est une technique pour simuler une tension analogique en allumant/éteignant très vite.'
+                },
+                {
+                    question: 'Quelles broches supportent analogWrite sur Uno ?',
+                    options: ['Toutes', '0 à 13', '3, 5, 6, 9, 10, 11', 'A0 à A5', 'Aucune'],
+                    bonne: 2,
+                    explication: 'Seules les broches 3, 5, 6, 9, 10, 11 supportent le PWM (marquées ~). Les autres ne peuvent que HIGH/LOW.'
+                },
+                {
+                    question: 'analogWrite(9, 255) correspond à :',
+                    options: ['Éteint', 'Luminosité moyenne', 'Pleine luminosité', 'Clignotement', 'Erreur'],
+                    bonne: 2,
+                    explication: '255 = 100% du rapport cyclique. La broche reste à 5V en permanence.'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris un programme qui met la broche 9 à luminosité moyenne (128) en continu.',
+                regles: [
+                    { type: 'contient', valeur: 'analogWrite(9, 128)', message: 'Il manque analogWrite(9, 128).' }
+                ],
+                indice: 'Une seule ligne dans loop().',
+                solution: `void setup() {
+}
+
+void loop() {
+  analogWrite(9, 128);
+}`
+            }
+        },
+        {
+            id: 'ch9_l19',
+            titre: 'Faire varier la luminosité d\'une LED',
+            sousTitre: 'Chapitre 9 — Leçon 19',
+            contenu: `
+<h3>Changer la luminosité</h3>
+<p>Avec analogWrite, on peut choisir n'importe quelle valeur entre 0 et 255.</p>
+
+<pre>analogWrite(9, 10);   // très faible
+analogWrite(9, 100);  // moyen
+analogWrite(9, 200);  // fort
+analogWrite(9, 255);  // max</pre>
+
+<h3>Montage</h3>
+<p>LED sur la broche 9 (PWM), résistance 220 Ω vers GND.</p>
+
+<h3>Test manuel</h3>
+<pre>void loop() {
+  analogWrite(9, 50);
+  delay(1000);
+  analogWrite(9, 150);
+  delay(1000);
+  analogWrite(9, 255);
+  delay(1000);
+}</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> analogWrite sur broche PWM = luminosité variable. 0 = éteint, 255 = max.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Peut-on utiliser analogWrite sur la broche 13 ?',
+                    options: ['Oui', 'Non, la 13 n\'est pas PWM', 'Oui mais uniquement à 0', 'Oui en ajoutant une résistance', 'Cela dépend'],
+                    bonne: 1,
+                    explication: 'La broche 13 n\'est pas PWM sur l\'Uno. Il faut utiliser 3, 5, 6, 9, 10 ou 11.'
+                },
+                {
+                    question: 'analogWrite(9, 0) produit :',
+                    options: ['Pleine luminosité', 'Luminosité moyenne', 'Éteint', 'Clignotement', 'Erreur'],
+                    bonne: 2,
+                    explication: '0 = 0% = éteint. 255 = 100% = max. 127 ≈ moitié.'
+                }
+            ],
+            exercice: {
+                enonce: 'Fais varier la LED de la broche 9 : 50 pendant 1s, 150 pendant 1s, 255 pendant 1s.',
+                regles: [
+                    { type: 'contient', valeur: 'analogWrite(9, 50)', message: 'Il manque analogWrite(9, 50).' },
+                    { type: 'contient', valeur: 'analogWrite(9, 150)', message: 'Il manque analogWrite(9, 150).' },
+                    { type: 'contient', valeur: 'analogWrite(9, 255)', message: 'Il manque analogWrite(9, 255).' },
+                    { type: 'contient', valeur: 'delay(1000)', message: 'Il manque delay(1000).' }
+                ],
+                indice: 'Trois analogWrite avec un delay(1000) entre chacun.',
+                solution: `void setup() {
+}
+
+void loop() {
+  analogWrite(9, 50);
+  delay(1000);
+  analogWrite(9, 150);
+  delay(1000);
+  analogWrite(9, 255);
+  delay(1000);
+}`
+            }
+        },
+        {
+            id: 'ch9_l20',
+            titre: 'Le fondu (fade) progressif',
+            sousTitre: 'Chapitre 9 — Leçon 20',
+            contenu: `
+<h3>Un fondu, c'est quoi ?</h3>
+<p>Un <strong>fade</strong> : la luminosité augmente progressivement de 0 à 255, puis redescend. C'est l'effet « respiration ».</p>
+
+<h3>Boucle for</h3>
+<pre>for (int i = 0; i <= 255; i += 5) {
+  analogWrite(9, i);
+  delay(30);
+}</pre>
+
+<p>On augmente i par pas de 5, de 0 à 255, avec un petit delay pour voir l'effet.</p>
+
+<h3>Code complet</h3>
+<pre>void loop() {
+  // montée
+  for (int i = 0; i <= 255; i += 5) {
+    analogWrite(9, i);
+    delay(30);
+  }
+  // descente
+  for (int i = 255; i >= 0; i -= 5) {
+    analogWrite(9, i);
+    delay(30);
+  }
+}</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> for (int i = 0; i <= 255; i += 5) permet de faire varier la luminosité progressivement.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Que fait i += 5 dans une boucle for ?',
+                    options: [
+                        'Diminue i de 5',
+                        'Augmente i de 5 à chaque tour',
+                        'Multiplie i par 5',
+                        'Divise i par 5',
+                        'Initialise i à 5'
+                    ],
+                    bonne: 1,
+                    explication: 'i += 5 est équivalent à i = i + 5. À chaque tour, i augmente de 5.'
+                },
+                {
+                    question: 'Pourquoi delay(30) dans la boucle ?',
+                    options: [
+                        'Pour économiser l\'énergie',
+                        'Pour voir l\'effet progressif',
+                        'Pour éviter un bug',
+                        'Pour allumer la LED',
+                        'Inutile'
+                    ],
+                    bonne: 1,
+                    explication: 'Sans delay, la boucle s\'exécuterait en quelques millisecondes et on ne verrait pas la transition. Le delay ralentit la boucle pour un effet visible.'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris un fondu sur la broche 9 : montée de 0 à 255 par pas de 5 (delay 30 ms), puis descente de 255 à 0 par pas de -5 (delay 30 ms).',
+                regles: [
+                    { type: 'contient', valeur: 'for', message: 'Il manque une boucle for.' },
+                    { type: 'contient', valeur: 'analogWrite(9', message: 'Il manque analogWrite(9, ...).' },
+                    { type: 'contient', valeur: 'delay(30)', message: 'Il manque delay(30).' },
+                    { type: 'contient', valeur: '<= 255', message: 'Il manque la borne <= 255.' }
+                ],
+                indice: 'Deux boucles for : une qui monte, une qui descend.',
+                solution: `void setup() {
+}
+
+void loop() {
+  for (int i = 0; i <= 255; i += 5) {
+    analogWrite(9, i);
+    delay(30);
+  }
+  for (int i = 255; i >= 0; i -= 5) {
+    analogWrite(9, i);
+    delay(30);
+  }
+}`
+            }
+        },
+        {
+            id: 'ch9_l21',
+            titre: 'for, while, map()',
+            sousTitre: 'Chapitre 9 — Leçon 21',
+            contenu: `
+<h3>La boucle for</h3>
+<p>Répète un bloc un nombre défini de fois :</p>
+<pre>for (int i = 0; i < 10; i++) {
+  // répété 10 fois
+}</pre>
+
+<h3>La boucle while</h3>
+<p>Répète TANT QU'une condition est vraie :</p>
+<pre>int x = 0;
+while (x < 10) {
+  x++;
+}</pre>
+
+<h3>La fonction map()</h3>
+<p>Convertit une valeur d'une plage vers une autre :</p>
+<pre>int resultat = map(valeur, 0, 1023, 0, 255);</pre>
+<p>Exemple : une valeur analogRead (0-1023) devient une valeur PWM (0-255).</p>
+
+<div class="term-def">
+    <strong>map(valeur, minSource, maxSource, minCible, maxCible)</strong><br>
+    Transforme proportionnellement une valeur d'une plage à une autre.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> for = nombre fixe d'itérations. while = tant qu'une condition. map = convertir une plage.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Que fait map(512, 0, 1023, 0, 255) ?',
+                    options: ['Retourne 512', 'Retourne environ 128', 'Retourne 255', 'Retourne 0', 'Erreur'],
+                    bonne: 1,
+                    explication: '512 est au milieu de 0-1023, donc map renvoie environ le milieu de 0-255, soit 127-128.'
+                },
+                {
+                    question: 'Quelle boucle utilise-t-on pour 10 itérations précises ?',
+                    options: ['for', 'while', 'if', 'switch', 'delay'],
+                    bonne: 0,
+                    explication: 'for (int i = 0; i < 10; i++) exécute exactement 10 fois. while est plus adapté quand on ne connaît pas le nombre à l\'avance.'
+                },
+                {
+                    question: 'while (x < 10) s\'arrête quand :',
+                    options: ['x = 0', 'x >= 10', 'x = 9', 'Jamais', 'x = 5'],
+                    bonne: 1,
+                    explication: 'La boucle continue tant que x < 10. Elle s\'arrête dès que x devient ≥ 10.'
+                }
+            ],
+            exercice: {
+                enonce: 'Lis A0 avec analogRead dans une variable "brut", puis convertis-la avec map de 0-1023 vers 0-255 dans "pwm". Enfin, applique pwm sur la broche 9.',
+                regles: [
+                    { type: 'contient', valeur: 'analogRead', message: 'Il manque analogRead.' },
+                    { type: 'contient', valeur: 'map(', message: 'Il manque la fonction map.' },
+                    { type: 'contient', valeur: '1023', message: 'Il manque 1023 dans map.' },
+                    { type: 'contient', valeur: '255', message: 'Il manque 255 dans map.' },
+                    { type: 'contient', valeur: 'analogWrite(9', message: 'Il manque analogWrite(9, ...).' }
+                ],
+                indice: 'int brut = analogRead(A0); int pwm = map(brut, 0, 1023, 0, 255); analogWrite(9, pwm);',
+                solution: `void setup() {
+}
+
+void loop() {
+  int brut = analogRead(A0);
+  int pwm = map(brut, 0, 1023, 0, 255);
+  analogWrite(9, pwm);
+}`
+            }
+        },
+        {
+            id: 'ch9_l22',
+            titre: 'Contrôler la vitesse d\'un moteur',
+            sousTitre: 'Chapitre 9 — Leçon 22',
+            contenu: `
+<h3>Moteur DC + PWM</h3>
+<p>Un moteur simple se contrôle en PWM : plus la valeur est grande, plus il tourne vite.</p>
+
+<div class="warning-note">
+    <strong>Attention :</strong> Ne branche JAMAIS un moteur directement sur une broche Arduino. Il consomme trop de courant et détruirait la carte. Utilise un <strong>transistor</strong> ou un <strong>module relais</strong> ou un <strong>driver moteur (L298N)</strong>.
+</div>
+
+<h3>Exemple avec module L298N</h3>
+<pre>void loop() {
+  analogWrite(9, 100);  // lent
+  delay(2000);
+  analogWrite(9, 200);  // rapide
+  delay(2000);
+}</pre>
+
+<h3>Vitesse progressive</h3>
+<pre>for (int v = 0; v <= 255; v += 10) {
+  analogWrite(9, v);
+  delay(200);
+}</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Moteur = jamais direct sur la carte. Passer par un driver. PWM = vitesse.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Peut-on brancher un moteur DC directement sur une broche Arduino ?',
+                    options: ['Oui', 'Non, il faut un driver', 'Oui si le moteur est petit', 'Oui mais uniquement en PWM', 'Oui avec un delay'],
+                    bonne: 1,
+                    explication: 'Un moteur consomme beaucoup de courant (souvent 500 mA à 2 A), bien plus que ce qu\'une broche peut fournir (max 40 mA). Il faut un transistor ou un driver.'
+                },
+                {
+                    question: 'PWM appliqué à un moteur modifie :',
+                    options: ['La direction', 'La vitesse', 'La couleur', 'Le bruit uniquement', 'Rien'],
+                    bonne: 1,
+                    explication: 'PWM modifie la vitesse du moteur. Pour changer de direction, il faut inverser la polarité (avec un pont en H, type L298N).'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris un programme qui fait tourner un moteur sur la broche 9 à vitesse croissante : de 0 à 255 par pas de 10, avec delay(200) entre chaque pas.',
+                regles: [
+                    { type: 'contient', valeur: 'for', message: 'Il manque for.' },
+                    { type: 'contient', valeur: 'analogWrite(9', message: 'Il manque analogWrite(9, ...).' },
+                    { type: 'contient', valeur: '<= 255', message: 'Il manque la borne <= 255.' },
+                    { type: 'contient', valeur: 'delay(200)', message: 'Il manque delay(200).' }
+                ],
+                indice: 'for (int v = 0; v <= 255; v += 10) { analogWrite(9, v); delay(200); }',
+                solution: `void setup() {
+}
+
+void loop() {
+  for (int v = 0; v <= 255; v += 10) {
+    analogWrite(9, v);
+    delay(200);
+  }
+}`
+            }
+        },
+        {
+            id: 'ch9_l23',
+            titre: 'Exercice : respiration lumineuse',
+            sousTitre: 'Chapitre 9 — Leçon 23',
+            contenu: `
+<h3>Projet récap PWM : respiration</h3>
+<p>Une LED sur la broche 9 « respire » : elle monte en luminosité sur 2 secondes, puis redescend sur 2 secondes, en boucle.</p>
+
+<h3>Logique</h3>
+<ul>
+    <li>Monter de 0 à 255 en ~2 s</li>
+    <li>Descendre de 255 à 0 en ~2 s</li>
+    <li>Répéter (loop fait le travail)</li>
+</ul>
+
+<h3>Code</h3>
+<pre>void loop() {
+  for (int i = 0; i <= 255; i++) {
+    analogWrite(9, i);
+    delay(8);
+  }
+  for (int i = 255; i >= 0; i--) {
+    analogWrite(9, i);
+    delay(8);
+  }
+}</pre>
+
+<p>256 pas × 8 ms ≈ 2 secondes par phase. C'est plus doux qu'avec un pas de 5 et delay 30.</p>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Plus le pas est petit et le delay court, plus la transition est fluide.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Pourquoi delay(8) plutôt que delay(30) pour une respiration fluide ?',
+                    options: [
+                        'Moins de consommation',
+                        'Transitions plus fluides',
+                        'Moins d\'erreurs',
+                        'Bug corrigé',
+                        'Aucune différence'
+                    ],
+                    bonne: 1,
+                    explication: 'Un delay court + un pas fin (i++) donne une variation très progressive, presque imperceptible, donc plus fluide.'
+                },
+                {
+                    question: 'Combien de temps prend une montée 0→255 avec delay(8) ?',
+                    options: ['8 ms', 'environ 0,2 s', 'environ 2 s', 'environ 20 s', '2 min'],
+                    bonne: 2,
+                    explication: '256 × 8 ms ≈ 2048 ms ≈ 2 secondes.'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris la respiration lumineuse : montée 0→255 (i++ / delay 8), puis descente 255→0 (i-- / delay 8), en boucle.',
+                regles: [
+                    { type: 'contient', valeur: 'for', message: 'Il manque for.' },
+                    { type: 'contient', valeur: 'analogWrite(9', message: 'Il manque analogWrite(9, ...).' },
+                    { type: 'contient', valeur: 'delay(8)', message: 'Il manque delay(8).' },
+                    { type: 'contient', valeur: 'i--', message: 'Il manque la décrémentation i-- dans la 2e boucle.' }
+                ],
+                indice: 'Deux boucles for : l\'une avec i++, l\'autre avec i--.',
+                solution: `void setup() {
+}
+
+void loop() {
+  for (int i = 0; i <= 255; i++) {
+    analogWrite(9, i);
+    delay(8);
+  }
+  for (int i = 255; i >= 0; i--) {
+    analogWrite(9, i);
+    delay(8);
+  }
+}`
+            }
+        },
+        // ============================================================
+        // MODULE 5 — COMMUNICATION SÉRIE
+        // ============================================================
+        {
+            id: 'ch9_l24',
+            titre: 'Serial.begin() et le moniteur série',
+            sousTitre: 'Chapitre 9 — Leçon 24',
+            contenu: `
+<h3>Communiquer avec l'ordinateur</h3>
+<p><strong>Serial</strong> permet à la carte Arduino d'envoyer et recevoir du texte via le câble USB. C'est l'outil de débogage numéro 1.</p>
+
+<h3>Initialisation</h3>
+<pre>void setup() {
+  Serial.begin(9600);
+}</pre>
+
+<p>9600 = vitesse de transmission (bauds). Doit correspondre au moniteur série.</p>
+
+<h3>Ouvrir le moniteur série</h3>
+<p>Dans Arduino IDE : <strong>Outils → Moniteur série</strong> (ou l'icône loupe en haut à droite). Choisir 9600 bauds.</p>
+
+<div class="term-def">
+    <strong>Bauds</strong>
+    Nombre de bits transmis par seconde. 9600 est la valeur par défaut la plus courante.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Serial.begin(9600) dans setup(). Moniteur série = fenêtre de dialogue avec la carte.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Où place-t-on Serial.begin() ?',
+                    options: ['Dans loop()', 'Dans setup()', 'Hors des fonctions', 'Dans un commentaire', 'Nulle part'],
+                    bonne: 1,
+                    explication: 'Serial.begin() initialise la communication une seule fois, donc dans setup().'
+                },
+                {
+                    question: 'Que signifie 9600 dans Serial.begin(9600) ?',
+                    options: [
+                        'Une adresse mémoire',
+                        'La vitesse en bauds',
+                        'Un numéro de broche',
+                        'Un temps en ms',
+                        'Une tension'
+                    ],
+                    bonne: 1,
+                    explication: '9600 bauds = 9600 bits par seconde. C\'est la vitesse de la liaison série.'
+                }
+            ],
+            exercice: {
+                enonce: 'Initialise la communication série à 9600 bauds dans setup().',
+                regles: [
+                    { type: 'contient', valeur: 'Serial.begin(9600)', message: 'Il manque Serial.begin(9600).' },
+                    { type: 'contient', valeur: 'void setup', message: 'Il manque setup().' }
+                ],
+                indice: 'Une ligne dans setup().',
+                solution: `void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+}`
+            }
+        },
+        {
+            id: 'ch9_l25',
+            titre: 'Serial.print() et Serial.println()',
+            sousTitre: 'Chapitre 9 — Leçon 25',
+            contenu: `
+<h3>Envoyer du texte</h3>
+<p><strong>Serial.print()</strong> envoie du texte sans saut de ligne. <strong>Serial.println()</strong> ajoute un saut de ligne.</p>
+
+<pre>Serial.print("Bonjour");
+Serial.println(" tout le monde");
+// Affiche : Bonjour tout le monde
+// sur une seule ligne
+
+Serial.println("Bonjour");
+Serial.println("tout le monde");
+// Affiche sur deux lignes</pre>
+
+<h3>Afficher des nombres</h3>
+<pre>int x = 42;
+Serial.println(x);   // affiche 42
+
+float t = 23.5;
+Serial.println(t);   // affiche 23.50</pre>
+
+<h3>Exemple : afficher une valeur de capteur</h3>
+<pre>void loop() {
+  int valeur = analogRead(A0);
+  Serial.println(valeur);
+  delay(500);
+}</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> print = sans saut de ligne. println = avec saut. Très utile pour déboguer.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Quelle est la différence entre print et println ?',
+                    options: [
+                        'Aucune',
+                        'println ajoute un saut de ligne',
+                        'print ajoute un saut de ligne',
+                        'println est plus rapide',
+                        'print est pour les nombres uniquement'
+                    ],
+                    bonne: 1,
+                    explication: 'println = print + retour à la ligne. C\'est ce qu\'il faut pour afficher des valeurs successives les unes sous les autres.'
+                },
+                {
+                    question: 'Peut-on afficher une variable avec Serial.println() ?',
+                    options: ['Non', 'Oui', 'Seulement un int', 'Seulement un texte', 'Seulement avec delay'],
+                    bonne: 1,
+                    explication: 'Serial.println() accepte nombres, textes, floats… et les convertit automatiquement en texte.'
+                }
+            ],
+            exercice: {
+                enonce: 'Initialise Serial à 9600 dans setup(). Dans loop(), lis A0 et affiche la valeur avec Serial.println(). Ajoute un delay(500).',
+                regles: [
+                    { type: 'contient', valeur: 'Serial.begin(9600)', message: 'Il manque Serial.begin(9600).' },
+                    { type: 'contient', valeur: 'analogRead(A0)', message: 'Il manque analogRead(A0).' },
+                    { type: 'contient', valeur: 'Serial.println', message: 'Il manque Serial.println.' },
+                    { type: 'contient', valeur: 'delay(500)', message: 'Il manque delay(500).' }
+                ],
+                indice: 'Serial.println(valeur); après analogRead.',
+                solution: `void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int valeur = analogRead(A0);
+  Serial.println(valeur);
+  delay(500);
+}`
+            }
+        },
+        {
+            id: 'ch9_l26',
+            titre: 'Serial.read() : recevoir des commandes',
+            sousTitre: 'Chapitre 9 — Leçon 26',
+            contenu: `
+<h3>Lire ce qui vient de l'ordinateur</h3>
+<p><strong>Serial.available()</strong> indique combien de caractères sont en attente. <strong>Serial.read()</strong> en lit un.</p>
+
+<pre>void loop() {
+  if (Serial.available() > 0) {
+    char c = Serial.read();
+    Serial.print("Reçu : ");
+    Serial.println(c);
+  }
+}</pre>
+
+<h3>Allumer une LED avec 'a' et éteindre avec 'b'</h3>
+<pre>void loop() {
+  if (Serial.available() > 0) {
+    char c = Serial.read();
+    if (c == 'a') digitalWrite(13, HIGH);
+    if (c == 'b') digitalWrite(13, LOW);
+  }
+}</pre>
+
+<div class="warning-note">
+    <strong>Attention :</strong> Serial.read() lit UN caractère à la fois. 'a' (char) ≠ "a" (chaîne).
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Serial.available() vérifie s'il y a des données. Serial.read() lit un caractère.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Que fait Serial.available() ?',
+                    options: [
+                        'Écrit un caractère',
+                        'Indique combien de caractères sont disponibles',
+                        'Efface la mémoire',
+                        'Initialise Serial',
+                        'Ferme la liaison'
+                    ],
+                    bonne: 1,
+                    explication: 'Serial.available() retourne le nombre d\'octets reçus et non lus. On l\'utilise avant read() pour éviter de lire du vide.'
+                },
+                {
+                    question: 'Quelle est la différence entre \'a\' et "a" ?',
+                    options: [
+                        'Aucune',
+                        '\'a\' est un caractère, "a" est une chaîne',
+                        '\'a\' est une chaîne, "a" est un caractère',
+                        'Les deux sont des nombres',
+                        '\'a\' est une erreur'
+                    ],
+                    bonne: 1,
+                    explication: 'En C/C++, \'a\' est un char (un seul caractère). "a" est une chaîne de caractères (avec un caractère nul à la fin).'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris un programme qui allume la broche 13 quand on tape \'a\' et l\'éteint quand on tape \'b\'. Vérifie Serial.available() avant de lire.',
+                regles: [
+                    { type: 'contient', valeur: 'Serial.begin(9600)', message: 'Il manque Serial.begin(9600).' },
+                    { type: 'contient', valeur: 'Serial.available', message: 'Il manque Serial.available().' },
+                    { type: 'contient', valeur: 'Serial.read', message: 'Il manque Serial.read().' },
+                    { type: 'contient', valeur: "'a'", message: 'Il manque la comparaison avec \'a\'.' },
+                    { type: 'contient', valeur: "'b'", message: 'Il manque la comparaison avec \'b\'.' }
+                ],
+                indice: 'Utilise char c = Serial.read(); if (c == \'a\') ... etc.',
+                solution: `void setup() {
+  Serial.begin(9600);
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  if (Serial.available() > 0) {
+    char c = Serial.read();
+    if (c == 'a') digitalWrite(13, HIGH);
+    if (c == 'b') digitalWrite(13, LOW);
+  }
+}`
+            }
+        },
+        {
+            id: 'ch9_l27',
+            titre: 'Déboguer avec le Serial',
+            sousTitre: 'Chapitre 9 — Leçon 27',
+            contenu: `
+<h3>Le Serial, meilleur ami du développeur</h3>
+<p>Quand un programme ne fonctionne pas comme prévu, on affiche des valeurs intermédiaires dans le moniteur série pour comprendre.</p>
+
+<h3>Exemple de débogage</h3>
+<pre>void loop() {
+  int capteur = analogRead(A0);
+  Serial.print("Capteur : ");
+  Serial.println(capteur);
+
+  int led = map(capteur, 0, 1023, 0, 255);
+  Serial.print("LED : ");
+  Serial.println(led);
+
+  analogWrite(9, led);
+  delay(300);
+}</pre>
+
+<h3>Message au démarrage</h3>
+<pre>void setup() {
+  Serial.begin(9600);
+  Serial.println("Programme demarre !");
+}</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Serial.println() est l'outil de débogage n°1. Affiche ce que tu veux vérifier : valeurs, états, messages.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Comment vérifier une valeur dans le programme ?',
+                    options: [
+                        'On la devine',
+                        'On l\'affiche avec Serial.println()',
+                        'On ajoute un delay',
+                        'On redémarre',
+                        'On change la broche'
+                    ],
+                    bonne: 1,
+                    explication: 'Serial.println() affiche la valeur dans le moniteur série. C\'est la base du débogage Arduino.'
+                },
+                {
+                    question: 'Que peut-on afficher avec Serial.println() ?',
+                    options: [
+                        'Uniquement des nombres',
+                        'Uniquement du texte',
+                        'Nombres, textes, variables, états',
+                        'Rien',
+                        'Seulement en binaire'
+                    ],
+                    bonne: 2,
+                    explication: 'Serial.println() accepte des int, des float, du texte, des char… tout ce qui peut être affiché.'
+                }
+            ],
+            exercice: {
+                enonce: 'Dans setup(), initialise Serial à 9600 et affiche "Demarrage". Dans loop(), lis A0, affiche-le, puis attends 300 ms.',
+                regles: [
+                    { type: 'contient', valeur: 'Serial.begin(9600)', message: 'Il manque Serial.begin(9600).' },
+                    { type: 'contient', valeur: 'Serial.println', message: 'Il manque Serial.println.' },
+                    { type: 'contient', valeur: 'analogRead', message: 'Il manque analogRead.' },
+                    { type: 'contient', valeur: 'delay(300)', message: 'Il manque delay(300).' }
+                ],
+                indice: 'Un message dans setup, et la lecture de A0 dans loop.',
+                solution: `void setup() {
+  Serial.begin(9600);
+  Serial.println("Demarrage");
+}
+
+void loop() {
+  int valeur = analogRead(A0);
+  Serial.println(valeur);
+  delay(300);
+}`
+            }
+        },
+        {
+            id: 'ch9_l28',
+            titre: 'Exercice : contrôler une LED par commande série',
+            sousTitre: 'Chapitre 9 — Leçon 28',
+            contenu: `
+<h3>Projet récap série</h3>
+<p>Contrôler l'intensité d'une LED par une valeur numérique envoyée depuis le moniteur série.</p>
+
+<h3>Logique</h3>
+<ol>
+    <li>Lire ce qui arrive (Serial.read ou Serial.parseInt)</li>
+    <li>Convertir en nombre 0-255</li>
+    <li>analogWrite</li>
+</ol>
+
+<h3>Code avec parseInt</h3>
+<pre>void loop() {
+  if (Serial.available() > 0) {
+    int valeur = Serial.parseInt();
+    valeur = constrain(valeur, 0, 255);
+    analogWrite(9, valeur);
+    Serial.print("LED = ");
+    Serial.println(valeur);
+  }
+}</pre>
+
+<div class="term-def">
+    <strong>Serial.parseInt()</strong>
+    Lit un nombre entier depuis la liaison série. Très pratique pour envoyer des valeurs.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> parseInt lit un nombre. constrain limite dans [min, max]. On peut ainsi piloter la carte depuis l'ordinateur.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Que fait Serial.parseInt() ?',
+                    options: [
+                        'Lit un caractère',
+                        'Lit un nombre entier depuis la série',
+                        'Écrit un nombre',
+                        'Efface le buffer',
+                        'Initialise Serial'
+                    ],
+                    bonne: 1,
+                    explication: 'Serial.parseInt() lit un nombre entier envoyé depuis le moniteur série. Utile pour piloter une LED, un moteur…'
+                },
+                {
+                    question: 'À quoi sert constrain(valeur, 0, 255) ?',
+                    options: [
+                        'À convertir',
+                        'À limiter entre 0 et 255',
+                        'À afficher',
+                        'À multiplier',
+                        'À rien'
+                    ],
+                    bonne: 1,
+                    explication: 'constrain empêche la valeur de sortir de la plage : si elle est plus grande que 255, elle devient 255 ; si plus petite que 0, elle devient 0.'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris un programme qui lit un nombre depuis le moniteur série et l\'applique sur la broche 9 (LED PWM). Limite la valeur entre 0 et 255 avec constrain.',
+                regles: [
+                    { type: 'contient', valeur: 'Serial.begin(9600)', message: 'Il manque Serial.begin(9600).' },
+                    { type: 'contient', valeur: 'Serial.available', message: 'Il manque Serial.available().' },
+                    { type: 'contient', valeur: 'parseInt', message: 'Il manque parseInt.' },
+                    { type: 'contient', valeur: 'constrain', message: 'Il manque constrain.' },
+                    { type: 'contient', valeur: 'analogWrite(9', message: 'Il manque analogWrite(9, ...).' }
+                ],
+                indice: 'int valeur = Serial.parseInt(); valeur = constrain(valeur, 0, 255); analogWrite(9, valeur);',
+                solution: `void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  if (Serial.available() > 0) {
+    int valeur = Serial.parseInt();
+    valeur = constrain(valeur, 0, 255);
+    analogWrite(9, valeur);
+    Serial.print("LED = ");
+    Serial.println(valeur);
+  }
+}`
+            }
+        },
+        // ============================================================
+        // MODULE 6 — CAPTEURS ANALOGIQUES
+        // ============================================================
+        {
+            id: 'ch9_l29',
+            titre: 'analogRead() et le convertisseur 10 bits',
+            sousTitre: 'Chapitre 9 — Leçon 29',
+            contenu: `
+<h3>Lire une tension analogique</h3>
+<p><strong>analogRead()</strong> lit la tension sur une entrée analogique (A0 à A5) et retourne un nombre entre <strong>0 et 1023</strong>.</p>
+
+<div class="term-def">
+    <strong>Convertisseur 10 bits</strong><br>
+    L'Arduino Uno convertit une tension de 0 à 5V en un nombre entier de 0 à 1023. 10 bits = 2<sup>10</sup> = 1024 valeurs possibles.
+</div>
+
+<h3>Correspondance</h3>
+<ul>
+    <li>0V → 0</li>
+    <li>2,5V → ≈ 512</li>
+    <li>5V → 1023</li>
+</ul>
+
+<pre>int valeur = analogRead(A0); // 0 à 1023</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> analogRead(Ax) renvoie un entier 0-1023. Chaque unité ≈ 4,9 mV.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Quelles valeurs renvoie analogRead() ?',
+                    options: ['HIGH/LOW', '0 à 255', '0 à 1023', '0 à 5', '-255 à 255'],
+                    bonne: 2,
+                    explication: 'analogRead() renvoie un entier 0-1023 (convertisseur 10 bits). 0 = 0V, 1023 = 5V.'
+                },
+                {
+                    question: 'Sur quelles broches lire un signal analogique ?',
+                    options: ['0-13', '3, 5, 6, 9', 'A0 à A5', 'Toutes', 'Aucune'],
+                    bonne: 2,
+                    explication: 'Les entrées analogiques sont A0 à A5 sur l\'Uno. Elles sont réservées à analogRead().'
+                },
+                {
+                    question: '2,5V correspond à environ :',
+                    options: ['0', '255', '512', '1023', '2047'],
+                    bonne: 2,
+                    explication: '2,5V est la moitié de 5V, donc environ la moitié de 1023 = 511-512.'
+                }
+            ],
+            exercice: {
+                enonce: 'Lis A0 avec analogRead dans une variable "valeur", puis affiche-la avec Serial.println. Initialise Serial à 9600 dans setup.',
+                regles: [
+                    { type: 'contient', valeur: 'Serial.begin(9600)', message: 'Il manque Serial.begin(9600).' },
+                    { type: 'contient', valeur: 'analogRead(A0)', message: 'Il manque analogRead(A0).' },
+                    { type: 'contient', valeur: 'Serial.println', message: 'Il manque Serial.println.' }
+                ],
+                indice: 'int valeur = analogRead(A0); Serial.println(valeur);',
+                solution: `void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int valeur = analogRead(A0);
+  Serial.println(valeur);
+  delay(200);
+}`
+            }
+        },
+        {
+            id: 'ch9_l30',
+            titre: 'Lire un potentiomètre',
+            sousTitre: 'Chapitre 9 — Leçon 30',
+            contenu: `
+<h3>Le potentiomètre</h3>
+<p>Un <strong>potentiomètre</strong> est une résistance variable qui divise la tension. Il a 3 pattes :</p>
+<ul>
+    <li>Patte 1 → 5V</li>
+    <li>Patte 2 (curseur) → A0</li>
+    <li>Patte 3 → GND</li>
+</ul>
+
+<p>En tournant, le curseur renvoie une tension entre 0 et 5V, donc une valeur entre 0 et 1023.</p>
+
+<h3>Lire la valeur</h3>
+<pre>void loop() {
+  int valeur = analogRead(A0);
+  Serial.println(valeur);
+  delay(200);
+}</pre>
+
+<h3>Utiliser le potentiomètre pour contrôler une LED</h3>
+<pre>int valeur = analogRead(A0);
+int pwm = map(valeur, 0, 1023, 0, 255);
+analogWrite(9, pwm);</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Potentiomètre = diviseur de tension. 3 pattes : 5V, A0, GND.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Combien de pattes a un potentiomètre ?',
+                    options: ['1', '2', '3', '4', '5'],
+                    bonne: 2,
+                    explication: 'Un potentiomètre a 3 pattes : une vers 5V, une vers GND, et la patte centrale (curseur) vers A0.'
+                },
+                {
+                    question: 'Le potentiomètre produit :',
+                    options: [
+                        'Un signal numérique',
+                        'Une tension variable',
+                        'Un courant constant',
+                        'Une lumière',
+                        'Un son'
+                    ],
+                    bonne: 1,
+                    explication: 'Le potentiomètre est un diviseur de tension : il renvoie une tension variable entre 0 et 5V selon sa position.'
+                }
+            ],
+            exercice: {
+                enonce: 'Lis A0 (potentiomètre) et utilise map(0, 1023, 0, 255) pour contrôler la luminosité d\'une LED sur la broche 9.',
+                regles: [
+                    { type: 'contient', valeur: 'analogRead(A0)', message: 'Il manque analogRead(A0).' },
+                    { type: 'contient', valeur: 'map(', message: 'Il manque map().' },
+                    { type: 'contient', valeur: '1023', message: 'Il manque 1023 dans map.' },
+                    { type: 'contient', valeur: '255', message: 'Il manque 255 dans map.' },
+                    { type: 'contient', valeur: 'analogWrite(9', message: 'Il manque analogWrite(9, ...).' }
+                ],
+                indice: 'analogRead → map → analogWrite.',
+                solution: `void setup() {
+}
+
+void loop() {
+  int valeur = analogRead(A0);
+  int pwm = map(valeur, 0, 1023, 0, 255);
+  analogWrite(9, pwm);
+}`
+            }
+        },
+        {
+            id: 'ch9_l31',
+            titre: 'Lire une photorésistance (LDR)',
+            sousTitre: 'Chapitre 9 — Leçon 31',
+            contenu: `
+<h3>La photorésistance LDR</h3>
+<p>Une <strong>LDR</strong> (Light Dependent Resistor) change de résistance selon la lumière. Plus il y a de lumière, plus sa résistance baisse.</p>
+
+<h3>Montage en pont diviseur</h3>
+<ul>
+    <li>5V → LDR → A0</li>
+    <li>A0 → résistance 10 kΩ → GND</li>
+</ul>
+
+<p>La tension au point milieu (A0) varie selon la lumière.</p>
+
+<h3>Lire la luminosité</h3>
+<pre>int lumiere = analogRead(A0);</pre>
+
+<h3>Allumer une LED la nuit</h3>
+<pre>if (analogRead(A0) < 500) {
+  digitalWrite(13, HIGH);
+} else {
+  digitalWrite(13, LOW);
+}</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> LDR = résistance qui dépend de la lumière. On la lit via analogRead + pont diviseur.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Une LDR est :',
+                    options: [
+                        'Un moteur',
+                        'Une résistance sensible à la lumière',
+                        'Un écran',
+                        'Un transistor',
+                        'Une LED'
+                    ],
+                    bonne: 1,
+                    explication: 'LDR = Light Dependent Resistor (photorésistance). Sa résistance varie selon l\'éclairement.'
+                },
+                {
+                    question: 'Quand la lumière augmente, la résistance de la LDR :',
+                    options: ['Augmente', 'Diminue', 'Reste stable', 'Double', 'Devient infinie'],
+                    bonne: 1,
+                    explication: 'Quand la lumière augmente, la résistance de la LDR diminue. C\'est l\'inverse d\'une résistance classique.'
+                }
+            ],
+            exercice: {
+                enonce: 'Lis la LDR sur A0. Si la valeur est inférieure à 400, allume la LED (13), sinon éteins-la.',
+                regles: [
+                    { type: 'contient', valeur: 'analogRead(A0)', message: 'Il manque analogRead(A0).' },
+                    { type: 'contient', valeur: '< 400', message: 'Il manque la comparaison < 400.' },
+                    { type: 'contient', valeur: 'digitalWrite(13, HIGH)', message: 'Il manque digitalWrite(13, HIGH).' },
+                    { type: 'contient', valeur: 'digitalWrite(13, LOW)', message: 'Il manque digitalWrite(13, LOW).' }
+                ],
+                indice: 'if (analogRead(A0) < 400) { allumer } else { éteindre }',
+                solution: `void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  int lumiere = analogRead(A0);
+  if (lumiere < 400) {
+    digitalWrite(13, HIGH);
+  } else {
+    digitalWrite(13, LOW);
+  }
+}`
+            }
+        },
+        {
+            id: 'ch9_l32',
+            titre: 'Lire un capteur de température (LM35)',
+            sousTitre: 'Chapitre 9 — Leçon 32',
+            contenu: `
+<h3>Le capteur LM35</h3>
+<p>Le <strong>LM35</strong> est un capteur analogique de température. Il délivre une tension proportionnelle à la température :</p>
+<ul>
+    <li>0°C → 0 V</li>
+    <li>25°C → 0,25 V</li>
+    <li>100°C → 1,00 V</li>
+</ul>
+<p>Soit <strong>10 mV par °C</strong>.</p>
+
+<h3>Conversion en °C</h3>
+<pre>int valeur = analogRead(A0);
+float tension = valeur * 5.0 / 1023.0;   // tension en V
+float temperature = tension * 100.0;      // car 10mV/°C → ×100</pre>
+
+<h3>Affichage</h3>
+<pre>Serial.print("Temp : ");
+Serial.print(temperature);
+Serial.println(" C");</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> LM35 : 10 mV par °C. Conversion : tension (V) × 100 = température (°C).
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Le LM35 délivre combien de tension par °C ?',
+                    options: ['1 V', '100 mV', '10 mV', '1 mV', '5 V'],
+                    bonne: 2,
+                    explication: 'Le LM35 délivre 10 mV par °C. À 25°C, il délivre 0,25V.'
+                },
+                {
+                    question: 'Pour convertir une tension de 0,30V en °C (LM35), on fait :',
+                    options: ['0,30 × 10', '0,30 × 100', '0,30 / 100', '0,30 + 30', '0,30 × 1000'],
+                    bonne: 1,
+                    explication: '10 mV = 0,01 V par °C. Pour passer de V à °C, on divise par 0,01, donc on multiplie par 100. 0,30 × 100 = 30°C.'
+                }
+            ],
+            exercice: {
+                enonce: 'Lis A0 (LM35), convertis en tension (×5.0/1023.0), puis en °C (×100). Affiche le résultat avec Serial.println.',
+                regles: [
+                    { type: 'contient', valeur: 'analogRead(A0)', message: 'Il manque analogRead(A0).' },
+                    { type: 'contient', valeur: '5.0', message: 'Il manque la conversion ×5.0.' },
+                    { type: 'contient', valeur: '1023', message: 'Il manque /1023.' },
+                    { type: 'contient', valeur: '* 100', message: 'Il manque la conversion ×100.' },
+                    { type: 'contient', valeur: 'Serial.println', message: 'Il manque Serial.println.' }
+                ],
+                indice: 'valeur * 5.0 / 1023.0 * 100 = température en °C.',
+                solution: `void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int valeur = analogRead(A0);
+  float tension = valeur * 5.0 / 1023.0;
+  float temperature = tension * 100.0;
+  Serial.print("Temp : ");
+  Serial.println(temperature);
+  delay(1000);
+}`
+            }
+        },
+        {
+            id: 'ch9_l33',
+            titre: 'map() pour convertir les valeurs',
+            sousTitre: 'Chapitre 9 — Leçon 33',
+            contenu: `
+<h3>map() en détail</h3>
+<p>map convertit une valeur d'une plage à une autre, proportionnellement.</p>
+
+<pre>map(valeur, minSource, maxSource, minCible, maxCible)</pre>
+
+<h3>Exemples</h3>
+<ul>
+    <li>map(512, 0, 1023, 0, 255) ≈ 128</li>
+    <li>map(0, 0, 1023, 0, 255) = 0</li>
+    <li>map(1023, 0, 1023, 0, 255) = 255</li>
+    <li>map(500, 0, 1023, 0, 180) ≈ 88 (pour un servo)</li>
+</ul>
+
+<h3>Utilisation typique</h3>
+<pre>int potar = analogRead(A0);        // 0-1023
+int pwm = map(potar, 0, 1023, 0, 255);   // 0-255
+analogWrite(9, pwm);</pre>
+
+<div class="warning-note">
+    <strong>Attention :</strong> map ne limite pas la sortie dans la plage. Si la valeur d'entrée dépasse, la sortie dépasse aussi. Utilise constrain après.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> map convertit proportionnellement. Combiner avec constrain si besoin.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'map(0, 0, 1023, 0, 180) retourne :',
+                    options: ['0', '90', '180', '1023', 'Erreur'],
+                    bonne: 0,
+                    explication: '0 est au minimum de la plage source, donc map renvoie le minimum de la plage cible : 0.'
+                },
+                {
+                    question: 'map(1023, 0, 1023, 0, 180) retourne :',
+                    options: ['0', '90', '180', '1023', 'Erreur'],
+                    bonne: 2,
+                    explication: '1023 est au maximum de la plage source, donc map renvoie le maximum de la plage cible : 180.'
+                }
+            ],
+            exercice: {
+                enonce: 'Lis A0, convertis de 0-1023 à 0-180 (pour un servo), stocke dans "angle" et affiche avec Serial.println.',
+                regles: [
+                    { type: 'contient', valeur: 'analogRead(A0)', message: 'Il manque analogRead(A0).' },
+                    { type: 'contient', valeur: 'map(', message: 'Il manque map().' },
+                    { type: 'contient', valeur: '180', message: 'Il manque 180 comme borne cible.' },
+                    { type: 'contient', valeur: 'Serial.println', message: 'Il manque Serial.println.' }
+                ],
+                indice: 'int angle = map(valeur, 0, 1023, 0, 180);',
+                solution: `void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int valeur = analogRead(A0);
+  int angle = map(valeur, 0, 1023, 0, 180);
+  Serial.println(angle);
+  delay(200);
+}`
+            }
+        },
+        {
+            id: 'ch9_l34',
+            titre: 'Exercice : LED qui s\'allume selon la luminosité',
+            sousTitre: 'Chapitre 9 — Leçon 34',
+            contenu: `
+<h3>Projet récap capteurs</h3>
+<p>Une LED s'allume progressivement quand il fait sombre, et s'éteint quand il fait clair.</p>
+
+<h3>Logique</h3>
+<ol>
+    <li>Lire la LDR (A0) : 0-1023</li>
+    <li>Inverser : quand la lumière baisse, la valeur PWM doit augmenter</li>
+    <li>analogWrite sur la broche 9</li>
+</ol>
+
+<h3>Code avec map inversé</h3>
+<pre>int lumiere = analogRead(A0);
+int pwm = map(lumiere, 0, 1023, 255, 0);  // inversé !
+analogWrite(9, pwm);</pre>
+
+<p>Ici, plus la lumière est basse (0), plus pwm est fort (255).</p>
+
+<div class="key-point">
+    <strong>À retenir :</strong> map peut inverser une plage en mettant max→min dans la cible. Utile pour les capteurs « à l'envers ».
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'map(0, 0, 1023, 255, 0) retourne :',
+                    options: ['0', '127', '255', '1023', 'Erreur'],
+                    bonne: 2,
+                    explication: 'Quand la valeur d\'entrée est au minimum (0), la sortie est au maximum de la cible (255). La plage est inversée.'
+                },
+                {
+                    question: 'Pourquoi inverser la plage pour une LDR ?',
+                    options: [
+                        'Pour rien',
+                        'Parce que la valeur diminue quand la lumière augmente',
+                        'Parce que le PWM est inversé',
+                        'Pour économiser',
+                        'Obligatoire'
+                    ],
+                    bonne: 1,
+                    explication: 'Quand la lumière augmente, la résistance de la LDR diminue et la tension lue peut varier. Selon le montage, on peut avoir besoin d\'inverser pour obtenir l\'effet voulu (LED plus forte quand il fait sombre).'
+                }
+            ],
+            exercice: {
+                enonce: 'Lis A0 (LDR). Convertis en PWM inversé : map(valeur, 0, 1023, 255, 0). Applique sur la broche 9.',
+                regles: [
+                    { type: 'contient', valeur: 'analogRead(A0)', message: 'Il manque analogRead(A0).' },
+                    { type: 'contient', valeur: 'map(', message: 'Il manque map().' },
+                    { type: 'contient', valeur: '255, 0', message: 'Il manque la plage cible inversée (255, 0).' },
+                    { type: 'contient', valeur: 'analogWrite(9', message: 'Il manque analogWrite(9, ...).' }
+                ],
+                indice: 'map(valeur, 0, 1023, 255, 0)',
+                solution: `void setup() {
+}
+
+void loop() {
+  int lumiere = analogRead(A0);
+  int pwm = map(lumiere, 0, 1023, 255, 0);
+  analogWrite(9, pwm);
+}`
+            }
+        }
+                ,
+        // ============================================================
+        // MODULE 7 — SERVOMOTEURS
+        // ============================================================
+        {
+            id: 'ch9_l35',
+            titre: 'Qu\'est-ce qu\'un servomoteur ?',
+            sousTitre: 'Chapitre 9 — Leçon 35',
+            contenu: `
+<h3>Le servomoteur</h3>
+<p>Un <strong>servomoteur</strong> (servo) est un moteur capable de se positionner à un angle précis, généralement entre 0° et 180°.</p>
+
+<div class="term-def">
+    <strong>Servomoteur</strong><br>
+    Moteur avec un axe qui peut tourner à un angle choisi (0-180°). Il contient un moteur, un réducteur, un capteur de position et une électronique de commande.
+</div>
+
+<h3>Utilisations</h3>
+<ul>
+    <li>Bras robotiques</li>
+    <li>Direction de voiture RC</li>
+    <li>Volets automatiques</li>
+    <li>Caméras motorisées</li>
+</ul>
+
+<h3>3 fils</h3>
+<ul>
+    <li><strong>Marron/Noir</strong> : GND</li>
+    <li><strong>Rouge</strong> : 5V</li>
+    <li><strong>Orange/Jaune</strong> : signal (vers broche Arduino, ex. 9)</li>
+</ul>
+
+<div class="warning-note">
+    <strong>Attention :</strong> Un servo consomme beaucoup (jusqu'à 1 A en charge). Pour de gros servos, utilise une alimentation externe 5V, avec GND commun à l'Arduino.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Servo = angle précis de 0 à 180°. 3 fils : GND, 5V, signal.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Un servomoteur standard peut tourner sur :',
+                    options: ['360°', '0 à 180°', '0 à 90°', '0 à 45°', '0 à 720°'],
+                    bonne: 1,
+                    explication: 'Un servo standard a une course de 0 à 180°. Il existe des servos à rotation continue (360°), mais ce ne sont pas les plus courants en apprentissage.'
+                },
+                {
+                    question: 'Combien de fils a un servomoteur standard ?',
+                    options: ['1', '2', '3', '4', '5'],
+                    bonne: 2,
+                    explication: '3 fils : alimentation (5V), masse (GND), et signal de commande.'
+                },
+                {
+                    question: 'Le fil de signal se branche :',
+                    options: ['Au 5V', 'Au GND', 'À une broche numérique/PWM de l\'Arduino', 'À rien', 'Au 3,3V'],
+                    bonne: 2,
+                    explication: 'Le signal se branche sur une broche Arduino (souvent PWM, ex. 9), qui envoie les impulsions de position.'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris un commentaire décrivant le rôle des 3 fils d\'un servo (GND, 5V, signal).',
+                regles: [
+                    { type: 'contient', valeur: '//', message: 'Il manque des commentaires (//).' },
+                    { type: 'contient', valeur: 'GND', message: 'Il manque la mention GND.' },
+                    { type: 'contient', valeur: '5V', message: 'Il manque la mention 5V.' },
+                    { type: 'contient', valeur: 'signal', message: 'Il manque la mention signal.' }
+                ],
+                indice: 'Un commentaire par fil.',
+                solution: `// Marron : GND
+// Rouge : 5V
+// Orange : signal
+
+void setup() {
+}
+
+void loop() {
+}`
+            }
+        },
+        {
+            id: 'ch9_l36',
+            titre: 'La bibliothèque Servo.h',
+            sousTitre: 'Chapitre 9 — Leçon 36',
+            contenu: `
+<h3>Pourquoi une bibliothèque ?</h3>
+<p>Contrôler un servo demande une séquence d'impulsions précises. La <strong>bibliothèque Servo</strong> fait tout ce travail à notre place.</p>
+
+<h3>Inclusion</h3>
+<pre>#include &lt;Servo.h&gt;</pre>
+
+<p>Toujours <strong>en haut</strong> du fichier, avant setup().</p>
+
+<h3>Déclaration</h3>
+<pre>Servo monServo;</pre>
+
+<p>Créer un objet Servo, qu'on nomme librement.</p>
+
+<div class="analogy">
+    <strong>Analogie :</strong> La bibliothèque Servo, c'est comme un manuel de cuisine. Au lieu de recalculer chaque impulsion, on appelle des fonctions préparées.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> #include &lt;Servo.h&gt; en haut, Servo nomServo; pour déclarer. Puis attach/write.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Où place-t-on #include &lt;Servo.h&gt; ?',
+                    options: ['Dans loop()', 'En haut du fichier', 'Dans un commentaire', 'Dans setup()', 'Nulle part'],
+                    bonne: 1,
+                    explication: 'Les #include se placent tout en haut du fichier, avant les fonctions.'
+                },
+                {
+                    question: 'Que fait la ligne Servo monServo; ?',
+                    options: [
+                        'Elle attache le servo',
+                        'Elle déclare un objet Servo nommé monServo',
+                        'Elle fait tourner le servo',
+                        'Elle initialise le port',
+                        'Rien'
+                    ],
+                    bonne: 1,
+                    explication: 'Cette ligne crée un objet Servo. Il faut ensuite l\'attacher à une broche avec attach().'
+                }
+            ],
+            exercice: {
+                enonce: 'Inclus la bibliothèque Servo et déclare un objet Servo nommé "bras".',
+                regles: [
+                    { type: 'contient', valeur: '#include', message: 'Il manque #include.' },
+                    { type: 'contient', valeur: 'Servo.h', message: 'Il manque Servo.h.' },
+                    { type: 'contient', valeur: 'Servo bras', message: 'Il manque la déclaration Servo bras;' }
+                ],
+                indice: '#include <Servo.h> en haut, puis Servo bras;',
+                solution: `#include <Servo.h>
+
+Servo bras;
+
+void setup() {
+}
+
+void loop() {
+}`
+            }
+        },
+        {
+            id: 'ch9_l37',
+            titre: 'servo.attach() et servo.write()',
+            sousTitre: 'Chapitre 9 — Leçon 37',
+            contenu: `
+<h3>attach() : lier à une broche</h3>
+<pre>monServo.attach(9);</pre>
+<p>Dans setup(). Lie le servo à la broche 9 (ou une autre).</p>
+
+<h3>write() : choisir un angle</h3>
+<pre>monServo.write(0);    // 0°
+monServo.write(90);   // 90°
+monServo.write(180);  // 180°</pre>
+
+<h3>Exemple complet</h3>
+<pre>#include &lt;Servo.h&gt;
+Servo monServo;
+
+void setup() {
+  monServo.attach(9);
+}
+
+void loop() {
+  monServo.write(0);
+  delay(1000);
+  monServo.write(90);
+  delay(1000);
+  monServo.write(180);
+  delay(1000);
+}</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> attach() dans setup. write(angle) dans loop. Angle entre 0 et 180.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'attach() sert à :',
+                    options: [
+                        'Choisir un angle',
+                        'Lier le servo à une broche',
+                        'Éteindre le servo',
+                        'Lire la position',
+                        'Envoyer un signal'
+                    ],
+                    bonne: 1,
+                    explication: 'attach(broche) indique à la bibliothèque sur quelle broche le servo est branché.'
+                },
+                {
+                    question: 'Où mettre attach() ?',
+                    options: ['loop()', 'setup()', 'En haut', 'Après write', 'Nulle part'],
+                    bonne: 1,
+                    explication: 'attach() se met dans setup() : on l\'appelle une seule fois pour configurer.'
+                },
+                {
+                    question: 'monServo.write(90) positionne le servo à :',
+                    options: ['0°', '45°', '90°', '180°', '360°'],
+                    bonne: 2,
+                    explication: 'write(angle) va directement à l\'angle demandé. 90° est la position centrale.'
+                }
+            ],
+            exercice: {
+                enonce: 'Complète : un servo nommé "bras" attaché à la broche 9, qui va successivement à 0°, 90°, 180° avec 1 seconde entre chaque.',
+                regles: [
+                    { type: 'contient', valeur: '#include', message: 'Il manque #include.' },
+                    { type: 'contient', valeur: 'Servo bras', message: 'Il manque Servo bras;' },
+                    { type: 'contient', valeur: 'bras.attach(9)', message: 'Il manque bras.attach(9).' },
+                    { type: 'contient', valeur: 'bras.write(0)', message: 'Il manque bras.write(0).' },
+                    { type: 'contient', valeur: 'bras.write(90)', message: 'Il manque bras.write(90).' },
+                    { type: 'contient', valeur: 'bras.write(180)', message: 'Il manque bras.write(180).' },
+                    { type: 'contient', valeur: 'delay(1000)', message: 'Il manque delay(1000).' }
+                ],
+                indice: 'attach dans setup, write dans loop.',
+                solution: `#include <Servo.h>
+
+Servo bras;
+
+void setup() {
+  bras.attach(9);
+}
+
+void loop() {
+  bras.write(0);
+  delay(1000);
+  bras.write(90);
+  delay(1000);
+  bras.write(180);
+  delay(1000);
+}`
+            }
+        },
+        {
+            id: 'ch9_l38',
+            titre: 'Balayage 0° → 180°',
+            sousTitre: 'Chapitre 9 — Leçon 38',
+            contenu: `
+<h3>Balayage automatique</h3>
+<p>On utilise une boucle for pour faire aller le servo de 0° à 180°, puis l'inverse.</p>
+
+<pre>void loop() {
+  for (int angle = 0; angle <= 180; angle++) {
+    monServo.write(angle);
+    delay(15);
+  }
+  for (int angle = 180; angle >= 0; angle--) {
+    monServo.write(angle);
+    delay(15);
+  }
+}</pre>
+
+<p>Chaque petit incrément + delay(15) donne un mouvement fluide.</p>
+
+<div class="analogy">
+    <strong>Analogie :</strong> Comme un essuie-glace qui balaie dans un sens puis dans l'autre, doucement.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Une boucle for + write + delay donne un balayage fluide. delay(15) est un bon compromis.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Pourquoi delay(15) entre chaque write ?',
+                    options: [
+                        'Pour économiser l\'énergie',
+                        'Pour que le servo ait le temps d\'atteindre la position',
+                        'Pour compiler',
+                        'Pour éviter un bug',
+                        'Inutile'
+                    ],
+                    bonne: 1,
+                    explication: 'Le servo a une vitesse limitée. Un delay de ~15 ms par degré correspond à une vitesse fluide pour un servo standard.'
+                },
+                {
+                    question: 'La 2e boucle for va de :',
+                    options: ['0 à 180', '180 à 0', '90 à 180', '0 à 90', '180 à 180'],
+                    bonne: 1,
+                    explication: 'for (int angle = 180; angle >= 0; angle--) va de 180 vers 0 (décrémentation).'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris le balayage d\'un servo "bras" (broche 9) : 0→180 puis 180→0 avec delay(15).',
+                regles: [
+                    { type: 'contient', valeur: 'bras.attach(9)', message: 'Il manque bras.attach(9).' },
+                    { type: 'contient', valeur: 'for', message: 'Il manque une boucle for.' },
+                    { type: 'contient', valeur: 'bras.write(angle)', message: 'Il manque bras.write(angle).' },
+                    { type: 'contient', valeur: '<= 180', message: 'Il manque la borne <= 180.' },
+                    { type: 'contient', valeur: 'delay(15)', message: 'Il manque delay(15).' }
+                ],
+                indice: 'Deux boucles for : montée puis descente.',
+                solution: `#include <Servo.h>
+Servo bras;
+
+void setup() {
+  bras.attach(9);
+}
+
+void loop() {
+  for (int angle = 0; angle <= 180; angle++) {
+    bras.write(angle);
+    delay(15);
+  }
+  for (int angle = 180; angle >= 0; angle--) {
+    bras.write(angle);
+    delay(15);
+  }
+}`
+            }
+        },
+        {
+            id: 'ch9_l39',
+            titre: 'Exercice : contrôler un servo avec un potentiomètre',
+            sousTitre: 'Chapitre 9 — Leçon 39',
+            contenu: `
+<h3>Projet : servo + potentiomètre</h3>
+<p>Tourner le potentiomètre fait bouger le servo. C'est la base de la télécommande.</p>
+
+<h3>Logique</h3>
+<ol>
+    <li>analogRead(A0) : 0-1023</li>
+    <li>map(valeur, 0, 1023, 0, 180) : angle</li>
+    <li>servo.write(angle)</li>
+</ol>
+
+<h3>Code</h3>
+<pre>#include &lt;Servo.h&gt;
+Servo bras;
+
+void setup() {
+  bras.attach(9);
+}
+
+void loop() {
+  int potar = analogRead(A0);
+  int angle = map(potar, 0, 1023, 0, 180);
+  bras.write(angle);
+  delay(20);
+}</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Potentiomètre + map + servo.write = contrôle manuel précis.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Pourquoi delay(20) à la fin de loop() ?',
+                    options: [
+                        'Pour économiser',
+                        'Pour stabiliser le servo et éviter de spammer',
+                        'Pour allumer',
+                        'Obligatoire',
+                        'Pour lire A0'
+                    ],
+                    bonne: 1,
+                    explication: 'Un petit delay évite d\'envoyer des centaines de write par seconde. Cela stabilise le servo et allège le programme.'
+                },
+                {
+                    question: 'map(512, 0, 1023, 0, 180) donne environ :',
+                    options: ['0', '45', '90', '180', '512'],
+                    bonne: 2,
+                    explication: '512 est au milieu, donc l\'angle obtenu est environ 90°.'
+                }
+            ],
+            exercice: {
+                enonce: 'Contrôle un servo "bras" (broche 9) avec un potentiomètre sur A0 : lis A0, convertis en 0-180 avec map, et applique avec bras.write.',
+                regles: [
+                    { type: 'contient', valeur: '#include', message: 'Il manque #include.' },
+                    { type: 'contient', valeur: 'bras.attach(9)', message: 'Il manque bras.attach(9).' },
+                    { type: 'contient', valeur: 'analogRead(A0)', message: 'Il manque analogRead(A0).' },
+                    { type: 'contient', valeur: 'map(', message: 'Il manque map().' },
+                    { type: 'contient', valeur: '180', message: 'Il manque 180 comme borne.' },
+                    { type: 'contient', valeur: 'bras.write', message: 'Il manque bras.write.' }
+                ],
+                indice: 'analogRead → map(0, 1023, 0, 180) → bras.write.',
+                solution: `#include <Servo.h>
+Servo bras;
+
+void setup() {
+  bras.attach(9);
+}
+
+void loop() {
+  int potar = analogRead(A0);
+  int angle = map(potar, 0, 1023, 0, 180);
+  bras.write(angle);
+  delay(20);
+}`
+            }
+        },
+        // ============================================================
+        // MODULE 8 — AFFICHEURS
+        // ============================================================
+        {
+            id: 'ch9_l40',
+            titre: 'Afficheur 7 segments (base)',
+            sousTitre: 'Chapitre 9 — Leçon 40',
+            contenu: `
+<h3>Un afficheur à LED</h3>
+<p>Un <strong>afficheur 7 segments</strong> contient 7 LED en forme de 8 pour afficher des chiffres (0-9).</p>
+
+<h3>Segments nommés</h3>
+<p>a, b, c, d, e, f, g. On allume des segments pour former un chiffre :</p>
+<ul>
+    <li>0 : a, b, c, d, e, f</li>
+    <li>1 : b, c</li>
+    <li>2 : a, b, g, e, d</li>
+</ul>
+
+<h3>Allumer le segment a</h3>
+<pre>pinMode(2, OUTPUT);      // broche 2 → segment a
+digitalWrite(2, HIGH);   // allume le segment</pre>
+
+<h3>Attention</h3>
+<p>Chaque segment a besoin d'une résistance (220-330 Ω) en série. Sinon l'afficheur crame.</p>
+
+<div class="key-point">
+    <strong>À retenir :</strong> 7 segments = 7 LED. On allume les bonnes combinaisons pour former un chiffre.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Combien de segments a un afficheur 7 segments ?',
+                    options: ['5', '6', '7', '8', '10'],
+                    bonne: 2,
+                    explication: '7 segments : a, b, c, d, e, f, g. Parfois un 8e (point) pour la décimale.'
+                },
+                {
+                    question: 'Pour afficher un 1 :',
+                    options: [
+                        'Tous les segments',
+                        'Segments b et c',
+                        'Segments a, b, c',
+                        'Segment a uniquement',
+                        'Aucun'
+                    ],
+                    bonne: 1,
+                    explication: 'Un « 1 » s\'affiche avec les deux segments verticaux droits : b et c.'
+                }
+            ],
+            exercice: {
+                enonce: 'Configure 3 broches (2, 3, 4) en sortie puis allume uniquement la broche 2.',
+                regles: [
+                    { type: 'contient', valeur: 'pinMode(2, OUTPUT)', message: 'Il manque pinMode(2, OUTPUT).' },
+                    { type: 'contient', valeur: 'pinMode(3, OUTPUT)', message: 'Il manque pinMode(3, OUTPUT).' },
+                    { type: 'contient', valeur: 'pinMode(4, OUTPUT)', message: 'Il manque pinMode(4, OUTPUT).' },
+                    { type: 'contient', valeur: 'digitalWrite(2, HIGH)', message: 'Il manque digitalWrite(2, HIGH).' }
+                ],
+                indice: '3 pinMode dans setup, un digitalWrite HIGH dans loop.',
+                solution: `void setup() {
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(2, HIGH);
+}`
+            }
+        },
+        {
+            id: 'ch9_l41',
+            titre: 'Écran LCD 16x2 : câblage',
+            sousTitre: 'Chapitre 9 — Leçon 41',
+            contenu: `
+<h3>Un écran texte</h3>
+<p>Un <strong>LCD 16x2</strong> affiche 2 lignes de 16 caractères. Très utilisé pour afficher des valeurs de capteurs ou des messages.</p>
+
+<h3>16 broches… mais seulement 6 utiles</h3>
+<p>On utilise le mode 4 bits : RS, E, D4, D5, D6, D7 + VSS (GND), VDD (5V), V0 (contraste), A/K (rétroéclairage).</p>
+
+<h3>Câblage typique</h3>
+<ul>
+    <li>VSS → GND</li>
+    <li>VDD → 5V</li>
+    <li>V0 → potentiomètre 10 kΩ (contraste)</li>
+    <li>RS → Arduino broche 12</li>
+    <li>E → Arduino broche 11</li>
+    <li>D4 → 5, D5 → 4, D6 → 3, D7 → 2</li>
+    <li>A → 5V via 220 Ω (rétroéclairage)</li>
+    <li>K → GND</li>
+</ul>
+
+<div class="key-point">
+    <strong>À retenir :</strong> LCD 16x2 = 2 lignes × 16 caractères. 6 broches suffisent en mode 4 bits.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Combien de caractères affiche un LCD 16x2 ?',
+                    options: ['16 en une ligne', '32 sur une ligne', '16 par ligne sur 2 lignes', '2 caractères', 'Aucun'],
+                    bonne: 2,
+                    explication: '16x2 signifie 16 caractères par ligne, sur 2 lignes.'
+                },
+                {
+                    question: 'Combien de broches de données utilise-t-on en mode 4 bits ?',
+                    options: ['2', '4', '6', '8', '16'],
+                    bonne: 1,
+                    explication: 'En mode 4 bits, on utilise D4, D5, D6, D7 = 4 broches de données, plus RS et E (2 broches de contrôle) = 6 broches au total.'
+                }
+            ],
+            exercice: {
+                enonce: 'Dans un commentaire, liste les 6 broches Arduino utilisées par le LCD (RS=12, E=11, D4=5, D5=4, D6=3, D7=2).',
+                regles: [
+                    { type: 'contient', valeur: '//', message: 'Il manque des commentaires.' },
+                    { type: 'contient', valeur: '12', message: 'Il manque la broche RS (12).' },
+                    { type: 'contient', valeur: '11', message: 'Il manque la broche E (11).' },
+                    { type: 'contient', valeur: 'RS', message: 'Il manque la mention RS.' },
+                    { type: 'contient', valeur: 'E', message: 'Il manque la mention E.' }
+                ],
+                indice: 'Un commentaire par ligne pour lister les broches.',
+                solution: `// RS=12, E=11, D4=5, D5=4, D6=3, D7=2
+
+void setup() {
+}
+
+void loop() {
+}`
+            }
+        },
+        {
+            id: 'ch9_l42',
+            titre: 'La bibliothèque LiquidCrystal.h',
+            sousTitre: 'Chapitre 9 — Leçon 42',
+            contenu: `
+<h3>Inclure la bibliothèque</h3>
+<pre>#include &lt;LiquidCrystal.h&gt;</pre>
+
+<h3>Déclarer l'écran</h3>
+<pre>LiquidCrystal lcd(12, 11, 5, 4, 3, 2);</pre>
+<p>Ordre : RS, E, D4, D5, D6, D7.</p>
+
+<h3>Initialiser dans setup()</h3>
+<pre>lcd.begin(16, 2);</pre>
+<p>Précise 16 colonnes × 2 lignes.</p>
+
+<h3>Allumer le rétroéclairage (optionnel)</h3>
+<p>Si le rétroéclairage est câblé au 5V, il s'allume tout seul.</p>
+
+<div class="analogy">
+    <strong>Analogie :</strong> La bibliothèque LiquidCrystal, c'est un traducteur : tu lui donnes un texte, elle s'occupe de l'envoyer à l'écran.
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> #include &lt;LiquidCrystal.h&gt; + LiquidCrystal lcd(...) + lcd.begin(16, 2) dans setup.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Que fait lcd.begin(16, 2) ?',
+                    options: [
+                        'Affiche "16 2"',
+                        'Initialise le LCD en 16 colonnes × 2 lignes',
+                        'Efface l\'écran',
+                        'Allume le rétroéclairage',
+                        'Rien'
+                    ],
+                    bonne: 1,
+                    explication: 'begin(cols, rows) initialise l\'écran pour la taille spécifiée.'
+                },
+                {
+                    question: 'L\'ordre des broches dans LiquidCrystal lcd(...) est :',
+                    options: [
+                        'D4-D7, E, RS',
+                        'RS, E, D4, D5, D6, D7',
+                        'E, RS, D4-D7',
+                        'Peu importe',
+                        'D7 à D4 puis RS, E'
+                    ],
+                    bonne: 1,
+                    explication: 'L\'ordre standard est (RS, E, D4, D5, D6, D7). Il faut respecter l\'ordre exact.'
+                }
+            ],
+            exercice: {
+                enonce: 'Inclus LiquidCrystal.h, déclare un écran lcd(12, 11, 5, 4, 3, 2) et initialise-le 16x2 dans setup.',
+                regles: [
+                    { type: 'contient', valeur: '#include', message: 'Il manque #include.' },
+                    { type: 'contient', valeur: 'LiquidCrystal.h', message: 'Il manque LiquidCrystal.h.' },
+                    { type: 'contient', valeur: 'LiquidCrystal lcd', message: 'Il manque la déclaration LiquidCrystal lcd.' },
+                    { type: 'contient', valeur: 'lcd.begin(16, 2)', message: 'Il manque lcd.begin(16, 2).' }
+                ],
+                indice: '#include en haut, déclaration avant setup, begin dans setup.',
+                solution: `#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+void setup() {
+  lcd.begin(16, 2);
+}
+
+void loop() {
+}`
+            }
+        },
+        {
+            id: 'ch9_l43',
+            titre: 'lcd.print() : afficher du texte',
+            sousTitre: 'Chapitre 9 — Leçon 43',
+            contenu: `
+<h3>Afficher à une position</h3>
+<pre>lcd.setCursor(0, 0);   // colonne 0, ligne 0
+lcd.print("Bonjour");</pre>
+
+<h3>Afficher une valeur</h3>
+<pre>lcd.setCursor(0, 1);   // 2e ligne
+lcd.print("Temp: ");
+lcd.print(temperature);</pre>
+
+<h3>Effacer l'écran</h3>
+<pre>lcd.clear();</pre>
+
+<h3>Exemple</h3>
+<pre>void loop() {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Bonjour !");
+
+  lcd.setCursor(0, 1);
+  lcd.print("Coucou");
+
+  delay(2000);
+}</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> setCursor(col, ligne) + print(). clear() efface tout.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Où place-t-on le curseur sur la 2e ligne ?',
+                    options: ['setCursor(0, 1)', 'setCursor(1, 0)', 'setCursor(2, 0)', 'setCursor(16, 2)', 'N\'importe où'],
+                    bonne: 0,
+                    explication: 'setCursor(colonne, ligne). Ligne 0 = première, ligne 1 = seconde.'
+                },
+                {
+                    question: 'lcd.clear() sert à :',
+                    options: [
+                        'Éteindre l\'écran',
+                        'Effacer le contenu',
+                        'Changer la couleur',
+                        'Rien',
+                        'Initialiser'
+                    ],
+                    bonne: 1,
+                    explication: 'lcd.clear() efface tous les caractères et remet le curseur en (0,0).'
+                }
+            ],
+            exercice: {
+                enonce: 'Sur la 1re ligne, affiche "Salut". Sur la 2e ligne, affiche "Arduino". Utilise setCursor.',
+                regles: [
+                    { type: 'contient', valeur: 'lcd.begin(16, 2)', message: 'Il manque lcd.begin(16, 2).' },
+                    { type: 'contient', valeur: 'setCursor(0, 0)', message: 'Il manque setCursor(0, 0).' },
+                    { type: 'contient', valeur: 'setCursor(0, 1)', message: 'Il manque setCursor(0, 1).' },
+                    { type: 'contient', valeur: 'Salut', message: 'Il manque le texte Salut.' },
+                    { type: 'contient', valeur: 'Arduino', message: 'Il manque le texte Arduino.' }
+                ],
+                indice: 'setCursor + print pour chaque ligne.',
+                solution: `#include <LiquidCrystal.h>
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+void setup() {
+  lcd.begin(16, 2);
+}
+
+void loop() {
+  lcd.setCursor(0, 0);
+  lcd.print("Salut");
+  lcd.setCursor(0, 1);
+  lcd.print("Arduino");
+}`
+            }
+        },
+        {
+            id: 'ch9_l44',
+            titre: 'Exercice : compteur sur LCD',
+            sousTitre: 'Chapitre 9 — Leçon 44',
+            contenu: `
+<h3>Compteur simple</h3>
+<p>Afficher un nombre qui augmente toutes les secondes sur le LCD.</p>
+
+<h3>Code</h3>
+<pre>int compteur = 0;
+
+void loop() {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Compteur:");
+  lcd.setCursor(0, 1);
+  lcd.print(compteur);
+  compteur++;
+  delay(1000);
+}</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> On peut afficher n\'importe quelle variable avec lcd.print(). clear() à chaque tour pour rafraîchir.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Pourquoi lcd.clear() à chaque tour ?',
+                    options: [
+                        'Pour rien',
+                        'Pour effacer les anciens chiffres avant d\'écrire les nouveaux',
+                        'Pour éteindre',
+                        'Pour compiler',
+                        'Obligatoire'
+                    ],
+                    bonne: 1,
+                    explication: 'Sans clear, l\'ancien texte reste et se mélange avec le nouveau. clear() nettoie l\'écran avant chaque rafraîchissement.'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris un compteur LCD : une variable "compteur" à 0, qui s\'affiche sur la ligne 2, s\'incrémente, et attend 1 seconde.',
+                regles: [
+                    { type: 'contient', valeur: 'lcd.begin(16, 2)', message: 'Il manque lcd.begin(16, 2).' },
+                    { type: 'contient', valeur: 'compteur', message: 'Il manque la variable compteur.' },
+                    { type: 'contient', valeur: 'lcd.print', message: 'Il manque lcd.print.' },
+                    { type: 'contient', valeur: 'compteur++', message: 'Il manque compteur++.' },
+                    { type: 'contient', valeur: 'delay(1000)', message: 'Il manque delay(1000).' }
+                ],
+                indice: 'Déclare int compteur = 0; avant setup.',
+                solution: `#include <LiquidCrystal.h>
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+int compteur = 0;
+
+void setup() {
+  lcd.begin(16, 2);
+}
+
+void loop() {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Compteur:");
+  lcd.setCursor(0, 1);
+  lcd.print(compteur);
+  compteur++;
+  delay(1000);
+}`
+            }
+        },
+        // ============================================================
+        // MODULE 9 — BUZZER & SONS
+        // ============================================================
+        {
+            id: 'ch9_l45',
+            titre: 'Buzzer passif vs actif',
+            sousTitre: 'Chapitre 9 — Leçon 45',
+            contenu: `
+<h3>Deux types de buzzers</h3>
+<ul>
+    <li><strong>Buzzer actif</strong> : sonne tout seul dès qu'on l'alimente (HIGH)</li>
+    <li><strong>Buzzer passif</strong> : a besoin d'un signal (fréquence) pour produire un son</li>
+</ul>
+
+<h3>Buzzer actif</h3>
+<pre>pinMode(8, OUTPUT);
+digitalWrite(8, HIGH);   // BIP continu
+digitalWrite(8, LOW);    // silence</pre>
+
+<h3>Buzzer passif</h3>
+<pre>tone(8, 440);   // 440 Hz (La)
+delay(500);
+noTone(8);      // silence</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Actif = HIGH/LOW. Passif = tone(freq)/noTone. La fréquence en Hz donne la note.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Quelle est la différence entre buzzer actif et passif ?',
+                    options: [
+                        'Aucune',
+                        'Actif sonne seul, passif a besoin d\'un signal',
+                        'Passif sonne seul, actif a besoin d\'un signal',
+                        'Actif est plus fort',
+                        'Passif ne sonne pas'
+                    ],
+                    bonne: 1,
+                    explication: 'Un buzzer actif contient son propre oscillateur : un simple HIGH suffit. Un buzzer passif a besoin d\'un signal PWM (tone) à la bonne fréquence.'
+                },
+                {
+                    question: 'tone(8, 440) produit :',
+                    options: [
+                        'Un silence',
+                        'Un son à 440 Hz',
+                        'Un son à 8 Hz',
+                        'Une lumière',
+                        'Rien'
+                    ],
+                    bonne: 1,
+                    explication: 'tone(broche, fréquence) génère un signal carré à la fréquence donnée. 440 Hz correspond au La (A4).'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris un programme qui produit un bip de 440 Hz sur la broche 8 pendant 500 ms, puis s\'arrête.',
+                regles: [
+                    { type: 'contient', valeur: 'tone(8, 440)', message: 'Il manque tone(8, 440).' },
+                    { type: 'contient', valeur: 'delay(500)', message: 'Il manque delay(500).' },
+                    { type: 'contient', valeur: 'noTone(8)', message: 'Il manque noTone(8).' }
+                ],
+                indice: 'tone → delay → noTone.',
+                solution: `void setup() {
+}
+
+void loop() {
+  tone(8, 440);
+  delay(500);
+  noTone(8);
+  delay(1000);
+}`
+            }
+        },
+        {
+            id: 'ch9_l46',
+            titre: 'tone() et noTone()',
+            sousTitre: 'Chapitre 9 — Leçon 46',
+            contenu: `
+<h3>tone() : produire un son</h3>
+<pre>tone(broche, frequence);</pre>
+<p>Fréquence en hertz (Hz). 262 = Do, 294 = Ré, 330 = Mi, 349 = Fa, 392 = Sol, 440 = La, 494 = Si.</p>
+
+<h3>noTone() : arrêter</h3>
+<pre>noTone(broche);</pre>
+
+<h3>Jouer une note</h3>
+<pre>tone(8, 262);   // Do
+delay(500);
+noTone(8);
+delay(100);     // pause entre les notes</pre>
+
+<div class="term-def">
+    <strong>Fréquences des notes</strong><br>
+    Do 262 | Ré 294 | Mi 330 | Fa 349 | Sol 392 | La 440 | Si 494 (Hz)
+</div>
+
+<div class="key-point">
+    <strong>À retenir :</strong> tone = jouer. noTone = arrêter. Fréquence = hauteur de la note.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'tone(8, 262) joue :',
+                    options: ['Un La', 'Un Do', 'Un Si', 'Un silence', 'Un bruit'],
+                    bonne: 1,
+                    explication: '262 Hz = Do (C4). Les notes ont des fréquences fixes en Hz.'
+                },
+                {
+                    question: 'noTone(8) sert à :',
+                    options: [
+                        'Jouer plus fort',
+                        'Arrêter le son sur la broche 8',
+                        'Changer de note',
+                        'Rien',
+                        'Éteindre la carte'
+                    ],
+                    bonne: 1,
+                    explication: 'noTone arrête la génération du signal sonore sur la broche indiquée.'
+                }
+            ],
+            exercice: {
+                enonce: 'Joue trois notes (Do 262, Mi 330, Sol 392) chacune 400 ms avec 100 ms de silence entre elles.',
+                regles: [
+                    { type: 'contient', valeur: 'tone(8, 262)', message: 'Il manque Do.' },
+                    { type: 'contient', valeur: 'tone(8, 330)', message: 'Il manque Mi.' },
+                    { type: 'contient', valeur: 'tone(8, 392)', message: 'Il manque Sol.' },
+                    { type: 'contient', valeur: 'noTone(8)', message: 'Il manque noTone(8).' },
+                    { type: 'contient', valeur: 'delay(400)', message: 'Il manque delay(400).' }
+                ],
+                indice: 'tone → delay(400) → noTone → delay(100) pour chaque note.',
+                solution: `void setup() {
+}
+
+void loop() {
+  tone(8, 262); delay(400); noTone(8); delay(100);
+  tone(8, 330); delay(400); noTone(8); delay(100);
+  tone(8, 392); delay(400); noTone(8); delay(100);
+  delay(1000);
+}`
+            }
+        },
+        {
+            id: 'ch9_l47',
+            titre: 'Exercice : mélodie simple',
+            sousTitre: 'Chapitre 9 — Leçon 47',
+            contenu: `
+<h3>Projet : jouer "Au clair de la lune"</h3>
+<p>Une simple mélodie, c'est une suite de notes avec des durées.</p>
+
+<h3>Notes</h3>
+<ul>
+    <li>Do (262), Ré (294), Mi (330), Fa (349), Sol (392), La (440)</li>
+</ul>
+
+<h3>Code partiel</h3>
+<pre>tone(8, 262); delay(400); noTone(8);
+tone(8, 262); delay(400); noTone(8);
+tone(8, 262); delay(400); noTone(8);
+tone(8, 294); delay(400); noTone(8);
+tone(8, 330); delay(400); noTone(8);
+tone(8, 330); delay(400); noTone(8);</pre>
+
+<h3>Astuce</h3>
+<p>On peut créer une fonction <code>jouerNote(freq, duree)</code> pour éviter la répétition.</p>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Une mélodie = suite de tone + delay + noTone. On peut factoriser dans une fonction.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Comment jouer une mélodie ?',
+                    options: [
+                        'Un seul tone',
+                        'Une suite de tone/delay/noTone',
+                        'Un digitalWrite HIGH',
+                        'Un delay seul',
+                        'analogWrite'
+                    ],
+                    bonne: 1,
+                    explication: 'Une mélodie = plusieurs notes, chacune avec son tone, sa durée, puis noTone avant la suivante.'
+                },
+                {
+                    question: 'Pourquoi factoriser dans une fonction ?',
+                    options: [
+                        'Pour rien',
+                        'Pour éviter la répétition et rendre le code lisible',
+                        'Pour économiser la mémoire',
+                        'Obligatoire',
+                        'Pour accélérer'
+                    ],
+                    bonne: 1,
+                    explication: 'Une fonction jouerNote(freq, duree) évite de réécrire tone/delay/noTone à chaque note. Code plus lisible et plus court.'
+                }
+            ],
+            exercice: {
+                enonce: 'Joue au moins 4 notes distinctes (fréquences différentes) en utilisant tone et noTone.',
+                regles: [
+                    { type: 'contient', valeur: 'tone(8', message: 'Il manque tone(8, ...).' },
+                    { type: 'contient', valeur: 'noTone(8)', message: 'Il manque noTone(8).' },
+                    { type: 'contient', valeur: 'delay', message: 'Il manque delay.' }
+                ],
+                indice: 'Enchaîne plusieurs tone/noTone/delay.',
+                solution: `void setup() {
+}
+
+void loop() {
+  tone(8, 262); delay(300); noTone(8);
+  tone(8, 294); delay(300); noTone(8);
+  tone(8, 330); delay(300); noTone(8);
+  tone(8, 349); delay(300); noTone(8);
+  delay(1000);
+}`
+            }
+        },
+        // ============================================================
+        // MODULE 10 — PROJET FINAL
+        // ============================================================
+        {
+            id: 'ch9_l48',
+            titre: 'Combiner capteur + actionneur',
+            sousTitre: 'Chapitre 9 — Leçon 48',
+            contenu: `
+<h3>Un vrai projet</h3>
+<p>Une <strong>alarme</strong> simple : quand un capteur (ex. LDR, détecteur de mouvement) dépasse un seuil, un buzzer sonne.</p>
+
+<h3>Logique</h3>
+<ol>
+    <li>Lire le capteur (A0 par exemple)</li>
+    <li>Si la valeur dépasse un seuil → tone()</li>
+    <li>Sinon → noTone()</li>
+</ol>
+
+<h3>Code</h3>
+<pre>void loop() {
+  int niveau = analogRead(A0);
+  if (niveau > 700) {
+    tone(8, 1000);
+  } else {
+    noTone(8);
+  }
+  delay(50);
+}</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Capteur + seuil + action = automatisation. C'est la base de la robotique.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Une alarme, c\'est :',
+                    options: [
+                        'Un capteur seul',
+                        'Un capteur + un seuil + une action',
+                        'Un buzzer seul',
+                        'Un delay',
+                        'Un écran'
+                    ],
+                    bonne: 1,
+                    explication: 'Une alarme combine : lecture d\'un capteur, comparaison à un seuil, et déclenchement d\'une action (son, LED…).'
+                },
+                {
+                    question: 'Pourquoi delay(50) ?',
+                    options: [
+                        'Pour économiser',
+                        'Pour éviter de spammer le buzzer',
+                        'Pour allumer',
+                        'Obligatoire',
+                        'Pour lire le capteur'
+                    ],
+                    bonne: 1,
+                    explication: 'Un petit delay évite de spammer tone() et noTone() des dizaines de fois par seconde.'
+                }
+            ],
+            exercice: {
+                enonce: 'Écris une alarme : lis A0, si la valeur > 700 joue tone(8, 1000), sinon noTone(8). Ajoute delay(50).',
+                regles: [
+                    { type: 'contient', valeur: 'analogRead(A0)', message: 'Il manque analogRead(A0).' },
+                    { type: 'contient', valeur: '> 700', message: 'Il manque le seuil > 700.' },
+                    { type: 'contient', valeur: 'tone(8, 1000)', message: 'Il manque tone(8, 1000).' },
+                    { type: 'contient', valeur: 'noTone(8)', message: 'Il manque noTone(8).' },
+                    { type: 'contient', valeur: 'delay(50)', message: 'Il manque delay(50).' }
+                ],
+                indice: 'if (niveau > 700) { tone } else { noTone }',
+                solution: `void setup() {
+}
+
+void loop() {
+  int niveau = analogRead(A0);
+  if (niveau > 700) {
+    tone(8, 1000);
+  } else {
+    noTone(8);
+  }
+  delay(50);
+}`
+            }
+        },
+        {
+            id: 'ch9_l49',
+            titre: 'Organiser un code propre (fonctions)',
+            sousTitre: 'Chapitre 9 — Leçon 49',
+            contenu: `
+<h3>Créer ses propres fonctions</h3>
+<p>Une <strong>fonction</strong> regroupe des instructions sous un nom. On l'appelle ensuite plusieurs fois sans répéter le code.</p>
+
+<h3>Définir une fonction</h3>
+<pre>void clignoter(int broche, int duree) {
+  digitalWrite(broche, HIGH);
+  delay(duree);
+  digitalWrite(broche, LOW);
+  delay(duree);
+}</pre>
+
+<h3>L'appeler</h3>
+<pre>clignoter(13, 500);
+clignoter(8, 200);</pre>
+
+<h3>Bonnes pratiques</h3>
+<ul>
+    <li>Un nom clair</li>
+    <li>Des paramètres utiles</li>
+    <li>Une fonction fait une chose</li>
+</ul>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Une fonction = un bloc réutilisable. On la définit une fois, on l'appelle plusieurs fois.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Pourquoi créer des fonctions ?',
+                    options: [
+                        'Pour rien',
+                        'Pour éviter la répétition et rendre le code lisible',
+                        'Pour compiler',
+                        'Pour économiser de l\'énergie',
+                        'Obligatoire'
+                    ],
+                    bonne: 1,
+                    explication: 'Une fonction évite la répétition et rend le code plus lisible et maintenable.'
+                },
+                {
+                    question: 'void clignoter(int broche, int duree) : combien d\'arguments ?',
+                    options: ['0', '1', '2', '3', '4'],
+                    bonne: 2,
+                    explication: 'Deux paramètres : broche et duree. On appelle clignoter(13, 500) par exemple.'
+                }
+            ],
+            exercice: {
+                enonce: 'Définis une fonction "allumerLED(int broche)" qui allume la broche, puis appelle-la pour la broche 13 dans loop().',
+                regles: [
+                    { type: 'contient', valeur: 'void allumerLED', message: 'Il manque la fonction allumerLED.' },
+                    { type: 'contient', valeur: 'digitalWrite', message: 'Il manque digitalWrite.' },
+                    { type: 'contient', valeur: 'allumerLED(13)', message: 'Il manque l\'appel allumerLED(13).' }
+                ],
+                indice: 'Définis la fonction avant loop(), puis appelle-la.',
+                solution: `void allumerLED(int broche) {
+  digitalWrite(broche, HIGH);
+}
+
+void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  allumerLED(13);
+  delay(1000);
+}`
+            }
+        },
+        {
+            id: 'ch9_l50',
+            titre: 'Projet libre guidé + récap',
+            sousTitre: 'Chapitre 9 — Leçon 50',
+            contenu: `
+<h3>Ton mini-projet</h3>
+<p>Choisis un projet et combine ce que tu as appris :</p>
+
+<h3>Idées</h3>
+<ul>
+    <li><strong>Feu tricolore</strong> : 3 LEDs + delays</li>
+    <li><strong>Alarme de lumière</strong> : LDR + buzzer</li>
+    <li><strong>Servo piloté</strong> : potentiomètre + servo</li>
+    <li><strong>Thermomètre</strong> : LM35 + LCD</li>
+    <li><strong>Compteur</strong> : bouton + LCD</li>
+    <li><strong>Chenillard</strong> : LEDs + loop</li>
+</ul>
+
+<h3>Squelette</h3>
+<pre>#include &lt;...&gt;
+
+void setup() {
+  // configuration
+}
+
+void loop() {
+  // logique
+}</pre>
+
+<div class="key-point">
+    <strong>À retenir :</strong> Un projet = un objectif + des composants + un code. Commence simple, ajoute progressivement.
+</div>
+            `,
+            quiz: [
+                {
+                    question: 'Un bon projet commence par :',
+                    options: [
+                        'Écrire 300 lignes',
+                        'Définir un objectif simple',
+                        'Acheter du matériel',
+                        'Chercher sur internet',
+                        'Rien'
+                    ],
+                    bonne: 1,
+                    explication: 'On commence par définir clairement ce que doit faire le projet. Ensuite seulement, on code.'
+                },
+                {
+                    question: 'Que faire si le projet ne marche pas ?',
+                    options: [
+                        'Abandonner',
+                        'Déboguer avec Serial.println',
+                        'Recoder de zéro',
+                        'Changer de carte',
+                        'Rien'
+                    ],
+                    bonne: 1,
+                    explication: 'Serial.println permet d\'afficher les valeurs intermédiaires et de comprendre où ça bloque. C\'est la base du débogage.'
+                }
+            ],
+            exercice: {
+                enonce: 'Choisis un projet : configure au moins un pinMode et écris une boucle loop qui fait quelque chose (LED, buzzer, servo…).',
+                regles: [
+                    { type: 'contient', valeur: 'pinMode', message: 'Il manque au moins un pinMode.' },
+                    { type: 'contient', valeur: 'void setup', message: 'Il manque setup().' },
+                    { type: 'contient', valeur: 'void loop', message: 'Il manque loop().' },
+                    { type: 'contient', valeur: 'digitalWrite', message: 'Il manque au moins un digitalWrite.' }
+                ],
+                indice: 'Fais simple : une LED qui clignote, c\'est déjà un projet.',
+                solution: `void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(13, HIGH);
+  delay(500);
+  digitalWrite(13, LOW);
+  delay(500);
+}`
+            }
+        }
+    ],
+    examen: [
+        { type: 'quiz', question: 'Quelles sont les deux fonctions obligatoires d\'un programme Arduino ?', options: ['start() et stop()', 'setup() et loop()', 'begin() et end()', 'init() et run()', 'main() et loop()'], bonne: 1 },
+        { type: 'quiz', question: 'Que fait pinMode(13, OUTPUT) ?', options: ['Allume la LED', 'Configure la broche 13 en sortie', 'Éteint la LED', 'Lit la broche 13', 'Supprime la broche 13'], bonne: 1 },
+        { type: 'quiz', question: 'Quel est le rôle de digitalWrite(13, HIGH) ?', options: ['Met 0V sur la broche 13', 'Met 5V sur la broche 13', 'Lit la broche 13', 'Supprime la broche 13', 'Configure la broche 13'], bonne: 1 },
+        { type: 'quiz', question: 'delay(1000) attend :', options: ['1 ms', '10 ms', '100 ms', '1 seconde', '1 minute'], bonne: 3 },
+        { type: 'quiz', question: 'Avec INPUT_PULLUP, appuyer sur un bouton renvoie :', options: ['HIGH', 'LOW', '0 et 1', 'Erreur', 'Rien'], bonne: 1 },
+        { type: 'quiz', question: 'Quelles broches supportent analogWrite (PWM) sur l\'Uno ?', options: ['Toutes', '3, 5, 6, 9, 10, 11', 'A0-A5', '0-13', 'Aucune'], bonne: 1 },
+        { type: 'quiz', question: 'analogWrite(9, 255) correspond à :', options: ['Éteint', 'Moitié', 'Pleine luminosité', 'Clignotement', 'Erreur'], bonne: 2 },
+        { type: 'quiz', question: 'analogRead() renvoie une valeur entre :', options: ['0 et 5', '0 et 255', '0 et 1023', '-255 et 255', '0 et 100'], bonne: 2 },
+        { type: 'quiz', question: 'map(valeur, 0, 1023, 0, 255) transforme une plage 0-1023 en :', options: ['0-5V', '0-180', '0-255', '0-1023', 'Rien'], bonne: 2 },
+        { type: 'quiz', question: 'Quelle bibliothèque utilise-t-on pour un servo ?', options: ['Servo.h', 'ServoMotor.h', 'Motor.h', 'Stepper.h', 'Aucune'], bonne: 0 },
+        { type: 'quiz', question: 'Que fait servo.write(90) ?', options: ['Tourne en continu', 'Positionne à 90°', 'Éteint', 'Lit la position', 'Rien'], bonne: 1 },
+        { type: 'quiz', question: 'Que fait Serial.begin(9600) ?', options: ['Éteint Serial', 'Initialise la liaison série à 9600 bauds', 'Envoie "9600"', 'Lit un caractère', 'Rien'], bonne: 1 },
+        { type: 'quiz', question: 'Serial.println() diffère de Serial.print() par :', options: ['Rien', 'Ajout d\'un saut de ligne', 'Moins de caractères', 'Plus rapide', 'Aucune différence'], bonne: 1 },
+        { type: 'quiz', question: 'Quelle bibliothèque pour un LCD ?', options: ['LCD.h', 'LiquidCrystal.h', 'Display.h', 'Screen.h', 'Aucune'], bonne: 1 },
+        { type: 'quiz', question: 'lcd.begin(16, 2) initialise un écran :', options: ['16x2 caractères', '2x16 pixels', '16 couleurs', '2 lignes seulement', 'Rien'], bonne: 0 },
+        { type: 'quiz', question: 'Quelle fonction pour générer un son sur un buzzer passif ?', options: ['analogWrite', 'digitalWrite', 'tone', 'sound', 'play'], bonne: 2 },
+        { type: 'quiz', question: 'tone(8, 440) produit :', options: ['440 Hz', '8 Hz', '440 V', 'Un silence', 'Une lumière'], bonne: 0 },
+        { type: 'quiz', question: 'Le LM35 délivre combien de tension par °C ?', options: ['1 V', '100 mV', '10 mV', '1 mV', '5 V'], bonne: 2 },
+        { type: 'quiz', question: 'Quel opérateur compare deux valeurs en Arduino ?', options: ['=', '==', ':=', '=>', '<>'], bonne: 1 },
+        { type: 'quiz', question: 'Quelle fonction permet de créer une fonction utilitaire réutilisable ?', options: ['void nomFonction() { }', 'function nomFonction() { }', 'def nomFonction() { }', 'fn nomFonction() { }', 'func nomFonction() { }'], bonne: 0 }
+    ]
+}
+];
                 // ============================================================
         // FONCTIONS DE RENDU
         // ============================================================
