@@ -106,15 +106,12 @@
     }
     .btn-mic:hover{background:rgba(0,255,136,.18);}
     .btn-mic.active{background:rgba(0,255,136,.3); box-shadow:0 0 25px rgba(0,255,136,.5);}
-
     .section-title{
         font-family:'Orbitron',sans-serif; font-size:1.4rem; color:var(--gold);
         margin-bottom:1.4rem; display:flex; align-items:center; gap:.8rem;
         letter-spacing:2px;
     }
     .section-title i{color:var(--neon-green);}
-
-    /* Grille des rédactions */
     .grid-redactions{
         display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
         gap:1.5rem; margin-bottom:2.5rem;
@@ -165,7 +162,6 @@
         border-top:1px solid rgba(255,255,255,.08);
         padding-top:.7rem; display:flex; justify-content:space-between;
     }
-
     .empty-state{
         text-align:center; padding:3rem 1.5rem;
         border:1px dashed rgba(255,215,0,.3); border-radius:20px;
@@ -175,8 +171,6 @@
         font-size:3rem; color:var(--gold); margin-bottom:1rem;
         display:block; opacity:.6;
     }
-
-    /* ============ FORMULAIRE ============ */
     #formSection{display:none;}
     .form-card{
         background:linear-gradient(135deg, rgba(255,215,0,.03), rgba(123,44,191,.03));
@@ -215,15 +209,12 @@
         color:var(--text-secondary); font-size:.75rem;
         margin-top:.4rem; font-style:italic;
     }
-
     .form-actions{
         display:flex; flex-wrap:wrap; gap:1rem;
         justify-content:space-between; margin-top:1.5rem;
         padding-top:1.5rem;
         border-top:1px solid rgba(255,255,255,.08);
     }
-
-    /* ============ VOIX ============ */
     .voice-status{
         position:fixed; bottom:1.5rem; right:1.5rem;
         background:linear-gradient(135deg, #0a0a12, #050510);
@@ -236,8 +227,6 @@
     }
     .voice-status.show{display:block; animation:voiceAppear .3s ease;}
     @keyframes voiceAppear{from{opacity:0; transform:translateY(20px);}to{opacity:1; transform:translateY(0);}}
-
-    /* ============ PRINT ============ */
     @media print{
         body{background:#fff !important; color:#000 !important; padding:0 !important;}
         .hologram-grid, .back-btn, .toolbar, .page-header .user-info,
@@ -271,7 +260,6 @@
         </div>
     </header>
 
-    <!-- Toolbar -->
     <div class="toolbar">
         <div class="toolbar-left">
             <button class="btn-main" onclick="nouveauProjet()">
@@ -288,7 +276,6 @@
         </div>
     </div>
 
-    <!-- LISTE -->
     <div id="listSection">
         <h2 class="section-title"><i class="fas fa-folder-open"></i> MES RÉDACTIONS</h2>
         <div class="grid-redactions" id="gridRedactions">
@@ -302,7 +289,6 @@
         <div class="grid-redactions" id="gridSources"></div>
     </div>
 
-    <!-- FORMULAIRE -->
     <div id="formSection">
         <div class="form-card">
             <h2 class="section-title">
@@ -316,7 +302,7 @@
                     <select id="fProjetSource" onchange="onSourceChange()">
                         <option value="">— Rédaction libre —</option>
                     </select>
-                    <div class="hint">Sélectionnez un projet existant pour pré-remplir les champs vides.</div>
+                    <div class="hint">Sélectionnez un projet existant pour pré-remplir automatiquement.</div>
                 </div>
                 <div class="form-group">
                     <label>TITRE DU PROJET <span class="req">*</span></label>
@@ -327,47 +313,43 @@
             <div class="form-group">
                 <label>CONTEXTE <span class="req">*</span></label>
                 <textarea id="fContexte" placeholder="Contexte général, situation actuelle, problème sociétal..."></textarea>
-                <div class="hint">Pourquoi ce projet existe ? Dans quel environnement ?</div>
             </div>
 
             <div class="form-group">
                 <label>ÉTUDE DU PROBLÈME <span class="req">*</span></label>
-                <textarea id="fProbleme" placeholder="Décrivez le problème de manière précise : causes, conséquences, populations affectées..."></textarea>
-                <div class="hint">Approche cadre logique : le problème doit être exposé avec précision et cohérence.</div>
+                <textarea id="fProbleme" placeholder="Décrivez le problème : causes, conséquences, populations affectées..."></textarea>
             </div>
 
             <div class="form-group">
                 <label>OBJECTIFS (SMART) <span class="req">*</span></label>
-                <textarea id="fObjectifs" placeholder="Objectif général + objectifs spécifiques, mesurables, atteignables, réalistes, temporels..."></textarea>
-                <div class="hint">Arbre à solutions : transformez les problèmes en objectifs.</div>
+                <textarea id="fObjectifs" placeholder="Objectif général + objectifs spécifiques, mesurables..."></textarea>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label>BÉNÉFICIAIRES</label>
-                    <textarea id="fBeneficiaires" placeholder="Qui bénéficie directement / indirectement du projet ?"></textarea>
+                    <textarea id="fBeneficiaires"></textarea>
                 </div>
                 <div class="form-group">
                     <label>RÉALISATIONS / ACTIVITÉS</label>
-                    <textarea id="fRealisations" placeholder="Étapes concrètes, livrables, activités prévues..."></textarea>
+                    <textarea id="fRealisations"></textarea>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label>PARTENAIRES</label>
-                    <textarea id="fPartenaires" placeholder="Partenaires techniques, institutionnels, financiers..."></textarea>
+                    <textarea id="fPartenaires"></textarea>
                 </div>
                 <div class="form-group">
                     <label>BUDGET / FINANCEMENT</label>
-                    <textarea id="fBudget" placeholder="Postes de dépenses, estimation FCFA, cofinancements..."></textarea>
-                    <div class="hint">Laissé vide si non disponible — sera complété par le responsable finance.</div>
+                    <textarea id="fBudget" placeholder="Laissé vide si non disponible — à compléter par le responsable finance."></textarea>
                 </div>
             </div>
 
             <div class="form-group">
                 <label>BÉNÉFICE POUR LE FINANCEUR</label>
-                <textarea id="fBeneficeFinanceur" placeholder="Retombées pour le financeur, visibilité, impact social, alignement ODD..."></textarea>
+                <textarea id="fBeneficeFinanceur"></textarea>
             </div>
 
             <div class="form-actions">
@@ -392,7 +374,6 @@
     </div>
 </div>
 
-<!-- Voix overlay -->
 <div class="voice-status" id="voiceStatus"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -406,7 +387,7 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const ACCES_AUTORISES = ['AT21_006', 'AT21_ZAM68'];
 const memberId = localStorage.getItem('directionMemberId');
 if (!memberId || !ACCES_AUTORISES.includes(memberId)) {
-    alert('⛔ Accès refusé. Seuls le Président et le Responsable des Projets peuvent accéder à cet espace.');
+    alert('⛔ Accès refusé.');
     window.location.href = 'espace-direction.html';
 }
 const memberNom = localStorage.getItem('directionMemberNom') || '';
@@ -414,20 +395,112 @@ const memberPrenom = localStorage.getItem('directionMemberPrenom') || '';
 document.getElementById('userInfo').innerHTML =
     `<i class="fas fa-user-shield"></i> ${memberPrenom} ${memberNom}`;
 
-// ============ PROJETS SOURCES ============
+// ============================================================
+// PROJETS SOURCES — CONTENU PRÉ-RÉDIGÉ
+// Chaque projet contient contexte, probleme, objectifs,
+// beneficiaires, realisations, partenaires, budget, benefice_financeur
+// ============================================================
 const PROJETS_SOURCES = [
-    { id:'irritech', titre:'IRRITECH — Système d\'arrosage automatique intelligent', file:'irritech.html' },
-    { id:'mk40', titre:'MK-40 — Couveuse automatique intelligente', file:'mk-40.html' },
-    { id:'oxy', titre:'Projet OXY — Système d\'assistance respiratoire', file:'projet-oxy.html' },
-    { id:'qualiwash', titre:'QUALIWASH — Mini machines à laver locales', file:'qualiwash.html' },
-    { id:'rga', titre:'RGA — Robot de guide et assistance', file:'rga.html' },
-    { id:'rsma', titre:'RSMA — Robot sous-marin autonome', file:'rsma.html' },
-    { id:'sagaf', titre:'SAGAF — Système d\'alerte pour fuite de gaz', file:'sagaf.html' },
-    { id:'binv', titre:'BINV — Bâton intelligent pour les non-voyants', file:'binv.html' }
+{
+    id:'irritech',
+    titre:'IRRITECH — Système d\'arrosage automatique intelligent',
+    contexte:"L'agriculture africaine fait face à un défi majeur : l'arrosage manuel des cultures est chronophage, inefficace en eau et difficile à maintenir sur de grandes surfaces. Les petits et moyens exploitants perdent régulièrement des récoltes à cause d'un arrosage insuffisant ou mal dosé. IRRITECH propose un système d'arrosage automatique intelligent capable de décider quand et combien arroser, en s'adaptant à l'humidité réelle du sol et aux besoins spécifiques des plantes. Une première version à petite échelle a déjà été conçue par AFRICA.TECH21 ; cette nouvelle version doit être adaptée aux grandes surfaces agricoles.",
+    probleme:"Les agriculteurs africains, en particulier les petits exploitants, font face à plusieurs problèmes structurels liés à l'irrigation : (1) la dépendance à l'arrosage manuel entraîne une consommation excessive ou insuffisante d'eau ; (2) les sécheresses récurrentes et le changement climatique rendent l'eau plus rare et plus coûteuse ; (3) les pertes de récoltes dues à un arrosage inadapté (sur-arrosage ou sous-arrosage) réduisent les rendements et les revenus ; (4) l'absence d'outils intelligents accessibles empêche les agriculteurs de piloter finement l'humidité du sol ; (5) les solutions importées sont chères, non adaptées aux réalités locales (variabilité climatique, sols, variétés cultivées) et difficiles à réparer. Conséquences : baisse des rendements, gaspillage d'eau, exode rural, insécurité alimentaire. Population affectée : petits et moyens agriculteurs, coopératives, communautés rurales.",
+    objectifs:"Objectif général : concevoir et déployer un système d'arrosage automatique intelligent, autonome et accessible aux exploitations agricoles africaines. Objectifs spécifiques (SMART) : (1) mettre au point un système piloté par ESP32 lisant 4 capteurs d'humidité du sol (Soil Moisture V1.2) et déclenchant l'arrosage selon un seuil calibré, dès la fin du prototype ; (2) adapter le système aux grandes surfaces en structurant les capteurs par blocs de 4 sur des modules de 1,70 m × 1,20 m, d'ici la version 2 ; (3) étudier les besoins en eau et en température d'au moins 6 variétés (carotte, pomme de terre, oignon, salade, tomate, etc.) et les traduire en algorithmes ; (4) obtenir une autonomie énergétique minimale de 24h via pompe 12-24V DC et alimentation solaire envisagée ; (5) réduire la consommation d'eau d'au moins 30% par rapport à l'arrosage manuel sur les parcelles pilotes.",
+    beneficiaires:"Bénéficiaires directs : petits et moyens agriculteurs, coopératives agricoles, maraîchers, jardins communautaires. Bénéficiaires indirects : familles rurales (sécurité alimentaire), consommateurs urbains (prix), collectivités locales (développement économique), étudiants et techniciens formés au projet.",
+    realisations:"Étapes déjà réalisées : (1) conception d'une version réduite d'IRRITECH par l'équipe AFRICA.TECH21 ; (2) choix de la carte ESP32 (15-18 ADC, résolution 12 bits, contrôle jusqu'à 4 blocs) ; (3) sélection des capteurs Soil Moisture V1.2 avec revêtement résine et gaine d'isolation ; (4) définition du capteur DHT22 en complémentarité ; (5) rédaction du code MicroPython sous Thonny (moyenne pondérée des 4 capteurs, condition d'arrosage sous seuil 1500) ; (6) identification des contraintes terrain (protection contre l'humidité, stabilité du sol, poussière, sable, températures extrêmes). À venir : prototypage terrain, calibration par variété, industrialisation.",
+    partenaires:"Partenaires techniques envisagés : coopératives agricoles locales, écoles d'agronomie, laboratoires d'électronique, ONG de développement rural. Partenaires financiers recherchés : fonds d'investissement agricole, bailleurs sensibles à la souveraineté alimentaire, programmes climat.",
+    budget:"",
+    benefice_financeur:"Pour le financeur : (1) impact direct sur la sécurité alimentaire et la souveraineté agricole africaine ; (2) projet aligné sur les ODD 2 (faim zéro), 6 (eau propre) et 13 (climat) ; (3) potentiel de scalabilité vers des centaines d'exploitations ; (4) visibilité forte sur un projet technologique innovant made in Africa ; (5) économies d'eau mesurables, argument RSE puissant ; (6) création d'emplois locaux (techniciens d'installation et de maintenance)."
+},
+{
+    id:'mk40',
+    titre:'MK-40 — Couveuse automatique intelligente',
+    contexte:"L'élevage de volaille est une activité économique majeure en Afrique de l'Ouest. La couvaison naturelle est lente, aléatoire et dépend fortement des conditions climatiques. Les éleveurs ont besoin d'outils fiables pour automatiser la couvaison et améliorer les taux d'éclosion. MK-40, successeur de la MK08 conçue par AFRICA.TECH21, est une couveuse automatique intelligente qui recrée les conditions de couvaison naturelle (température, humidité, retournement) avec un haut niveau de précision. Elle s'adresse aux éleveurs professionnels, aux coopératives et aux projets d'insertion.",
+    probleme:"Les éleveurs de volaille africains font face à : (1) des taux d'éclosion faibles (souvent < 50%) dus à un contrôle imprécis de la température et de l'humidité ; (2) des pertes importantes d'œufs par méconnaissance du bon moment du mirage ; (3) des couveuses importées chères, peu fiables et impossibles à réparer localement ; (4) l'absence de mécanismes de retournement automatique, ce qui oblige à une surveillance humaine constante ; (5) un climat chaud qui complique la régulation thermique (surtout au Sénégal) ; (6) le manque de traçabilité du nombre de jours d'incubation. Conséquences : pertes économiques pour les éleveurs, dépendance aux importations, faible productivité du secteur avicole. Population affectée : éleveurs de volaille, coopératives, jeunes en insertion, ménages ruraux.",
+    objectifs:"Objectif général : fournir une couveuse automatique intelligente, fiable et locale, capable d'améliorer significativement les taux d'éclosion. Objectifs spécifiques (SMART) : (1) intégrer un capteur TMP117 pour une mesure de température ultra-précise ; (2) doubler la mesure d'humidité avec SHT30 + BME280 pour une redondance et une moyenne arithmétique ; (3) automatiser le retournement des œufs (3 à 5 fois/jour du 3e au 18e/19e jour) via moteur pas-à-pas ; (4) intégrer un module RTC DS3231 pour afficher le nombre de jours d'incubation ; (5) intégrer une ESP32-CAM pour le mirage automatisé et le suivi photo ; (6) offrir une interface tactile 3,5 pouces pour modifier les paramètres en temps réel ; (7) atteindre un taux d'éclosion ≥ 80% sur les œufs fécondés en conditions pilotes.",
+    beneficiaires:"Bénéficiaires directs : éleveurs de volaille (poules, cailles, canards, oies), coopératives avicoles, jeunes entrepreneurs agricoles. Bénéficiaires indirects : ménages ruraux et urbains (accès à la protéine animale), vétérinaires, techniciens formés, filière avicole nationale.",
+    realisations:"Étapes déjà réalisées : (1) retour d'expérience MK08 et identification des points faibles (DHT22 remplacé par TMP117) ; (2) sélection complète des composants (TMP117, SHT30, BME280, ESP32-CAM, RTC DS3231, écran TFT 3,5\", minuterie T3230, thermostat, lampe 12V, ventilateur 220V, moteur pas-à-pas, alvéoles modulables) ; (3) conception du schéma de fonctionnement autour d'ARDUINO UNO ; (4) plan de la couveuse conçu par le MAJOR DIAO ; (5) définition des cycles de retournement. À venir : prototypage, tests d'éclosion, validation terrain.",
+    partenaires:"Partenaires techniques : écoles vétérinaires, coopératives avicoles, laboratoires d'électronique. Partenaires financiers recherchés : bailleurs du secteur agricole, programmes d'insertion des jeunes, fonds d'innovation technologique.",
+    budget:"",
+    benefice_financeur:"Pour le financeur : (1) impact direct sur la souveraineté alimentaire (protéine animale) ; (2) ODD 1 (pauvreté), 2 (faim zéro), 8 (travail décent) ; (3) potentiel de déploiement rapide auprès de milliers d'éleveurs ; (4) visibilité sur un produit technologique made in Africa ; (5) création d'emplois locaux dans la fabrication et la maintenance ; (6) modèle économique viable (vente + maintenance + consommables)."
+},
+{
+    id:'oxy',
+    titre:'Projet OXY — Système d\'assistance respiratoire automatique',
+    contexte:"Dans de nombreux hôpitaux africains, les ventilateurs mécaniques sont rares, coûteux et dépendent de pièces importées. Lors de crises sanitaires (COVID-19, grippe sévère, SDRA), les services de réanimation sont saturés et les patients décèdent faute d'assistance respiratoire. Le Projet OXY vise à concevoir un système d'assistance respiratoire automatique, robuste et réparable localement, à partir d'un ballon Ambu compressé par un bras motorisé. Il est destiné aux hôpitaux, cliniques, centres de santé et situations d'urgence.",
+    probleme:"Les systèmes de santé africains font face à : (1) une pénurie critique de ventilateurs mécaniques dans les services de réanimation ; (2) des équipements importés coûteux (plusieurs millions FCFA), souvent hors service faute de pièces ; (3) une dépendance totale aux chaînes d'approvisionnement internationales, rompues en période de crise ; (4) l'absence de solutions adaptées aux réalités locales (coupures électriques, poussière, température, personnel peu formé) ; (5) une mortalité élevée des patients atteints d'insuffisance respiratoire aiguë (SDRA, AVC, SLA, Guillain-Barré, traumatismes, prématurés, pneumonies sévères). Conséquences : décès évitables, saturation des services, inégalités d'accès aux soins. Population affectée : patients en détresse respiratoire, personnel soignant, hôpitaux publics et privés.",
+    objectifs:"Objectif général : concevoir un système d'assistance respiratoire automatique, sûr, fiable et réparable localement, couvrant un large spectre de pathologies. Objectifs spécifiques (SMART) : (1) automatiser la compression d'un ballon Ambu via moteur NEMA23 + driver TB6600 piloté par ESP32 ; (2) intégrer une base de données médicale sur carte MicroSD avec paramètres par maladie (volume courant, fréquence, PEP) ; (3) offrir une interface tactile 3,5\" ILI9488 compatible gants médicaux ; (4) assurer une redondance mécanique via boutons industriels IP67 et un E-STOP ; (5) intégrer monitoring temps réel (MPXV7002DP pression, SFM3000 débit, MAX30102 SpO2, DS18B20 température, INA219 courant) ; (6) garantir une autonomie de 4h via batterie Li-ion + basculement automatique secteur/batterie ; (7) valider le dispositif en conditions simulées avec un comité médical.",
+    beneficiaires:"Bénéficiaires directs : patients en détresse respiratoire (SDRA, AVC, SLA, Guillain-Barré, myasthénie, traumatismes, prématurés, bronchiolites, pneumonies, sepsis), hôpitaux, cliniques, centres de santé. Bénéficiaires indirects : personnel soignant (moins de charge), familles, système de santé national, ingénieurs biomédicaux formés.",
+    realisations:"Étapes déjà réalisées : (1) étude médicale complète des pathologies prises en charge (7 familles documentées) ; (2) sélection des composants (NEMA23, TB6600, ESP32, écran TFT ILI9488, MPXV7002DP, MAX30102, SFM3000, DS3231, TPL5110, LM2596, INA219, DS18B20, filtre HEPA, ballon Ambu ISO 10651-4, circuit 22mm) ; (3) architecture système (base de données médicale sur MicroSD, interface tactile, redondance mécanique, E-STOP, watchdog) ; (4) définition des paramètres ventilatoires par pathologie ; (5) conception mécanique préliminaire (boîtier plexiglas transparent, accès maintenance). À venir : prototypage, tests avec comité médical, certification.",
+    partenaires:"Partenaires techniques : hôpitaux universitaires, écoles de médecine, ingénierie biomédicale, laboratoires d'électronique. Partenaires financiers recherchés : ministères de la Santé, OMS, UNICEF, fonds d'innovation médicale, ONG santé.",
+    budget:"",
+    benefice_financeur:"Pour le financeur : (1) impact sanitaire direct et mesurable (vies sauvées) ; (2) ODD 3 (santé et bien-être) ; (3) souveraineté sanitaire africaine (production locale de dispositifs médicaux) ; (4) visibilité forte sur un projet à fort impact social ; (5) potentiel d'exportation vers d'autres pays africains ; (6) alignement avec les politiques nationales de santé."
+},
+{
+    id:'qualiwash',
+    titre:'QUALIWASH — Mini machines à laver locales',
+    contexte:"Le marché africain des machines à laver est dominé par des produits importés, souvent de qualité douteuse et à des prix prohibitifs. De nombreux foyers n'ont pas accès à des équipements fiables, et les arnaques sur la qualité des appareils sont fréquentes. AFRICA.TECH21 propose QUALIWASH : une mini machine à laver conçue et fabriquée localement, avec un design sphérique innovant, des ailettes en silicone et un rapport qualité/prix transparent. Le projet s'inscrit dans une démarche de souveraineté technologique africaine.",
+    probleme:"Le marché africain du lavage domestique fait face à : (1) des machines importées chères, souvent de qualité médiocre, avec des pannes fréquentes et des pièces introuvables ; (2) des arnaques récurrentes sur la qualité réelle des appareils (puissance, capacité, durabilité) ; (3) l'absence de production locale, ce qui empêche toute maîtrise technologique et toute réparation abordable ; (4) un design inadapté aux réalités locales (volumes, formes, habitudes) ; (5) un coût total de possession élevé pour les ménages modestes. Conséquences : dépenses inutiles, dépendance aux importations, frustration des consommateurs, perte de devises. Population affectée : ménages urbains et périurbains, jeunes actifs, petites structures (salons de coiffure, restaurants, cliniques).",
+    objectifs:"Objectif général : concevoir et produire localement une mini machine à laver fiable, performante et abordable, adaptée aux besoins réels des foyers africains. Objectifs spécifiques (SMART) : (1) analyser la machine existante et établir un benchmark complet (dimensions, volumes, consommation) ; (2) dimensionner un design sphérique avec ailettes en silicone ; (3) respecter les normes des machines à laver (sécurité, étanchéité, bruit) ; (4) atteindre un coût de production ≤ 50 000 FCFA maximum ; (5) garantir une transparence totale sur le rapport qualité/prix (fin des arnaques) ; (6) industrialiser une première série pilote d'au moins 20 unités.",
+    beneficiaires:"Bénéficiaires directs : ménages urbains et périurbains, jeunes actifs, petites structures professionnelles (salons de coiffure, restaurants, cliniques, hôtels). Bénéficiaires indirects : réparateurs locaux, distributeurs, filière de fabrication locale, économie nationale (réduction des importations).",
+    realisations:"Étapes déjà réalisées : (1) analyse de la machine existante ; (2) décision d'un design sphérique avec ailettes en silicone (flexibilité, durabilité, résistance à l'eau) ; (3) définition du budget cible (≤ 50 000 FCFA) ; (4) identification des priorités (composants essentiels d'abord) ; (5) vision de souveraineté technologique. À venir : dimensionnement complet, prototypage, tests de durabilité, série pilote.",
+    partenaires:"Partenaires techniques : ateliers de fabrication mécanique, laboratoires matériaux, écoles d'ingénieurs. Partenaires financiers recherchés : fonds d'innovation industrielle, bailleurs PME, programmes d'appui à l'artisanat et à l'industrie locale.",
+    budget:"Budget cible : 50 000 FCFA maximum (à affiner par le responsable finance).",
+    benefice_financeur:"Pour le financeur : (1) souveraineté technologique africaine ; (2) ODD 8 (travail décent), 9 (industrie), 12 (consommation responsable) ; (3) impact social fort (fin des arnaques, accès à un produit fiable) ; (4) création d'emplois locaux (fabrication, distribution, maintenance) ; (5) potentiel de réplication dans plusieurs pays africains ; (6) visibilité sur un produit innovant au design unique."
+},
+{
+    id:'rga',
+    titre:'RGA — Robot de guide et assistance',
+    contexte:"Les universités, hôpitaux et grandes infrastructures africaines accueillent chaque jour des milliers de visiteurs qui peinent à s'orienter. Les agents d'accueil sont en nombre insuffisant, et les panneaux d'information ne suffisent pas. AFRICA.TECH21 propose RGA : un robot autonome intelligent capable d'accueillir, de reconnaître et de guider les visiteurs. Ce projet pionnier vise à développer les compétences locales en robotique et à créer une solution adaptée aux besoins spécifiques des infrastructures africaines.",
+    probleme:"Les grandes infrastructures africaines (universités, hôpitaux, administrations) font face à : (1) un déficit d'accueil humain (files d'attente, orientation difficile, visiteurs perdus) ; (2) l'absence de solutions robotiques locales, ce qui oblige à importer des systèmes étrangers inadaptés et coûteux ; (3) un manque de compétences locales en robotique, IA et systèmes embarqués ; (4) une expérience visiteur dégradée (stress, perte de temps, mauvaise image de l'institution) ; (5) un besoin croissant d'automatisation dans un contexte de pression budgétaire. Conséquences : perte de temps, insatisfaction des usagers, image dégradée, retard technologique. Population affectée : étudiants, patients, visiteurs, personnel administratif.",
+    objectifs:"Objectif général : développer un robot autonome intelligent d'accueil et de guidage, adapté aux infrastructures africaines. Objectifs spécifiques (SMART) : (1) intégrer une reconnaissance faciale via Pi Camera Module 3 et Deep Learning pour distinguer étudiants / personnel / visiteurs ; (2) assurer une navigation autonome avec évitement d'obstacles ; (3) offrir une interface vocale interactive ; (4) embarquer un écran HDMI pour l'affichage d'informations ; (5) utiliser un Raspberry Pi 5 8GB comme cerveau ; (6) garantir une autonomie minimale de 4h via batterie LiPo 12-24V ; (7) valider le prototype dans au moins 2 environnements réels (université + hôpital).",
+    beneficiaires:"Bénéficiaires directs : étudiants, patients, visiteurs, personnel administratif et d'accueil. Bénéficiaires indirects : institutions (image modernisée), étudiants en robotique et IA (formation), écosystème tech local (sous-traitance, fournisseurs).",
+    realisations:"Étapes déjà réalisées : (1) définition des fonctionnalités (reconnaissance faciale, navigation autonome, interface vocale, IA) ; (2) sélection des composants (Raspberry Pi 5 8GB, Pi Camera Module 3, moteurs RS-550 12V, driver TB6612FNG, batterie LiPo 12-24V, roues caoutchouc, écran HDMI, haut-parleurs USB, refroidissement, châssis bois/fer + forex) ; (3) architecture électronique validée (choix du TB6612FNG pour son rendement >90% et sa faible chauffe) ; (4) conception mécanique (2 roues motrices + 2 directrices) ; (5) feuille de route logicielle (Python, TensorFlow, OpenCV, TTS, algorithmes de navigation). À venir : prototypage, entraînement IA, tests terrain.",
+    partenaires:"Partenaires techniques : universités, hôpitaux pilotes, laboratoires de robotique, écoles d'ingénieurs. Partenaires financiers recherchés : ministères de l'Enseignement supérieur et de la Santé, fonds d'innovation, bailleurs tech.",
+    budget:"",
+    benefice_financeur:"Pour le financeur : (1) projet emblématique de robotique africaine ; (2) ODD 4 (éducation), 9 (industrie et innovation), 11 (villes durables) ; (3) visibilité médiatique forte (premier robot guide africain) ; (4) création d'une filière robotique locale ; (5) impact direct sur l'expérience des usagers ; (6) potentiel d'exportation."
+},
+{
+    id:'rsma',
+    titre:'RSMA — Robot sous-marin autonome',
+    contexte:"L'Afrique dispose d'immenses ressources maritimes encore très peu explorées. La recherche marine, la surveillance des fonds, la cartographie et l'exploration pétrolière/gazière nécessitent des équipements sophistiqués que les pays africains importent à des coûts très élevés. AFRICA.TECH21 propose RSMA : un robot sous-marin autonome conçu localement pour l'exploration et la recherche marine. Le projet vise à créer une plateforme technologique open-source accessible aux chercheurs, étudiants et innovateurs africains.",
+    probleme:"L'exploration marine africaine est freinée par : (1) l'absence de robots sous-marins locaux, ce qui oblige à importer des systèmes coûteux ; (2) le manque de compétences locales en robotique sous-marine ; (3) une méconnaissance des fonds marins et de la biodiversité ; (4) des enjeux de sécurité (surveillance des infrastructures sous-marines, pêche illégale) ; (5) la dépendance technologique vis-à-vis de l'étranger pour des missions stratégiques. Conséquences : perte de souveraineté sur les ressources maritimes, retard dans la recherche, dépendance économique. Population affectée : chercheurs, étudiants, industries maritimes, autorités portuaires, communautés de pêcheurs.",
+    objectifs:"Objectif général : développer un robot sous-marin autonome pour l'exploration et la recherche marine, accessible et réparable localement. Objectifs spécifiques (SMART) : (1) concevoir un robot étanche IP68 avec structure PVC et boîtier protecteur ; (2) intégrer 3 à 6 thrusters pour avancer, plonger et tourner ; (3) embarquer une caméra ESP32-CAM pour photos et vidéos HD ; (4) intégrer un IMU MPU6050 pour la stabilisation ; (5) ajouter un capteur barométrique étanche pour la profondeur ; (6) assurer une autonomie minimale de 1h via batterie Li-ion 11,1V 2200mAh ; (7) permettre une communication WiFi/Radio temps réel.",
+    beneficiaires:"Bénéficiaires directs : chercheurs marins, étudiants en océanographie et robotique, industries maritimes, autorités portuaires et de surveillance. Bénéficiaires indirects : communautés de pêcheurs, écosystème académique, industries pétrolières et gazières, ONG environnementales.",
+    realisations:"Étapes déjà réalisées : (1) définition des fonctionnalités (capture multimedia, cartographie, autonomie, communication) ; (2) sélection des composants (Arduino Uno/Mega, ESP32, 3-6 thrusters, MPU6050, capteur barométrique, capteur de température, ESP32-CAM, batterie Li-ion 11,1V 2200mAh, structure PVC, détecteur d'incendie) ; (3) architecture système ; (4) identification des contraintes d'étanchéité (résine époxy, IP68) ; (5) design 3D hydrodynamique. À venir : prototypage, tests en bassin, tests en mer.",
+    partenaires:"Partenaires techniques : instituts de recherche marine, universités, écoles d'ingénieurs, autorités portuaires. Partenaires financiers recherchés : ministères de la Pêche et de l'Environnement, fonds maritimes, bailleurs scientifiques.",
+    budget:"",
+    benefice_financeur:"Pour le financeur : (1) souveraineté maritime africaine ; (2) ODD 14 (vie aquatique), 9 (innovation) ; (3) impact scientifique et économique fort ; (4) création d'une filière robotique sous-marine locale ; (5) applications multiples (recherche, surveillance, pêche, énergie) ; (6) visibilité internationale."
+},
+{
+    id:'sagaf',
+    titre:'SAGAF — Système d\'alerte pour fuite de gaz',
+    contexte:"Les explosions de gaz domestique causent chaque année des centaines de victimes et des dégâts matériels considérables en Afrique. De par l'imprudence des individus et l'absence de dispositifs de sécurité accessibles, des catastrophes surviennent régulièrement dans les foyers, les restaurants et les petits commerces. AFRICA.TECH21 propose SAGAF : un système d'alerte pour fuite de gaz, compact, abordable et facile à installer, destiné à protéger les foyers et les lieux à risque.",
+    probleme:"La sécurité gaz domestique en Afrique est un enjeu majeur de santé publique : (1) les fuites de gaz ne sont pas détectées à temps, ce qui entraîne des explosions parfois mortelles ; (2) les détecteurs disponibles sur le marché sont chers, importés et peu fiables ; (3) les utilisateurs n'ont aucune alerte précoce, et l'odeur seule ne suffit pas à prévenir un drame ; (4) les foyers, restaurants, petits commerces et écoles sont exposés sans protection ; (5) il n'existe pas de solution locale, adaptée et réparable. Conséquences : pertes en vies humaines, brûlures graves, dégâts matériels, traumatismes. Population affectée : ménages, restaurants, petits commerces, écoles, lieux publics.",
+    objectifs:"Objectif général : concevoir un système d'alerte précoce pour fuite de gaz, compact, fiable et abordable, destiné aux foyers et lieux à risque. Objectifs spécifiques (SMART) : (1) détecter les fuites via capteur MQ-2 (GPL, propane, méthane, fumée) ; (2) doubler la détection avec MQ-4 ou MQ-5 pour le butane ; (3) alerter via buzzer (80-95 dB) et LEDS bleues ; (4) intégrer un microcontrôleur ESP32 (WiFi + Bluetooth) ; (5) compacter le système dans un boîtier type smartphone avec batterie rechargeable 5V ; (6) préparer une version avec envoi de SMS via module GSM SIM800L ; (7) valider la fiabilité sur au moins 50 foyers pilotes.",
+    beneficiaires:"Bénéficiaires directs : ménages, restaurants, petits commerces, écoles, lieux publics, cuisines collectives. Bénéficiaires indirects : pompiers, assureurs, collectivités, système de santé (moins de brûlés), familles.",
+    realisations:"Étapes déjà réalisées : (1) définition du problème et du contexte (société où les explosions sont fréquentes) ; (2) architecture système (ESP32 + MQ-2/MQ-4/MQ-5 + buzzer + LEDs + batterie rechargeable) ; (3) logique de fonctionnement (détection → lecture ADC → analyse → alerte sonore et visuelle → réinitialisation) ; (4) identification du format cible (boîtier type smartphone) ; (5) feuille de route évolutive (SMS, WiFi, notifications mobiles, autonomie solaire). À venir : prototypage, tests de calibration, validation terrain.",
+    partenaires:"Partenaires techniques : laboratoires d'électronique, écoles d'ingénieurs, associations de consommateurs. Partenaires financiers recherchés : ministères de l'Énergie et de la Sécurité civile, assureurs, fonds santé publique, ONG.",
+    budget:"",
+    benefice_financeur:"Pour le financeur : (1) impact direct sur la sécurité des familles ; (2) ODD 3 (santé), 11 (villes durables) ; (3) faible coût unitaire → fort effet de levier ; (4) potentiel de déploiement massif (millions de foyers) ; (5) visibilité sur un projet de prévention concret ; (6) alignement avec les politiques de sécurité civile."
+},
+{
+    id:'binv',
+    titre:'BINV — Bâton intelligent pour les non-voyants',
+    contexte:"Les personnes non-voyantes et malvoyantes rencontrent d'énormes difficultés dans leurs déplacements quotidiens : obstacles, trous, murs, roches, véhicules. Les cannes blanches traditionnelles n'offrent qu'une détection tactile limitée. AFRICA.TECH21 propose BINV (version améliorée V360) : un bâton intelligent qui détecte les obstacles, analyse l'environnement grâce à l'intelligence artificielle et alerte l'utilisateur par un message vocal dans plusieurs langues (français, wolof, anglais, etc.). L'objectif est de faciliter la vie des personnes non-voyantes et de favoriser leur autonomie.",
+    probleme:"Les personnes non-voyantes africaines font face à : (1) un manque d'outils technologiques abordables adaptés à leurs besoins ; (2) une détection limitée avec la canne blanche traditionnelle (uniquement tactile, à courte distance) ; (3) des risques élevés d'accidents (chutes, collisions, traversées dangereuses) ; (4) l'absence de messages vocaux en langues locales (wolof, etc.) ; (5) une faible autonomie dans les déplacements, ce qui réduit l'accès à l'éducation, à l'emploi et aux soins. Conséquences : isolement, dépendance, accidents évitables. Population affectée : personnes non-voyantes et malvoyantes, familles, associations d'insertion.",
+    objectifs:"Objectif général : concevoir un bâton intelligent qui améliore l'autonomie et la sécurité des personnes non-voyantes. Objectifs spécifiques (SMART) : (1) capturer l'environnement en temps réel via ESP32-CAM ; (2) analyser les images par IA pour détecter les obstacles (murs, trous, roches, sol libre) ; (3) restituer des alertes vocales en français, wolof et anglais via DFPlayer Mini + haut-parleur/écouteur ; (4) stocker les fichiers audio sur microSD ; (5) assurer une alimentation portable via batterie Li-ion 7,4V ; (6) préparer une version Bluetooth et une version GPS + recharge solaire ; (7) valider le prototype avec au moins 10 utilisateurs non-voyants.",
+    beneficiaires:"Bénéficiaires directs : personnes non-voyantes et malvoyantes, enfants et adultes, associations d'insertion. Bénéficiaires indirects : familles, aidants, écoles spécialisées, système de santé (moins d'accidents), société (inclusion).",
+    realisations:"Étapes déjà réalisées : (1) définition du fonctionnement (capture → IA → décision → alerte vocale) ; (2) sélection des composants (ESP32-CAM, DFPlayer Mini, haut-parleur, microSD, batterie Li-ion 7,4V) ; (3) architecture système ; (4) rôle central de l'IA (voir à la place de la personne non-voyante) ; (5) feuille de route évolutive (Bluetooth, reconnaissance avancée, GPS, recharge solaire). À venir : prototypage, entraînement IA sur obstacles réels, tests utilisateurs.",
+    partenaires:"Partenaires techniques : associations de non-voyants, écoles spécialisées, laboratoires d'IA, écoles d'ingénieurs. Partenaires financiers recherchés : ministères de la Solidarité et de la Santé, fonds d'inclusion, ONG, bailleurs sociaux.",
+    budget:"",
+    benefice_financeur:"Pour le financeur : (1) impact social direct et profond (autonomie des personnes handicapées) ; (2) ODD 3 (santé), 10 (réduction des inégalités) ; (3) projet innovant à forte charge émotionnelle ; (4) visibilité médiatique et RSE forte ; (5) potentiel de déploiement à grande échelle ; (6) alignement avec les politiques d'inclusion."
+}
 ];
 
 // ============ ÉTAT ============
-let redactionEnCours = null; // { id?, ...champs }
+let redactionEnCours = null;
 let recListening = false;
 let recognition = null;
 
@@ -457,6 +530,7 @@ pickVoice();
 
 function speak(text){
     if (!text) return;
+    synth.cancel();
     const u = new SpeechSynthesisUtterance(text);
     if (chosenVoice){ u.voice = chosenVoice; u.lang = chosenVoice.lang; }
     else u.lang = 'fr-FR';
@@ -464,27 +538,22 @@ function speak(text){
     synth.speak(u);
     showVoiceStatus(text);
 }
-
 function showVoiceStatus(text){
     const el = document.getElementById('voiceStatus');
     el.textContent = text;
     el.classList.add('show');
     clearTimeout(el._t);
-    el._t = setTimeout(()=>el.classList.remove('show'), 4000);
+    el._t = setTimeout(()=>el.classList.remove('show'), 5000);
 }
 
-// ============ RECONNAISSANCE VOCALE ============
+// ============ RECONNAISSANCE ============
 function initRecognition(){
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR){
-        alert('Reconnaissance vocale non supportée par ce navigateur.');
-        return false;
-    }
+    if (!SR){ alert('Reconnaissance vocale non supportée par ce navigateur.'); return false; }
     recognition = new SR();
     recognition.lang = 'fr-FR';
     recognition.continuous = false;
     recognition.interimResults = false;
-
     recognition.onresult = (e)=>{
         const txt = e.results[0][0].transcript.toLowerCase().trim();
         showVoiceStatus('🎤 « ' + txt + ' »');
@@ -501,48 +570,26 @@ function initRecognition(){
     };
     return true;
 }
-
 function toggleVoice(){
     if (!recognition && !initRecognition()) return;
     const btn = document.getElementById('btnVoice');
     if (recListening){
-        recognition.stop();
-        recListening = false;
+        recognition.stop(); recListening = false;
         btn.classList.remove('active');
         speak('Commande vocale arrêtée.');
     } else {
-        try {
-            recognition.start();
-            recListening = true;
-            btn.classList.add('active');
-            speak('Je vous écoute.');
-        } catch(e){ console.warn(e); }
+        try { recognition.start(); recListening = true; btn.classList.add('active'); speak('Je vous écoute.'); }
+        catch(e){ console.warn(e); }
     }
 }
-
 function traiterCommande(cmd){
-    if (cmd.includes('nouveau projet') || cmd.includes('créer') || cmd.includes('nouvelle rédaction')){
-        nouveauProjet();
-        speak('Nouvelle rédaction ouverte.');
-    }
-    else if (cmd.includes('enregistrer') || cmd.includes('sauvegarder')){
-        sauvegarderProjet();
-    }
-    else if (cmd.includes('vérifier') || cmd.includes('verifier')){
-        verifierDocument();
-    }
-    else if (cmd.includes('pdf') || cmd.includes('télécharger')){
-        window.print();
-    }
-    else if (cmd.includes('retour') || cmd.includes('liste')){
-        retourListe();
-    }
-    else if (cmd.includes('lire') || cmd.includes('lis')){
-        lireDocument();
-    }
-    else {
-        speak('Commande non reconnue. Dites : nouveau projet, enregistrer, vérifier, PDF, retour, lire.');
-    }
+    if (cmd.includes('nouveau projet') || cmd.includes('créer') || cmd.includes('nouvelle rédaction')){ nouveauProjet(); }
+    else if (cmd.includes('enregistrer') || cmd.includes('sauvegarder')){ sauvegarderProjet(); }
+    else if (cmd.includes('vérifier') || cmd.includes('verifier')){ verifierDocument(); }
+    else if (cmd.includes('pdf') || cmd.includes('télécharger')){ window.print(); }
+    else if (cmd.includes('retour') || cmd.includes('liste')){ retourListe(); }
+    else if (cmd.includes('lire') || cmd.includes('lis')){ lireDocument(); }
+    else { speak('Commande non reconnue. Dites : nouveau projet, enregistrer, vérifier, PDF, retour, lire.'); }
 }
 
 // ============ CHARGEMENT LISTE ============
@@ -553,18 +600,11 @@ async function chargerListe(){
             .from('redaction_projets')
             .select('*')
             .order('updated_at', { ascending: false });
-
         if (error) throw error;
-
         if (!data || data.length === 0){
-            grid.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-file-alt"></i>
-                    Aucune rédaction encore. Cliquez sur « Nouveau projet » pour commencer.
-                </div>`;
+            grid.innerHTML = `<div class="empty-state"><i class="fas fa-file-alt"></i>Aucune rédaction encore. Cliquez sur « Nouveau projet » ou sur un projet source ci-dessous.</div>`;
             return;
         }
-
         grid.innerHTML = '';
         data.forEach(r => {
             const div = document.createElement('div');
@@ -572,8 +612,8 @@ async function chargerListe(){
             div.onclick = () => ouvrirRedaction(r);
             const dt = new Date(r.updated_at || r.created_at).toLocaleDateString('fr-FR');
             div.innerHTML = `
-                <span class="badge-source">${r.projet_source || 'LIBRE'}</span>
-                <span class="badge-statut">${(r.statut || 'brouillon').toUpperCase()}</span>
+                <span class="badge-source">${escapeHtml(r.projet_source || 'LIBRE')}</span>
+                <span class="badge-statut">${escapeHtml((r.statut || 'brouillon').toUpperCase())}</span>
                 <h3>${escapeHtml(r.titre || '(sans titre)')}</h3>
                 <p>${escapeHtml((r.contexte || '').slice(0,110))}${(r.contexte||'').length>110?'…':''}</p>
                 <div class="meta">
@@ -583,10 +623,7 @@ async function chargerListe(){
             grid.appendChild(div);
         });
     } catch (e){
-        grid.innerHTML = `<div class="empty-state" style="color:#ff4757;">
-            <i class="fas fa-exclamation-triangle"></i>
-            Erreur chargement : ${escapeHtml(e.message)}
-        </div>`;
+        grid.innerHTML = `<div class="empty-state" style="color:#ff4757;"><i class="fas fa-exclamation-triangle"></i>Erreur chargement : ${escapeHtml(e.message)}</div>`;
     }
 }
 
@@ -595,25 +632,19 @@ function chargerSources(){
     const select = document.getElementById('fProjetSource');
     grid.innerHTML = '';
     select.innerHTML = '<option value="">— Rédaction libre —</option>';
-
     PROJETS_SOURCES.forEach(p => {
-        // Select
         const opt = document.createElement('option');
-        opt.value = p.id;
-        opt.textContent = p.titre;
+        opt.value = p.id; opt.textContent = p.titre;
         select.appendChild(opt);
 
-        // Carte
         const div = document.createElement('div');
         div.className = 'card-redaction';
         div.onclick = () => nouveauProjet(p.id);
         div.innerHTML = `
             <span class="badge-source">SOURCE</span>
             <h3>${escapeHtml(p.titre)}</h3>
-            <p>Cliquez pour créer une nouvelle rédaction basée sur ce projet.</p>
-            <div class="meta">
-                <span><i class="fas fa-plus-circle"></i> Nouvelle rédaction</span>
-            </div>`;
+            <p>Cliquez pour ouvrir une rédaction pré-remplie à partir de ce projet.</p>
+            <div class="meta"><span><i class="fas fa-plus-circle"></i> Nouvelle rédaction</span></div>`;
         grid.appendChild(div);
     });
 }
@@ -622,15 +653,15 @@ function ajouterSourcePersonnalisee(){
     const titre = prompt('Titre du nouveau projet source :');
     if (!titre || !titre.trim()) return;
     const id = 'custom_' + Date.now();
-    PROJETS_SOURCES.push({ id, titre: titre.trim(), file: null });
-
+    PROJETS_SOURCES.push({
+        id, titre: titre.trim(),
+        contexte:'', probleme:'', objectifs:'', beneficiaires:'',
+        realisations:'', partenaires:'', budget:'', benefice_financeur:''
+    });
     const select = document.getElementById('fProjetSource');
-    const opt = document.createElement('option');
-    opt.value = id;
-    opt.textContent = titre.trim();
+    const opt = document.createElement('option'); opt.value = id; opt.textContent = titre.trim();
     select.appendChild(opt);
 
-    // Carte
     const grid = document.getElementById('gridSources');
     const div = document.createElement('div');
     div.className = 'card-redaction';
@@ -639,48 +670,40 @@ function ajouterSourcePersonnalisee(){
         <span class="badge-source">SOURCE</span>
         <h3>${escapeHtml(titre.trim())}</h3>
         <p>Projet source ajouté manuellement.</p>
-        <div class="meta">
-            <span><i class="fas fa-plus-circle"></i> Nouvelle rédaction</span>
-        </div>`;
+        <div class="meta"><span><i class="fas fa-plus-circle"></i> Nouvelle rédaction</span></div>`;
     grid.appendChild(div);
-
     speak('Projet source ajouté : ' + titre.trim());
 }
 
 // ============ FORMULAIRE ============
 function nouveauProjet(sourceId){
+    const source = sourceId ? PROJETS_SOURCES.find(x => x.id === sourceId) : null;
+
     redactionEnCours = {
         id: null,
         projet_source: sourceId || '',
-        titre: '',
-        contexte: '',
-        probleme: '',
-        objectifs: '',
-        beneficiaires: '',
-        realisations: '',
-        partenaires: '',
-        budget: '',
-        benefice_financeur: '',
+        titre: source ? source.titre : '',
+        contexte: source ? source.contexte : '',
+        probleme: source ? source.probleme : '',
+        objectifs: source ? source.objectifs : '',
+        beneficiaires: source ? source.beneficiaires : '',
+        realisations: source ? source.realisations : '',
+        partenaires: source ? source.partenaires : '',
+        budget: source ? source.budget : '',
+        benefice_financeur: source ? source.benefice_financeur : '',
         statut: 'brouillon'
     };
 
-    if (sourceId){
-        const p = PROJETS_SOURCES.find(x => x.id === sourceId);
-        if (p){
-            redactionEnCours.titre = p.titre;
-            // Si le fichier source existe et est accessible, on laisse vide pour l'instant
-            // (extraction auto des sections = étape future)
-        }
-    }
-
     document.getElementById('formTitle').textContent =
-        redactionEnCours.titre ? 'Édition : ' + redactionEnCours.titre : 'Nouvelle rédaction';
+        source ? 'Édition : ' + source.titre : 'Nouvelle rédaction';
 
     remplirFormulaire(redactionEnCours);
     document.getElementById('listSection').style.display = 'none';
     document.getElementById('formSection').style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    speak('Formulaire prêt. Remplissez les sections obligatoires : contexte, problème, objectifs.');
+    speak(source
+        ? 'Formulaire pré-rempli à partir du projet ' + source.titre + '. Vérifiez les sections puis enregistrez.'
+        : 'Formulaire vide. Remplissez les sections obligatoires : contexte, problème, objectifs.');
 }
 
 function ouvrirRedaction(r){
@@ -707,14 +730,29 @@ function remplirFormulaire(r){
 }
 
 function onSourceChange(){
-    // À l'étape suivante : extraction auto des sections depuis le fichier projet
-    // Pour l'instant, on met juste à jour le titre si vide.
     const sid = document.getElementById('fProjetSource').value;
     if (!sid) return;
     const p = PROJETS_SOURCES.find(x => x.id === sid);
     if (!p) return;
-    const titreEl = document.getElementById('fTitre');
-    if (!titreEl.value.trim()) titreEl.value = p.titre;
+    const champs = ['titre','contexte','probleme','objectifs','beneficiaires','realisations','partenaires','budget','benefice_financeur'];
+    champs.forEach(c => {
+        const elId = 'f' + c.charAt(0).toUpperCase() + c.slice(1).replace(/_/g,'');
+        // mapping spécifique pour benefice_financeur
+        let target = document.getElementById('f' + capitaliser(c));
+        if (!target) target = document.getElementById('fBeneficeFinanceur');
+        if (target && !target.value.trim() && p[c]) target.value = p[c];
+    });
+    speak('Pré-remplissage effectué à partir du projet sélectionné.');
+}
+
+function capitaliser(s){
+    // mapping explicite
+    const map = {
+        titre:'fTitre', contexte:'fContexte', probleme:'fProbleme', objectifs:'fObjectifs',
+        beneficiaires:'fBeneficiaires', realisations:'fRealisations', partenaires:'fPartenaires',
+        budget:'fBudget', benefice_financeur:'fBeneficeFinanceur'
+    };
+    return map[s] ? map[s].substring(1) : s;
 }
 
 function retourListe(){
@@ -729,11 +767,8 @@ async function sauvegarderProjet(){
     if (!redactionEnCours) return;
     const titre = document.getElementById('fTitre').value.trim();
     if (!titre){
-        alert('Le titre est obligatoire.');
-        speak('Attention, le titre est obligatoire.');
-        return;
+        alert('Le titre est obligatoire.'); speak('Attention, le titre est obligatoire.'); return;
     }
-
     const payload = {
         projet_source: document.getElementById('fProjetSource').value || null,
         titre: titre,
@@ -748,22 +783,12 @@ async function sauvegarderProjet(){
         statut: 'brouillon',
         created_by: (memberPrenom + ' ' + memberNom).trim()
     };
-
     try {
         let result;
         if (redactionEnCours.id){
-            result = await supabaseClient
-                .from('redaction_projets')
-                .update(payload)
-                .eq('id', redactionEnCours.id)
-                .select()
-                .single();
+            result = await supabaseClient.from('redaction_projets').update(payload).eq('id', redactionEnCours.id).select().single();
         } else {
-            result = await supabaseClient
-                .from('redaction_projets')
-                .insert(payload)
-                .select()
-                .single();
+            result = await supabaseClient.from('redaction_projets').insert(payload).select().single();
         }
         if (result.error) throw result.error;
         redactionEnCours = { ...result.data };
@@ -775,7 +800,6 @@ async function sauvegarderProjet(){
     }
 }
 
-// ============ VÉRIFICATION ============
 function verifierDocument(){
     const checks = [
         { id:'fTitre', label:'Titre', required:true },
@@ -788,28 +812,21 @@ function verifierDocument(){
         { id:'fBudget', label:'Budget', required:false },
         { id:'fBeneficeFinanceur', label:'Bénéfice pour le financeur', required:false }
     ];
-
     const manquants = [];
     checks.forEach(c => {
         const v = (document.getElementById(c.id).value || '').trim();
         if (!v) manquants.push({ label: c.label, required: c.required });
     });
-
     if (manquants.length === 0){
         const msg = 'Toutes les sections sont remplies. Le document semble complet.';
-        speak(msg); showVoiceStatus('✅ ' + msg);
-        return;
+        speak(msg); showVoiceStatus('✅ ' + msg); return;
     }
-
     const req = manquants.filter(m => m.required).map(m => m.label);
     const opt = manquants.filter(m => !m.required).map(m => m.label);
-
     let phrase = '';
     if (req.length) phrase += 'Sections obligatoires manquantes : ' + req.join(', ') + '. ';
     if (opt.length) phrase += 'Sections optionnelles non remplies : ' + opt.join(', ') + '.';
-
-    speak(phrase);
-    showVoiceStatus('⚠️ ' + phrase);
+    speak(phrase); showVoiceStatus('⚠️ ' + phrase);
 }
 
 function lireDocument(){
@@ -829,19 +846,15 @@ function lireDocument(){
     speak(parts.join('. '));
 }
 
-// ============ UTIL ============
 function escapeHtml(s){
-    return String(s || '').replace(/[&<>"']/g, c => ({
-        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-    }[c]));
+    return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-// ============ INIT ============
 window.addEventListener('load', () => {
     chargerListe();
     chargerSources();
     setTimeout(()=>{
-        speak('Bienvenue dans l\'espace rédaction projet. Dites « nouveau projet » ou utilisez les boutons.');
+        speak('Bienvenue dans l\'espace rédaction projet. Cliquez sur un projet source pour ouvrir une rédaction pré-remplie.');
     }, 800);
 });
 window.addEventListener('beforeunload', ()=> synth.cancel());
