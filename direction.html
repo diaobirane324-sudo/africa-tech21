@@ -515,7 +515,7 @@ const MEMBRES_DIRECTION = {
         nom: 'BIRANE',
         prenom: 'DIAO',
         fonction: 'PRÉSIDENT DE LA COMMUNAUTÉ',
-        postes: ['espace-major', 'admin-examens', 'espace-projets', 'csiv', 'secretariat', 'inventaire', 'finance', 'communication', 'vice-president', 'centre-diagnostic']
+        postes: ['espace-major', 'admin-examens', 'espace-projets', 'csiv', 'secretariat', 'inventaire', 'finance', 'communication', 'vice-president', 'centre-diagnostic', 'redaction-projet']
     },
     'AT21_0016': {
         id: 'AT21_0016',
@@ -536,7 +536,7 @@ const MEMBRES_DIRECTION = {
         nom: 'MOUHAMED',
         prenom: 'DIALLO',
         fonction: 'RESPONSABLE DES PROJETS',
-        postes: ['admin-examens', 'espace-projets']
+        postes: ['admin-examens', 'espace-projets', 'redaction-projet']
     },
     'AT21_0036': {
         id: 'AT21_0036',
@@ -583,6 +583,13 @@ const CARTES = {
         description: 'Rédaction des projets et évaluation des travaux des membres.',
         status: 'RÉSERVÉ PROJETS + PRÉSIDENT',
         link: 'espace-projets.html'
+    },
+    'redaction-projet': {
+        icon: 'fa-file-signature',
+        title: 'RÉDACTION PROJET',
+        description: 'Rédiger et structurer les documents de projet destinés aux financeurs. Export PDF professionnel.',
+        status: 'RÉSERVÉ PROJETS + PRÉSIDENT',
+        link: 'redaction-projet.html'
     },
     'csiv': {
         icon: 'fa-crown',
@@ -778,7 +785,6 @@ function verifierIdMembre() {
     setStatusID('✅ BIENVENUE ' + membre.prenom + ' ' + membre.nom, 'success');
     membreActuel = membre;
 
-    // ⭐ NOUVEAU : Sauvegarde de l'ID Direction pour les autres pages (ex: centre-diagnostic)
     try {
         localStorage.setItem('directionMemberId', membre.id);
         localStorage.setItem('directionMemberNom', membre.nom);
