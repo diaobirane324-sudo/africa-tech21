@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rédaction Projet | AFRICA.TECH21</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Exo 2','Segoe UI',sans-serif; }
+    :root{
+        --gold:#ffd700; --gold-glow:0 0 30px rgba(255,215,0,.5);
+        --neon-green:#00ff88; --neon-blue:#00f0ff; --neon-purple:#7b2cbf;
+        --deep-space:#050510; --dark-space:#0a0a12;
+        --text-primary:#fff; --text-secondary:#a0a8c0;
+        --glass:rgba(255,255,255,.05); --glass-border:rgba(255,255,255,.1);
+    }
+    body{
+        background:
+            radial-gradient(circle at 20% 20%, rgba(255,215,0,.05) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(123,44,191,.08) 0%, transparent 50%),
+            linear-gradient(135deg,var(--deep-space) 0%,var(--dark-space) 50%,#0f0f1f 100%);
+        color:var(--text-primary); min-height:100vh; padding:2rem;
+    }
+    .hologram-grid{
+        position:fixed; top:0; left:0; width:100%; height:100%;
+        background:
+            linear-gradient(90deg, rgba(255,215,0,.02) 1px, transparent 1px),
+            linear-gradient(180deg, rgba(255,215,0,.02) 1px, transparent 1px);
+        background-size:60px 60px; animation:gridScan 25s linear infinite;
+        pointer-events:none; z-index:-2;
+    }
+    @keyframes gridScan{0%{transform:translate(0,0);}100%{transform:translate(60px,60px);}}
+    .page-container{max-width:1400px; margin:0 auto;}
+    .back-btn{
+        display:inline-block; padding:.8rem 2rem; margin-bottom:2rem;
+        background:rgba(255,215,0,.1); border:1px solid var(--gold);
+        border-radius:10px; color:var(--gold); text-decoration:none;
+        font-weight:600; transition:all .3s ease;
+    }
+    .back-btn:hover{background:rgba(255,215,0,.2); box-shadow:var(--gold-glow);}
+    .page-header{
+        background:linear-gradient(135deg, rgba(255,215,0,.08), rgba(123,44,191,.08));
+        backdrop-filter:blur(20px); border:1px solid rgba(255,215,0,.3);
+        border-radius:30px; padding:3rem 2.5rem; margin-bottom:2.5rem;
+        text-align:center; box-shadow:0 0 60px rgba(255,215,0,.15);
+        position:relative; overflow:hidden;
+    }
+    .page-header::before{
+        content:''; position:absolute; top:-50%; left:-50%;
+        width:200%; height:200%;
+        background:radial-gradient(circle, rgba(255,215,0,.05) 0%, transparent 60%);
+        animation:rotateGlow 20s linear infinite;
+    }
+    @keyframes rotateGlow{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+    .page-header h1{
+        font-family:'Orbitron',sans-serif; font-size:2.6rem;
+        background:linear-gradient(45deg,var(--gold),#fff,var(--gold));
+        -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+        background-clip:text; letter-spacing:3px; font-weight:900;
+        position:relative; z-index:1;
+    }
+    .page-header .subtitle{
+        color:var(--text-secondary); margin-top:.8rem; font-size:1rem;
+        letter-spacing:2px; text-transform:uppercase; position:relative; z-index:1;
+    }
+    .user-info{
+        margin-top:1.2rem; display:inline-block;
+        background:rgba(255,215,0,.1); border:1px solid rgba(255,215,0,.3);
+        padding:.6rem 1.6rem; border-radius:20px; color:var(--gold);
+        font-weight:600; font-size:.9rem; position:relative; z-index:1;
+    }
+    .toolbar{
+        display:flex; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;
+        justify-content:space-between; align-items:center;
+    }
+    .toolbar-left, .toolbar-right { display:flex; gap:.8rem; flex-wrap:wrap; }
+    .btn-main{
+        display:inline-flex; align-items:center; gap:.6rem;
+        padding:.9rem 1.6rem; border-radius:12px;
+        background:linear-gradient(135deg,var(--gold),#ff8c00);
+        color:#0a0505; font-weight:700; border:none;
+        cursor:pointer; transition:all .3s ease;
+        font-family:'Orbitron',sans-serif; letter-spacing:1px; font-size:.85rem;
+        text-transform:uppercase;
+    }
+    .btn-main:hover{transform:translateY(-3px); box-shadow:0 10px 30px rgba(255,215,0,.5);}
+    .btn-ghost{
+        display:inline-flex; align-items:center; gap:.6rem;
+        padding:.9rem 1.6rem; border-radius:12px;
+        background:rgba(255,215,0,.08); color:var(--gold);
+        border:1px solid rgba(255,215,0,.4); font-weight:700;
+        cursor:pointer; transition:all .3s ease;
+        font-family:'Orbitron',sans-serif; letter-spacing:1px; font-size:.85rem;
+        text-transform:uppercase;
+    }
+    .btn-ghost:hover{background:rgba(255,215,0,.18);}
+    .btn-mic{
+        display:inline-flex; align-items:center; gap:.6rem;
+        padding:.9rem 1.6rem; border-radius:12px;
+        background:rgba(0,255,136,.08); color:var(--neon-green);
+        border:1px solid var(--neon-green); font-weight:700;
+        cursor:pointer; transition:all .3s ease;
+        font-family:'Orbitron',sans-serif; letter-spacing:1px; font-size:.85rem;
+        text-transform:uppercase;
+    }
+    .btn-mic:hover{background:rgba(0,255,136,.18);}
+    .btn-mic.active{background:rgba(0,255,136,.3); box-shadow:0 0 25px rgba(0,255,136,.5);}
+
+    .section-title{
+        font-family:'Orbitron',sans-serif; font-size:1.4rem; color:var(--gold);
+        margin-bottom:1.4rem; display:flex; align-items:center; gap:.8rem;
+        letter-spacing:2px;
+    }
+    .section-title i{color:var(--neon-green);}
+
+    /* Grille des rédactions */
+    .grid-redactions{
+        display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+        gap:1.5rem; margin-bottom:2.5rem;
+    }
+    .card-redaction{
+        background:linear-gradient(135deg, rgba(255,215,0,.04), rgba(123,44,191,.04));
+        backdrop-filter:blur(15px);
+        border:1px solid rgba(255,215,0,.2);
+        border-radius:20px; padding:1.8rem;
+        transition:all .3s ease; cursor:pointer; position:relative;
+        overflow:hidden;
+    }
+    .card-redaction::before{
+        content:''; position:absolute; top:0; left:-100%;
+        width:100%; height:100%;
+        background:linear-gradient(90deg, transparent, rgba(255,215,0,.08), transparent);
+        transition:.6s;
+    }
+    .card-redaction:hover{
+        transform:translateY(-6px); border-color:var(--gold);
+        box-shadow:0 20px 50px rgba(0,0,0,.6), 0 0 40px rgba(255,215,0,.3);
+    }
+    .card-redaction:hover::before{left:100%;}
+    .card-redaction .badge-source{
+        display:inline-block; padding:.2rem .8rem;
+        background:rgba(0,240,255,.12); border:1px solid var(--neon-blue);
+        border-radius:10px; font-size:.7rem; color:var(--neon-blue);
+        letter-spacing:1.5px; margin-bottom:1rem;
+        font-family:'Orbitron',sans-serif;
+    }
+    .card-redaction .badge-statut{
+        display:inline-block; padding:.2rem .8rem;
+        background:rgba(0,255,136,.12); border:1px solid var(--neon-green);
+        border-radius:10px; font-size:.7rem; color:var(--neon-green);
+        letter-spacing:1.5px; margin-bottom:1rem; margin-left:.4rem;
+        font-family:'Orbitron',sans-serif;
+    }
+    .card-redaction h3{
+        font-family:'Orbitron',sans-serif; color:var(--gold);
+        font-size:1.2rem; margin-bottom:.6rem; letter-spacing:1px;
+    }
+    .card-redaction p{
+        color:var(--text-secondary); font-size:.9rem;
+        line-height:1.5; margin-bottom:1rem;
+    }
+    .card-redaction .meta{
+        color:var(--text-secondary); font-size:.75rem;
+        border-top:1px solid rgba(255,255,255,.08);
+        padding-top:.7rem; display:flex; justify-content:space-between;
+    }
+
+    .empty-state{
+        text-align:center; padding:3rem 1.5rem;
+        border:1px dashed rgba(255,215,0,.3); border-radius:20px;
+        color:var(--text-secondary); margin-bottom:2rem;
+    }
+    .empty-state i{
+        font-size:3rem; color:var(--gold); margin-bottom:1rem;
+        display:block; opacity:.6;
+    }
+
+    /* ============ FORMULAIRE ============ */
+    #formSection{display:none;}
+    .form-card{
+        background:linear-gradient(135deg, rgba(255,215,0,.03), rgba(123,44,191,.03));
+        backdrop-filter:blur(15px);
+        border:1px solid rgba(255,215,0,.25);
+        border-radius:20px; padding:2rem; margin-bottom:1.5rem;
+    }
+    .form-row{display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;}
+    .form-group{margin-bottom:1.2rem;}
+    .form-group label{
+        display:block; color:var(--gold); font-weight:600;
+        font-size:.85rem; margin-bottom:.5rem;
+        font-family:'Orbitron',sans-serif; letter-spacing:1px;
+    }
+    .form-group label .req{color:#ff4757; margin-left:.3rem;}
+    .form-group input[type="text"],
+    .form-group textarea,
+    .form-group select{
+        width:100%; padding:.9rem 1rem;
+        background:rgba(255,255,255,.05);
+        border:1px solid rgba(255,215,0,.25);
+        border-radius:10px; color:var(--text-primary);
+        font-family:'Exo 2',sans-serif; font-size:.95rem;
+        outline:none; transition:all .3s ease;
+        resize:vertical;
+    }
+    .form-group textarea{min-height:90px; line-height:1.6;}
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus{
+        border-color:var(--gold);
+        box-shadow:0 0 20px rgba(255,215,0,.3);
+        background:rgba(255,215,0,.05);
+    }
+    .form-group .hint{
+        color:var(--text-secondary); font-size:.75rem;
+        margin-top:.4rem; font-style:italic;
+    }
+
+    .form-actions{
+        display:flex; flex-wrap:wrap; gap:1rem;
+        justify-content:space-between; margin-top:1.5rem;
+        padding-top:1.5rem;
+        border-top:1px solid rgba(255,255,255,.08);
+    }
+
+    /* ============ VOIX ============ */
+    .voice-status{
+        position:fixed; bottom:1.5rem; right:1.5rem;
+        background:linear-gradient(135deg, #0a0a12, #050510);
+        border:2px solid var(--neon-green);
+        border-radius:15px; padding:1rem 1.4rem;
+        color:var(--neon-green); font-weight:600;
+        font-size:.85rem; max-width:320px;
+        box-shadow:0 0 40px rgba(0,255,136,.4);
+        z-index:9998; display:none;
+    }
+    .voice-status.show{display:block; animation:voiceAppear .3s ease;}
+    @keyframes voiceAppear{from{opacity:0; transform:translateY(20px);}to{opacity:1; transform:translateY(0);}}
+
+    /* ============ PRINT ============ */
+    @media print{
+        body{background:#fff !important; color:#000 !important; padding:0 !important;}
+        .hologram-grid, .back-btn, .toolbar, .page-header .user-info,
+        .btn-main, .btn-ghost, .btn-mic, .voice-status,
+        #listSection, #formActionsPrint, .form-actions, .empty-state{display:none !important;}
+        .page-header{background:#fff !important; border:none !important; box-shadow:none !important; padding:1.5rem 0 !important;}
+        .page-header h1{color:#6a0dad !important; -webkit-text-fill-color:#6a0dad !important;}
+        .form-card{background:#fff !important; border:1px solid #ccc !important; page-break-inside:avoid;}
+        .form-group label{color:#6a0dad !important;}
+        .form-group input, .form-group textarea, .form-group select{
+            background:#f9f9f9 !important; color:#000 !important;
+            border:1px solid #999 !important;
+        }
+        @page{size:A4; margin:2cm;}
+    }
+</style>
+</head>
+<body>
+<div class="hologram-grid"></div>
+
+<div class="page-container">
+    <a href="espace-direction.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i> RETOUR ESPACE DIRECTION
+    </a>
+
+    <header class="page-header">
+        <h1>RÉDACTION PROJET</h1>
+        <p class="subtitle">Centre de rédaction des projets pour financeurs</p>
+        <div class="user-info" id="userInfo">
+            <i class="fas fa-user-shield"></i> Chargement...
+        </div>
+    </header>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <button class="btn-main" onclick="nouveauProjet()">
+                <i class="fas fa-plus-circle"></i> Nouveau projet
+            </button>
+            <button class="btn-ghost" onclick="ajouterSourcePersonnalisee()">
+                <i class="fas fa-file-import"></i> Ajouter un projet source
+            </button>
+        </div>
+        <div class="toolbar-right">
+            <button class="btn-mic" id="btnVoice" onclick="toggleVoice()">
+                <i class="fas fa-microphone"></i> Commande vocale
+            </button>
+        </div>
+    </div>
+
+    <!-- LISTE -->
+    <div id="listSection">
+        <h2 class="section-title"><i class="fas fa-folder-open"></i> MES RÉDACTIONS</h2>
+        <div class="grid-redactions" id="gridRedactions">
+            <div class="empty-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                Chargement des rédactions...
+            </div>
+        </div>
+
+        <h2 class="section-title" style="margin-top:2rem;"><i class="fas fa-cubes"></i> PROJETS SOURCES DISPONIBLES</h2>
+        <div class="grid-redactions" id="gridSources"></div>
+    </div>
+
+    <!-- FORMULAIRE -->
+    <div id="formSection">
+        <div class="form-card">
+            <h2 class="section-title">
+                <i class="fas fa-edit"></i>
+                <span id="formTitle">Nouvelle rédaction</span>
+            </h2>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>PROJET SOURCE</label>
+                    <select id="fProjetSource" onchange="onSourceChange()">
+                        <option value="">— Rédaction libre —</option>
+                    </select>
+                    <div class="hint">Sélectionnez un projet existant pour pré-remplir les champs vides.</div>
+                </div>
+                <div class="form-group">
+                    <label>TITRE DU PROJET <span class="req">*</span></label>
+                    <input type="text" id="fTitre" placeholder="Ex : IRRITECH — Système d'arrosage automatique">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>CONTEXTE <span class="req">*</span></label>
+                <textarea id="fContexte" placeholder="Contexte général, situation actuelle, problème sociétal..."></textarea>
+                <div class="hint">Pourquoi ce projet existe ? Dans quel environnement ?</div>
+            </div>
+
+            <div class="form-group">
+                <label>ÉTUDE DU PROBLÈME <span class="req">*</span></label>
+                <textarea id="fProbleme" placeholder="Décrivez le problème de manière précise : causes, conséquences, populations affectées..."></textarea>
+                <div class="hint">Approche cadre logique : le problème doit être exposé avec précision et cohérence.</div>
+            </div>
+
+            <div class="form-group">
+                <label>OBJECTIFS (SMART) <span class="req">*</span></label>
+                <textarea id="fObjectifs" placeholder="Objectif général + objectifs spécifiques, mesurables, atteignables, réalistes, temporels..."></textarea>
+                <div class="hint">Arbre à solutions : transformez les problèmes en objectifs.</div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>BÉNÉFICIAIRES</label>
+                    <textarea id="fBeneficiaires" placeholder="Qui bénéficie directement / indirectement du projet ?"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>RÉALISATIONS / ACTIVITÉS</label>
+                    <textarea id="fRealisations" placeholder="Étapes concrètes, livrables, activités prévues..."></textarea>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>PARTENAIRES</label>
+                    <textarea id="fPartenaires" placeholder="Partenaires techniques, institutionnels, financiers..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>BUDGET / FINANCEMENT</label>
+                    <textarea id="fBudget" placeholder="Postes de dépenses, estimation FCFA, cofinancements..."></textarea>
+                    <div class="hint">Laissé vide si non disponible — sera complété par le responsable finance.</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>BÉNÉFICE POUR LE FINANCEUR</label>
+                <textarea id="fBeneficeFinanceur" placeholder="Retombées pour le financeur, visibilité, impact social, alignement ODD..."></textarea>
+            </div>
+
+            <div class="form-actions">
+                <div style="display:flex; gap:.8rem; flex-wrap:wrap;">
+                    <button class="btn-main" onclick="sauvegarderProjet()">
+                        <i class="fas fa-save"></i> Enregistrer
+                    </button>
+                    <button class="btn-mic" onclick="verifierDocument()">
+                        <i class="fas fa-check-circle"></i> Vérifier
+                    </button>
+                    <button class="btn-main" onclick="window.print()">
+                        <i class="fas fa-file-pdf"></i> Télécharger PDF
+                    </button>
+                </div>
+                <div>
+                    <button class="btn-ghost" onclick="retourListe()">
+                        <i class="fas fa-times"></i> Retour liste
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Voix overlay -->
+<div class="voice-status" id="voiceStatus"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ============ SUPABASE ============
+const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ============ ACCÈS ============
+const ACCES_AUTORISES = ['AT21_006', 'AT21_ZAM68'];
+const memberId = localStorage.getItem('directionMemberId');
+if (!memberId || !ACCES_AUTORISES.includes(memberId)) {
+    alert('⛔ Accès refusé. Seuls le Président et le Responsable des Projets peuvent accéder à cet espace.');
+    window.location.href = 'espace-direction.html';
+}
+const memberNom = localStorage.getItem('directionMemberNom') || '';
+const memberPrenom = localStorage.getItem('directionMemberPrenom') || '';
+document.getElementById('userInfo').innerHTML =
+    `<i class="fas fa-user-shield"></i> ${memberPrenom} ${memberNom}`;
+
+// ============ PROJETS SOURCES ============
+const PROJETS_SOURCES = [
+    { id:'irritech', titre:'IRRITECH — Système d\'arrosage automatique intelligent', file:'irritech.html' },
+    { id:'mk40', titre:'MK-40 — Couveuse automatique intelligente', file:'mk-40.html' },
+    { id:'oxy', titre:'Projet OXY — Système d\'assistance respiratoire', file:'projet-oxy.html' },
+    { id:'qualiwash', titre:'QUALIWASH — Mini machines à laver locales', file:'qualiwash.html' },
+    { id:'rga', titre:'RGA — Robot de guide et assistance', file:'rga.html' },
+    { id:'rsma', titre:'RSMA — Robot sous-marin autonome', file:'rsma.html' },
+    { id:'sagaf', titre:'SAGAF — Système d\'alerte pour fuite de gaz', file:'sagaf.html' },
+    { id:'binv', titre:'BINV — Bâton intelligent pour les non-voyants', file:'binv.html' }
+];
+
+// ============ ÉTAT ============
+let redactionEnCours = null; // { id?, ...champs }
+let recListening = false;
+let recognition = null;
+
+// ============ VOIX ============
+const synth = window.speechSynthesis;
+let chosenVoice = null;
+
+function pickVoice(){
+    const voices = synth.getVoices();
+    if (!voices || !voices.length) return;
+    const fr = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith('fr'));
+    if (!fr.length) return;
+    const priority = ['natural','neural','google','microsoft','amelie','amélie','thomas','audrey','marie','julie'];
+    let best = fr[0], bestScore = -1;
+    for (const v of fr){
+        const n = (v.name||'').toLowerCase();
+        let s = 0;
+        priority.forEach((k,i)=>{ if(n.includes(k)) s += (priority.length-i)*10; });
+        if ((v.lang||'').toLowerCase()==='fr-fr') s += 5;
+        if (n.includes('compact')||n.includes('espeak')) s -= 20;
+        if (s > bestScore){ bestScore = s; best = v; }
+    }
+    chosenVoice = best;
+}
+if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = pickVoice;
+pickVoice();
+
+function speak(text){
+    if (!text) return;
+    const u = new SpeechSynthesisUtterance(text);
+    if (chosenVoice){ u.voice = chosenVoice; u.lang = chosenVoice.lang; }
+    else u.lang = 'fr-FR';
+    u.rate = 1; u.pitch = 1; u.volume = 1;
+    synth.speak(u);
+    showVoiceStatus(text);
+}
+
+function showVoiceStatus(text){
+    const el = document.getElementById('voiceStatus');
+    el.textContent = text;
+    el.classList.add('show');
+    clearTimeout(el._t);
+    el._t = setTimeout(()=>el.classList.remove('show'), 4000);
+}
+
+// ============ RECONNAISSANCE VOCALE ============
+function initRecognition(){
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR){
+        alert('Reconnaissance vocale non supportée par ce navigateur.');
+        return false;
+    }
+    recognition = new SR();
+    recognition.lang = 'fr-FR';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onresult = (e)=>{
+        const txt = e.results[0][0].transcript.toLowerCase().trim();
+        showVoiceStatus('🎤 « ' + txt + ' »');
+        traiterCommande(txt);
+    };
+    recognition.onerror = (e)=>{
+        recListening = false;
+        document.getElementById('btnVoice').classList.remove('active');
+        if (e.error !== 'no-speech') showVoiceStatus('❌ Erreur micro : ' + e.error);
+    };
+    recognition.onend = ()=>{
+        recListening = false;
+        document.getElementById('btnVoice').classList.remove('active');
+    };
+    return true;
+}
+
+function toggleVoice(){
+    if (!recognition && !initRecognition()) return;
+    const btn = document.getElementById('btnVoice');
+    if (recListening){
+        recognition.stop();
+        recListening = false;
+        btn.classList.remove('active');
+        speak('Commande vocale arrêtée.');
+    } else {
+        try {
+            recognition.start();
+            recListening = true;
+            btn.classList.add('active');
+            speak('Je vous écoute.');
+        } catch(e){ console.warn(e); }
+    }
+}
+
+function traiterCommande(cmd){
+    if (cmd.includes('nouveau projet') || cmd.includes('créer') || cmd.includes('nouvelle rédaction')){
+        nouveauProjet();
+        speak('Nouvelle rédaction ouverte.');
+    }
+    else if (cmd.includes('enregistrer') || cmd.includes('sauvegarder')){
+        sauvegarderProjet();
+    }
+    else if (cmd.includes('vérifier') || cmd.includes('verifier')){
+        verifierDocument();
+    }
+    else if (cmd.includes('pdf') || cmd.includes('télécharger')){
+        window.print();
+    }
+    else if (cmd.includes('retour') || cmd.includes('liste')){
+        retourListe();
+    }
+    else if (cmd.includes('lire') || cmd.includes('lis')){
+        lireDocument();
+    }
+    else {
+        speak('Commande non reconnue. Dites : nouveau projet, enregistrer, vérifier, PDF, retour, lire.');
+    }
+}
+
+// ============ CHARGEMENT LISTE ============
+async function chargerListe(){
+    const grid = document.getElementById('gridRedactions');
+    try {
+        const { data, error } = await supabaseClient
+            .from('redaction_projets')
+            .select('*')
+            .order('updated_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (!data || data.length === 0){
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-file-alt"></i>
+                    Aucune rédaction encore. Cliquez sur « Nouveau projet » pour commencer.
+                </div>`;
+            return;
+        }
+
+        grid.innerHTML = '';
+        data.forEach(r => {
+            const div = document.createElement('div');
+            div.className = 'card-redaction';
+            div.onclick = () => ouvrirRedaction(r);
+            const dt = new Date(r.updated_at || r.created_at).toLocaleDateString('fr-FR');
+            div.innerHTML = `
+                <span class="badge-source">${r.projet_source || 'LIBRE'}</span>
+                <span class="badge-statut">${(r.statut || 'brouillon').toUpperCase()}</span>
+                <h3>${escapeHtml(r.titre || '(sans titre)')}</h3>
+                <p>${escapeHtml((r.contexte || '').slice(0,110))}${(r.contexte||'').length>110?'…':''}</p>
+                <div class="meta">
+                    <span><i class="fas fa-user"></i> ${escapeHtml(r.created_by||'')}</span>
+                    <span><i class="fas fa-clock"></i> ${dt}</span>
+                </div>`;
+            grid.appendChild(div);
+        });
+    } catch (e){
+        grid.innerHTML = `<div class="empty-state" style="color:#ff4757;">
+            <i class="fas fa-exclamation-triangle"></i>
+            Erreur chargement : ${escapeHtml(e.message)}
+        </div>`;
+    }
+}
+
+function chargerSources(){
+    const grid = document.getElementById('gridSources');
+    const select = document.getElementById('fProjetSource');
+    grid.innerHTML = '';
+    select.innerHTML = '<option value="">— Rédaction libre —</option>';
+
+    PROJETS_SOURCES.forEach(p => {
+        // Select
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = p.titre;
+        select.appendChild(opt);
+
+        // Carte
+        const div = document.createElement('div');
+        div.className = 'card-redaction';
+        div.onclick = () => nouveauProjet(p.id);
+        div.innerHTML = `
+            <span class="badge-source">SOURCE</span>
+            <h3>${escapeHtml(p.titre)}</h3>
+            <p>Cliquez pour créer une nouvelle rédaction basée sur ce projet.</p>
+            <div class="meta">
+                <span><i class="fas fa-plus-circle"></i> Nouvelle rédaction</span>
+            </div>`;
+        grid.appendChild(div);
+    });
+}
+
+function ajouterSourcePersonnalisee(){
+    const titre = prompt('Titre du nouveau projet source :');
+    if (!titre || !titre.trim()) return;
+    const id = 'custom_' + Date.now();
+    PROJETS_SOURCES.push({ id, titre: titre.trim(), file: null });
+
+    const select = document.getElementById('fProjetSource');
+    const opt = document.createElement('option');
+    opt.value = id;
+    opt.textContent = titre.trim();
+    select.appendChild(opt);
+
+    // Carte
+    const grid = document.getElementById('gridSources');
+    const div = document.createElement('div');
+    div.className = 'card-redaction';
+    div.onclick = () => nouveauProjet(id);
+    div.innerHTML = `
+        <span class="badge-source">SOURCE</span>
+        <h3>${escapeHtml(titre.trim())}</h3>
+        <p>Projet source ajouté manuellement.</p>
+        <div class="meta">
+            <span><i class="fas fa-plus-circle"></i> Nouvelle rédaction</span>
+        </div>`;
+    grid.appendChild(div);
+
+    speak('Projet source ajouté : ' + titre.trim());
+}
+
+// ============ FORMULAIRE ============
+function nouveauProjet(sourceId){
+    redactionEnCours = {
+        id: null,
+        projet_source: sourceId || '',
+        titre: '',
+        contexte: '',
+        probleme: '',
+        objectifs: '',
+        beneficiaires: '',
+        realisations: '',
+        partenaires: '',
+        budget: '',
+        benefice_financeur: '',
+        statut: 'brouillon'
+    };
+
+    if (sourceId){
+        const p = PROJETS_SOURCES.find(x => x.id === sourceId);
+        if (p){
+            redactionEnCours.titre = p.titre;
+            // Si le fichier source existe et est accessible, on laisse vide pour l'instant
+            // (extraction auto des sections = étape future)
+        }
+    }
+
+    document.getElementById('formTitle').textContent =
+        redactionEnCours.titre ? 'Édition : ' + redactionEnCours.titre : 'Nouvelle rédaction';
+
+    remplirFormulaire(redactionEnCours);
+    document.getElementById('listSection').style.display = 'none';
+    document.getElementById('formSection').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    speak('Formulaire prêt. Remplissez les sections obligatoires : contexte, problème, objectifs.');
+}
+
+function ouvrirRedaction(r){
+    redactionEnCours = { ...r };
+    document.getElementById('formTitle').textContent = 'Édition : ' + (r.titre || '');
+    remplirFormulaire(r);
+    document.getElementById('listSection').style.display = 'none';
+    document.getElementById('formSection').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    speak('Rédactions ouverte.');
+}
+
+function remplirFormulaire(r){
+    document.getElementById('fProjetSource').value = r.projet_source || '';
+    document.getElementById('fTitre').value = r.titre || '';
+    document.getElementById('fContexte').value = r.contexte || '';
+    document.getElementById('fProbleme').value = r.probleme || '';
+    document.getElementById('fObjectifs').value = r.objectifs || '';
+    document.getElementById('fBeneficiaires').value = r.beneficiaires || '';
+    document.getElementById('fRealisations').value = r.realisations || '';
+    document.getElementById('fPartenaires').value = r.partenaires || '';
+    document.getElementById('fBudget').value = r.budget || '';
+    document.getElementById('fBeneficeFinanceur').value = r.benefice_financeur || '';
+}
+
+function onSourceChange(){
+    // À l'étape suivante : extraction auto des sections depuis le fichier projet
+    // Pour l'instant, on met juste à jour le titre si vide.
+    const sid = document.getElementById('fProjetSource').value;
+    if (!sid) return;
+    const p = PROJETS_SOURCES.find(x => x.id === sid);
+    if (!p) return;
+    const titreEl = document.getElementById('fTitre');
+    if (!titreEl.value.trim()) titreEl.value = p.titre;
+}
+
+function retourListe(){
+    document.getElementById('formSection').style.display = 'none';
+    document.getElementById('listSection').style.display = 'block';
+    redactionEnCours = null;
+    chargerListe();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function sauvegarderProjet(){
+    if (!redactionEnCours) return;
+    const titre = document.getElementById('fTitre').value.trim();
+    if (!titre){
+        alert('Le titre est obligatoire.');
+        speak('Attention, le titre est obligatoire.');
+        return;
+    }
+
+    const payload = {
+        projet_source: document.getElementById('fProjetSource').value || null,
+        titre: titre,
+        contexte: document.getElementById('fContexte').value.trim(),
+        probleme: document.getElementById('fProbleme').value.trim(),
+        objectifs: document.getElementById('fObjectifs').value.trim(),
+        beneficiaires: document.getElementById('fBeneficiaires').value.trim(),
+        realisations: document.getElementById('fRealisations').value.trim(),
+        partenaires: document.getElementById('fPartenaires').value.trim(),
+        budget: document.getElementById('fBudget').value.trim(),
+        benefice_financeur: document.getElementById('fBeneficeFinanceur').value.trim(),
+        statut: 'brouillon',
+        created_by: (memberPrenom + ' ' + memberNom).trim()
+    };
+
+    try {
+        let result;
+        if (redactionEnCours.id){
+            result = await supabaseClient
+                .from('redaction_projets')
+                .update(payload)
+                .eq('id', redactionEnCours.id)
+                .select()
+                .single();
+        } else {
+            result = await supabaseClient
+                .from('redaction_projets')
+                .insert(payload)
+                .select()
+                .single();
+        }
+        if (result.error) throw result.error;
+        redactionEnCours = { ...result.data };
+        speak('Rédactions enregistrée avec succès.');
+        showVoiceStatus('✅ Enregistré');
+    } catch (e){
+        alert('Erreur sauvegarde : ' + e.message);
+        speak('Erreur lors de l\'enregistrement.');
+    }
+}
+
+// ============ VÉRIFICATION ============
+function verifierDocument(){
+    const checks = [
+        { id:'fTitre', label:'Titre', required:true },
+        { id:'fContexte', label:'Contexte', required:true },
+        { id:'fProbleme', label:'Étude du problème', required:true },
+        { id:'fObjectifs', label:'Objectifs', required:true },
+        { id:'fBeneficiaires', label:'Bénéficiaires', required:false },
+        { id:'fRealisations', label:'Réalisations', required:false },
+        { id:'fPartenaires', label:'Partenaires', required:false },
+        { id:'fBudget', label:'Budget', required:false },
+        { id:'fBeneficeFinanceur', label:'Bénéfice pour le financeur', required:false }
+    ];
+
+    const manquants = [];
+    checks.forEach(c => {
+        const v = (document.getElementById(c.id).value || '').trim();
+        if (!v) manquants.push({ label: c.label, required: c.required });
+    });
+
+    if (manquants.length === 0){
+        const msg = 'Toutes les sections sont remplies. Le document semble complet.';
+        speak(msg); showVoiceStatus('✅ ' + msg);
+        return;
+    }
+
+    const req = manquants.filter(m => m.required).map(m => m.label);
+    const opt = manquants.filter(m => !m.required).map(m => m.label);
+
+    let phrase = '';
+    if (req.length) phrase += 'Sections obligatoires manquantes : ' + req.join(', ') + '. ';
+    if (opt.length) phrase += 'Sections optionnelles non remplies : ' + opt.join(', ') + '.';
+
+    speak(phrase);
+    showVoiceStatus('⚠️ ' + phrase);
+}
+
+function lireDocument(){
+    if (!redactionEnCours) return;
+    const parts = [
+        document.getElementById('fTitre').value,
+        document.getElementById('fContexte').value,
+        document.getElementById('fProbleme').value,
+        document.getElementById('fObjectifs').value,
+        document.getElementById('fBeneficiaires').value,
+        document.getElementById('fRealisations').value,
+        document.getElementById('fPartenaires').value,
+        document.getElementById('fBudget').value,
+        document.getElementById('fBeneficeFinanceur').value
+    ].filter(Boolean);
+    synth.cancel();
+    speak(parts.join('. '));
+}
+
+// ============ UTIL ============
+function escapeHtml(s){
+    return String(s || '').replace(/[&<>"']/g, c => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
+}
+
+// ============ INIT ============
+window.addEventListener('load', () => {
+    chargerListe();
+    chargerSources();
+    setTimeout(()=>{
+        speak('Bienvenue dans l\'espace rédaction projet. Dites « nouveau projet » ou utilisez les boutons.');
+    }, 800);
+});
+window.addEventListener('beforeunload', ()=> synth.cancel());
+</script>
+</body>
+</html>
