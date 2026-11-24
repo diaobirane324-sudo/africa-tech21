@@ -576,6 +576,187 @@
             box-shadow: 0 6px 25px rgba(123, 44, 191, 0.6);
         }
 
+        /* ============================================================
+           BOUTON SPHÉRIQUE — ESPACE RÉUNION (FLOATING)
+           ============================================================ */
+        .reunion-orb {
+            position: fixed;
+            bottom: 2.5rem;
+            right: 2.5rem;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 9997;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: orbFloat 4s ease-in-out infinite;
+        }
+        @keyframes orbFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .reunion-orb::before {
+            content: '';
+            position: absolute;
+            inset: -12px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.35) 0%, rgba(123, 44, 191, 0.2) 50%, transparent 80%);
+            animation: orbGlow 3s ease-in-out infinite;
+            z-index: -1;
+        }
+        @keyframes orbGlow {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        .reunion-orb::after {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: var(--neon-blue);
+            border-right-color: var(--neon-purple);
+            animation: orbRing 4s linear infinite;
+            z-index: -1;
+        }
+        @keyframes orbRing {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .reunion-orb-inner {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0a0a18 0%, #050510 100%);
+            border: 3px solid var(--neon-blue);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow:
+                0 0 30px rgba(0, 240, 255, 0.6),
+                0 0 60px rgba(123, 44, 191, 0.4),
+                inset 0 0 30px rgba(0, 240, 255, 0.15);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reunion-orb-inner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(0, 240, 255, 0.25) 0%, transparent 60%);
+            opacity: 0.8;
+        }
+
+        .reunion-orb:hover {
+            transform: scale(1.15) translateY(-8px);
+            animation-play-state: paused;
+        }
+        .reunion-orb:hover .reunion-orb-inner {
+            border-color: var(--neon-gold);
+            box-shadow:
+                0 0 40px rgba(255, 215, 0, 0.7),
+                0 0 80px rgba(255, 0, 60, 0.5),
+                inset 0 0 40px rgba(255, 215, 0, 0.25);
+        }
+
+        .reunion-orb .orb-icon {
+            font-size: 2.2rem;
+            color: var(--neon-blue);
+            filter: drop-shadow(0 0 15px var(--neon-blue));
+            transition: all 0.4s ease;
+            z-index: 1;
+        }
+        .reunion-orb:hover .orb-icon {
+            color: var(--neon-gold);
+            filter: drop-shadow(0 0 20px var(--neon-gold));
+            transform: scale(1.1);
+        }
+        .reunion-orb .orb-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.55rem;
+            color: var(--neon-blue);
+            letter-spacing: 1px;
+            margin-top: 0.2rem;
+            text-align: center;
+            z-index: 1;
+            text-shadow: 0 0 8px var(--neon-blue);
+            font-weight: 700;
+        }
+        .reunion-orb:hover .orb-label { color: var(--neon-gold); }
+
+        /* Badge de réunion active */
+        .reunion-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff003c, #ff00ff);
+            border: 2px solid #fff;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 900;
+            color: #fff;
+            z-index: 3;
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.8);
+            animation: badgePulse 1.2s ease-in-out infinite;
+        }
+        .reunion-badge.show {
+            display: flex;
+        }
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 0, 60, 0.8); }
+            50% { transform: scale(1.25); box-shadow: 0 0 35px rgba(255, 0, 60, 1); }
+        }
+
+        .reunion-tooltip {
+            position: absolute;
+            bottom: -45px;
+            right: 0;
+            background: linear-gradient(135deg, #0a0a18 0%, #050510 100%);
+            border: 1.5px solid var(--neon-blue);
+            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            white-space: nowrap;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: var(--neon-blue);
+            letter-spacing: 1px;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+        .reunion-orb:hover .reunion-tooltip {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .reunion-orb {
+                width: 80px;
+                height: 80px;
+                bottom: 1.5rem;
+                right: 1.5rem;
+            }
+            .reunion-orb .orb-icon { font-size: 1.7rem; }
+            .reunion-orb .orb-label { font-size: 0.45rem; }
+        }
+
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
         ::-webkit-scrollbar-thumb {
@@ -977,12 +1158,30 @@
         </section>
     </div>
 
+    <!-- ============================================================
+         BOUTON SPHÉRIQUE — ESPACE RÉUNION
+         ============================================================ -->
+    <a href="espace-reunion.html" class="reunion-orb" id="reunionOrb" title="Espace Réunion">
+        <div class="reunion-orb-inner">
+            <i class="fas fa-users orb-icon"></i>
+            <div class="orb-label">RÉUNION</div>
+            <div class="reunion-badge" id="reunionBadge">!</div>
+        </div>
+        <div class="reunion-tooltip">ESPACE RÉUNION</div>
+    </a>
+
     <!-- TRACKER SURVEILLANCE -->
     <script src="tracker.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyV86rnSYPMRVIyZ-sE62lQXoVRDvhfKPOppMW7Z2IACqM8s2pGbpXC0BcKUNydxs/exec';
         const INFO_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwESkPKPu4svg_ZDnCj-LSTZWlCE_GRLNAP00F_GQXqTBKhqxcmsRjHGk7aXBn5GbfF/exec';
+
+        // ============ SUPABASE (pour badge réunion) ============
+        const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         if (localStorage.getItem('memberLoggedIn') !== 'true') {
             window.location.href = 'espace-membres.html';
@@ -998,6 +1197,34 @@
             document.getElementById('userEmail').textContent = 'UTILISATEUR';
         }
         document.getElementById('userRole').textContent = '🎯 ' + memberFonction;
+
+        // ============ BADGE RÉUNION ACTIVE ============
+        async function verifierReunionActive() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('reunions')
+                    .select('id, statut')
+                    .in('statut', ['attente', 'en_cours'])
+                    .limit(1);
+
+                if (error) return;
+
+                const badge = document.getElementById('reunionBadge');
+                const orb = document.getElementById('reunionOrb');
+
+                if (data && data.length > 0) {
+                    badge.classList.add('show');
+                    orb.style.animation = 'orbFloat 1.5s ease-in-out infinite';
+                } else {
+                    badge.classList.remove('show');
+                }
+            } catch (e) {
+                console.warn('Vérification réunion:', e);
+            }
+        }
+
+        // Vérifier toutes les 20 secondes
+        setInterval(verifierReunionActive, 20000);
 
         function generateCircuitLines() {
             const svg = document.getElementById('circuitSVG');
@@ -1127,7 +1354,7 @@
             }
         }
 
-        function accederEspaceDirection() { window.location.href = 'direction.html'; }
+        function accederEspaceDirection() { window.location.href = 'espace-direction.html'; }
 
         const MAJOR_CODE = 'MAJOR2024';
         function ouvrirSurveillance() {
@@ -1159,6 +1386,7 @@
             chargerInfoJour();
             messageVocalBienvenue();
             generateCircuitLines();
+            verifierReunionActive();
         });
 
         window.addEventListener('resize', () => { setTimeout(generateCircuitLines, 200); });
