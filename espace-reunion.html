@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace Réunion | AFRICA.TECH21</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Exo 2','Segoe UI',sans-serif; }
+    :root{
+        --gold:#ffd700; --gold-bright:#ffed4e; --gold-glow:0 0 30px rgba(255,215,0,.5);
+        --cyber-teal:#00ffe1; --cyber-purple:#a855f7; --cyber-pink:#ff2ec4;
+        --cyber-emerald:#00ff88; --cyber-red:#ff2e4c;
+        --deep-space:#030308; --mid-space:#0a0a18; --dark-space:#12121e;
+        --panel:rgba(20,20,35,.6); --panel-border:rgba(255,215,0,.25);
+        --text-primary:#fff; --text-secondary:#b0b8d0; --text-muted:#6b7390;
+    }
+    body{
+        background:
+            radial-gradient(ellipse at 15% 10%, rgba(168,85,247,.12) 0%, transparent 45%),
+            radial-gradient(ellipse at 85% 20%, rgba(0,255,225,.08) 0%, transparent 45%),
+            radial-gradient(ellipse at 50% 90%, rgba(255,215,0,.09) 0%, transparent 50%),
+            linear-gradient(180deg, var(--deep-space) 0%, var(--mid-space) 40%, var(--dark-space) 100%);
+        background-attachment: fixed;
+        color: var(--text-primary);
+        min-height:100vh; padding:1.5rem;
+        overflow-x:hidden;
+    }
+    .hologram-grid{
+        position:fixed; top:0; left:0; width:100%; height:100%;
+        background:
+            linear-gradient(90deg, rgba(255,215,0,.025) 1px, transparent 1px),
+            linear-gradient(180deg, rgba(0,255,225,.02) 1px, transparent 1px);
+        background-size:70px 70px; animation:gridScan 30s linear infinite;
+        pointer-events:none; z-index:-2;
+    }
+    @keyframes gridScan{0%{transform:translate(0,0);}100%{transform:translate(70px,70px);}}
+    .page-container{max-width:1500px; margin:0 auto;}
+    .back-btn{
+        display:inline-flex; align-items:center; gap:.6rem;
+        padding:.7rem 1.4rem; margin-bottom:1.5rem;
+        background:rgba(255,215,0,.08); border:1px solid rgba(255,215,0,.35);
+        border-radius:10px; color:var(--gold); text-decoration:none;
+        font-weight:600; font-size:.85rem; transition:all .3s ease;
+    }
+    .back-btn:hover{background:rgba(255,215,0,.18); box-shadow:var(--gold-glow);}
+    .page-header{
+        background:linear-gradient(135deg, rgba(255,215,0,.08), rgba(168,85,247,.06), rgba(0,255,225,.05));
+        backdrop-filter:blur(20px); border:1px solid rgba(255,215,0,.3);
+        border-radius:24px; padding:2rem; margin-bottom:2rem;
+        text-align:center; box-shadow:0 0 60px rgba(255,215,0,.12);
+        position:relative; overflow:hidden;
+    }
+    .page-header h1{
+        font-family:'Orbitron',sans-serif; font-size:2.2rem;
+        background:linear-gradient(135deg,var(--gold),#fff,var(--gold));
+        background-size:200% 200%; -webkit-background-clip:text;
+        -webkit-text-fill-color:transparent; background-clip:text;
+        letter-spacing:3px; font-weight:900;
+        animation:gradientShift 6s ease-in-out infinite;
+    }
+    @keyframes gradientShift{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+    .page-header .subtitle{
+        color:var(--text-secondary); margin-top:.5rem;
+        font-size:.9rem; letter-spacing:2px; text-transform:uppercase;
+    }
+
+    /* ====== ÉCRAN 1 : ACCÈS ====== */
+    .screen{display:none;}
+    .screen.active{display:block;}
+
+    .access-card{
+        max-width:600px; margin:4rem auto; text-align:center;
+        background:linear-gradient(135deg, rgba(255,215,0,.05), rgba(168,85,247,.04));
+        backdrop-filter:blur(20px); border:1px solid rgba(255,215,0,.3);
+        border-radius:24px; padding:3rem 2.5rem;
+        box-shadow:0 0 60px rgba(255,215,0,.15);
+    }
+    .access-card .icon{
+        font-size:4rem; color:var(--gold); margin-bottom:1rem;
+        text-shadow:0 0 30px var(--gold);
+    }
+    .access-card h2{
+        font-family:'Orbitron',sans-serif; color:var(--gold);
+        font-size:1.6rem; margin-bottom:1rem; letter-spacing:2px;
+    }
+    .access-card p{
+        color:var(--text-secondary); margin-bottom:2rem; line-height:1.6;
+    }
+    .access-card .btn-row{
+        display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;
+    }
+
+    /* ====== BOUTONS ====== */
+    .btn{
+        display:inline-flex; align-items:center; gap:.6rem;
+        padding:.9rem 1.6rem; border-radius:12px;
+        font-weight:700; cursor:pointer; transition:all .3s ease;
+        font-family:'Orbitron',sans-serif; letter-spacing:1px;
+        font-size:.85rem; text-transform:uppercase; border:none;
+    }
+    .btn-main{
+        background:linear-gradient(135deg,var(--gold),#ff8c00);
+        color:#0a0505;
+    }
+    .btn-main:hover{transform:translateY(-3px); box-shadow:0 10px 30px rgba(255,215,0,.5);}
+    .btn-ghost{
+        background:rgba(255,215,0,.08); color:var(--gold);
+        border:1px solid rgba(255,215,0,.4);
+    }
+    .btn-ghost:hover{background:rgba(255,215,0,.18);}
+    .btn-danger{
+        background:rgba(255,46,76,.12); color:var(--cyber-red);
+        border:1px solid var(--cyber-red);
+    }
+    .btn-danger:hover{background:rgba(255,46,76,.25);}
+    .btn-success{
+        background:rgba(0,255,136,.12); color:var(--cyber-emerald);
+        border:1px solid var(--cyber-emerald);
+    }
+    .btn-success:hover{background:rgba(0,255,136,.25);}
+    .btn:disabled{opacity:.4; cursor:not-allowed; transform:none !important;}
+
+    /* ====== SALLE ====== */
+    .room-layout{
+        display:grid;
+        grid-template-columns: 320px 1fr 340px;
+        gap:1.5rem;
+        min-height:70vh;
+    }
+    @media (max-width:1100px){
+        .room-layout{grid-template-columns:1fr;}
+    }
+
+    .panel{
+        background:linear-gradient(135deg, rgba(255,215,0,.03), rgba(168,85,247,.03));
+        backdrop-filter:blur(20px);
+        border:1px solid rgba(255,215,0,.2);
+        border-radius:20px; padding:1.5rem;
+        box-shadow:0 0 40px rgba(255,215,0,.08);
+    }
+    .panel-title{
+        font-family:'Orbitron',sans-serif; color:var(--gold);
+        font-size:1rem; margin-bottom:1rem; letter-spacing:1.5px;
+        padding-bottom:.7rem; border-bottom:1px solid rgba(255,215,0,.2);
+        display:flex; align-items:center; gap:.5rem;
+    }
+    .panel-title i{color:var(--cyber-emerald);}
+
+    /* Liste participants */
+    .participants-list{max-height:500px; overflow-y:auto;}
+    .participant{
+        display:flex; align-items:center; gap:.8rem;
+        padding:.8rem; margin-bottom:.5rem;
+        background:rgba(255,255,255,.03);
+        border:1px solid rgba(255,255,255,.05);
+        border-radius:12px; transition:all .3s ease;
+    }
+    .participant:hover{background:rgba(255,215,0,.06); border-color:rgba(255,215,0,.3);}
+    .participant .avatar{
+        width:42px; height:42px; border-radius:50%;
+        background:linear-gradient(135deg,var(--gold),var(--cyber-purple));
+        display:flex; align-items:center; justify-content:center;
+        font-weight:900; color:#0a0505; font-size:.9rem;
+        flex-shrink:0;
+    }
+    .participant .info{flex:1; min-width:0;}
+    .participant .name{
+        font-weight:600; font-size:.85rem;
+        white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .participant .meta{
+        font-size:.7rem; color:var(--text-muted); margin-top:.15rem;
+    }
+    .participant .badges{
+        display:flex; gap:.3rem; flex-wrap:wrap; margin-top:.3rem;
+    }
+    .badge-mini{
+        font-size:.6rem; padding:.15rem .4rem; border-radius:6px;
+        font-family:'Orbitron',sans-serif; letter-spacing:.5px;
+    }
+    .badge-ontime{background:rgba(0,255,136,.15); color:var(--cyber-emerald); border:1px solid rgba(0,255,136,.4);}
+    .badge-late{background:rgba(255,215,0,.15); color:var(--gold); border:1px solid rgba(255,215,0,.4);}
+    .badge-left{background:rgba(255,46,76,.15); color:var(--cyber-red); border:1px solid rgba(255,46,76,.4);}
+    .badge-hand{background:rgba(168,85,247,.15); color:var(--cyber-purple); border:1px solid rgba(168,85,247,.4);}
+    .badge-pres{background:rgba(255,215,0,.25); color:var(--gold); border:1px solid var(--gold);}
+
+    /* Centre : chrono + boutons */
+    .center-panel{display:flex; flex-direction:column; gap:1.5rem;}
+    .chrono-box{
+        text-align:center; padding:2rem 1rem;
+        background:linear-gradient(135deg, rgba(255,215,0,.08), rgba(168,85,247,.06));
+        border:2px solid rgba(255,215,0,.4);
+        border-radius:20px; position:relative; overflow:hidden;
+    }
+    .chrono-box.phase-attente{border-color:var(--cyber-teal); box-shadow:0 0 40px rgba(0,255,225,.3);}
+    .chrono-box.phase-live{border-color:var(--cyber-emerald); box-shadow:0 0 40px rgba(0,255,136,.3);}
+    .chrono-phase{
+        font-family:'Orbitron',sans-serif; font-size:.85rem;
+        letter-spacing:2px; color:var(--text-secondary);
+        margin-bottom:.5rem;
+    }
+    .chrono-time{
+        font-family:'Orbitron',sans-serif; font-size:3.5rem;
+        font-weight:900; color:var(--gold);
+        text-shadow:0 0 30px var(--gold);
+        letter-spacing:2px;
+    }
+    .chrono-label{
+        color:var(--text-secondary); font-size:.85rem;
+        margin-top:.5rem; letter-spacing:1px;
+    }
+    .chrono-info{
+        display:flex; justify-content:center; gap:2rem;
+        margin-top:1rem; font-size:.8rem; color:var(--text-secondary);
+        flex-wrap:wrap;
+    }
+    .chrono-info span strong{color:var(--gold);}
+
+    .room-actions{
+        display:grid; grid-template-columns:1fr 1fr;
+        gap:1rem;
+    }
+    .room-actions .btn{width:100%; justify-content:center;}
+    .room-actions .full{grid-column:1 / -1;}
+
+    .mic-indicator{
+        display:flex; align-items:center; justify-content:center;
+        gap:.8rem; padding:1rem;
+        background:rgba(255,255,255,.03); border-radius:12px;
+        border:1px solid rgba(255,255,255,.08);
+        margin-top:.5rem;
+    }
+    .mic-status{
+        font-size:.85rem; font-weight:600;
+    }
+    .mic-on{color:var(--cyber-emerald);}
+    .mic-off{color:var(--cyber-red);}
+    .mic-pulse{
+        width:12px; height:12px; border-radius:50%;
+        background:var(--cyber-emerald); box-shadow:0 0 15px var(--cyber-emerald);
+        animation:pulse 1.5s infinite;
+    }
+    .mic-pulse.off{background:var(--cyber-red); box-shadow:0 0 15px var(--cyber-red); animation:none;}
+    @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.3);}}
+
+    /* File des mains levées */
+    .hands-queue{max-height:300px; overflow-y:auto; margin-bottom:1rem;}
+    .hand-item{
+        display:flex; align-items:center; gap:.8rem;
+        padding:.8rem; margin-bottom:.5rem;
+        background:rgba(168,85,247,.1);
+        border:1px solid rgba(168,85,247,.3);
+        border-radius:12px;
+        animation:handAppear .4s ease;
+    }
+    @keyframes handAppear{from{opacity:0; transform:translateX(-20px);}to{opacity:1; transform:translateX(0);}}
+    .hand-item .position{
+        width:32px; height:32px; border-radius:50%;
+        background:linear-gradient(135deg,var(--cyber-purple),var(--cyber-pink));
+        display:flex; align-items:center; justify-content:center;
+        font-weight:900; color:#fff; font-family:'Orbitron',sans-serif;
+        font-size:.85rem; flex-shrink:0;
+    }
+    .hand-item .hand-name{flex:1; font-size:.85rem; font-weight:600;}
+    .hand-item .hand-time{font-size:.7rem; color:var(--text-muted);}
+
+    .speaking-timer{
+        text-align:center; padding:1.2rem;
+        background:linear-gradient(135deg, rgba(0,255,136,.1), rgba(0,255,225,.06));
+        border:2px solid var(--cyber-emerald); border-radius:15px;
+        margin-bottom:1rem;
+        animation:speakingPulse 2s infinite;
+    }
+    @keyframes speakingPulse{0%,100%{box-shadow:0 0 20px rgba(0,255,136,.3);}50%{box-shadow:0 0 40px rgba(0,255,136,.6);}}
+    .speaking-timer .who{
+        font-family:'Orbitron',sans-serif; color:var(--cyber-emerald);
+        font-size:.85rem; letter-spacing:1.5px; margin-bottom:.5rem;
+    }
+    .speaking-timer .timer{
+        font-family:'Orbitron',sans-serif; font-size:2rem;
+        color:#fff; font-weight:900;
+    }
+    .speaking-timer .timer strong{color:var(--cyber-emerald);}
+
+    /* Config modal */
+    .modal-overlay{
+        display:none; position:fixed; top:0; left:0;
+        width:100%; height:100%; background:rgba(3,3,8,.95);
+        backdrop-filter:blur(20px); z-index:9999;
+        align-items:center; justify-content:center; padding:2rem;
+    }
+    .modal-overlay.show{display:flex;}
+    .modal-content{
+        background:linear-gradient(135deg, #0a0a18, #050510);
+        border:2px solid var(--gold); border-radius:24px;
+        max-width:600px; width:100%; max-height:90vh; overflow-y:auto;
+        padding:2rem; box-shadow:0 0 80px rgba(255,215,0,.3);
+    }
+    .modal-content h2{
+        font-family:'Orbitron',sans-serif; color:var(--gold);
+        font-size:1.4rem; margin-bottom:1.5rem; letter-spacing:2px;
+    }
+    .form-group{margin-bottom:1rem;}
+    .form-group label{
+        display:block; color:var(--gold); font-weight:600;
+        font-size:.8rem; margin-bottom:.4rem;
+        font-family:'Orbitron',sans-serif; letter-spacing:1px;
+    }
+    .form-group input, .form-group textarea, .form-group select{
+        width:100%; padding:.8rem 1rem;
+        background:rgba(255,255,255,.05);
+        border:1px solid rgba(255,215,0,.25);
+        border-radius:10px; color:var(--text-primary);
+        font-family:'Exo 2',sans-serif; font-size:.9rem;
+        outline:none; transition:all .3s ease;
+    }
+    .form-group textarea{min-height:100px; resize:vertical; line-height:1.5;}
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus{
+        border-color:var(--gold);
+        box-shadow:0 0 20px rgba(255,215,0,.3);
+    }
+    .form-row{display:grid; grid-template-columns:1fr 1fr; gap:1rem;}
+    @media (max-width:600px){.form-row{grid-template-columns:1fr;}}
+
+    .voice-status{
+        position:fixed; bottom:1.5rem; right:1.5rem;
+        background:linear-gradient(135deg, #0a0a12, #050510);
+        border:2px solid var(--cyber-emerald);
+        border-radius:15px; padding:1rem 1.4rem;
+        color:var(--cyber-emerald); font-weight:600;
+        font-size:.85rem; max-width:340px;
+        box-shadow:0 0 40px rgba(0,255,136,.4);
+        z-index:9998; display:none;
+    }
+    .voice-status.show{display:block; animation:voiceAppear .3s ease;}
+    @keyframes voiceAppear{from{opacity:0; transform:translateY(20px);}to{opacity:1; transform:translateY(0);}}
+
+    .config-banner{
+        background:linear-gradient(135deg, rgba(168,85,247,.1), rgba(255,46,196,.06));
+        border:1px solid var(--cyber-purple);
+        border-radius:12px; padding:.8rem 1.2rem;
+        margin-bottom:1rem; font-size:.85rem;
+        color:var(--cyber-purple);
+        display:flex; align-items:center; gap:.6rem;
+    }
+
+    @media (max-width:768px){
+        body{padding:.8rem;}
+        .page-header{padding:1.5rem;}
+        .page-header h1{font-size:1.5rem;}
+        .room-layout{gap:1rem;}
+        .chrono-time{font-size:2.5rem;}
+        .panel{padding:1rem;}
+    }
+</style>
+</head>
+<body>
+<div class="hologram-grid"></div>
+
+<div class="page-container">
+    <a href="dashboard.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i> RETOUR DASHBOARD
+    </a>
+
+    <header class="page-header">
+        <h1>ESPACE RÉUNION</h1>
+        <p class="subtitle">Réunion intelligente AFRICA.TECH21</p>
+    </header>
+
+    <!-- ÉCRAN 1 : ACCÈS -->
+    <div class="screen active" id="screenAccess">
+        <div class="access-card">
+            <i class="fas fa-users icon"></i>
+            <h2 id="accessTitle">Vérification...</h2>
+            <p id="accessMessage">Recherche d'une réunion active en cours...</p>
+            <div class="btn-row" id="accessActions"></div>
+        </div>
+    </div>
+
+    <!-- ÉCRAN 2 : SALLE -->
+    <div class="screen" id="screenRoom">
+        <!-- Header salle -->
+        <div class="panel" style="margin-bottom:1.5rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+                <div>
+                    <h2 style="font-family:'Orbitron',sans-serif; color:var(--gold); font-size:1.3rem; letter-spacing:1.5px;" id="roomTitle">—</h2>
+                    <p style="color:var(--text-secondary); font-size:.8rem; margin-top:.3rem;" id="roomInfo">—</p>
+                </div>
+                <div style="display:flex; gap:.5rem; flex-wrap:wrap;">
+                    <button class="btn btn-ghost" id="btnConfig" onclick="ouvrirConfig()" style="display:none;">
+                        <i class="fas fa-cog"></i> Configuration
+                    </button>
+                    <button class="btn btn-ghost" onclick="quitterDefinitif()">
+                        <i class="fas fa-sign-out-alt"></i> Quitter
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="room-layout">
+            <!-- GAUCHE : Participants -->
+            <div class="panel">
+                <h3 class="panel-title"><i class="fas fa-users"></i> PARTICIPANTS (<span id="countParticipants">0</span>)</h3>
+                <div class="participants-list" id="participantsList">
+                    <p style="color:var(--text-muted); text-align:center; padding:1rem;">Chargement...</p>
+                </div>
+            </div>
+
+            <!-- CENTRE : Chrono + Actions -->
+            <div class="center-panel">
+                <div class="chrono-box" id="chronoBox">
+                    <div class="chrono-phase" id="chronoPhase">—</div>
+                    <div class="chrono-time" id="chronoTime">00:00</div>
+                    <div class="chrono-label" id="chronoLabel">—</div>
+                    <div class="chrono-info">
+                        <span>Début : <strong id="infoDebut">—</strong></span>
+                        <span>Fin : <strong id="infoFin">—</strong></span>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h3 class="panel-title"><i class="fas fa-microphone"></i> MON MICRO</h3>
+                    <div class="mic-indicator">
+                        <div class="mic-pulse off" id="micPulse"></div>
+                        <span class="mic-status mic-off" id="micStatus">Micro coupé</span>
+                    </div>
+                    <button class="btn btn-success full" id="btnMic" onclick="toggleMic()" style="margin-top:1rem; width:100%; justify-content:center;">
+                        <i class="fas fa-microphone-slash"></i> ACTIVER MON MICRO
+                    </button>
+                </div>
+
+                <div class="room-actions">
+                    <button class="btn btn-main" id="btnHand" onclick="toggleHand()">
+                        <i class="fas fa-hand-paper"></i> LEVER LA MAIN
+                    </button>
+                    <button class="btn btn-ghost" onclick="quitterTemporaire()">
+                        <i class="fas fa-pause-circle"></i> QUITTER 15 MIN
+                    </button>
+                </div>
+            </div>
+
+            <!-- DROITE : Mains levées -->
+            <div class="panel">
+                <h3 class="panel-title"><i class="fas fa-hand-paper"></i> MAINS LEVÉES</h3>
+                <div id="speakingTimerBox"></div>
+                <div class="hands-queue" id="handsQueue">
+                    <p style="color:var(--text-muted); text-align:center; padding:1rem; font-size:.8rem;">Aucune main levée</p>
+                </div>
+                <div id="presidentControls" style="display:none;">
+                    <label style="display:block; color:var(--gold); font-size:.75rem; margin-bottom:.4rem; font-family:'Orbitron',sans-serif; letter-spacing:1px;">
+                        TEMPS DE PAROLE
+                    </label>
+                    <select id="tempsParoleSelect" style="width:100%; padding:.6rem; background:rgba(255,255,255,.05); border:1px solid rgba(255,215,0,.25); border-radius:8px; color:var(--text-primary); font-family:'Exo 2',sans-serif; margin-bottom:.8rem;">
+                        <option value="2">2 minutes</option>
+                        <option value="3" selected>3 minutes</option>
+                        <option value="4">4 minutes</option>
+                        <option value="5">5 minutes</option>
+                        <option value="6">6 minutes</option>
+                        <option value="7">7 minutes</option>
+                        <option value="8">8 minutes</option>
+                        <option value="9">9 minutes</option>
+                        <option value="10">10 minutes</option>
+                    </select>
+                    <button class="btn btn-success" onclick="donnerParole()" style="width:100%; justify-content:center; margin-bottom:.5rem;">
+                        <i class="fas fa-play"></i> DONNER LA PAROLE
+                    </button>
+                    <button class="btn btn-danger" onclick="terminerReunion()" style="width:100%; justify-content:center;">
+                        <i class="fas fa-stop-circle"></i> TERMINER LA RÉUNION
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL CONFIG -->
+<div class="modal-overlay" id="configModal">
+    <div class="modal-content">
+        <h2><i class="fas fa-cog"></i> Configuration de la réunion</h2>
+        <div class="form-group">
+            <label>TITRE DE LA RÉUNION</label>
+            <input type="text" id="cfgTitre" placeholder="Ex : Réunion hebdomadaire de coordination">
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>HEURE DE DÉBUT</label>
+                <input type="time" id="cfgDebut">
+            </div>
+            <div class="form-group">
+                <label>HEURE DE FIN</label>
+                <input type="time" id="cfgFin">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>TEMPS DE PAROLE PAR DÉFAUT</label>
+            <select id="cfgTempsParole">
+                <option value="2">2 minutes</option>
+                <option value="3" selected>3 minutes</option>
+                <option value="4">4 minutes</option>
+                <option value="5">5 minutes</option>
+                <option value="6">6 minutes</option>
+                <option value="7">7 minutes</option>
+                <option value="8">8 minutes</option>
+                <option value="9">9 minutes</option>
+                <option value="10">10 minutes</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>ORDRE DU JOUR (un point par ligne)</label>
+            <textarea id="cfgOrdre" placeholder="1. Ouverture&#10;2. Bilan des projets&#10;3. Points divers"></textarea>
+        </div>
+        <div style="display:flex; gap:.8rem; margin-top:1.5rem;">
+            <button class="btn btn-main" onclick="creerReunion()" style="flex:1; justify-content:center;">
+                <i class="fas fa-check"></i> CRÉER LA RÉUNION
+            </button>
+            <button class="btn btn-ghost" onclick="fermerConfig()">
+                <i class="fas fa-times"></i> ANNULER
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="voice-status" id="voiceStatus"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ============ SUPABASE ============
+const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ============ LISTE DES MEMBRES (19) ============
+const MEMBRES = {
+    "AT21-001": { id:"AT21-001", nom:"DIAKHATE", prenom:"ABDOU", fonction:"PRESIDENT" },
+    "AT21_ZAM68": { id:"AT21_ZAM68", nom:"MOUHAMED", prenom:"DIALLO", fonction:"RESPONSABLE DES PROJETS/VICE PRÉSIDENT" },
+    "AT21_0041": { id:"AT21_0041", nom:"Seydina Mouhamed", prenom:"Fall", fonction:"FFAM" },
+    "AT21_0016": { id:"AT21_0016", nom:"DRAMÉ", prenom:"AICHA", fonction:"SECRÉTAIRE GÉNÉRAL" },
+    "AT21_0021": { id:"AT21_0021", nom:"DIOP", prenom:"SALAMATA", fonction:"CSIV" },
+    "AT21_0026": { id:"AT21_0026", nom:"TOURÉ", prenom:"SOKHNA BINTOU", fonction:"ADJOINTE FINANCE/GESTIONNAIRE" },
+    "AT21_0031": { id:"AT21_0031", nom:"WADE", prenom:"ADJA FAMA", fonction:"RESPONSABLE FINANCE" },
+    "AT21_0036": { id:"AT21_0036", nom:"NDIAYE", prenom:"MARIE ANGÉLIQUE DABA", fonction:"CHEFFE CSIV" },
+    "AT21_Delta": { id:"AT21_Delta", nom:"DIA", prenom:"DJIBRIL BAGDAD", fonction:"CO-FONDATEUR" },
+    "Birane186@00": { id:"Birane186@00", nom:"BIRANE", prenom:"DIAO", fonction:"PRÉSIDENT DE LA COMMUNAUTÉ" },
+    "AT21_0062": { id:"AT21_0062", nom:"Gaye", prenom:"Ibrahima", fonction:"CSIV" },
+    "AT21_0052": { id:"AT21_0052", nom:"SALL", prenom:"ABDOURAKHMANE", fonction:"CRÉATEUR DE CONTENU OFFICIEL" },
+    "AT21_0071": { id:"AT21_0071", nom:"SY", prenom:"OUMOU SALAMATA", fonction:"TITULAIRE" },
+    "AT21_0092": { id:"AT21_0092", nom:"HANNE", prenom:"NDEYE ARAME", fonction:"FFAM" },
+    "AT21_0072": { id:"AT21_0072", nom:"SOW", prenom:"HALIMA AS SADIYA", fonction:"TITULAIRE" },
+    "AT21_0087": { id:"AT21_0087", nom:"NDIAYE", prenom:"SAHID", fonction:"TITULAIRE" },
+    "AT21_DP01": { id:"AT21_DP01", nom:"CISSE", prenom:"AICHA RASSOUL", fonction:"TITULAIRE" },
+    "AT21_0057": { id:"AT21_0057", nom:"SY", prenom:"MOUHAMED", fonction:"TITULAIRE" }
+};
+
+// ============ PRÉSIDENTS AUTORISÉS ============
+const PRESIDENTS_AUTORISES = ['Birane186@00', 'AT21_0016', 'AT21-001', 'AT21_ZAM68'];
+
+// ============ ÉTAT GLOBAL ============
+let membreActuel = null;
+let reunionActive = null;
+let participantActuel = null;
+let handsQueue = [];
+let chronoTimer = null;
+let speakingTimer = null;
+let currentSpeaker = null;
+let pollingTimer = null;
+let phaseActuelle = null; // 'attente' | 'live' | 'terminee'
+let micActif = false;
+let mainLevee = false;
+let audioContext = null;
+let analyser = null;
+let mediaStream = null;
+let noiseDetectionTimer = null;
+let quitteTemporairementA = null;
+
+// ============ VOIX ============
+const synth = window.speechSynthesis;
+let chosenVoice = null;
+function pickVoice(){
+    const voices = synth.getVoices();
+    if (!voices || !voices.length) return;
+    const fr = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith('fr'));
+    if (!fr.length) return;
+    const priority = ['natural','neural','google','microsoft','amelie','amélie','thomas','audrey','marie','julie'];
+    let best = fr[0], bestScore = -1;
+    for (const v of fr){
+        const n = (v.name||'').toLowerCase();
+        let s = 0;
+        priority.forEach((k,i)=>{ if(n.includes(k)) s += (priority.length-i)*10; });
+        if ((v.lang||'').toLowerCase()==='fr-fr') s += 5;
+        if (n.includes('compact')||n.includes('espeak')) s -= 20;
+        if (s > bestScore){ bestScore = s; best = v; }
+    }
+    chosenVoice = best;
+}
+if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = pickVoice;
+pickVoice();
+
+function speak(text, interrupt=true){
+    if (!text) return;
+    if (interrupt) synth.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    if (chosenVoice){ u.voice = chosenVoice; u.lang = chosenVoice.lang; }
+    else u.lang = 'fr-FR';
+    u.rate = 1; u.pitch = 1; u.volume = 1;
+    synth.speak(u);
+    showVoiceStatus(text);
+}
+function showVoiceStatus(text){
+    const el = document.getElementById('voiceStatus');
+    el.textContent = text;
+    el.classList.add('show');
+    clearTimeout(el._t);
+    el._t = setTimeout(()=>el.classList.remove('show'), 5000);
+}
+
+// ============ INIT / ACCÈS ============
+async function init(){
+    if (localStorage.getItem('memberLoggedIn') !== 'true'){
+        window.location.href = 'index.html';
+        return;
+    }
+    const id = localStorage.getItem('memberId');
+    membreActuel = MEMBRES[id] || {
+        id: id,
+        nom: localStorage.getItem('memberNom') || '',
+        prenom: localStorage.getItem('memberPrenom') || '',
+        fonction: localStorage.getItem('memberFonction') || ''
+    };
+
+    await chercherReunionActive();
+}
+
+async function chercherReunionActive(){
+    try {
+        const { data, error } = await supabaseClient
+            .from('reunions')
+            .select('*')
+            .in('statut', ['attente', 'en_cours'])
+            .order('created_at', { ascending: false })
+            .limit(1);
+
+        if (error) throw error;
+
+        if (!data || data.length === 0){
+            afficherAucuneReunion();
+            return;
+        }
+
+        reunionActive = data[0];
+        verifierAcces();
+    } catch (e){
+        console.error(e);
+        afficherErreur('Erreur de connexion à Supabase : ' + e.message);
+    }
+}
+
+function afficherAucuneReunion(){
+    document.getElementById('accessTitle').textContent = 'Aucune réunion active';
+    document.getElementById('accessMessage').textContent = 'Il n\'y a pas de réunion en cours pour le moment.';
+
+    const actions = document.getElementById('accessActions');
+    actions.innerHTML = '';
+
+    if (PRESIDENTS_AUTORISES.includes(membreActuel.id)){
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-main';
+        btn.innerHTML = '<i class="fas fa-plus-circle"></i> CRÉER UNE RÉUNION';
+        btn.onclick = ouvrirConfig;
+        actions.appendChild(btn);
+        speak('Aucune réunion active. Vous pouvez en créer une.');
+    } else {
+        speak('Aucune réunion active pour le moment.');
+    }
+}
+
+function afficherErreur(msg){
+    document.getElementById('accessTitle').textContent = 'Erreur';
+    document.getElementById('accessMessage').textContent = msg;
+}
+
+// ============ VÉRIFICATION ACCÈS ============
+async function verifierAcces(){
+    const now = new Date();
+    const debut = new Date(reunionActive.heure_debut);
+    const fin = new Date(reunionActive.heure_fin);
+
+    // Vérifier si déjà participant enregistré
+    const { data: existing } = await supabaseClient
+        .from('reunion_participants')
+        .select('*')
+        .eq('reunion_id', reunionActive.id)
+        .eq('membre_id', membreActuel.id)
+        .limit(1);
+
+    const dejaParticipant = existing && existing.length > 0 ? existing[0] : null;
+
+    // Si déjà marqué comme parti définitivement → refus
+    if (dejaParticipant && dejaParticipant.statut_presence === 'exclu'){
+        afficherRefus('Vous avez quitté cette réunion plus de 15 minutes ou de manière définitive.');
+        return;
+    }
+
+    // Si on est après l'heure de début et pas déjà participant → refus
+    if (now > debut && !dejaParticipant){
+        afficherRefus('La réunion a déjà commencé. Vous ne pouvez plus rejoindre.');
+        return;
+    }
+
+    // Si on est après la fin → refus
+    if (now > fin){
+        afficherRefus('La réunion est terminée.');
+        return;
+    }
+
+    // OK → entrer dans la salle
+    entrerDansSalle(dejaParticipant);
+}
+
+function afficherRefus(msg){
+    document.getElementById('accessTitle').textContent = 'Accès refusé';
+    document.getElementById('accessMessage').textContent = msg;
+    document.getElementById('accessActions').innerHTML = '';
+    speak(msg);
+}
+
+// ============ ENTRÉE DANS LA SALLE ============
+async function entrerDansSalle(existingParticipant){
+    document.getElementById('screenAccess').classList.remove('active');
+    document.getElementById('screenRoom').classList.add('active');
+
+    document.getElementById('roomTitle').textContent = reunionActive.titre;
+    document.getElementById('infoDebut').textContent = formatHeure(reunionActive.heure_debut);
+    document.getElementById('infoFin').textContent = formatHeure(reunionActive.heure_fin);
+
+    const info = document.getElementById('roomInfo');
+    const ordre = (reunionActive.ordre_du_jour || '').split('\n').filter(Boolean).join(' — ');
+    info.textContent = ordre || 'Aucun ordre du jour spécifié';
+
+    // Vérifier si président
+    if (reunionActive.president_id === membreActuel.id){
+        document.getElementById('presidentControls').style.display = 'block';
+        document.getElementById('btnConfig').style.display = 'inline-flex';
+    }
+
+    // Créer ou mettre à jour le participant
+    if (existingParticipant){
+        participantActuel = existingParticipant;
+        // Mise à jour : re-entrée
+        const now = new Date();
+        const heureDepart = existingParticipant.heure_depart ? new Date(existingParticipant.heure_depart) : null;
+
+        let absentSec = existingParticipant.temps_total_absent_secondes || 0;
+        if (heureDepart){
+            absentSec += Math.floor((now - heureDepart) / 1000);
+        }
+
+        const { data, error } = await supabaseClient
+            .from('reunion_participants')
+            .update({
+                heure_depart: null,
+                est_present: true,
+                temps_total_absent_secondes: absentSec,
+                statut_presence: 'present'
+            })
+            .eq('id', existingParticipant.id)
+            .select()
+            .single();
+
+        if (!error) participantActuel = data;
+    } else {
+        const { data, error } = await supabaseClient
+            .from('reunion_participants')
+            .insert({
+                reunion_id: reunionActive.id,
+                membre_id: membreActuel.id,
+                nom: membreActuel.nom,
+                prenom: membreActuel.prenom,
+                fonction: membreActuel.fonction,
+                heure_arrivee: new Date().toISOString(),
+                est_present: true,
+                statut_presence: 'present'
+            })
+            .select()
+            .single();
+
+        if (error){
+            console.error(error);
+            alert('Erreur entrée réunion : ' + error.message);
+            return;
+        }
+        participantActuel = data;
+    }
+
+    // Annonce voix selon phase
+    annoncerArrivee();
+
+    // Démarrer la boucle
+    demarrerBoucle();
+}
+
+function annoncerArrivee(){
+    const now = new Date();
+    const debut = new Date(reunionActive.heure_debut);
+    const diffMin = Math.round((now - debut) / 60000);
+
+    if (now < debut){
+        const minutesAvant = Math.round((debut - now) / 60000);
+        if (minutesAvant <= 10){
+            speak(`Bienvenue ${membreActuel.prenom}. La réunion commence dans ${minutesAvant} minutes. Voici l'ordre du jour : ${reunionActive.ordre_du_jour || 'non spécifié'}.`);
+        } else {
+            speak(`Bienvenue ${membreActuel.prenom}. La réunion commencera à ${formatHeure(reunionActive.heure_debut)}.`);
+        }
+    } else if (diffMin <= 1){
+        speak(`Bienvenue ${membreActuel.prenom}. Vous êtes à l'heure.`);
+    } else {
+        speak(`Bienvenue ${membreActuel.prenom}. Vous êtes en retard de ${diffMin} minutes.`);
+    }
+}
+
+// ============ BOUCLE PRINCIPALE ============
+function demarrerBoucle(){
+    if (chronoTimer) clearInterval(chronoTimer);
+    if (pollingTimer) clearInterval(pollingTimer);
+
+    // Chrono visuel toutes les secondes
+    chronoTimer = setInterval(majChrono, 1000);
+    majChrono();
+
+    // Polling des participants & mains toutes les 3s
+    pollingTimer = setInterval(() => {
+        chargerParticipants();
+        chargerMains();
+    }, 3000);
+
+    chargerParticipants();
+    chargerMains();
+}
+
+function majChrono(){
+    if (!reunionActive) return;
+    const now = new Date();
+    const debut = new Date(reunionActive.heure_debut);
+    const fin = new Date(reunionActive.heure_fin);
+    const debutAttente = new Date(debut.getTime() - 10 * 60000);
+
+    const chronoBox = document.getElementById('chronoBox');
+    const phase = document.getElementById('chronoPhase');
+    const time = document.getElementById('chronoTime');
+    const label = document.getElementById('chronoLabel');
+
+    let nouvellePhase;
+
+    if (now < debutAttente){
+        // Avant les 10 min d'attente
+        nouvellePhase = 'avant';
+        chronoBox.className = 'chrono-box';
+        phase.textContent = 'AVANT LA RÉUNION';
+        const diff = debut - now;
+        time.textContent = formatDuration(diff);
+        label.textContent = `Début dans ${formatDuration(diff)} (préparation à ${formatHeure(debutAttente)})`;
+    } else if (now < debut){
+        // Phase d'attente 10 min
+        nouvellePhase = 'attente';
+        chronoBox.className = 'chrono-box phase-attente';
+        phase.textContent = '⚠ PHASE D\'ATTENTE (10 MIN)';
+        const diff = debut - now;
+        time.textContent = formatDuration(diff);
+        label.textContent = 'La réunion commence bientôt — préparez-vous';
+    } else if (now < fin){
+        // Réunion en cours
+        nouvellePhase = 'live';
+        chronoBox.className = 'chrono-box phase-live';
+        phase.textContent = '🟢 RÉUNION EN COURS';
+        const diff = fin - now;
+        time.textContent = formatDuration(diff);
+        label.textContent = 'Temps restant de la réunion';
+    } else {
+        nouvellePhase = 'terminee';
+        chronoBox.className = 'chrono-box';
+        phase.textContent = 'RÉUNION TERMINÉE';
+        time.textContent = '00:00';
+        label.textContent = 'La réunion est terminée';
+    }
+
+    // Transition d'annonce
+    if (phaseActuelle !== nouvellePhase){
+        if (nouvellePhase === 'attente'){
+            speak(`Phase d'attente. La réunion commence dans 10 minutes. Préparez-vous. Ordre du jour : ${reunionActive.ordre_du_jour || 'non spécifié'}.`);
+        } else if (nouvellePhase === 'live' && phaseActuelle !== 'live'){
+            speak('Début de la réunion. Veuillez vous concentrer.');
+        }
+        phaseActuelle = nouvellePhase;
+    }
+}
+
+function formatDuration(ms){
+    if (ms < 0) ms = 0;
+    const total = Math.floor(ms / 1000);
+    const h = Math.floor(total / 3600);
+    const m = Math.floor((total % 3600) / 60);
+    const s = total % 60;
+    if (h > 0) return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function formatHeure(iso){
+    if (!iso) return '—';
+    const d = new Date(iso);
+    return d.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+}
+
+// ============ CHARGEMENT PARTICIPANTS ============
+async function chargerParticipants(){
+    if (!reunionActive) return;
+    try {
+        const { data, error } = await supabaseClient
+            .from('reunion_participants')
+            .select('*')
+            .eq('reunion_id', reunionActive.id)
+            .order('heure_arrivee', { ascending: true });
+
+        if (error) throw error;
+
+        const list = document.getElementById('participantsList');
+        document.getElementById('countParticipants').textContent = data.length;
+
+        if (data.length === 0){
+            list.innerHTML = '<p style="color:var(--text-muted); text-align:center; padding:1rem;">Aucun participant</p>';
+            return;
+        }
+
+        const debut = new Date(reunionActive.heure_debut);
+        list.innerHTML = '';
+        data.forEach(p => {
+            const arrivee = new Date(p.heure_arrivee);
+            const retardMin = Math.max(0, Math.round((arrivee - debut) / 60000));
+
+            const initials = ((p.prenom || '?')[0] + (p.nom || '?')[0]).toUpperCase();
+            const isPresident = p.membre_id === reunionActive.president_id;
+
+            let badges = '';
+            if (isPresident) badges += '<span class="badge-mini badge-pres">PRÉSIDENT</span>';
+            if (arrivee <= debut) badges += '<span class="badge-mini badge-ontime">À L\'HEURE</span>';
+            else if (retardMin > 0) badges += `<span class="badge-mini badge-late">RETARD ${retardMin} MIN</span>`;
+            if (!p.est_present) badges += '<span class="badge-mini badge-left">PARTI</span>';
+            if (p.main_levee) badges += '<span class="badge-mini badge-hand">MAIN LEVÉE</span>';
+
+            const div = document.createElement('div');
+            div.className = 'participant';
+            div.innerHTML = `
+                <div class="avatar">${initials}</div>
+                <div class="info">
+                    <div class="name">${escapeHtml(p.prenom)} ${escapeHtml(p.nom)}</div>
+                    <div class="meta">${escapeHtml(p.fonction || '')}</div>
+                    <div class="badges">${badges}</div>
+                </div>
+            `;
+            list.appendChild(div);
+        });
+    } catch (e){
+        console.error('Erreur chargement participants:', e);
+    }
+}
+
+// ============ CHARGEMENT MAINS LEVÉES ============
+async function chargerMains(){
+    if (!reunionActive) return;
+    try {
+        const { data, error } = await supabaseClient
+            .from('reunion_participants')
+            .select('*')
+            .eq('reunion_id', reunionActive.id)
+            .eq('main_levee', true)
+            .eq('est_present', true)
+            .order('position_main', { ascending: true });
+
+        if (error) throw error;
+
+        const queue = document.getElementById('handsQueue');
+        if (!data || data.length === 0){
+            queue.innerHTML = '<p style="color:var(--text-muted); text-align:center; padding:1rem; font-size:.8rem;">Aucune main levée</p>';
+            handsQueue = [];
+            return;
+        }
+
+        handsQueue = data;
+        queue.innerHTML = '';
+        data.forEach((h, idx) => {
+            const div = document.createElement('div');
+            div.className = 'hand-item';
+            div.innerHTML = `
+                <div class="position">${idx + 1}</div>
+                <div class="hand-name">${escapeHtml(h.prenom)} ${escapeHtml(h.nom)}</div>
+                <div class="hand-time">${escapeHtml(h.fonction || '')}</div>
+            `;
+            queue.appendChild(div);
+        });
+    } catch (e){
+        console.error('Erreur chargement mains:', e);
+    }
+}
+
+// ============ MICRO ============
+async function toggleMic(){
+    if (micActif){
+        // Couper
+        stopperMicro();
+    } else {
+        // Activer (sauf si non-président et quelqu'un d'autre parle)
+        if (currentSpeaker && currentSpeaker.membre_id !== membreActuel.id && reunionActive.president_id !== membreActuel.id){
+            alert('Impossible : une autre personne a la parole. Attendez votre tour.');
+            speak('Une autre personne a la parole. Attendez votre tour.');
+            return;
+        }
+        await activerMicro();
+    }
+}
+
+async function activerMicro(){
+    try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const source = audioContext.createMediaStreamSource(mediaStream);
+        analyser = audioContext.createAnalyser();
+        analyser.fftSize = 512;
+        source.connect(analyser);
+
+        micActif = true;
+        document.getElementById('micPulse').classList.remove('off');
+        document.getElementById('micStatus').textContent = 'Micro actif';
+        document.getElementById('micStatus').className = 'mic-status mic-on';
+        document.getElementById('btnMic').innerHTML = '<i class="fas fa-microphone"></i> COUPER MON MICRO';
+        document.getElementById('btnMic').className = 'btn btn-danger full';
+
+        // Détection de bruit (sauf président)
+        if (reunionActive.president_id !== membreActuel.id){
+            demarrerDetectionBruit();
+        }
+    } catch (e){
+        alert('Impossible d\'accéder au micro : ' + e.message);
+    }
+}
+
+function stopperMicro(){
+    if (mediaStream){
+        mediaStream.getTracks().forEach(t => t.stop());
+        mediaStream = null;
+    }
+    if (audioContext){
+        audioContext.close();
+        audioContext = null;
+    }
+    if (noiseDetectionTimer){
+        clearInterval(noiseDetectionTimer);
+        noiseDetectionTimer = null;
+    }
+    micActif = false;
+    document.getElementById('micPulse').classList.add('off');
+    document.getElementById('micStatus').textContent = 'Micro coupé';
+    document.getElementById('micStatus').className = 'mic-status mic-off';
+    document.getElementById('btnMic').innerHTML = '<i class="fas fa-microphone-slash"></i> ACTIVER MON MICRO';
+    document.getElementById('btnMic').className = 'btn btn-success full';
+}
+
+function demarrerDetectionBruit(){
+    if (!analyser) return;
+    const buffer = new Uint8Array(analyser.frequencyBinCount);
+    noiseDetectionTimer = setInterval(() => {
+        analyser.getByteFrequencyData(buffer);
+        let sum = 0;
+        for (let i = 0; i < buffer.length; i++) sum += buffer[i];
+        const avg = sum / buffer.length;
+
+        // Seuil : si volume moyen dépasse 80 (sur 255) → perturbation
+        if (avg > 80 && micActif){
+            stopperMicro();
+            speak(`Micro de ${membreActuel.prenom} coupé pour perturbation.`);
+        }
+    }, 2000);
+}
+
+// ============ MAIN LEVÉE ============
+async function toggleHand(){
+    if (!participantActuel) return;
+
+    if (!mainLevee){
+        // Lever
+        const position = handsQueue.length + 1;
+        const { data, error } = await supabaseClient
+            .from('reunion_participants')
+            .update({ main_levee: true, position_main: position })
+            .eq('id', participantActuel.id)
+            .select()
+            .single();
+
+        if (error){
+            alert('Erreur : ' + error.message);
+            return;
+        }
+
+        mainLevee = true;
+        document.getElementById('btnHand').innerHTML = '<i class="fas fa-hand-paper"></i> BAISSER LA MAIN';
+        document.getElementById('btnHand').className = 'btn btn-danger';
+
+        speak(`${membreActuel.prenom} ${membreActuel.nom} a levé la main. Position ${position} dans la file.`);
+        chargerMains();
+    } else {
+        // Baisser
+        await supabaseClient
+            .from('reunion_participants')
+            .update({ main_levee: false, position_main: null })
+            .eq('id', participantActuel.id);
+
+        mainLevee = false;
+        document.getElementById('btnHand').innerHTML = '<i class="fas fa-hand-paper"></i> LEVER LA MAIN';
+        document.getElementById('btnHand').className = 'btn btn-main';
+        chargerMains();
+    }
+}
+
+// ============ DONNER LA PAROLE ============
+async function donnerParole(){
+    if (handsQueue.length === 0){
+        alert('Aucune main levée.');
+        return;
+    }
+
+    const next = handsQueue[0];
+    const dureeMin = parseInt(document.getElementById('tempsParoleSelect').value) || 3;
+
+    // Retirer de la file
+    await supabaseClient
+        .from('reunion_participants')
+        .update({ main_levee: false, position_main: null })
+        .eq('id', next.id);
+
+    currentSpeaker = next;
+
+    speak(`${next.prenom} ${next.nom}, vous avez la parole pour ${dureeMin} minutes.`);
+
+    // Afficher le chrono de parole
+    demarrerChronosParole(next, dureeMin);
+
+    chargerMains();
+}
+
+function demarrerChronosParole(speaker, minutes){
+    if (speakingTimer) clearInterval(speakingTimer);
+
+    const box = document.getElementById('speakingTimerBox');
+    box.innerHTML = `
+        <div class="speaking-timer">
+            <div class="who"><i class="fas fa-microphone"></i> ${escapeHtml(speaker.prenom)} ${escapeHtml(speaker.nom)} A LA PAROLE</div>
+            <div class="timer"><strong id="speakTimer">${minutes}:00</strong></div>
+        </div>
+    `;
+
+    let totalSec = minutes * 60;
+    const el = document.getElementById('speakTimer');
+
+    speakingTimer = setInterval(() => {
+        totalSec--;
+        if (totalSec <= 0){
+            clearInterval(speakingTimer);
+            el.textContent = '0:00';
+            speak('Temps de parole terminé.');
+            box.innerHTML = '';
+            currentSpeaker = null;
+        } else {
+            const m = Math.floor(totalSec / 60);
+            const s = totalSec % 60;
+            el.textContent = `${m}:${String(s).padStart(2,'0')}`;
+        }
+    }, 1000);
+}
+
+// ============ QUITTER ============
+async function quitterTemporaire(){
+    if (!participantActuel) return;
+    const now = new Date().toISOString();
+    await supabaseClient
+        .from('reunion_participants')
+        .update({ heure_depart: now, est_present: false, statut_presence: 'parti' })
+        .eq('id', participantActuel.id);
+
+    speak('Vous quittez temporairement. Revenez dans les 15 minutes.');
+
+    setTimeout(() => {
+        window.location.href = 'dashboard.html';
+    }, 2000);
+}
+
+async function quitterDefinitif(){
+    if (!participantActuel) return;
+    if (!confirm('Voulez-vous vraiment quitter définitivement la réunion ? Vous ne pourrez plus y revenir.')) return;
+
+    await supabaseClient
+        .from('reunion_participants')
+        .update({ heure_depart: new Date().toISOString(), est_present: false, statut_presence: 'exclu' })
+        .eq('id', participantActuel.id);
+
+    speak('Vous quittez la réunion définitivement.');
+    setTimeout(() => window.location.href = 'dashboard.html', 1500);
+}
+
+// ============ CONFIGURATION ============
+function ouvrirConfig(){
+    document.getElementById('configModal').classList.add('show');
+    const now = new Date();
+    document.getElementById('cfgDebut').value = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+    const fin = new Date(now.getTime() + 60 * 60000);
+    document.getElementById('cfgFin').value = `${String(fin.getHours()).padStart(2,'0')}:${String(fin.getMinutes()).padStart(2,'0')}`;
+}
+function fermerConfig(){
+    document.getElementById('configModal').classList.remove('show');
+}
+
+async function creerReunion(){
+    const titre = document.getElementById('cfgTitre').value.trim();
+    const debutT = document.getElementById('cfgDebut').value;
+    const finT = document.getElementById('cfgFin').value;
+    const tempsParole = parseInt(document.getElementById('cfgTempsParole').value);
+    const ordre = document.getElementById('cfgOrdre').value.trim();
+
+    if (!titre || !debutT || !finT){
+        alert('Titre, heure de début et heure de fin obligatoires.');
+        return;
+    }
+
+    const today = new Date();
+    const dateStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+
+    const debutISO = new Date(`${dateStr}T${debutT}:00`).toISOString();
+    const finISO = new Date(`${dateStr}T${finT}:00`).toISOString();
+    const duree = Math.round((new Date(finISO) - new Date(debutISO)) / 60000);
+
+    if (duree <= 0){
+        alert('L\'heure de fin doit être après l\'heure de début.');
+        return;
+    }
+
+    try {
+        const { data, error } = await supabaseClient
+            .from('reunions')
+            .insert({
+                titre,
+                date_reunion: dateStr,
+                heure_debut: debutISO,
+                heure_fin: finISO,
+                duree_minutes: duree,
+                president_id: membreActuel.id,
+                president_nom: `${membreActuel.prenom} ${membreActuel.nom}`,
+                temps_parole_minutes: tempsParole,
+                ordre_du_jour: ordre,
+                statut: 'attente'
+            })
+            .select()
+            .single();
+
+        if (error) throw error;
+        reunionActive = data;
+        fermerConfig();
+        speak('Réunion créée avec succès. Les membres peuvent maintenant rejoindre.');
+        setTimeout(() => window.location.reload(), 2000);
+    } catch (e){
+        alert('Erreur création : ' + e.message);
+    }
+}
+
+// ============ TERMINER LA RÉUNION ============
+async function terminerReunion(){
+    if (!confirm('Voulez-vous vraiment terminer la réunion ? Cette action est irréversible.')) return;
+
+    try {
+        // Charger tous les participants
+        const { data: participants } = await supabaseClient
+            .from('reunion_participants')
+            .select('*')
+            .eq('reunion_id', reunionActive.id);
+
+        const debut = new Date(reunionActive.heure_debut);
+
+        // Pour chaque participant → historique
+        for (const p of participants || []){
+            const arrivee = new Date(p.heure_arrivee);
+            const retardMin = Math.max(0, Math.round((arrivee - debut) / 60000));
+
+            let statutFinal = 'présent';
+            if (!p.est_present && p.statut_presence === 'exclu') statutFinal = 'parti_15min';
+            else if (retardMin > 1) statutFinal = 'en_retard';
+
+            await supabaseClient.from('reunion_historique').insert({
+                reunion_id: reunionActive.id,
+                membre_id: p.membre_id,
+                nom_complet: `${p.prenom} ${p.nom}`,
+                fonction: p.fonction,
+                statut_final: statutFinal,
+                minutes_retard: retardMin,
+                secondes_absence_cumulees: p.temps_total_absent_secondes || 0
+            });
+        }
+
+        // Participants absents (membres inscrits non venus)
+        const venus = new Set((participants || []).map(p => p.membre_id));
+        for (const [id, m] of Object.entries(MEMBRES)){
+            if (!venus.has(id)){
+                await supabaseClient.from('reunion_historique').insert({
+                    reunion_id: reunionActive.id,
+                    membre_id: id,
+                    nom_complet: `${m.prenom} ${m.nom}`,
+                    fonction: m.fonction,
+                    statut_final: 'absent',
+                    minutes_retard: 0,
+                    secondes_absence_cumulees: 0
+                });
+            }
+        }
+
+        // Marquer la réunion terminée
+        await supabaseClient
+            .from('reunions')
+            .update({ statut: 'terminee' })
+            .eq('id', reunionActive.id);
+
+        speak('La réunion est terminée. L\'historique a été sauvegardé.');
+        setTimeout(() => window.location.href = 'dashboard.html', 2500);
+
+    } catch (e){
+        alert('Erreur terminaison : ' + e.message);
+    }
+}
+
+// ============ UTIL ============
+function escapeHtml(s){
+    return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ============ INIT ============
+window.addEventListener('load', init);
+window.addEventListener('beforeunload', () => {
+    synth.cancel();
+    if (chronoTimer) clearInterval(chronoTimer);
+    if (pollingTimer) clearInterval(pollingTimer);
+    if (speakingTimer) clearInterval(speakingTimer);
+    if (noiseDetectionTimer) clearInterval(noiseDetectionTimer);
+    if (mediaStream) mediaStream.getTracks().forEach(t => t.stop());
+});
+</script>
+</body>
+</html>
