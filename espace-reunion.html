@@ -65,11 +65,8 @@
         color:var(--text-secondary); margin-top:.5rem;
         font-size:.9rem; letter-spacing:2px; text-transform:uppercase;
     }
-
-    /* ====== ÉCRAN 1 : ACCÈS ====== */
     .screen{display:none;}
     .screen.active{display:block;}
-
     .access-card{
         max-width:600px; margin:4rem auto; text-align:center;
         background:linear-gradient(135deg, rgba(255,215,0,.05), rgba(168,85,247,.04));
@@ -91,8 +88,6 @@
     .access-card .btn-row{
         display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;
     }
-
-    /* ====== BOUTONS ====== */
     .btn{
         display:inline-flex; align-items:center; gap:.6rem;
         padding:.9rem 1.6rem; border-radius:12px;
@@ -100,29 +95,15 @@
         font-family:'Orbitron',sans-serif; letter-spacing:1px;
         font-size:.85rem; text-transform:uppercase; border:none;
     }
-    .btn-main{
-        background:linear-gradient(135deg,var(--gold),#ff8c00);
-        color:#0a0505;
-    }
+    .btn-main{background:linear-gradient(135deg,var(--gold),#ff8c00); color:#0a0505;}
     .btn-main:hover{transform:translateY(-3px); box-shadow:0 10px 30px rgba(255,215,0,.5);}
-    .btn-ghost{
-        background:rgba(255,215,0,.08); color:var(--gold);
-        border:1px solid rgba(255,215,0,.4);
-    }
+    .btn-ghost{background:rgba(255,215,0,.08); color:var(--gold); border:1px solid rgba(255,215,0,.4);}
     .btn-ghost:hover{background:rgba(255,215,0,.18);}
-    .btn-danger{
-        background:rgba(255,46,76,.12); color:var(--cyber-red);
-        border:1px solid var(--cyber-red);
-    }
+    .btn-danger{background:rgba(255,46,76,.12); color:var(--cyber-red); border:1px solid var(--cyber-red);}
     .btn-danger:hover{background:rgba(255,46,76,.25);}
-    .btn-success{
-        background:rgba(0,255,136,.12); color:var(--cyber-emerald);
-        border:1px solid var(--cyber-emerald);
-    }
+    .btn-success{background:rgba(0,255,136,.12); color:var(--cyber-emerald); border:1px solid var(--cyber-emerald);}
     .btn-success:hover{background:rgba(0,255,136,.25);}
     .btn:disabled{opacity:.4; cursor:not-allowed; transform:none !important;}
-
-    /* ====== SALLE ====== */
     .room-layout{
         display:grid;
         grid-template-columns: 320px 1fr 340px;
@@ -132,7 +113,6 @@
     @media (max-width:1100px){
         .room-layout{grid-template-columns:1fr;}
     }
-
     .panel{
         background:linear-gradient(135deg, rgba(255,215,0,.03), rgba(168,85,247,.03));
         backdrop-filter:blur(20px);
@@ -147,8 +127,6 @@
         display:flex; align-items:center; gap:.5rem;
     }
     .panel-title i{color:var(--cyber-emerald);}
-
-    /* Liste participants */
     .participants-list{max-height:500px; overflow-y:auto;}
     .participant{
         display:flex; align-items:center; gap:.8rem;
@@ -185,8 +163,6 @@
     .badge-left{background:rgba(255,46,76,.15); color:var(--cyber-red); border:1px solid rgba(255,46,76,.4);}
     .badge-hand{background:rgba(168,85,247,.15); color:var(--cyber-purple); border:1px solid rgba(168,85,247,.4);}
     .badge-pres{background:rgba(255,215,0,.25); color:var(--gold); border:1px solid var(--gold);}
-
-    /* Centre : chrono + boutons */
     .center-panel{display:flex; flex-direction:column; gap:1.5rem;}
     .chrono-box{
         text-align:center; padding:2rem 1rem;
@@ -217,14 +193,12 @@
         flex-wrap:wrap;
     }
     .chrono-info span strong{color:var(--gold);}
-
     .room-actions{
         display:grid; grid-template-columns:1fr 1fr;
         gap:1rem;
     }
     .room-actions .btn{width:100%; justify-content:center;}
     .room-actions .full{grid-column:1 / -1;}
-
     .mic-indicator{
         display:flex; align-items:center; justify-content:center;
         gap:.8rem; padding:1rem;
@@ -232,9 +206,7 @@
         border:1px solid rgba(255,255,255,.08);
         margin-top:.5rem;
     }
-    .mic-status{
-        font-size:.85rem; font-weight:600;
-    }
+    .mic-status{font-size:.85rem; font-weight:600;}
     .mic-on{color:var(--cyber-emerald);}
     .mic-off{color:var(--cyber-red);}
     .mic-pulse{
@@ -244,8 +216,6 @@
     }
     .mic-pulse.off{background:var(--cyber-red); box-shadow:0 0 15px var(--cyber-red); animation:none;}
     @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.3);}}
-
-    /* File des mains levées */
     .hands-queue{max-height:300px; overflow-y:auto; margin-bottom:1rem;}
     .hand-item{
         display:flex; align-items:center; gap:.8rem;
@@ -265,7 +235,6 @@
     }
     .hand-item .hand-name{flex:1; font-size:.85rem; font-weight:600;}
     .hand-item .hand-time{font-size:.7rem; color:var(--text-muted);}
-
     .speaking-timer{
         text-align:center; padding:1.2rem;
         background:linear-gradient(135deg, rgba(0,255,136,.1), rgba(0,255,225,.06));
@@ -283,8 +252,6 @@
         color:#fff; font-weight:900;
     }
     .speaking-timer .timer strong{color:var(--cyber-emerald);}
-
-    /* Config modal */
     .modal-overlay{
         display:none; position:fixed; top:0; left:0;
         width:100%; height:100%; background:rgba(3,3,8,.95);
@@ -323,7 +290,6 @@
     }
     .form-row{display:grid; grid-template-columns:1fr 1fr; gap:1rem;}
     @media (max-width:600px){.form-row{grid-template-columns:1fr;}}
-
     .voice-status{
         position:fixed; bottom:1.5rem; right:1.5rem;
         background:linear-gradient(135deg, #0a0a12, #050510);
@@ -336,16 +302,6 @@
     }
     .voice-status.show{display:block; animation:voiceAppear .3s ease;}
     @keyframes voiceAppear{from{opacity:0; transform:translateY(20px);}to{opacity:1; transform:translateY(0);}}
-
-    .config-banner{
-        background:linear-gradient(135deg, rgba(168,85,247,.1), rgba(255,46,196,.06));
-        border:1px solid var(--cyber-purple);
-        border-radius:12px; padding:.8rem 1.2rem;
-        margin-bottom:1rem; font-size:.85rem;
-        color:var(--cyber-purple);
-        display:flex; align-items:center; gap:.6rem;
-    }
-
     @media (max-width:768px){
         body{padding:.8rem;}
         .page-header{padding:1.5rem;}
@@ -381,7 +337,6 @@
 
     <!-- ÉCRAN 2 : SALLE -->
     <div class="screen" id="screenRoom">
-        <!-- Header salle -->
         <div class="panel" style="margin-bottom:1.5rem;">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
                 <div>
@@ -485,7 +440,7 @@
         </div>
         <div class="form-row">
             <div class="form-group">
-                <label>HEURE DE DÉBUT</label>
+                <label>HEURE DE DÉBUT (officiel)</label>
                 <input type="time" id="cfgDebut">
             </div>
             <div class="form-group">
@@ -531,7 +486,7 @@ const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ============ LISTE DES MEMBRES (19) ============
+// ============ LISTE DES MEMBRES ============
 const MEMBRES = {
     "AT21-001": { id:"AT21-001", nom:"DIAKHATE", prenom:"ABDOU", fonction:"PRESIDENT" },
     "AT21_ZAM68": { id:"AT21_ZAM68", nom:"MOUHAMED", prenom:"DIALLO", fonction:"RESPONSABLE DES PROJETS/VICE PRÉSIDENT" },
@@ -553,10 +508,10 @@ const MEMBRES = {
     "AT21_0057": { id:"AT21_0057", nom:"SY", prenom:"MOUHAMED", fonction:"TITULAIRE" }
 };
 
-// ============ PRÉSIDENTS AUTORISÉS ============
+// ============ PRÉSIDENTS AUTORISÉS (créateurs) ============
 const PRESIDENTS_AUTORISES = ['Birane186@00', 'AT21_0016', 'AT21-001', 'AT21_ZAM68'];
 
-// ============ ÉTAT GLOBAL ============
+// ============ ÉTAT ============
 let membreActuel = null;
 let reunionActive = null;
 let participantActuel = null;
@@ -565,14 +520,13 @@ let chronoTimer = null;
 let speakingTimer = null;
 let currentSpeaker = null;
 let pollingTimer = null;
-let phaseActuelle = null; // 'attente' | 'live' | 'terminee'
+let phaseActuelle = null;
 let micActif = false;
 let mainLevee = false;
 let audioContext = null;
 let analyser = null;
 let mediaStream = null;
 let noiseDetectionTimer = null;
-let quitteTemporairementA = null;
 
 // ============ VOIX ============
 const synth = window.speechSynthesis;
@@ -615,7 +569,7 @@ function showVoiceStatus(text){
     el._t = setTimeout(()=>el.classList.remove('show'), 5000);
 }
 
-// ============ INIT / ACCÈS ============
+// ============ INIT ============
 async function init(){
     if (localStorage.getItem('memberLoggedIn') !== 'true'){
         window.location.href = 'index.html';
@@ -685,6 +639,8 @@ async function verifierAcces(){
     const now = new Date();
     const debut = new Date(reunionActive.heure_debut);
     const fin = new Date(reunionActive.heure_fin);
+    const estPresident = (reunionActive.president_id === membreActuel.id);
+    const estOrganisateur = PRESIDENTS_AUTORISES.includes(membreActuel.id);
 
     // Vérifier si déjà participant enregistré
     const { data: existing } = await supabaseClient
@@ -696,9 +652,21 @@ async function verifierAcces(){
 
     const dejaParticipant = existing && existing.length > 0 ? existing[0] : null;
 
-    // Si déjà marqué comme parti définitivement → refus
+    // Si déjà marqué comme exclu définitivement → refus
     if (dejaParticipant && dejaParticipant.statut_presence === 'exclu'){
-        afficherRefus('Vous avez quitté cette réunion plus de 15 minutes ou de manière définitive.');
+        afficherRefus('Vous avez quitté cette réunion définitivement.');
+        return;
+    }
+
+    // RÈGLE : le président et les organisateurs autorisés peuvent TOUJOURS entrer
+    if (estPresident || estOrganisateur){
+        entrerDansSalle(dejaParticipant);
+        return;
+    }
+
+    // Réunion déjà terminée par l'heure
+    if (now > fin){
+        afficherRefus('La réunion est terminée.');
         return;
     }
 
@@ -708,13 +676,21 @@ async function verifierAcces(){
         return;
     }
 
-    // Si on est après la fin → refus
-    if (now > fin){
-        afficherRefus('La réunion est terminée.');
-        return;
+    // Si déjà participant et parti depuis >15 min → exclu
+    if (dejaParticipant && !dejaParticipant.est_present && dejaParticipant.heure_depart){
+        const depart = new Date(dejaParticipant.heure_depart);
+        const minutesParti = (now - depart) / 60000;
+        if (minutesParti > 15){
+            // Marquer comme exclu
+            await supabaseClient
+                .from('reunion_participants')
+                .update({ statut_presence: 'exclu' })
+                .eq('id', dejaParticipant.id);
+            afficherRefus('Vous avez été absent plus de 15 minutes. Vous ne pouvez plus rejoindre cette session.');
+            return;
+        }
     }
 
-    // OK → entrer dans la salle
     entrerDansSalle(dejaParticipant);
 }
 
@@ -738,16 +714,15 @@ async function entrerDansSalle(existingParticipant){
     const ordre = (reunionActive.ordre_du_jour || '').split('\n').filter(Boolean).join(' — ');
     info.textContent = ordre || 'Aucun ordre du jour spécifié';
 
-    // Vérifier si président
     if (reunionActive.president_id === membreActuel.id){
         document.getElementById('presidentControls').style.display = 'block';
         document.getElementById('btnConfig').style.display = 'inline-flex';
+        const sel = document.getElementById('tempsParoleSelect');
+        if (sel) sel.value = reunionActive.temps_parole_minutes || 3;
     }
 
-    // Créer ou mettre à jour le participant
     if (existingParticipant){
         participantActuel = existingParticipant;
-        // Mise à jour : re-entrée
         const now = new Date();
         const heureDepart = existingParticipant.heure_depart ? new Date(existingParticipant.heure_depart) : null;
 
@@ -793,10 +768,7 @@ async function entrerDansSalle(existingParticipant){
         participantActuel = data;
     }
 
-    // Annonce voix selon phase
     annoncerArrivee();
-
-    // Démarrer la boucle
     demarrerBoucle();
 }
 
@@ -819,21 +791,16 @@ function annoncerArrivee(){
     }
 }
 
-// ============ BOUCLE PRINCIPALE ============
+// ============ BOUCLE ============
 function demarrerBoucle(){
     if (chronoTimer) clearInterval(chronoTimer);
     if (pollingTimer) clearInterval(pollingTimer);
-
-    // Chrono visuel toutes les secondes
     chronoTimer = setInterval(majChrono, 1000);
     majChrono();
-
-    // Polling des participants & mains toutes les 3s
     pollingTimer = setInterval(() => {
         chargerParticipants();
         chargerMains();
     }, 3000);
-
     chargerParticipants();
     chargerMains();
 }
@@ -853,7 +820,6 @@ function majChrono(){
     let nouvellePhase;
 
     if (now < debutAttente){
-        // Avant les 10 min d'attente
         nouvellePhase = 'avant';
         chronoBox.className = 'chrono-box';
         phase.textContent = 'AVANT LA RÉUNION';
@@ -861,7 +827,6 @@ function majChrono(){
         time.textContent = formatDuration(diff);
         label.textContent = `Début dans ${formatDuration(diff)} (préparation à ${formatHeure(debutAttente)})`;
     } else if (now < debut){
-        // Phase d'attente 10 min
         nouvellePhase = 'attente';
         chronoBox.className = 'chrono-box phase-attente';
         phase.textContent = '⚠ PHASE D\'ATTENTE (10 MIN)';
@@ -869,7 +834,6 @@ function majChrono(){
         time.textContent = formatDuration(diff);
         label.textContent = 'La réunion commence bientôt — préparez-vous';
     } else if (now < fin){
-        // Réunion en cours
         nouvellePhase = 'live';
         chronoBox.className = 'chrono-box phase-live';
         phase.textContent = '🟢 RÉUNION EN COURS';
@@ -884,7 +848,6 @@ function majChrono(){
         label.textContent = 'La réunion est terminée';
     }
 
-    // Transition d'annonce
     if (phaseActuelle !== nouvellePhase){
         if (nouvellePhase === 'attente'){
             speak(`Phase d'attente. La réunion commence dans 10 minutes. Préparez-vous. Ordre du jour : ${reunionActive.ordre_du_jour || 'non spécifié'}.`);
@@ -936,7 +899,6 @@ async function chargerParticipants(){
         data.forEach(p => {
             const arrivee = new Date(p.heure_arrivee);
             const retardMin = Math.max(0, Math.round((arrivee - debut) / 60000));
-
             const initials = ((p.prenom || '?')[0] + (p.nom || '?')[0]).toUpperCase();
             const isPresident = p.membre_id === reunionActive.president_id;
 
@@ -1005,10 +967,8 @@ async function chargerMains(){
 // ============ MICRO ============
 async function toggleMic(){
     if (micActif){
-        // Couper
         stopperMicro();
     } else {
-        // Activer (sauf si non-président et quelqu'un d'autre parle)
         if (currentSpeaker && currentSpeaker.membre_id !== membreActuel.id && reunionActive.president_id !== membreActuel.id){
             alert('Impossible : une autre personne a la parole. Attendez votre tour.');
             speak('Une autre personne a la parole. Attendez votre tour.');
@@ -1034,7 +994,6 @@ async function activerMicro(){
         document.getElementById('btnMic').innerHTML = '<i class="fas fa-microphone"></i> COUPER MON MICRO';
         document.getElementById('btnMic').className = 'btn btn-danger full';
 
-        // Détection de bruit (sauf président)
         if (reunionActive.president_id !== membreActuel.id){
             demarrerDetectionBruit();
         }
@@ -1072,8 +1031,6 @@ function demarrerDetectionBruit(){
         let sum = 0;
         for (let i = 0; i < buffer.length; i++) sum += buffer[i];
         const avg = sum / buffer.length;
-
-        // Seuil : si volume moyen dépasse 80 (sur 255) → perturbation
         if (avg > 80 && micActif){
             stopperMicro();
             speak(`Micro de ${membreActuel.prenom} coupé pour perturbation.`);
@@ -1084,9 +1041,7 @@ function demarrerDetectionBruit(){
 // ============ MAIN LEVÉE ============
 async function toggleHand(){
     if (!participantActuel) return;
-
     if (!mainLevee){
-        // Lever
         const position = handsQueue.length + 1;
         const { data, error } = await supabaseClient
             .from('reunion_participants')
@@ -1094,25 +1049,20 @@ async function toggleHand(){
             .eq('id', participantActuel.id)
             .select()
             .single();
-
         if (error){
             alert('Erreur : ' + error.message);
             return;
         }
-
         mainLevee = true;
         document.getElementById('btnHand').innerHTML = '<i class="fas fa-hand-paper"></i> BAISSER LA MAIN';
         document.getElementById('btnHand').className = 'btn btn-danger';
-
         speak(`${membreActuel.prenom} ${membreActuel.nom} a levé la main. Position ${position} dans la file.`);
         chargerMains();
     } else {
-        // Baisser
         await supabaseClient
             .from('reunion_participants')
             .update({ main_levee: false, position_main: null })
             .eq('id', participantActuel.id);
-
         mainLevee = false;
         document.getElementById('btnHand').innerHTML = '<i class="fas fa-hand-paper"></i> LEVER LA MAIN';
         document.getElementById('btnHand').className = 'btn btn-main';
@@ -1126,29 +1076,20 @@ async function donnerParole(){
         alert('Aucune main levée.');
         return;
     }
-
     const next = handsQueue[0];
     const dureeMin = parseInt(document.getElementById('tempsParoleSelect').value) || 3;
-
-    // Retirer de la file
     await supabaseClient
         .from('reunion_participants')
         .update({ main_levee: false, position_main: null })
         .eq('id', next.id);
-
     currentSpeaker = next;
-
     speak(`${next.prenom} ${next.nom}, vous avez la parole pour ${dureeMin} minutes.`);
-
-    // Afficher le chrono de parole
     demarrerChronosParole(next, dureeMin);
-
     chargerMains();
 }
 
 function demarrerChronosParole(speaker, minutes){
     if (speakingTimer) clearInterval(speakingTimer);
-
     const box = document.getElementById('speakingTimerBox');
     box.innerHTML = `
         <div class="speaking-timer">
@@ -1156,10 +1097,8 @@ function demarrerChronosParole(speaker, minutes){
             <div class="timer"><strong id="speakTimer">${minutes}:00</strong></div>
         </div>
     `;
-
     let totalSec = minutes * 60;
     const el = document.getElementById('speakTimer');
-
     speakingTimer = setInterval(() => {
         totalSec--;
         if (totalSec <= 0){
@@ -1184,9 +1123,7 @@ async function quitterTemporaire(){
         .from('reunion_participants')
         .update({ heure_depart: now, est_present: false, statut_presence: 'parti' })
         .eq('id', participantActuel.id);
-
     speak('Vous quittez temporairement. Revenez dans les 15 minutes.');
-
     setTimeout(() => {
         window.location.href = 'dashboard.html';
     }, 2000);
@@ -1195,12 +1132,10 @@ async function quitterTemporaire(){
 async function quitterDefinitif(){
     if (!participantActuel) return;
     if (!confirm('Voulez-vous vraiment quitter définitivement la réunion ? Vous ne pourrez plus y revenir.')) return;
-
     await supabaseClient
         .from('reunion_participants')
         .update({ heure_depart: new Date().toISOString(), est_present: false, statut_presence: 'exclu' })
         .eq('id', participantActuel.id);
-
     speak('Vous quittez la réunion définitivement.');
     setTimeout(() => window.location.href = 'dashboard.html', 1500);
 }
@@ -1209,8 +1144,10 @@ async function quitterDefinitif(){
 function ouvrirConfig(){
     document.getElementById('configModal').classList.add('show');
     const now = new Date();
-    document.getElementById('cfgDebut').value = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-    const fin = new Date(now.getTime() + 60 * 60000);
+    // Par défaut : début dans 5 minutes, fin dans 65 minutes
+    const debut = new Date(now.getTime() + 5 * 60000);
+    const fin = new Date(now.getTime() + 65 * 60000);
+    document.getElementById('cfgDebut').value = `${String(debut.getHours()).padStart(2,'0')}:${String(debut.getMinutes()).padStart(2,'0')}`;
     document.getElementById('cfgFin').value = `${String(fin.getHours()).padStart(2,'0')}:${String(fin.getMinutes()).padStart(2,'0')}`;
 }
 function fermerConfig(){
@@ -1269,12 +1206,11 @@ async function creerReunion(){
     }
 }
 
-// ============ TERMINER LA RÉUNION ============
+// ============ TERMINER ============
 async function terminerReunion(){
     if (!confirm('Voulez-vous vraiment terminer la réunion ? Cette action est irréversible.')) return;
 
     try {
-        // Charger tous les participants
         const { data: participants } = await supabaseClient
             .from('reunion_participants')
             .select('*')
@@ -1282,7 +1218,6 @@ async function terminerReunion(){
 
         const debut = new Date(reunionActive.heure_debut);
 
-        // Pour chaque participant → historique
         for (const p of participants || []){
             const arrivee = new Date(p.heure_arrivee);
             const retardMin = Math.max(0, Math.round((arrivee - debut) / 60000));
@@ -1302,7 +1237,6 @@ async function terminerReunion(){
             });
         }
 
-        // Participants absents (membres inscrits non venus)
         const venus = new Set((participants || []).map(p => p.membre_id));
         for (const [id, m] of Object.entries(MEMBRES)){
             if (!venus.has(id)){
@@ -1318,7 +1252,6 @@ async function terminerReunion(){
             }
         }
 
-        // Marquer la réunion terminée
         await supabaseClient
             .from('reunions')
             .update({ statut: 'terminee' })
