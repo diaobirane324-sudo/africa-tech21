@@ -5,364 +5,719 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des Stocks | AFRICA.TECH21</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Exo+2:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Exo 2', 'Segoe UI', sans-serif; }
+
         :root {
-            --neon-blue: #00f0ff; --neon-green: #00ff88; --neon-purple: #7b2cbf;
-            --dark-space: #0a0a12; --deep-space: #050510;
-            --text-primary: #ffffff; --text-secondary: #a0a8c0;
-            --glass: rgba(255,255,255,0.05); --glass-border: rgba(255,255,255,0.1);
-            --panel-glow: 0 0 30px rgba(0,240,255,0.2);
+            --neon-blue: #00f0ff;
+            --neon-green: #00ff88;
+            --neon-purple: #7b2cbf;
+            --neon-violet: #9d4dff;
+            --neon-gold: #ffc247;
+            --neon-red: #ff4757;
+            --dark-space: #0a0a12;
+            --deep-space: #050510;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a8c0;
+            --text-muted: #6a7188;
+            --glass: rgba(255, 255, 255, 0.04);
+            --glass-strong: rgba(255, 255, 255, 0.07);
+            --glass-border: rgba(255, 255, 255, 0.10);
+            --panel-glow: 0 10px 50px rgba(0, 0, 0, 0.45), 0 0 40px rgba(0, 240, 255, 0.07);
+            --radius: 18px;
         }
+
+        html { scroll-behavior: smooth; }
+
         body {
-            background: 
-                radial-gradient(circle at 20% 20%, rgba(0, 240, 255, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(123, 44, 191, 0.08) 0%, transparent 50%),
+            background:
+                radial-gradient(circle at 12% 15%, rgba(0, 240, 255, 0.07) 0%, transparent 45%),
+                radial-gradient(circle at 88% 85%, rgba(123, 44, 191, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.025) 0%, transparent 60%),
                 linear-gradient(135deg, var(--deep-space) 0%, var(--dark-space) 50%, #0f0f1f 100%);
+            background-attachment: fixed;
             color: var(--text-primary);
             min-height: 100vh;
             padding: 2rem;
             position: relative;
             overflow-x: hidden;
         }
+
         .hologram-grid {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: 
-                linear-gradient(90deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(180deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px);
+            position: fixed; inset: 0;
+            background:
+                linear-gradient(90deg, rgba(0, 240, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(0, 240, 255, 0.025) 1px, transparent 1px);
             background-size: 50px 50px;
-            animation: gridScan 20s linear infinite;
+            animation: gridScan 24s linear infinite;
             pointer-events: none; z-index: -2;
         }
-        @keyframes gridScan { 0% { transform: translate(0,0); } 100% { transform: translate(50px,50px); } }
-        .back-btn {
-            display: inline-block; padding: 0.8rem 2rem; margin-bottom: 2rem;
-            background: rgba(0, 240, 255, 0.1); border: 1px solid var(--neon-blue);
-            border-radius: 10px; color: var(--neon-blue); text-decoration: none;
-            font-weight: 600; transition: all 0.3s ease;
-        }
-        .back-btn:hover { background: rgba(0, 240, 255, 0.2); box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
+        @keyframes gridScan { 0% { transform: translate(0, 0); } 100% { transform: translate(50px, 50px); } }
+
         .page-container { max-width: 1500px; margin: 0 auto; }
+
+        /* ============ TOP BAR ============ */
+        .top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+        }
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            padding: 0.7rem 1.5rem;
+            background: rgba(0, 240, 255, 0.07);
+            border: 1px solid rgba(0, 240, 255, 0.5);
+            border-radius: 12px; color: var(--neon-blue);
+            text-decoration: none; font-weight: 600; font-size: 0.9rem;
+            letter-spacing: 0.5px; transition: all 0.3s ease;
+        }
+        .back-btn:hover {
+            background: rgba(0, 240, 255, 0.16);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.3);
+            transform: translateX(-3px);
+        }
+        .user-chip {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            padding: 0.55rem 1.1rem;
+            background: var(--glass); border: 1px solid var(--glass-border);
+            border-radius: 999px; font-size: 0.82rem; color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .user-chip i { color: var(--neon-green); }
+
+        /* ============ HEADER ============ */
         .page-header {
-            background: var(--glass); backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border); border-radius: 25px;
-            padding: 2.5rem; margin-bottom: 2rem; text-align: center;
+            position: relative; overflow: hidden;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.07), rgba(123, 44, 191, 0.07));
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            border-radius: 24px;
+            padding: 2.6rem 2rem; margin-bottom: 1.8rem; text-align: center;
             box-shadow: var(--panel-glow);
         }
-        .page-header h1 {
-            font-family: 'Orbitron', sans-serif; font-size: 2.5rem;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        .page-header::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue), var(--neon-violet), var(--neon-green));
+            background-size: 200% 100%;
+            animation: borderFlow 4s linear infinite;
         }
-        .page-header .subtitle { color: var(--text-secondary); margin-top: 0.5rem; font-size: 1.1rem; }
+        @keyframes borderFlow { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+        .page-header .header-icon {
+            width: 70px; height: 70px; margin: 0 auto 1rem;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 20px; font-size: 1.9rem; color: #050510;
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            box-shadow: 0 0 35px rgba(0, 240, 255, 0.35);
+        }
+        .page-header h1 {
+            font-family: 'Orbitron', sans-serif; font-size: 2.4rem; font-weight: 900;
+            letter-spacing: 3px;
+            background: linear-gradient(45deg, var(--neon-green), var(--neon-blue), var(--neon-violet));
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .page-header .subtitle {
+            color: var(--text-secondary); margin-top: 0.6rem; font-size: 1rem;
+            letter-spacing: 2px; text-transform: uppercase;
+        }
+
+        /* ============ STATS ============ */
         .stats-bar {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1rem; margin-bottom: 1.8rem;
         }
         .stat-card {
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(123, 44, 191, 0.05));
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
+            position: relative; overflow: hidden;
+            display: flex; align-items: center; gap: 1rem;
+            background: var(--glass); border: 1px solid var(--glass-border);
+            border-radius: var(--radius); padding: 1.3rem 1.4rem;
+            transition: all 0.3s ease; cursor: default;
+        }
+        .stat-card::after {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+            background: var(--accent, var(--neon-blue)); opacity: 0.8;
         }
         .stat-card:hover {
-            border-color: var(--neon-blue);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.1);
+            transform: translateY(-4px);
+            border-color: var(--accent, var(--neon-blue));
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35), 0 0 25px color-mix(in srgb, var(--accent, #00f0ff) 25%, transparent);
         }
-        .stat-card .stat-number {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: var(--neon-blue);
-            text-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+        .stat-card.clickable { cursor: pointer; }
+        .stat-icon {
+            width: 52px; height: 52px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 14px; font-size: 1.35rem; color: var(--accent, var(--neon-blue));
+            background: color-mix(in srgb, var(--accent, #00f0ff) 12%, transparent);
+            border: 1px solid color-mix(in srgb, var(--accent, #00f0ff) 35%, transparent);
         }
-        .stat-card .stat-label {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 0.3rem;
+        .stat-number {
+            font-family: 'Orbitron', sans-serif; font-size: 1.75rem; font-weight: 900;
+            color: var(--text-primary); line-height: 1.1;
+            text-shadow: 0 0 18px color-mix(in srgb, var(--accent, #00f0ff) 55%, transparent);
         }
-        .controls {
-            display: flex; flex-wrap: wrap; gap: 1rem;
-            margin-bottom: 2rem; align-items: center;
+        .stat-label {
+            color: var(--text-secondary); font-size: 0.74rem; text-transform: uppercase;
+            letter-spacing: 1.2px; margin-top: 0.35rem;
+        }
+
+        /* ============ TOOLBAR ============ */
+        .toolbar {
+            display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center;
+            margin-bottom: 1.2rem;
+        }
+        .search-wrap { position: relative; flex: 1; min-width: 260px; }
+        .search-wrap i {
+            position: absolute; left: 1.1rem; top: 50%; transform: translateY(-50%);
+            color: var(--text-muted); pointer-events: none;
         }
         .search-input {
-            flex: 1; min-width: 250px; padding: 0.8rem 1.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border); border-radius: 12px;
-            color: var(--text-primary); font-size: 1rem; outline: none;
-            transition: 0.3s;
+            width: 100%; padding: 0.85rem 2.8rem 0.85rem 2.8rem;
+            background: var(--glass); border: 1px solid var(--glass-border);
+            border-radius: 12px; color: var(--text-primary); font-size: 0.98rem;
+            outline: none; transition: all 0.3s ease;
         }
-        .search-input:focus { border-color: var(--neon-blue); box-shadow: 0 0 20px rgba(0, 240, 255, 0.1); }
+        .search-input::placeholder { color: var(--text-muted); }
+        .search-input:focus {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.12);
+            background: var(--glass-strong);
+        }
+        .search-clear {
+            position: absolute; right: 0.6rem; top: 50%; transform: translateY(-50%);
+            width: 30px; height: 30px; border: none; border-radius: 8px;
+            background: transparent; color: var(--text-muted); cursor: pointer;
+            display: none; transition: 0.2s;
+        }
+        .search-clear:hover { background: var(--glass-strong); color: var(--text-primary); }
+        .search-clear.visible { display: block; }
+
+        .select-ctl {
+            padding: 0.85rem 2.2rem 0.85rem 1rem;
+            background: var(--glass); border: 1px solid var(--glass-border);
+            border-radius: 12px; color: var(--text-primary); font-size: 0.92rem;
+            outline: none; cursor: pointer; transition: 0.3s;
+            appearance: none; -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a0a8c0' stroke-width='3'><polyline points='6 9 12 15 18 9'/></svg>");
+            background-repeat: no-repeat; background-position: right 0.9rem center;
+        }
+        .select-ctl:focus { border-color: var(--neon-blue); box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.12); }
+        .select-ctl option { background: var(--dark-space); color: var(--text-primary); }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem;
+            padding: 0.85rem 1.5rem; border: none; border-radius: 12px;
+            font-weight: 700; font-size: 0.92rem; cursor: pointer;
+            transition: all 0.3s ease; white-space: nowrap; letter-spacing: 0.4px;
+        }
         .btn-primary {
-            padding: 0.8rem 2rem;
             background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
-            border: none; border-radius: 12px; color: white;
-            font-weight: 700; cursor: pointer; transition: 0.3s;
-            white-space: nowrap;
+            color: #fff; box-shadow: 0 6px 22px rgba(123, 44, 191, 0.35);
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(123, 44, 191, 0.4); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 240, 255, 0.35); }
+        .btn-ghost {
+            background: var(--glass); border: 1px solid var(--glass-border); color: var(--text-secondary);
+        }
+        .btn-ghost:hover { border-color: var(--neon-green); color: var(--neon-green); background: rgba(0, 255, 136, 0.06); }
+        .btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none !important; }
+
+        /* ============ TABLE ============ */
         .table-container {
             background: var(--glass); backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border); border-radius: 25px;
-            padding: 1.5rem; box-shadow: var(--panel-glow);
-            overflow-x: auto;
+            border: 1px solid var(--glass-border); border-radius: 22px;
+            box-shadow: var(--panel-glow); overflow: hidden;
         }
-        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-        th {
-            text-align: left; padding: 1rem 0.8rem; color: var(--neon-blue);
-            border-bottom: 2px solid rgba(0, 240, 255, 0.2);
-            font-weight: 700; white-space: nowrap;
-            text-transform: uppercase; font-size: 0.8rem;
-            letter-spacing: 1px;
+        .table-scroll { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+        thead th {
+            text-align: left; padding: 1.05rem 1rem;
+            color: var(--neon-blue); font-weight: 700; white-space: nowrap;
+            text-transform: uppercase; font-size: 0.74rem; letter-spacing: 1.4px;
+            background: rgba(0, 240, 255, 0.04);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.25);
         }
-        td { padding: 0.8rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); vertical-align: middle; }
-        tr { transition: all 0.2s ease; }
-        tr:hover { background: rgba(0, 240, 255, 0.03); }
-        td .dispo-oui { color: var(--neon-green); font-weight: 700; }
-        td .dispo-non { color: #ff4757; font-weight: 700; }
+        tbody td {
+            padding: 0.95rem 1rem; vertical-align: middle;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        tbody tr { transition: background 0.2s ease; }
+        tbody tr:hover { background: rgba(0, 240, 255, 0.04); }
+        tbody tr:last-child td { border-bottom: none; }
+        .col-center { text-align: center; }
+        .col-right { text-align: right; }
+
+        .item-name { font-weight: 700; color: var(--text-primary); }
+        .item-model {
+            display: inline-block; padding: 0.2rem 0.6rem; border-radius: 6px;
+            background: rgba(157, 77, 255, 0.12); border: 1px solid rgba(157, 77, 255, 0.3);
+            color: #c9a4ff; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+        }
+        .muted { color: var(--text-muted); }
+        .item-fonction { color: var(--text-secondary); max-width: 320px; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        .badge {
+            display: inline-flex; align-items: center; gap: 0.45rem;
+            padding: 0.3rem 0.8rem; border-radius: 999px;
+            font-size: 0.74rem; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
+        .badge.ok { color: var(--neon-green); background: rgba(0, 255, 136, 0.10); border: 1px solid rgba(0, 255, 136, 0.35); }
+        .badge.ko { color: var(--neon-red); background: rgba(255, 71, 87, 0.10); border: 1px solid rgba(255, 71, 87, 0.35); }
+
+        .qty-pill {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            min-width: 44px; justify-content: center;
+            padding: 0.25rem 0.7rem; border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace; font-weight: 600;
+            background: rgba(255, 255, 255, 0.06); border: 1px solid var(--glass-border);
+        }
+        .qty-pill.low { color: var(--neon-gold); background: rgba(255, 194, 71, 0.10); border-color: rgba(255, 194, 71, 0.4); }
+        .qty-pill.out { color: var(--neon-red); background: rgba(255, 71, 87, 0.10); border-color: rgba(255, 71, 87, 0.4); }
+
+        .row-actions { display: inline-flex; gap: 0.35rem; }
         .action-btn {
-            background: none; border: none; color: var(--text-secondary);
-            cursor: pointer; padding: 0.3rem 0.6rem; border-radius: 6px;
-            transition: 0.3s; font-size: 1rem;
+            width: 36px; height: 36px; border: 1px solid transparent; border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04); color: var(--text-secondary);
+            cursor: pointer; transition: all 0.25s ease; font-size: 0.95rem;
         }
-        .action-btn:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
-        .action-btn.edit:hover { color: var(--neon-blue); }
-        .action-btn.delete:hover { color: #ff4757; }
-        .empty-state { text-align: center; color: var(--text-secondary); padding: 3rem; }
-        .loading-text { text-align: center; color: var(--text-secondary); padding: 3rem; }
-        .loading-spinner {
-            display: inline-block; width: 30px; height: 30px;
-            border: 3px solid var(--glass-border);
-            border-top: 3px solid var(--neon-blue);
-            border-radius: 50%; animation: spin 0.8s linear infinite;
-            margin-bottom: 1rem;
+        .action-btn.edit:hover { color: var(--neon-blue); border-color: rgba(0, 240, 255, 0.5); background: rgba(0, 240, 255, 0.1); }
+        .action-btn.delete:hover { color: var(--neon-red); border-color: rgba(255, 71, 87, 0.5); background: rgba(255, 71, 87, 0.1); }
+
+        .table-footer {
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.6rem;
+            padding: 0.9rem 1.2rem; color: var(--text-secondary); font-size: 0.85rem;
+            border-top: 1px solid var(--glass-border); background: rgba(0, 0, 0, 0.18);
         }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .table-footer i { color: var(--neon-blue); margin-right: 0.4rem; }
+
+        .empty-state, .error-state { text-align: center; padding: 3.5rem 1.5rem; color: var(--text-secondary); }
+        .empty-state i, .error-state i { font-size: 3rem; margin-bottom: 1rem; display: block; color: var(--text-muted); }
+        .error-state i { color: var(--neon-red); }
+        .empty-state h3, .error-state h3 { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.5rem; }
+
+        /* ============ SKELETON ============ */
+        .skeleton-row { display: flex; gap: 1rem; padding: 1.1rem 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .skeleton-cell {
+            height: 16px; border-radius: 6px; flex: 1;
+            background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.10) 50%, rgba(255,255,255,0.04) 75%);
+            background-size: 200% 100%; animation: shimmer 1.4s infinite;
+        }
+        .skeleton-cell.wide { flex: 2.2; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        /* ============ MODALS ============ */
         .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%; background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(10px); z-index: 9999;
-            align-items: center; justify-content: center; padding: 2rem;
+            display: none; position: fixed; inset: 0;
+            background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(10px);
+            z-index: 9000; align-items: center; justify-content: center; padding: 1.5rem;
         }
-        .modal-overlay.active { display: flex; }
+        .modal-overlay.active { display: flex; animation: fadeIn 0.25s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popIn { from { opacity: 0; transform: translateY(14px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
         .modal-content {
-            background: linear-gradient(135deg, #0a0a12 0%, #050510 100%);
-            border: 2px solid var(--glass-border); border-radius: 25px;
-            max-width: 600px; width: 100%; max-height: 90vh;
-            overflow-y: auto; padding: 2.5rem;
-            box-shadow: 0 0 60px rgba(123, 44, 191, 0.3);
+            position: relative; overflow: hidden;
+            background: linear-gradient(135deg, #0b0b17 0%, #12091f 100%);
+            border: 1px solid rgba(0, 240, 255, 0.35); border-radius: 22px;
+            max-width: 620px; width: 100%; max-height: 92vh; overflow-y: auto;
+            padding: 2.2rem; animation: popIn 0.3s ease;
+            box-shadow: 0 0 70px rgba(123, 44, 191, 0.35);
         }
-        .modal-content h2 { font-family: 'Orbitron', sans-serif; color: var(--neon-blue); margin-bottom: 1.5rem; }
-        .modal-content .form-group { margin-bottom: 1.2rem; }
-        .modal-content .form-group label {
-            display: block; color: var(--text-secondary);
-            font-weight: 600; margin-bottom: 0.3rem; font-size: 0.9rem;
+        .modal-content::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue), var(--neon-violet), var(--neon-green));
+            background-size: 200% 100%; animation: borderFlow 4s linear infinite;
         }
-        .modal-content .form-group input,
-        .modal-content .form-group select {
+        .modal-content.danger { border-color: rgba(255, 71, 87, 0.5); box-shadow: 0 0 70px rgba(255, 71, 87, 0.25); max-width: 480px; text-align: center; }
+        .modal-content.danger::before { background: linear-gradient(90deg, var(--neon-red), #ff8a00, var(--neon-red)); background-size: 200% 100%; }
+
+        .modal-head { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 1.6rem; }
+        .modal-head .modal-icon {
+            width: 46px; height: 46px; border-radius: 13px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+            color: var(--neon-blue); background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.35);
+        }
+        .modal-head h2 { font-family: 'Orbitron', sans-serif; font-size: 1.25rem; color: var(--neon-blue); letter-spacing: 1px; }
+        .modal-head p { color: var(--text-muted); font-size: 0.82rem; margin-top: 0.15rem; }
+        .modal-close {
+            margin-left: auto; width: 36px; height: 36px; border: none; border-radius: 10px;
+            background: var(--glass); color: var(--text-secondary); cursor: pointer; transition: 0.2s;
+        }
+        .modal-close:hover { background: rgba(255, 71, 87, 0.15); color: var(--neon-red); }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.1rem; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-group label {
+            color: var(--text-secondary); font-weight: 600; font-size: 0.8rem;
+            margin-bottom: 0.4rem; letter-spacing: 0.6px; text-transform: uppercase;
+        }
+        .form-group label .req { color: var(--neon-red); }
+        .form-group input, .form-group select {
             width: 100%; padding: 0.8rem 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border); border-radius: 10px;
-            color: var(--text-primary); font-size: 1rem;
-            outline: none; transition: 0.3s;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border);
+            border-radius: 11px; color: var(--text-primary); font-size: 0.98rem;
+            outline: none; transition: 0.25s;
         }
-        .modal-content .form-group input:focus,
-        .modal-content .form-group select:focus {
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+        .form-group input::placeholder { color: var(--text-muted); }
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--neon-blue); box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.12); background: rgba(255, 255, 255, 0.08);
         }
-        .modal-content .form-group select option { background: var(--dark-space); }
-        .modal-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
-        .modal-actions button {
-            flex: 1; padding: 0.8rem; border: none;
-            border-radius: 10px; font-weight: 700;
-            cursor: pointer; transition: 0.3s;
+        .form-group select option { background: var(--dark-space); }
+        .form-group input.invalid { border-color: var(--neon-red); box-shadow: 0 0 0 3px rgba(255, 71, 87, 0.15); }
+        .form-hint { margin-top: 1rem; padding: 0.8rem 1rem; border-radius: 11px; background: rgba(0, 255, 136, 0.06); border: 1px solid rgba(0, 255, 136, 0.2); color: var(--text-secondary); font-size: 0.88rem; }
+        .form-hint strong { color: var(--neon-green); font-family: 'JetBrains Mono', monospace; }
+
+        .modal-actions { display: flex; gap: 0.8rem; margin-top: 1.7rem; }
+        .modal-actions button { flex: 1; }
+        .btn-cancel { background: var(--glass); border: 1px solid var(--glass-border); color: var(--text-secondary); }
+        .btn-cancel:hover { background: var(--glass-strong); color: var(--text-primary); }
+        .btn-danger { background: linear-gradient(135deg, var(--neon-red), #c9162b); color: #fff; box-shadow: 0 6px 22px rgba(255, 71, 87, 0.3); }
+        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255, 71, 87, 0.45); }
+
+        .danger-icon { font-size: 3.2rem; color: var(--neon-red); text-shadow: 0 0 30px rgba(255, 71, 87, 0.6); margin-bottom: 1rem; }
+        .modal-content.danger h2 { font-family: 'Orbitron', sans-serif; color: var(--neon-red); font-size: 1.3rem; margin-bottom: 0.8rem; letter-spacing: 1px; }
+        .modal-content.danger p { color: var(--text-secondary); line-height: 1.6; }
+        .modal-content.danger p strong { color: var(--text-primary); }
+
+        /* ============ TOASTS ============ */
+        .toast-stack {
+            position: fixed; bottom: 1.6rem; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; gap: 0.6rem; z-index: 10000;
+            width: max-content; max-width: 92vw; pointer-events: none;
         }
-        .modal-actions .btn-cancel {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-secondary);
-        }
-        .modal-actions .btn-cancel:hover { background: rgba(255, 255, 255, 0.1); }
-        .modal-actions .btn-confirm {
-            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
-            color: white;
-        }
-        .modal-actions .btn-confirm:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(123, 44, 191, 0.4); }
         .toast-message {
-            position: fixed; bottom: 2rem; left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 255, 136, 0.95); color: #050510;
-            padding: 1rem 2rem; border-radius: 12px;
-            font-weight: 700; font-size: 1.1rem; z-index: 9999;
-            animation: fadeInUp 0.3s ease; max-width: 90%; text-align: center;
+            display: flex; align-items: center; gap: 0.7rem;
+            padding: 0.95rem 1.5rem; border-radius: 13px;
+            background: rgba(0, 255, 136, 0.96); color: #04130b;
+            font-weight: 700; font-size: 0.98rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
+            animation: fadeInUp 0.3s ease;
         }
-        .toast-message.error { background: rgba(255, 71, 87, 0.95); color: white; }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast-message.error { background: rgba(255, 71, 87, 0.96); color: #fff; }
+        .toast-message.warn { background: rgba(255, 194, 71, 0.97); color: #241a02; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ============ ACCÈS REFUSÉ ============ */
+        .denied {
+            min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 1rem; text-align: center; padding: 2rem;
         }
-        @media (max-width: 768px) {
+        .denied i { font-size: 4.2rem; color: var(--neon-red); text-shadow: 0 0 35px rgba(255, 71, 87, 0.6); }
+        .denied h1 { font-family: 'Orbitron', sans-serif; color: var(--neon-red); letter-spacing: 3px; }
+        .denied p { color: var(--text-secondary); max-width: 440px; line-height: 1.6; }
+        .denied a { color: var(--neon-blue); font-weight: 600; text-decoration: none; margin-top: 0.5rem; }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 900px) {
+            .form-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 760px) {
             body { padding: 1rem; }
-            .page-header h1 { font-size: 2rem; }
-            .controls { flex-direction: column; }
-            .search-input { min-width: 100%; }
+            .page-header { padding: 2rem 1.2rem; }
+            .page-header h1 { font-size: 1.55rem; letter-spacing: 1.5px; }
+            .page-header .subtitle { font-size: 0.82rem; letter-spacing: 1px; }
+            .toolbar { flex-direction: column; align-items: stretch; }
+            .search-wrap { min-width: 100%; }
             .modal-content { padding: 1.5rem; }
-            .modal-actions { flex-direction: column; }
+            .modal-actions { flex-direction: column-reverse; }
+
+            .table-scroll { overflow-x: visible; }
+            table, tbody, tr, td { display: block; width: 100%; }
+            thead { display: none; }
+            tbody tr {
+                margin: 0.9rem; width: auto; padding: 0.4rem 0.2rem;
+                background: rgba(255, 255, 255, 0.035);
+                border: 1px solid var(--glass-border); border-radius: 14px;
+            }
+            tbody td {
+                display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+                padding: 0.6rem 0.9rem; border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+                text-align: right !important;
+            }
+            tbody td:last-child { border-bottom: none; justify-content: flex-end; }
+            tbody td::before {
+                content: attr(data-label); color: var(--text-muted); font-size: 0.7rem;
+                text-transform: uppercase; letter-spacing: 1px; font-weight: 700; text-align: left; flex-shrink: 0;
+            }
+            tbody td:last-child::before { display: none; }
+            .item-fonction { max-width: none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
         }
     </style>
 </head>
 <body>
     <div class="hologram-grid"></div>
 
-    <div class="page-container">
-        <a href="dashboard.html" class="back-btn">
-            <i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD
-        </a>
+    <div class="page-container" id="app">
+
+        <div class="top-bar">
+            <a href="dashboard.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> RETOUR AU DASHBOARD
+            </a>
+            <div class="user-chip" id="userChip"><i class="fas fa-user-shield"></i> <span id="userChipText">Session</span></div>
+        </div>
 
         <header class="page-header">
-            <h1><i class="fas fa-boxes"></i> GESTION DES STOCKS</h1>
-            <p class="subtitle">Inventaire des composants électroniques – AFRICA.TECH21</p>
+            <div class="header-icon"><i class="fas fa-boxes-stacked"></i></div>
+            <h1>GESTION DES STOCKS</h1>
+            <p class="subtitle">Inventaire des composants électroniques · AFRICA.TECH21</p>
         </header>
 
         <!-- Statistiques -->
-        <div class="stats-bar">
-            <div class="stat-card">
-                <div class="stat-number" id="statTotal">0</div>
-                <div class="stat-label">Total Composants</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="statDispo">0</div>
-                <div class="stat-label">Disponibles</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="statIndispo">0</div>
-                <div class="stat-label">Indisponibles</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="statValeur">0</div>
-                <div class="stat-label">Valeur Totale (FCFA)</div>
-            </div>
-        </div>
-
-        <div class="controls">
-            <input type="text" id="searchInput" class="search-input" placeholder="🔍 Rechercher un composant (nom, fonction, modèle...)">
-            <button class="btn-primary" onclick="openAddModal()">
-                <i class="fas fa-plus"></i> AJOUTER UN COMPOSANT
-            </button>
-        </div>
-
-        <div class="table-container">
-            <div id="tableContent">
-                <div class="loading-text">
-                    <div class="loading-spinner"></div>
-                    <p>Chargement de l'inventaire...</p>
+        <section class="stats-bar">
+            <div class="stat-card clickable" style="--accent: var(--neon-blue);" data-filter="all" title="Afficher tout">
+                <div class="stat-icon"><i class="fas fa-microchip"></i></div>
+                <div>
+                    <div class="stat-number" id="statTotal">0</div>
+                    <div class="stat-label">Total composants</div>
                 </div>
             </div>
-        </div>
+            <div class="stat-card clickable" style="--accent: var(--neon-green);" data-filter="dispo" title="Afficher les disponibles">
+                <div class="stat-icon"><i class="fas fa-circle-check"></i></div>
+                <div>
+                    <div class="stat-number" id="statDispo">0</div>
+                    <div class="stat-label">Disponibles</div>
+                </div>
+            </div>
+            <div class="stat-card clickable" style="--accent: var(--neon-red);" data-filter="indispo" title="Afficher les indisponibles">
+                <div class="stat-icon"><i class="fas fa-circle-xmark"></i></div>
+                <div>
+                    <div class="stat-number" id="statIndispo">0</div>
+                    <div class="stat-label">Indisponibles</div>
+                </div>
+            </div>
+            <div class="stat-card clickable" style="--accent: var(--neon-gold);" data-filter="low" title="Afficher les stocks faibles">
+                <div class="stat-icon"><i class="fas fa-triangle-exclamation"></i></div>
+                <div>
+                    <div class="stat-number" id="statLow">0</div>
+                    <div class="stat-label">Stock faible / rupture</div>
+                </div>
+            </div>
+            <div class="stat-card" style="--accent: var(--neon-violet);">
+                <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                <div>
+                    <div class="stat-number" id="statValeur">0</div>
+                    <div class="stat-label">Valeur totale (FCFA)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Barre d'outils -->
+        <section class="toolbar">
+            <div class="search-wrap">
+                <i class="fas fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un composant (nom, fonction, modèle...)" autocomplete="off">
+                <button type="button" class="search-clear" id="searchClear" aria-label="Effacer la recherche"><i class="fas fa-xmark"></i></button>
+            </div>
+
+            <select id="filterSelect" class="select-ctl" aria-label="Filtrer">
+                <option value="all">Tous les composants</option>
+                <option value="dispo">Disponibles</option>
+                <option value="indispo">Indisponibles</option>
+                <option value="low">Stock faible / rupture</option>
+            </select>
+
+            <select id="sortSelect" class="select-ctl" aria-label="Trier">
+                <option value="nom-asc">Nom (A → Z)</option>
+                <option value="nom-desc">Nom (Z → A)</option>
+                <option value="qte-asc">Quantité (croissante)</option>
+                <option value="qte-desc">Quantité (décroissante)</option>
+                <option value="prix-desc">Prix (décroissant)</option>
+                <option value="prix-asc">Prix (croissant)</option>
+                <option value="valeur-desc">Valeur de stock (décroissante)</option>
+            </select>
+
+            <button type="button" class="btn btn-ghost" id="btnExport"><i class="fas fa-file-csv"></i> EXPORT CSV</button>
+            <button type="button" class="btn btn-primary" id="btnAdd"><i class="fas fa-plus"></i> AJOUTER UN COMPOSANT</button>
+        </section>
+
+        <!-- Tableau -->
+        <section class="table-container">
+            <div id="tableContent"></div>
+        </section>
     </div>
 
-    <!-- MODAL -->
+    <!-- MODAL AJOUT / ÉDITION -->
     <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content">
-            <h2 id="modalTitle">Ajouter un composant</h2>
-            <form id="modalForm">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <div class="modal-head">
+                <div class="modal-icon"><i class="fas fa-microchip" id="modalIcon"></i></div>
+                <div>
+                    <h2 id="modalTitle">Ajouter un composant</h2>
+                    <p id="modalSubtitle">Renseignez les informations du composant</p>
+                </div>
+                <button type="button" class="modal-close" id="modalCloseBtn" aria-label="Fermer"><i class="fas fa-xmark"></i></button>
+            </div>
+
+            <form id="modalForm" novalidate>
                 <input type="hidden" id="editId" value="">
-                
-                <div class="form-group">
-                    <label for="modalNom">Nom du composant *</label>
-                    <input type="text" id="modalNom" placeholder="Ex: Capteur ultrasonique HC-SR04" required>
+
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label for="modalNom">Nom du composant <span class="req">*</span></label>
+                        <input type="text" id="modalNom" placeholder="Ex : Capteur ultrasonique HC-SR04" maxlength="120">
+                    </div>
+
+                    <div class="form-group full">
+                        <label for="modalFonction">Fonction <span class="req">*</span></label>
+                        <input type="text" id="modalFonction" placeholder="Ex : Mesure de distance par ultrasons" maxlength="200">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="modalDispo">Disponibilité</label>
+                        <select id="modalDispo">
+                            <option value="Oui">✅ Oui</option>
+                            <option value="Non">❌ Non</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="modalModele">Modèle / Référence</label>
+                        <input type="text" id="modalModele" placeholder="Ex : HC-SR04" maxlength="80">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="modalPrix">Prix unitaire (FCFA)</label>
+                        <input type="number" id="modalPrix" placeholder="Ex : 2500" step="1" min="0" inputmode="numeric">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="modalQuantite">Quantité</label>
+                        <input type="number" id="modalQuantite" placeholder="Ex : 5" step="1" min="0" inputmode="numeric">
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="modalFonction">Fonction *</label>
-                    <input type="text" id="modalFonction" placeholder="Ex: Mesure de distance par ultrasons" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="modalDispo">Disponible</label>
-                    <select id="modalDispo">
-                        <option value="Oui">✅ Oui</option>
-                        <option value="Non">❌ Non</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="modalPrix">Prix unitaire (FCFA)</label>
-                    <input type="number" id="modalPrix" placeholder="Ex: 2500" step="1" min="0">
-                </div>
-
-                <div class="form-group">
-                    <label for="modalQuantite">Quantité</label>
-                    <input type="number" id="modalQuantite" placeholder="Ex: 5" step="1" min="0">
-                </div>
-
-                <div class="form-group">
-                    <label for="modalModele">Modèle / Référence</label>
-                    <input type="text" id="modalModele" placeholder="Ex: HC-SR04">
+                <div class="form-hint">
+                    <i class="fas fa-calculator"></i> Valeur de stock de cette ligne :
+                    <strong id="modalValeurPreview">0 FCFA</strong>
                 </div>
 
                 <div class="modal-actions">
-                    <button type="button" class="btn-cancel" onclick="closeModal()">ANNULER</button>
-                    <button type="submit" class="btn-confirm" id="modalSubmitBtn">AJOUTER</button>
+                    <button type="button" class="btn btn-cancel" id="modalCancelBtn">ANNULER</button>
+                    <button type="submit" class="btn btn-primary" id="modalSubmitBtn"><i class="fas fa-check"></i> <span id="modalSubmitText">AJOUTER</span></button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- MODAL SUPPRESSION -->
+    <div class="modal-overlay" id="deleteOverlay">
+        <div class="modal-content danger" role="alertdialog" aria-modal="true" aria-labelledby="deleteTitle">
+            <div class="danger-icon"><i class="fas fa-trash-can"></i></div>
+            <h2 id="deleteTitle">SUPPRIMER CE COMPOSANT ?</h2>
+            <p>Vous allez supprimer définitivement <strong id="deleteName">ce composant</strong> de l'inventaire. Cette action est irréversible.</p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-cancel" id="deleteCancelBtn">ANNULER</button>
+                <button type="button" class="btn btn-danger" id="deleteConfirmBtn"><i class="fas fa-trash"></i> SUPPRIMER</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
     <!-- ==================== SUPABASE ==================== -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+    (function () {
+        'use strict';
+
         // ==================== CONFIGURATION SUPABASE ====================
         const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
-        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // ==================== ACCÈS RESTREINT ====================
         const ALLOWED_IDS = ['AT21_006', 'AT21_0026', 'Birane186@00'];
+        const LOW_STOCK_THRESHOLD = 3; // quantité <= seuil => "stock faible"
 
         if (localStorage.getItem('memberLoggedIn') !== 'true') {
             window.location.href = 'espace-membres.html';
+            return;
         }
 
         const memberId = localStorage.getItem('memberId') || '';
         if (!ALLOWED_IDS.includes(memberId)) {
-            document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column;gap:1rem;text-align:center;padding:2rem;"><i class="fas fa-lock" style="font-size:4rem;color:#ff4757;"></i><h1 style="color:#ff4757;">ACCÈS REFUSÉ</h1><p>Cette page est réservée au Président et à la Gestionnaire.</p><a href="dashboard.html" style="color:var(--neon-blue);">Retour au Dashboard</a></div>';
-            throw new Error('Accès refusé');
+            document.body.innerHTML =
+                '<div class="denied">' +
+                '<i class="fas fa-lock"></i>' +
+                '<h1>ACCÈS REFUSÉ</h1>' +
+                '<p>Cette page est réservée au Président et à la Gestionnaire.</p>' +
+                '<a href="dashboard.html"><i class="fas fa-arrow-left"></i> Retour au Dashboard</a>' +
+                '</div>';
+            return;
         }
+
+        document.getElementById('userChipText').textContent = memberId.length > 14 ? memberId.slice(0, 6) + '…' : memberId;
+
+        if (!window.supabase) {
+            document.getElementById('tableContent').innerHTML =
+                '<div class="error-state"><i class="fas fa-wifi"></i><h3>Connexion impossible</h3>' +
+                '<p>La bibliothèque Supabase n\'a pas pu être chargée. Vérifiez votre connexion internet puis rechargez la page.</p></div>';
+            return;
+        }
+
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // ==================== ÉTAT ====================
         let inventaireData = [];
         let filteredData = [];
+        let deleteTargetId = null;
+        let isSaving = false;
 
-        // ==================== TOAST ====================
-        function showToast(message, type = '') {
-            const old = document.querySelector('.toast-message');
-            if (old) old.remove();
-            const toast = document.createElement('div');
-            toast.className = 'toast-message ' + type;
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transition = 'opacity 0.5s';
-                setTimeout(() => toast.remove(), 500);
-            }, 4000);
+        const state = { search: '', filter: 'all', sort: 'nom-asc' };
+
+        // ==================== UTILITAIRES ====================
+        const $ = (id) => document.getElementById(id);
+
+        function esc(value) {
+            return String(value == null ? '' : value).replace(/[&<>"']/g, (c) => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[c]));
         }
 
-        // ==================== CHARGER ====================
-        async function loadInventory() {
-            const container = document.getElementById('tableContent');
-            container.innerHTML = '<div class="loading-text"><div class="loading-spinner"></div><p>Chargement de l\'inventaire...</p></div>';
+        const toInt = (v) => { const n = parseInt(v, 10); return Number.isFinite(n) ? n : 0; };
+        const fmt = (n) => Number(n || 0).toLocaleString('fr-FR');
+        const isDispo = (item) => String(item.dispo || '').trim().toLowerCase() === 'oui';
+        const isLow = (item) => toInt(item.quantite) <= LOW_STOCK_THRESHOLD;
+        const lineValue = (item) => toInt(item.prix) * toInt(item.quantite);
 
+        // ==================== TOAST ====================
+        function showToast(message, type) {
+            const stack = $('toastStack');
+            const toast = document.createElement('div');
+            toast.className = 'toast-message' + (type ? ' ' + type : '');
+            const icon = type === 'error' ? 'fa-circle-xmark' : type === 'warn' ? 'fa-triangle-exclamation' : 'fa-circle-check';
+            toast.innerHTML = '<i class="fas ' + icon + '"></i><span></span>';
+            toast.querySelector('span').textContent = message;
+            stack.appendChild(toast);
+            setTimeout(() => {
+                toast.style.transition = 'opacity 0.5s, transform 0.5s';
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                setTimeout(() => toast.remove(), 500);
+            }, 3800);
+        }
+
+        // ==================== SKELETON ====================
+        function renderSkeleton() {
+            let rows = '';
+            for (let i = 0; i < 6; i++) {
+                rows += '<div class="skeleton-row">' +
+                    '<div class="skeleton-cell wide"></div><div class="skeleton-cell wide"></div>' +
+                    '<div class="skeleton-cell"></div><div class="skeleton-cell"></div>' +
+                    '<div class="skeleton-cell"></div><div class="skeleton-cell"></div></div>';
+            }
+            $('tableContent').innerHTML = rows;
+        }
+
+        // ==================== CHARGEMENT ====================
+        async function loadInventory() {
+            renderSkeleton();
             try {
                 const { data, error } = await supabaseClient
                     .from('inventaire')
@@ -372,147 +727,200 @@
                 if (error) throw error;
 
                 inventaireData = data || [];
-                filteredData = [...inventaireData];
                 updateStats();
-                renderTable();
-
+                applyView();
             } catch (error) {
-                container.innerHTML = `<div class="empty-state">❌ Erreur : ${error.message}</div>`;
+                $('tableContent').innerHTML =
+                    '<div class="error-state"><i class="fas fa-circle-exclamation"></i>' +
+                    '<h3>Erreur de chargement</h3><p>' + esc(error.message || 'Erreur inconnue') + '</p>' +
+                    '<p style="margin-top:1rem;"><button type="button" class="btn btn-primary" id="btnRetry"><i class="fas fa-rotate-right"></i> RÉESSAYER</button></p></div>';
+                const retry = $('btnRetry');
+                if (retry) retry.addEventListener('click', loadInventory);
             }
         }
 
         // ==================== STATISTIQUES ====================
         function updateStats() {
             const total = inventaireData.length;
-            const dispo = inventaireData.filter(i => (i.dispo || '').toLowerCase() === 'oui').length;
-            const indispo = total - dispo;
-            const valeur = inventaireData.reduce((sum, i) => sum + ((parseInt(i.prix) || 0) * (parseInt(i.quantite) || 0)), 0);
+            const dispo = inventaireData.filter(isDispo).length;
+            const low = inventaireData.filter(isLow).length;
+            const valeur = inventaireData.reduce((sum, i) => sum + lineValue(i), 0);
 
-            document.getElementById('statTotal').textContent = total;
-            document.getElementById('statDispo').textContent = dispo;
-            document.getElementById('statIndispo').textContent = indispo;
-            document.getElementById('statValeur').textContent = valeur.toLocaleString('fr-FR');
+            $('statTotal').textContent = fmt(total);
+            $('statDispo').textContent = fmt(dispo);
+            $('statIndispo').textContent = fmt(total - dispo);
+            $('statLow').textContent = fmt(low);
+            $('statValeur').textContent = fmt(valeur);
         }
 
-        // ==================== RECHERCHE ====================
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const term = e.target.value.toLowerCase().trim();
-            if (!term) {
-                filteredData = [...inventaireData];
-            } else {
-                filteredData = inventaireData.filter(item =>
-                    (item.nom || '').toLowerCase().includes(term) ||
-                    (item.fonction || '').toLowerCase().includes(term) ||
-                    (item.modele || '').toLowerCase().includes(term)
-                );
-            }
+        // ==================== FILTRE / TRI / RECHERCHE ====================
+        function applyView() {
+            const term = state.search.toLowerCase().trim();
+
+            let list = inventaireData.filter((item) => {
+                if (term) {
+                    const hay = ((item.nom || '') + ' ' + (item.fonction || '') + ' ' + (item.modele || '')).toLowerCase();
+                    if (!hay.includes(term)) return false;
+                }
+                if (state.filter === 'dispo') return isDispo(item);
+                if (state.filter === 'indispo') return !isDispo(item);
+                if (state.filter === 'low') return isLow(item);
+                return true;
+            });
+
+            const [key, dir] = state.sort.split('-');
+            const mult = dir === 'desc' ? -1 : 1;
+            list.sort((a, b) => {
+                if (key === 'nom') return mult * String(a.nom || '').localeCompare(String(b.nom || ''), 'fr', { sensitivity: 'base' });
+                if (key === 'qte') return mult * (toInt(a.quantite) - toInt(b.quantite));
+                if (key === 'prix') return mult * (toInt(a.prix) - toInt(b.prix));
+                if (key === 'valeur') return mult * (lineValue(a) - lineValue(b));
+                return 0;
+            });
+
+            filteredData = list;
             renderTable();
-        });
+        }
 
-        // ==================== AFFICHER TABLEAU ====================
+        function debounce(fn, delay) {
+            let t;
+            return function () {
+                const args = arguments;
+                clearTimeout(t);
+                t = setTimeout(() => fn.apply(null, args), delay);
+            };
+        }
+
+        // ==================== AFFICHAGE TABLEAU ====================
         function renderTable() {
-            const container = document.getElementById('tableContent');
+            const container = $('tableContent');
 
-            if (filteredData.length === 0) {
-                container.innerHTML = `<div class="empty-state">📭 Aucun composant trouvé.</div>`;
+            if (inventaireData.length === 0) {
+                container.innerHTML =
+                    '<div class="empty-state"><i class="fas fa-box-open"></i><h3>Inventaire vide</h3>' +
+                    '<p>Aucun composant enregistré pour le moment. Ajoutez le premier composant pour démarrer.</p></div>';
                 return;
             }
 
-            let html = `
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Fonction</th>
-                            <th>Disponible</th>
-                            <th>Prix (FCFA)</th>
-                            <th>Quantité</th>
-                            <th>Modèle</th>
-                            <th style="text-align:center;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
+            if (filteredData.length === 0) {
+                container.innerHTML =
+                    '<div class="empty-state"><i class="fas fa-magnifying-glass"></i><h3>Aucun résultat</h3>' +
+                    '<p>Aucun composant ne correspond à votre recherche ou à vos filtres.</p></div>';
+                return;
+            }
 
-            filteredData.forEach(item => {
-                const dispoClass = (item.dispo || '').toLowerCase() === 'oui' ? 'dispo-oui' : 'dispo-non';
-                const dispoText = (item.dispo || '').toUpperCase();
-                html += `
-                    <tr>
-                        <td><strong>${item.nom || ''}</strong></td>
-                        <td>${item.fonction || ''}</td>
-                        <td><span class="${dispoClass}">${dispoText}</span></td>
-                        <td>${item.prix ? parseInt(item.prix).toLocaleString('fr-FR') : ''}</td>
-                        <td>${item.quantite || 0}</td>
-                        <td>${item.modele || ''}</td>
-                        <td style="text-align:center; white-space:nowrap;">
-                            <button class="action-btn edit" onclick="openEditModal('${item.id}')" title="Modifier">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="action-btn delete" onclick="deleteComponent('${item.id}')" title="Supprimer">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
+            let html = '<div class="table-scroll"><table><thead><tr>' +
+                '<th>Composant</th><th>Fonction</th><th>Modèle</th><th class="col-center">Disponibilité</th>' +
+                '<th class="col-right">Prix (FCFA)</th><th class="col-center">Quantité</th>' +
+                '<th class="col-right">Valeur (FCFA)</th><th class="col-center">Actions</th>' +
+                '</tr></thead><tbody>';
+
+            filteredData.forEach((item) => {
+                const ok = isDispo(item);
+                const qte = toInt(item.quantite);
+                const qtyClass = qte === 0 ? 'out' : (qte <= LOW_STOCK_THRESHOLD ? 'low' : '');
+                const qtyIcon = qte === 0 ? '<i class="fas fa-ban"></i>' : (qte <= LOW_STOCK_THRESHOLD ? '<i class="fas fa-triangle-exclamation"></i>' : '');
+                const id = esc(item.id);
+
+                html += '<tr>' +
+                    '<td data-label="Composant"><span class="item-name">' + esc(item.nom) + '</span></td>' +
+                    '<td data-label="Fonction" class="item-fonction">' + esc(item.fonction) + '</td>' +
+                    '<td data-label="Modèle">' + (item.modele ? '<span class="item-model">' + esc(item.modele) + '</span>' : '<span class="muted">—</span>') + '</td>' +
+                    '<td data-label="Disponibilité" class="col-center"><span class="badge ' + (ok ? 'ok' : 'ko') + '">' + (ok ? 'Disponible' : 'Indisponible') + '</span></td>' +
+                    '<td data-label="Prix" class="col-right mono">' + (toInt(item.prix) ? fmt(toInt(item.prix)) : '<span class="muted">—</span>') + '</td>' +
+                    '<td data-label="Quantité" class="col-center"><span class="qty-pill ' + qtyClass + '">' + qtyIcon + qte + '</span></td>' +
+                    '<td data-label="Valeur" class="col-right mono">' + fmt(lineValue(item)) + '</td>' +
+                    '<td class="col-center"><div class="row-actions">' +
+                    '<button type="button" class="action-btn edit" data-action="edit" data-id="' + id + '" title="Modifier" aria-label="Modifier"><i class="fas fa-pen-to-square"></i></button>' +
+                    '<button type="button" class="action-btn delete" data-action="delete" data-id="' + id + '" title="Supprimer" aria-label="Supprimer"><i class="fas fa-trash"></i></button>' +
+                    '</div></td></tr>';
             });
 
-            html += `</tbody></table>`;
-            html += `<p style="margin-top:1rem; color:var(--text-secondary); font-size:0.9rem;">
-                <i class="fas fa-info-circle"></i> ${filteredData.length} composant(s) affiché(s)
-            </p>`;
+            html += '</tbody></table></div>';
+
+            const valeurAffichee = filteredData.reduce((s, i) => s + lineValue(i), 0);
+            html += '<div class="table-footer">' +
+                '<span><i class="fas fa-circle-info"></i>' + fmt(filteredData.length) + ' composant(s) affiché(s) sur ' + fmt(inventaireData.length) + '</span>' +
+                '<span><i class="fas fa-coins"></i>Valeur affichée : <strong class="mono">' + fmt(valeurAffichee) + ' FCFA</strong></span>' +
+                '</div>';
 
             container.innerHTML = html;
         }
 
-        // ==================== MODAL ====================
-        function openModal(title, data = null) {
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('editId').value = data?.id || '';
-            document.getElementById('modalNom').value = data?.nom || '';
-            document.getElementById('modalFonction').value = data?.fonction || '';
-            document.getElementById('modalDispo').value = data?.dispo || 'Oui';
-            document.getElementById('modalPrix').value = data?.prix || '';
-            document.getElementById('modalQuantite').value = data?.quantite || '';
-            document.getElementById('modalModele').value = data?.modele || '';
+        // Délégation d'événements pour les boutons du tableau
+        $('tableContent').addEventListener('click', function (e) {
+            const btn = e.target.closest('button[data-action]');
+            if (!btn) return;
+            const id = btn.getAttribute('data-id');
+            if (btn.getAttribute('data-action') === 'edit') openEditModal(id);
+            if (btn.getAttribute('data-action') === 'delete') openDeleteModal(id);
+        });
 
-            const submitBtn = document.getElementById('modalSubmitBtn');
-            submitBtn.textContent = data ? 'MODIFIER' : 'AJOUTER';
+        // ==================== MODAL AJOUT / ÉDITION ====================
+        function updateValeurPreview() {
+            const v = toInt($('modalPrix').value) * toInt($('modalQuantite').value);
+            $('modalValeurPreview').textContent = fmt(v) + ' FCFA';
+        }
 
-            document.getElementById('modalOverlay').classList.add('active');
+        function clearInvalid() {
+            $('modalNom').classList.remove('invalid');
+            $('modalFonction').classList.remove('invalid');
+        }
+
+        function openModal(title, data) {
+            clearInvalid();
+            const editing = !!data;
+            $('modalTitle').textContent = title;
+            $('modalSubtitle').textContent = editing ? 'Modifiez les informations puis enregistrez' : 'Renseignez les informations du composant';
+            $('modalIcon').className = 'fas ' + (editing ? 'fa-pen-to-square' : 'fa-plus');
+            $('editId').value = data && data.id != null ? data.id : '';
+            $('modalNom').value = (data && data.nom) || '';
+            $('modalFonction').value = (data && data.fonction) || '';
+            $('modalDispo').value = (data && data.dispo) || 'Oui';
+            $('modalPrix').value = data && data.prix != null && data.prix !== '' ? data.prix : '';
+            $('modalQuantite').value = data && data.quantite != null && data.quantite !== '' ? data.quantite : '';
+            $('modalModele').value = (data && data.modele) || '';
+            $('modalSubmitText').textContent = editing ? 'ENREGISTRER' : 'AJOUTER';
+            updateValeurPreview();
+            $('modalOverlay').classList.add('active');
+            setTimeout(() => $('modalNom').focus(), 80);
         }
 
         function closeModal() {
-            document.getElementById('modalOverlay').classList.remove('active');
+            $('modalOverlay').classList.remove('active');
         }
 
-        function openAddModal() {
-            openModal('Ajouter un composant');
-        }
+        function openAddModal() { openModal('Ajouter un composant', null); }
 
         function openEditModal(id) {
-            const item = inventaireData.find(d => d.id == id);
-            if (item) {
-                openModal('Modifier le composant', item);
-            } else {
-                showToast('❌ Composant non trouvé', 'error');
-            }
+            const item = inventaireData.find((d) => String(d.id) === String(id));
+            if (item) openModal('Modifier le composant', item);
+            else showToast('Composant introuvable', 'error');
         }
 
-        // ==================== SAUVEGARDER ====================
-        document.getElementById('modalForm').addEventListener('submit', async function(e) {
+        // ==================== SAUVEGARDE ====================
+        async function saveComponent(e) {
             e.preventDefault();
+            if (isSaving) return;
 
-            const id = document.getElementById('editId').value;
-            const nom = document.getElementById('modalNom').value.trim();
-            const fonction = document.getElementById('modalFonction').value.trim();
-            const dispo = document.getElementById('modalDispo').value;
-            const prix = document.getElementById('modalPrix').value.trim();
-            const quantite = document.getElementById('modalQuantite').value.trim();
-            const modele = document.getElementById('modalModele').value.trim();
+            const id = $('editId').value;
+            const nom = $('modalNom').value.trim();
+            const fonction = $('modalFonction').value.trim();
+            const dispo = $('modalDispo').value;
+            const prix = $('modalPrix').value.trim();
+            const quantite = $('modalQuantite').value.trim();
+            const modele = $('modalModele').value.trim();
 
+            clearInvalid();
             if (!nom || !fonction) {
-                showToast('⚠️ Le nom et la fonction sont obligatoires.', 'error');
+                if (!nom) $('modalNom').classList.add('invalid');
+                if (!fonction) $('modalFonction').classList.add('invalid');
+                showToast('Le nom et la fonction sont obligatoires.', 'warn');
+                return;
+            }
+
+            if ((prix && toInt(prix) < 0) || (quantite && toInt(quantite) < 0)) {
+                showToast('Le prix et la quantité ne peuvent pas être négatifs.', 'warn');
                 return;
             }
 
@@ -520,11 +928,17 @@
                 nom: nom,
                 fonction: fonction,
                 dispo: dispo,
-                prix: parseInt(prix) || 0,
-                quantite: parseInt(quantite) || 0,
+                prix: toInt(prix),
+                quantite: toInt(quantite),
                 modele: modele || '',
                 timestamp: Date.now()
             };
+
+            const submitBtn = $('modalSubmitBtn');
+            isSaving = true;
+            submitBtn.disabled = true;
+            const previousHtml = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENREGISTREMENT...';
 
             try {
                 let result;
@@ -533,38 +947,146 @@
                 } else {
                     result = await supabaseClient.from('inventaire').insert([payload]);
                 }
-
                 if (result.error) throw result.error;
 
-                showToast(id ? '✅ Composant modifié !' : '✅ Composant ajouté !');
+                showToast(id ? 'Composant modifié avec succès' : 'Composant ajouté avec succès');
                 closeModal();
-                loadInventory();
+                await loadInventory();
             } catch (error) {
-                showToast('❌ Erreur : ' + error.message, 'error');
-            }
-        });
-
-        // ==================== SUPPRIMER ====================
-        async function deleteComponent(id) {
-            if (!confirm('⚠️ Voulez-vous vraiment supprimer ce composant ?')) return;
-
-            try {
-                const { error } = await supabaseClient
-                    .from('inventaire')
-                    .delete()
-                    .eq('id', id);
-
-                if (error) throw error;
-
-                showToast('🗑️ Composant supprimé.');
-                loadInventory();
-            } catch (error) {
-                showToast('❌ Erreur : ' + error.message, 'error');
+                showToast('Erreur : ' + (error.message || 'opération impossible'), 'error');
+            } finally {
+                isSaving = false;
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = previousHtml;
             }
         }
 
+        // ==================== SUPPRESSION ====================
+        function openDeleteModal(id) {
+            const item = inventaireData.find((d) => String(d.id) === String(id));
+            if (!item) { showToast('Composant introuvable', 'error'); return; }
+            deleteTargetId = item.id;
+            $('deleteName').textContent = item.nom || 'ce composant';
+            $('deleteOverlay').classList.add('active');
+        }
+
+        function closeDeleteModal() {
+            $('deleteOverlay').classList.remove('active');
+            deleteTargetId = null;
+        }
+
+        async function confirmDelete() {
+            if (deleteTargetId == null) return;
+            const btn = $('deleteConfirmBtn');
+            btn.disabled = true;
+            const previousHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> SUPPRESSION...';
+
+            try {
+                const { error } = await supabaseClient.from('inventaire').delete().eq('id', deleteTargetId);
+                if (error) throw error;
+                showToast('Composant supprimé');
+                closeDeleteModal();
+                await loadInventory();
+            } catch (error) {
+                showToast('Erreur : ' + (error.message || 'suppression impossible'), 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = previousHtml;
+            }
+        }
+
+        // ==================== EXPORT CSV ====================
+        function csvCell(v) {
+            const s = String(v == null ? '' : v);
+            // Neutralise l'injection de formules dans Excel
+            const safe = /^[=+\-@]/.test(s) ? "'" + s : s;
+            return '"' + safe.replace(/"/g, '""') + '"';
+        }
+
+        function exportCsv() {
+            if (filteredData.length === 0) {
+                showToast('Aucune donnée à exporter.', 'warn');
+                return;
+            }
+            const header = ['Nom', 'Fonction', 'Modèle', 'Disponible', 'Prix (FCFA)', 'Quantité', 'Valeur (FCFA)'];
+            const rows = filteredData.map((i) => [
+                i.nom, i.fonction, i.modele, isDispo(i) ? 'Oui' : 'Non', toInt(i.prix), toInt(i.quantite), lineValue(i)
+            ]);
+            const csv = [header].concat(rows).map((r) => r.map(csvCell).join(';')).join('\r\n');
+            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const d = new Date();
+            const stamp = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+            a.href = url;
+            a.download = 'inventaire-africa-tech21-' + stamp + '.csv';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+            showToast('Export CSV généré (' + filteredData.length + ' lignes)');
+        }
+
+        // ==================== ÉVÉNEMENTS ====================
+        function setFilter(value) {
+            state.filter = value;
+            $('filterSelect').value = value;
+            applyView();
+        }
+
+        const searchInput = $('searchInput');
+        const searchClear = $('searchClear');
+
+        searchInput.addEventListener('input', debounce(function () {
+            state.search = searchInput.value;
+            searchClear.classList.toggle('visible', !!searchInput.value);
+            applyView();
+        }, 150));
+
+        searchClear.addEventListener('click', function () {
+            searchInput.value = '';
+            state.search = '';
+            searchClear.classList.remove('visible');
+            applyView();
+            searchInput.focus();
+        });
+
+        $('filterSelect').addEventListener('change', (e) => setFilter(e.target.value));
+        $('sortSelect').addEventListener('change', (e) => { state.sort = e.target.value; applyView(); });
+
+        document.querySelectorAll('.stat-card[data-filter]').forEach((card) => {
+            card.addEventListener('click', () => setFilter(card.getAttribute('data-filter')));
+        });
+
+        $('btnAdd').addEventListener('click', openAddModal);
+        $('btnExport').addEventListener('click', exportCsv);
+
+        $('modalForm').addEventListener('submit', saveComponent);
+        $('modalCancelBtn').addEventListener('click', closeModal);
+        $('modalCloseBtn').addEventListener('click', closeModal);
+        $('modalPrix').addEventListener('input', updateValeurPreview);
+        $('modalQuantite').addEventListener('input', updateValeurPreview);
+        $('modalNom').addEventListener('input', () => $('modalNom').classList.remove('invalid'));
+        $('modalFonction').addEventListener('input', () => $('modalFonction').classList.remove('invalid'));
+
+        $('deleteCancelBtn').addEventListener('click', closeDeleteModal);
+        $('deleteConfirmBtn').addEventListener('click', confirmDelete);
+
+        // Fermeture au clic sur le fond
+        $('modalOverlay').addEventListener('mousedown', (e) => { if (e.target === $('modalOverlay')) closeModal(); });
+        $('deleteOverlay').addEventListener('mousedown', (e) => { if (e.target === $('deleteOverlay')) closeDeleteModal(); });
+
+        // Échap pour fermer
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            if ($('deleteOverlay').classList.contains('active')) closeDeleteModal();
+            else if ($('modalOverlay').classList.contains('active')) closeModal();
+        });
+
         // ==================== INIT ====================
         loadInventory();
+    })();
     </script>
 </body>
 </html>
