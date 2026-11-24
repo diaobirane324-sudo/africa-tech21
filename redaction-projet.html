@@ -227,20 +227,174 @@
     }
     .voice-status.show{display:block; animation:voiceAppear .3s ease;}
     @keyframes voiceAppear{from{opacity:0; transform:translateY(20px);}to{opacity:1; transform:translateY(0);}}
-    @media print{
-        body{background:#fff !important; color:#000 !important; padding:0 !important;}
-        .hologram-grid, .back-btn, .toolbar, .page-header .user-info,
-        .btn-main, .btn-ghost, .btn-mic, .voice-status,
-        #listSection, #formActionsPrint, .form-actions, .empty-state{display:none !important;}
-        .page-header{background:#fff !important; border:none !important; box-shadow:none !important; padding:1.5rem 0 !important;}
-        .page-header h1{color:#6a0dad !important; -webkit-text-fill-color:#6a0dad !important;}
-        .form-card{background:#fff !important; border:1px solid #ccc !important; page-break-inside:avoid;}
-        .form-group label{color:#6a0dad !important;}
-        .form-group input, .form-group textarea, .form-group select{
-            background:#f9f9f9 !important; color:#000 !important;
-            border:1px solid #999 !important;
+
+    /* ============================================================
+       DOCUMENT PDF — rendu dédié pour impression parfaite
+       ============================================================ */
+    #pdfDocument { display:none; }
+
+    @media print {
+        /* On cache TOUT */
+        body > * { display:none !important; }
+        /* On affiche uniquement le document PDF */
+        #pdfDocument { display:block !important; }
+        body{
+            background:#fff !important; color:#000 !important;
+            padding:0 !important; margin:0 !important;
+            font-family:'Exo 2','Segoe UI',sans-serif !important;
         }
-        @page{size:A4; margin:2cm;}
+        @page { size:A4; margin:18mm 16mm 18mm 16mm; }
+    }
+
+    /* Styles du document PDF (écran + impression) */
+    #pdfDocument{
+        color:#1a1a1a;
+        font-family:'Exo 2','Segoe UI',sans-serif;
+        font-size:11.5pt;
+        line-height:1.65;
+    }
+    #pdfDocument .pdf-cover{
+        text-align:center;
+        padding:40mm 15mm 30mm 15mm;
+        border-bottom:3px solid #6a0dad;
+        margin-bottom:14mm;
+        page-break-after:always;
+    }
+    #pdfDocument .pdf-cover .logo{
+        font-family:'Orbitron',sans-serif;
+        font-size:22pt; font-weight:900;
+        letter-spacing:4px;
+        color:#6a0dad;
+        margin-bottom:6mm;
+    }
+    #pdfDocument .pdf-cover .logo small{
+        display:block; font-size:10pt;
+        letter-spacing:8px; color:#999; margin-top:2mm;
+        font-weight:400;
+    }
+    #pdfDocument .pdf-cover h1{
+        font-family:'Orbitron',sans-serif;
+        font-size:24pt;
+        color:#0a0a12;
+        margin:18mm 0 6mm;
+        line-height:1.3;
+    }
+    #pdfDocument .pdf-cover .sub{
+        font-size:13pt;
+        color:#6a0dad;
+        font-weight:600;
+        margin-bottom:18mm;
+    }
+    #pdfDocument .pdf-cover .meta-block{
+        display:inline-block;
+        text-align:left;
+        border:1px solid #ddd;
+        border-radius:6px;
+        padding:6mm 10mm;
+        font-size:10.5pt;
+        color:#333;
+        line-height:1.9;
+    }
+    #pdfDocument .pdf-cover .meta-block strong{ color:#6a0dad; }
+    #pdfDocument .pdf-cover .footer-cover{
+        margin-top:22mm;
+        font-size:9pt;
+        color:#888;
+        letter-spacing:2px;
+        text-transform:uppercase;
+    }
+
+    #pdfDocument .pdf-section{
+        margin-bottom:9mm;
+        page-break-inside:auto;
+    }
+    #pdfDocument .pdf-section-title{
+        font-family:'Orbitron',sans-serif;
+        font-size:14pt;
+        color:#6a0dad;
+        border-left:5px solid #ffd700;
+        padding:1mm 0 1mm 4mm;
+        margin:8mm 0 4mm;
+        letter-spacing:1.5px;
+        page-break-after:avoid;
+        page-break-inside:avoid;
+    }
+    #pdfDocument .pdf-section-num{
+        display:inline-block;
+        background:#6a0dad;
+        color:#fff;
+        font-size:10pt;
+        padding:.5mm 2.5mm;
+        border-radius:3px;
+        margin-right:3mm;
+        letter-spacing:1px;
+    }
+    #pdfDocument .pdf-text{
+        text-align:justify;
+        white-space:pre-wrap;
+        word-wrap:break-word;
+        overflow-wrap:break-word;
+        color:#222;
+        font-size:11.5pt;
+        line-height:1.7;
+    }
+    #pdfDocument .pdf-empty{
+        color:#999;
+        font-style:italic;
+        font-size:10.5pt;
+        padding:2mm 0;
+        border-bottom:1px dashed #ccc;
+    }
+    #pdfDocument .pdf-footer{
+        margin-top:12mm;
+        padding-top:6mm;
+        border-top:2px solid #6a0dad;
+        display:flex;
+        justify-content:space-between;
+        font-size:9pt;
+        color:#666;
+    }
+    #pdfDocument .pdf-footer .page-num{
+        font-weight:700;
+        color:#6a0dad;
+    }
+    #pdfDocument .pdf-signature-block{
+        margin-top:14mm;
+        display:flex;
+        justify-content:space-between;
+        gap:8mm;
+        page-break-inside:avoid;
+    }
+    #pdfDocument .pdf-signature{
+        flex:1;
+        text-align:center;
+        border:1px solid #ddd;
+        border-radius:6px;
+        padding:6mm 4mm;
+    }
+    #pdfDocument .pdf-signature .role{
+        font-family:'Orbitron',sans-serif;
+        font-size:9pt;
+        color:#6a0dad;
+        letter-spacing:1.5px;
+        margin-bottom:3mm;
+    }
+    #pdfDocument .pdf-signature .name{
+        font-size:11pt;
+        font-weight:700;
+        color:#0a0a12;
+        margin-bottom:8mm;
+    }
+    #pdfDocument .pdf-signature .line{
+        border-bottom:1px solid #999;
+        margin:0 auto 2mm;
+        width:80%;
+        height:10mm;
+    }
+    #pdfDocument .pdf-signature .label{
+        font-size:8pt;
+        color:#888;
+        font-style:italic;
     }
 </style>
 </head>
@@ -360,7 +514,7 @@
                     <button class="btn-mic" onclick="verifierDocument()">
                         <i class="fas fa-check-circle"></i> Vérifier
                     </button>
-                    <button class="btn-main" onclick="window.print()">
+                    <button class="btn-main" onclick="telechargerPDF()">
                         <i class="fas fa-file-pdf"></i> Télécharger PDF
                     </button>
                 </div>
@@ -373,6 +527,11 @@
         </div>
     </div>
 </div>
+
+<!-- ============================================================
+     DOCUMENT PDF — masqué à l'écran, visible seulement à l'impression
+     ============================================================ -->
+<div id="pdfDocument"></div>
 
 <div class="voice-status" id="voiceStatus"></div>
 
@@ -397,8 +556,6 @@ document.getElementById('userInfo').innerHTML =
 
 // ============================================================
 // PROJETS SOURCES — CONTENU PRÉ-RÉDIGÉ
-// Chaque projet contient contexte, probleme, objectifs,
-// beneficiaires, realisations, partenaires, budget, benefice_financeur
 // ============================================================
 const PROJETS_SOURCES = [
 {
@@ -586,7 +743,7 @@ function traiterCommande(cmd){
     if (cmd.includes('nouveau projet') || cmd.includes('créer') || cmd.includes('nouvelle rédaction')){ nouveauProjet(); }
     else if (cmd.includes('enregistrer') || cmd.includes('sauvegarder')){ sauvegarderProjet(); }
     else if (cmd.includes('vérifier') || cmd.includes('verifier')){ verifierDocument(); }
-    else if (cmd.includes('pdf') || cmd.includes('télécharger')){ window.print(); }
+    else if (cmd.includes('pdf') || cmd.includes('télécharger')){ telechargerPDF(); }
     else if (cmd.includes('retour') || cmd.includes('liste')){ retourListe(); }
     else if (cmd.includes('lire') || cmd.includes('lis')){ lireDocument(); }
     else { speak('Commande non reconnue. Dites : nouveau projet, enregistrer, vérifier, PDF, retour, lire.'); }
@@ -734,25 +891,16 @@ function onSourceChange(){
     if (!sid) return;
     const p = PROJETS_SOURCES.find(x => x.id === sid);
     if (!p) return;
-    const champs = ['titre','contexte','probleme','objectifs','beneficiaires','realisations','partenaires','budget','benefice_financeur'];
-    champs.forEach(c => {
-        const elId = 'f' + c.charAt(0).toUpperCase() + c.slice(1).replace(/_/g,'');
-        // mapping spécifique pour benefice_financeur
-        let target = document.getElementById('f' + capitaliser(c));
-        if (!target) target = document.getElementById('fBeneficeFinanceur');
-        if (target && !target.value.trim() && p[c]) target.value = p[c];
-    });
-    speak('Pré-remplissage effectué à partir du projet sélectionné.');
-}
-
-function capitaliser(s){
-    // mapping explicite
-    const map = {
+    const mapping = {
         titre:'fTitre', contexte:'fContexte', probleme:'fProbleme', objectifs:'fObjectifs',
         beneficiaires:'fBeneficiaires', realisations:'fRealisations', partenaires:'fPartenaires',
         budget:'fBudget', benefice_financeur:'fBeneficeFinanceur'
     };
-    return map[s] ? map[s].substring(1) : s;
+    Object.keys(mapping).forEach(k => {
+        const el = document.getElementById(mapping[k]);
+        if (el && !el.value.trim() && p[k]) el.value = p[k];
+    });
+    speak('Pré-remplissage effectué à partir du projet sélectionné.');
 }
 
 function retourListe(){
@@ -844,6 +992,97 @@ function lireDocument(){
     ].filter(Boolean);
     synth.cancel();
     speak(parts.join('. '));
+}
+
+// ============================================================
+// PDF : génération d'un document A4 propre, texte intégral,
+// pagination automatique, pas de page vide.
+// ============================================================
+function telechargerPDF(){
+    if (!redactionEnCours){
+        alert('Aucune rédaction ouverte.');
+        return;
+    }
+    // Récupérer les valeurs actuelles
+    const titre = document.getElementById('fTitre').value.trim() || '(sans titre)';
+    const source = document.getElementById('fProjetSource').value || 'libre';
+    const sections = [
+        { num:'01', title:'CONTEXTE',               text: document.getElementById('fContexte').value },
+        { num:'02', title:'ÉTUDE DU PROBLÈME',      text: document.getElementById('fProbleme').value },
+        { num:'03', title:'OBJECTIFS (SMART)',      text: document.getElementById('fObjectifs').value },
+        { num:'04', title:'BÉNÉFICIAIRES',          text: document.getElementById('fBeneficiaires').value },
+        { num:'05', title:'RÉALISATIONS / ACTIVITÉS',text: document.getElementById('fRealisations').value },
+        { num:'06', title:'PARTENAIRES',             text: document.getElementById('fPartenaires').value },
+        { num:'07', title:'BUDGET / FINANCEMENT',   text: document.getElementById('fBudget').value },
+        { num:'08', title:'BÉNÉFICE POUR LE FINANCEUR', text: document.getElementById('fBeneficeFinanceur').value }
+    ];
+
+    const auteur = (memberPrenom + ' ' + memberNom).trim() || 'Direction AFRICA.TECH21';
+    const dateStr = new Date().toLocaleDateString('fr-FR', { day:'2-digit', month:'long', year:'numeric' });
+
+    // Construction du HTML du PDF
+    let html = '';
+
+    // --- COUVERTURE ---
+    html += `
+    <div class="pdf-cover">
+        <div class="logo">AFRICA.TECH21<small>COMMUNAUTÉ TECHNOLOGIQUE AFRICAINE</small></div>
+        <h1>${escapeHtml(titre)}</h1>
+        <div class="sub">Dossier de projet — Document destiné aux financeurs</div>
+        <div class="meta-block">
+            <div><strong>Projet source :</strong> ${escapeHtml(source.toUpperCase())}</div>
+            <div><strong>Rédacteur :</strong> ${escapeHtml(auteur)}</div>
+            <div><strong>Date :</strong> ${escapeHtml(dateStr)}</div>
+            <div><strong>Référence :</strong> AFRICA.TECH21 / RP-${Date.now().toString().slice(-6)}</div>
+            <div><strong>Statut :</strong> BROUILLON</div>
+        </div>
+        <div class="footer-cover">Document confidentiel — AFRICA.TECH21 © ${new Date().getFullYear()}</div>
+    </div>`;
+
+    // --- SECTIONS ---
+    sections.forEach(s => {
+        const txt = (s.text || '').trim();
+        html += `
+        <div class="pdf-section">
+            <div class="pdf-section-title">
+                <span class="pdf-section-num">${s.num}</span>${escapeHtml(s.title)}
+            </div>
+            ${txt
+                ? `<div class="pdf-text">${escapeHtml(txt)}</div>`
+                : `<div class="pdf-empty">Section non renseignée — à compléter.</div>`}
+        </div>`;
+    });
+
+    // --- SIGNATURES ---
+    html += `
+    <div class="pdf-signature-block">
+        <div class="pdf-signature">
+            <div class="role">LE RÉDACTEUR</div>
+            <div class="name">${escapeHtml(auteur)}</div>
+            <div class="line"></div>
+            <div class="label">Signature</div>
+        </div>
+        <div class="pdf-signature">
+            <div class="role">LE RESPONSABLE FINANCE</div>
+            <div class="name">&nbsp;</div>
+            <div class="line"></div>
+            <div class="label">Signature</div>
+        </div>
+    </div>
+
+    <div class="pdf-footer">
+        <div>AFRICA.TECH21 — ${escapeHtml(titre)}</div>
+        <div class="page-num">Rédigé par ${escapeHtml(auteur)} — ${escapeHtml(dateStr)}</div>
+    </div>`;
+
+    // Injecter dans le conteneur PDF et déclencher impression
+    const pdfEl = document.getElementById('pdfDocument');
+    pdfEl.innerHTML = html;
+
+    // Attendre le rendu puis lancer l'impression
+    setTimeout(() => {
+        window.print();
+    }, 250);
 }
 
 function escapeHtml(s){
