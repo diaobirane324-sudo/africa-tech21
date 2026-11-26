@@ -15,6 +15,7 @@
             --neon-pink: #ff00ff;
             --neon-green: #00ff88;
             --neon-gold: #ffd700;
+            --neon-orange: #ff8c00;
             --neon-red: #ff003c;
             --dark-space: #0a0a12;
             --deep-space: #050510;
@@ -722,6 +723,35 @@
             50% { transform: scale(1.25); box-shadow: 0 0 35px rgba(255, 0, 60, 1); }
         }
 
+        /* Mode attente : badge orange */
+        .reunion-badge.attente {
+            background: linear-gradient(135deg, #ff8c00, #ffd700);
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.8);
+        }
+        .reunion-badge.attente {
+            animation: badgePulseOrange 1.2s ease-in-out infinite;
+        }
+        @keyframes badgePulseOrange {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 140, 0, 0.8); }
+            50% { transform: scale(1.25); box-shadow: 0 0 35px rgba(255, 140, 0, 1); }
+        }
+
+        /* Mode actif : orbe accélérée */
+        .reunion-orb.active-reunion {
+            animation: orbFloat 1.5s ease-in-out infinite;
+        }
+        .reunion-orb.active-reunion::before {
+            background: radial-gradient(circle, rgba(255, 0, 60, 0.5) 0%, rgba(255, 140, 0, 0.3) 50%, transparent 80%);
+            animation: orbGlow 1.5s ease-in-out infinite;
+        }
+        .reunion-orb.active-reunion .reunion-orb-inner {
+            border-color: var(--neon-red);
+            box-shadow:
+                0 0 40px rgba(255, 0, 60, 0.8),
+                0 0 80px rgba(255, 140, 0, 0.5),
+                inset 0 0 30px rgba(255, 0, 60, 0.25);
+        }
+
         .reunion-tooltip {
             position: absolute;
             bottom: -45px;
@@ -1178,11 +1208,12 @@
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyV86rnSYPMRVIyZ-sE62lQXoVRDvhfKPOppMW7Z2IACqM8s2pGbpXC0BcKUNydxs/exec';
         const INFO_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwESkPKPu4svg_ZDnCj-LSTZWlCE_GRLNAP00F_GQXqTBKhqxcmsRjHGk7aXBn5GbfF/exec';
 
-        // ============ SUPABASE (pour badge réunion) ============
+        // ============ SUPABASE ============
         const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        // ============ AUTH CHECK ============
         if (localStorage.getItem('memberLoggedIn') !== 'true') {
             window.location.href = 'espace-membres.html';
         }
@@ -1190,6 +1221,7 @@
         const memberNom = localStorage.getItem('memberNom') || '';
         const memberPrenom = localStorage.getItem('memberPrenom') || '';
         const memberFonction = localStorage.getItem('memberFonction') || '';
+        const memberEmail = localStorage.getItem('memberEmail') || '';
 
         if (memberPrenom && memberNom) {
             document.getElementById('userEmail').textContent = memberPrenom + ' ' + memberNom;
@@ -1199,33 +1231,67 @@
         document.getElementById('userRole').textContent = '🎯 ' + memberFonction;
 
         // ============ BADGE RÉUNION ACTIVE ============
+        let reunionCheckInterval = null;
+
         async function verifierReunionActive() {
             try {
                 const { data, error } = await supabaseClient
                     .from('reunions')
-                    .select('id, statut')
+                    .select('id, statut, heure_debut, heure_fin')
                     .in('statut', ['attente', 'en_cours'])
+                    .order('created_at', { ascending: false })
                     .limit(1);
 
-                if (error) return;
+                if (error) {
+                    console.warn('Vérification réunion :', error);
+                    return;
+                }
 
                 const badge = document.getElementById('reunionBadge');
                 const orb = document.getElementById('reunionOrb');
+                if (!badge || !orb) return;
+
+                const now = new Date();
+                let active = false;
+                let enAttente = false;
 
                 if (data && data.length > 0) {
+                    const r = data[0];
+                    const debut = new Date(r.heure_debut);
+                    const fin = new Date(r.heure_fin);
+
+                    if (r.statut === 'en_cours' && now < fin) {
+                        active = true;
+                    } else if (r.statut === 'attente' && now < debut) {
+                        enAttente = true;
+                    } else if (r.statut === 'en_cours' && now >= fin) {
+                        active = false;
+                    } else if (r.statut === 'attente' && now >= debut && now < fin) {
+                        active = true;
+                    }
+                }
+
+                if (active) {
                     badge.classList.add('show');
-                    orb.style.animation = 'orbFloat 1.5s ease-in-out infinite';
+                    badge.classList.remove('attente');
+                    badge.textContent = '!';
+                    orb.classList.add('active-reunion');
+                } else if (enAttente) {
+                    badge.classList.add('show');
+                    badge.classList.add('attente');
+                    badge.textContent = '⏳';
+                    orb.classList.remove('active-reunion');
                 } else {
                     badge.classList.remove('show');
+                    badge.classList.remove('attente');
+                    orb.classList.remove('active-reunion');
                 }
             } catch (e) {
-                console.warn('Vérification réunion:', e);
+                console.warn('Vérification réunion :', e);
             }
         }
 
-        // Vérifier toutes les 20 secondes
-        setInterval(verifierReunionActive, 20000);
-
+        // ============ CIRCUIT SVG ============
         function generateCircuitLines() {
             const svg = document.getElementById('circuitSVG');
             if (!svg) return;
@@ -1262,6 +1328,7 @@
             });
         }
 
+        // ============ MESSAGE VOCAL ============
         function messageVocalBienvenue() {
             if (!window.speechSynthesis) return;
             if (!memberPrenom && !memberNom) return;
@@ -1276,6 +1343,7 @@
             setTimeout(() => window.speechSynthesis.speak(u), 800);
         }
 
+        // ============ PARTICULES ============
         function createParticles() {
             const c = document.getElementById('particles');
             const colors = ['#00f0ff', '#00ff88', '#9d00ff', '#ffd700'];
@@ -1292,6 +1360,7 @@
             }
         }
 
+        // ============ FORUM ============
         function sendMessage() {
             const input = document.getElementById('newMessage');
             const msg = input.value.trim();
@@ -1329,6 +1398,7 @@
             container.scrollTop = container.scrollHeight;
         }
 
+        // ============ INFO JOUR ============
         async function chargerInfoJour() {
             try {
                 const response = await fetch(INFO_SCRIPT_URL + '?action=getInfo');
@@ -1343,11 +1413,23 @@
             }
         }
 
-        const ACCES_AUTORISES = ['Birane186@00', 'AT21_0036', 'AT21-001', 'AT21_ZAM68','AT21_0071','AT21_0072','AT21_0041'];
+        // ============ ACCÈS PROJETS ============
+        // Accepte : ID membre OU email (prénom.nom@africatech21.com)
+        const ACCES_AUTORISES = [
+            'Birane186@00',
+            'AT21_0036',
+            'AT21-001',
+            'AT21_ZAM68',
+            'AT21_0071',
+            'AT21_0072',
+            'AT21_0041'
+        ];
 
         function verifierAcces(page) {
             const codeSaisi = prompt("🔒 Entrez votre code d'accès :");
-            if (ACCES_AUTORISES.includes(codeSaisi)) {
+            if (codeSaisi === null) return;
+            const code = codeSaisi.trim();
+            if (ACCES_AUTORISES.includes(code)) {
                 window.location.href = page;
             } else {
                 alert("❌ Code incorrect. Accès refusé.");
@@ -1368,8 +1450,10 @@
             }
         }
 
+        // ============ LOGOUT ============
         function logout() {
             sessionStorage.removeItem('bienvenue_dite');
+            sessionStorage.removeItem('major_unlocked');
             localStorage.removeItem('memberLoggedIn');
             localStorage.removeItem('memberId');
             localStorage.removeItem('memberNom');
@@ -1377,9 +1461,14 @@
             localStorage.removeItem('memberFonction');
             localStorage.removeItem('memberEmail');
             localStorage.removeItem('currentUser');
+            localStorage.removeItem('directionMemberId');
+            localStorage.removeItem('directionMemberNom');
+            localStorage.removeItem('directionMemberPrenom');
+            localStorage.removeItem('directionMemberFonction');
             window.location.href = 'index.html';
         }
 
+        // ============ INIT ============
         window.addEventListener('load', () => {
             createParticles();
             loadMessages();
@@ -1387,6 +1476,25 @@
             messageVocalBienvenue();
             generateCircuitLines();
             verifierReunionActive();
+
+            // Vérification périodique (un seul interval)
+            if (reunionCheckInterval) clearInterval(reunionCheckInterval);
+            reunionCheckInterval = setInterval(verifierReunionActive, 20000);
+        });
+
+        // Rafraîchir le badge quand on revient sur l'onglet
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                verifierReunionActive();
+            }
+        });
+
+        // Nettoyage des intervals avant quitter
+        window.addEventListener('beforeunload', () => {
+            if (reunionCheckInterval) {
+                clearInterval(reunionCheckInterval);
+                reunionCheckInterval = null;
+            }
         });
 
         window.addEventListener('resize', () => { setTimeout(generateCircuitLines, 200); });
