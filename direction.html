@@ -15,7 +15,6 @@
             --gold-bright: #ffed4e;
             --gold-deep: #d4a017;
             --gold-glow: 0 0 30px rgba(255, 215, 0, 0.5);
-            --gold-glow-strong: 0 0 60px rgba(255, 215, 0, 0.7);
             --cyber-teal: #00ffe1;
             --cyber-purple: #a855f7;
             --cyber-pink: #ff2ec4;
@@ -23,11 +22,8 @@
             --deep-space: #030308;
             --mid-space: #0a0a18;
             --dark-space: #12121e;
-            --panel: rgba(20, 20, 35, 0.6);
-            --panel-border: rgba(255, 215, 0, 0.25);
             --text-primary: #ffffff;
             --text-secondary: #b0b8d0;
-            --text-muted: #6b7390;
         }
 
         html, body { scroll-behavior: smooth; }
@@ -46,7 +42,6 @@
             overflow-x: hidden;
         }
 
-        /* ====== DÉCOR DE FOND ====== */
         .hologram-grid {
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
@@ -106,7 +101,6 @@
             100% { transform: translateY(-100px) translateX(100px) rotate(360deg); opacity: 0; }
         }
 
-        /* ====== BOUTON RETOUR ====== */
         .back-btn {
             display: inline-flex;
             align-items: center;
@@ -131,10 +125,8 @@
             transform: translateX(-3px);
         }
 
-        /* ====== CONTAINER ====== */
         .page-container { max-width: 1450px; margin: 0 auto; }
 
-        /* ====== HEADER ====== */
         .page-header {
             background:
                 linear-gradient(135deg, rgba(255, 215, 0, 0.08) 0%, rgba(168, 85, 247, 0.06) 50%, rgba(0, 255, 225, 0.05) 100%);
@@ -185,25 +177,14 @@
             display: inline-block;
         }
         @keyframes pulseCrown {
-            0%, 100% {
-                transform: scale(1) rotate(0deg);
-                filter: drop-shadow(0 0 20px var(--gold));
-            }
-            50% {
-                transform: scale(1.08) rotate(-3deg);
-                filter: drop-shadow(0 0 45px var(--gold));
-            }
+            0%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 20px var(--gold)); }
+            50% { transform: scale(1.08) rotate(-3deg); filter: drop-shadow(0 0 45px var(--gold)); }
         }
 
         .page-header h1 {
             font-family: 'Orbitron', sans-serif;
             font-size: 3.2rem;
-            background: linear-gradient(135deg,
-                var(--gold) 0%,
-                var(--gold-bright) 30%,
-                #ffffff 50%,
-                var(--gold-bright) 70%,
-                var(--gold) 100%);
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-bright) 30%, #ffffff 50%, var(--gold-bright) 70%, var(--gold) 100%);
             background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -264,7 +245,6 @@
             filter: drop-shadow(0 0 10px var(--cyber-emerald));
         }
 
-        /* ====== GRILLE DE CARTES ====== */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -273,8 +253,7 @@
         }
 
         .feature-card {
-            background:
-                linear-gradient(135deg, rgba(255, 215, 0, 0.04) 0%, rgba(168, 85, 247, 0.03) 100%);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.04) 0%, rgba(168, 85, 247, 0.03) 100%);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 215, 0, 0.2);
             border-radius: 24px;
@@ -291,14 +270,7 @@
             position: absolute;
             top: 0; left: -100%;
             width: 100%; height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent 0%,
-                rgba(255, 215, 0, 0.08) 40%,
-                rgba(255, 255, 255, 0.15) 50%,
-                rgba(255, 215, 0, 0.08) 60%,
-                transparent 100%
-            );
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 215, 0, 0.08) 40%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 215, 0, 0.08) 60%, transparent 100%);
             transition: 0.8s;
             pointer-events: none;
         }
@@ -310,11 +282,7 @@
             inset: 0;
             border-radius: 24px;
             padding: 1px;
-            background: linear-gradient(135deg,
-                rgba(255, 215, 0, 0.6),
-                transparent 40%,
-                transparent 60%,
-                rgba(168, 85, 247, 0.6));
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.6), transparent 40%, transparent 60%, rgba(168, 85, 247, 0.6));
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
                     mask-composite: exclude;
@@ -338,9 +306,7 @@
             color: var(--gold);
             margin-bottom: 1.5rem;
             text-align: center;
-            text-shadow:
-                0 0 20px var(--gold),
-                0 0 40px rgba(255, 215, 0, 0.4);
+            text-shadow: 0 0 20px var(--gold), 0 0 40px rgba(255, 215, 0, 0.4);
             transition: all 0.4s ease;
             display: block;
         }
@@ -385,7 +351,6 @@
             width: 100%;
         }
 
-        /* ====== MODAL ====== */
         .modal-overlay {
             display: flex;
             position: fixed;
@@ -408,9 +373,7 @@
             width: 100%;
             padding: 2.5rem;
             text-align: center;
-            box-shadow:
-                0 0 100px rgba(255, 215, 0, 0.35),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 100px rgba(255, 215, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             animation: modalAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
             overflow: hidden;
@@ -420,14 +383,7 @@
             position: absolute;
             top: -50%; left: -50%;
             width: 200%; height: 200%;
-            background: conic-gradient(
-                from 0deg,
-                transparent 0deg,
-                rgba(255, 215, 0, 0.05) 90deg,
-                transparent 180deg,
-                transparent 270deg,
-                rgba(168, 85, 247, 0.05) 360deg
-            );
+            background: conic-gradient(from 0deg, transparent 0deg, rgba(255, 215, 0, 0.05) 90deg, transparent 180deg, transparent 270deg, rgba(168, 85, 247, 0.05) 360deg);
             animation: conicRotate 30s linear infinite;
             pointer-events: none;
         }
@@ -472,9 +428,7 @@
             top: 15%; left: 15%; right: 15%; bottom: 15%;
             border: 3px solid var(--gold);
             border-radius: 16px;
-            box-shadow:
-                0 0 30px rgba(255, 215, 0, 0.6),
-                inset 0 0 30px rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), inset 0 0 30px rgba(255, 215, 0, 0.2);
             animation: pulseFrame 1.8s infinite;
         }
         @keyframes pulseFrame {
@@ -660,21 +614,17 @@
             font-family: 'Exo 2', sans-serif;
         }
 
-        /* ====== MODAL CROWN ICON ====== */
         .modal-crown {
             font-size: 2.8rem;
             color: var(--gold);
             margin-bottom: 0.8rem;
             display: block;
-            text-shadow:
-                0 0 20px var(--gold),
-                0 0 40px rgba(255, 215, 0, 0.5);
+            text-shadow: 0 0 20px var(--gold), 0 0 40px rgba(255, 215, 0, 0.5);
             animation: pulseCrown 2s ease-in-out infinite;
             position: relative;
             z-index: 1;
         }
 
-        /* ====== RESPONSIVE ====== */
         @media (max-width: 768px) {
             body { padding: 1rem; }
             .page-header { padding: 2.5rem 1.5rem; border-radius: 24px; }
@@ -746,7 +696,7 @@
                 <div class="status-text" id="statusTextID">
                     <i class="fas fa-id-card"></i> Entrez votre ID membre
                 </div>
-                <input type="text" class="admin-input" id="inputMemberId" placeholder="DOF-TMP117" autocomplete="off">
+                <input type="text" class="admin-input" id="inputMemberId" placeholder="AT21_006" autocomplete="off">
                 <button class="btn-access" onclick="verifierIdMembre()">
                     <i class="fas fa-unlock"></i> VALIDER
                 </button>
@@ -779,60 +729,44 @@
         <div class="features-grid" id="featuresGrid"></div>
     </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ==================== BASE DES MEMBRES ====================
 const MEMBRES_DIRECTION = {
     'AT21_006': {
-        id: 'AT21_006',
-        nom: 'BIRANE',
-        prenom: 'DIAO',
+        id: 'AT21_006', nom: 'DIAO', prenom: 'BIRANE',
         fonction: 'PRÉSIDENT DE LA COMMUNAUTÉ',
         postes: ['espace-major', 'admin-examens', 'espace-projets', 'csiv', 'secretariat', 'inventaire', 'finance', 'communication', 'vice-president', 'centre-diagnostic', 'redaction-projet']
     },
     'AT21_0016': {
-        id: 'AT21_0016',
-        nom: 'DRAMÉ',
-        prenom: 'AICHA',
+        id: 'AT21_0016', nom: 'DRAMÉ', prenom: 'AICHA',
         fonction: 'SECRÉTAIRE GÉNÉRAL',
         postes: ['secretariat']
     },
     'AT21-001': {
-        id: 'AT21-001',
-        nom: 'DIAKHATE',
-        prenom: 'ABDOU',
+        id: 'AT21-001', nom: 'DIAKHATE', prenom: 'ABDOU',
         fonction: 'VICE PRÉSIDENT',
         postes: ['vice-president']
     },
     'AT21_ZAM68': {
-        id: 'AT21_ZAM68',
-        nom: 'MOUHAMED',
-        prenom: 'DIALLO',
+        id: 'AT21_ZAM68', nom: 'MOUHAMED', prenom: 'DIALLO',
         fonction: 'RESPONSABLE DES PROJETS',
         postes: ['admin-examens', 'espace-projets', 'redaction-projet']
     },
     'AT21_0036': {
-        id: 'AT21_0036',
-        nom: 'NDIAYE',
-        prenom: 'MARIE ANGÉLIQUE DABA',
+        id: 'AT21_0036', nom: 'NDIAYE', prenom: 'MARIE ANGÉLIQUE DABA',
         fonction: 'RESPONSABLE COMMUNICATION',
         postes: ['communication', 'csiv']
     },
     'AT21_0031': {
-        id: 'AT21_0031',
-        nom: 'WADE',
-        prenom: 'ADJA FAMA',
+        id: 'AT21_0031', nom: 'WADE', prenom: 'ADJA FAMA',
         fonction: 'RESPONSABLE FINANCE',
         postes: ['finance']
     },
     'AT21_0026': {
-        id: 'AT21_0026',
-        nom: 'TOURÉ',
-        prenom: 'SOKHNA BINTOU',
+        id: 'AT21_0026', nom: 'TOURÉ', prenom: 'SOKHNA BINTOU',
         fonction: 'ADJOINTE FINANCE/GESTIONNAIRE',
         postes: ['inventaire']
     }
@@ -840,83 +774,17 @@ const MEMBRES_DIRECTION = {
 
 // ==================== DÉFINITION DES CARTES ====================
 const CARTES = {
-    'espace-major': {
-        icon: 'fa-crown',
-        title: 'ESPACE MAJOR',
-        description: 'Laboratoire technique privé. Zone de développement sécurisée.',
-        status: 'NIVEAU MAXIMUM',
-        link: 'espace-major.html'
-    },
-    'admin-examens': {
-        icon: 'fa-clipboard-list',
-        title: 'ADMIN EXAMENS',
-        description: 'Consulter, noter et commenter les travaux soumis par les membres.',
-        status: 'RÉSERVÉ MAJOR + PROJETS',
-        link: 'admin-examens.html'
-    },
-    'espace-projets': {
-        icon: 'fa-project-diagram',
-        title: 'RESPONSABLE PROJETS',
-        description: 'Rédaction des projets et évaluation des travaux des membres.',
-        status: 'RÉSERVÉ PROJETS + PRÉSIDENT',
-        link: 'espace-projets.html'
-    },
-    'redaction-projet': {
-        icon: 'fa-file-signature',
-        title: 'RÉDACTION PROJET',
-        description: 'Rédiger et structurer les documents de projet destinés aux financeurs. Export PDF professionnel.',
-        status: 'RÉSERVÉ PROJETS + PRÉSIDENT',
-        link: 'redaction-projet.html'
-    },
-    'csiv': {
-        icon: 'fa-crown',
-        title: 'ESPACE CSIV',
-        description: 'Cellule Stratégique d\'Innovation et de Veille. Communication, veille, cahiers des charges, rapports et équipe.',
-        status: 'RÉSERVÉ PRÉSIDENTE CSIV',
-        link: 'espace-csiv.html'
-    },
-    'secretariat': {
-        icon: 'fa-pen-fancy',
-        title: 'SECRÉTARIAT',
-        description: 'Rédaction et archivage des comptes rendus de réunions et rapports.',
-        status: 'ACCÈS RESTREINT',
-        link: 'secretariat.html'
-    },
-    'inventaire': {
-        icon: 'fa-boxes',
-        title: 'GESTION DES STOCKS',
-        description: 'Inventaire complet des composants électroniques.',
-        status: 'ACCÈS RESTREINT',
-        link: 'inventaire.html'
-    },
-    'vice-president': {
-        icon: 'fa-user-tie',
-        title: 'POSTE VICE-PRÉSIDENT',
-        description: 'Outils de gestion et supervision de la communauté.',
-        status: 'EN DÉVELOPPEMENT',
-        link: '#'
-    },
-    'communication': {
-        icon: 'fa-bullhorn',
-        title: 'COMMUNICATION',
-        description: 'Gestion de la communication et des réseaux sociaux.',
-        status: 'EN DÉVELOPPEMENT',
-        link: '#'
-    },
-    'finance': {
-        icon: 'fa-coins',
-        title: 'ESPACE FINANCE',
-        description: 'Gestion de la caisse communautaire, cotisations des 8 membres et documents économiques.',
-        status: 'ACCÈS RESTREINT',
-        link: 'espace-finance.html'
-    },
-    'centre-diagnostic': {
-        icon: 'fa-stethoscope',
-        title: 'CENTRE DE DIAGNOSTIC',
-        description: 'Diagnostic en temps réel des PC : RAM, CPU, disque, température, antivirus, réseau. Accès Président uniquement.',
-        status: 'ACCÈS PRÉSIDENT UNIQUEMENT',
-        link: 'centre-diagnostic.html'
-    }
+    'espace-major': { icon: 'fa-crown', title: 'ESPACE MAJOR', description: 'Laboratoire technique privé. Zone de développement sécurisée.', status: 'NIVEAU MAXIMUM', link: 'espace-major.html' },
+    'admin-examens': { icon: 'fa-clipboard-list', title: 'ADMIN EXAMENS', description: 'Consulter, noter et commenter les travaux soumis par les membres.', status: 'RÉSERVÉ MAJOR + PROJETS', link: 'admin-examens.html' },
+    'espace-projets': { icon: 'fa-project-diagram', title: 'RESPONSABLE PROJETS', description: 'Rédaction des projets et évaluation des travaux des membres.', status: 'RÉSERVÉ PROJETS + PRÉSIDENT', link: 'espace-projets.html' },
+    'redaction-projet': { icon: 'fa-file-signature', title: 'RÉDACTION PROJET', description: 'Rédiger et structurer les documents de projet destinés aux financeurs. Export PDF professionnel.', status: 'RÉSERVÉ PROJETS + PRÉSIDENT', link: 'redaction-projet.html' },
+    'csiv': { icon: 'fa-crown', title: 'ESPACE CSIV', description: 'Cellule Stratégique d\'Innovation et de Veille.', status: 'RÉSERVÉ PRÉSIDENTE CSIV', link: 'espace-csiv.html' },
+    'secretariat': { icon: 'fa-pen-fancy', title: 'SECRÉTARIAT', description: 'Rédaction et archivage des comptes rendus de réunions et rapports.', status: 'ACCÈS RESTREINT', link: 'secretariat.html' },
+    'inventaire': { icon: 'fa-boxes', title: 'GESTION DES STOCKS', description: 'Inventaire complet des composants électroniques.', status: 'ACCÈS RESTREINT', link: 'inventaire.html' },
+    'vice-president': { icon: 'fa-user-tie', title: 'POSTE VICE-PRÉSIDENT', description: 'Outils de gestion et supervision de la communauté.', status: 'EN DÉVELOPPEMENT', link: '#' },
+    'communication': { icon: 'fa-bullhorn', title: 'COMMUNICATION', description: 'Gestion de la communication et des réseaux sociaux.', status: 'EN DÉVELOPPEMENT', link: '#' },
+    'finance': { icon: 'fa-coins', title: 'ESPACE FINANCE', description: 'Gestion de la caisse communautaire, cotisations des 8 membres et documents économiques.', status: 'ACCÈS RESTREINT', link: 'espace-finance.html' },
+    'centre-diagnostic': { icon: 'fa-stethoscope', title: 'CENTRE DE DIAGNOSTIC', description: 'Diagnostic en temps réel des PC : RAM, CPU, disque, température, antivirus, réseau.', status: 'ACCÈS PRÉSIDENT UNIQUEMENT', link: 'centre-diagnostic.html' }
 };
 
 let membreActuel = null;
@@ -925,6 +793,7 @@ let scanning = false, stream = null, canvas, ctx;
 // ==================== PARTICULES ====================
 function createParticles() {
     const container = document.getElementById('particles');
+    if (!container) return;
     const colors = ['#ffd700', '#00ffe1', '#a855f7', '#00ff88', '#ff2ec4'];
     for (let i = 0; i < 70; i++) {
         const p = document.createElement('div');
@@ -939,19 +808,19 @@ function createParticles() {
     }
 }
 
-// ==================== STATUS ====================
 function setStatusCamera(msg, type='') {
     const el = document.getElementById('statusTextCamera');
+    if (!el) return;
     el.className = 'status-text ' + type;
     el.innerHTML = msg;
 }
 function setStatusID(msg, type='') {
     const el = document.getElementById('statusTextID');
+    if (!el) return;
     el.className = 'status-text ' + type;
     el.innerHTML = msg;
 }
 
-// ==================== NAVIGATION MODAL ====================
 function retourChoix() {
     if (stream) {
         stream.getTracks().forEach(t => t.stop());
@@ -983,9 +852,20 @@ function choisirID() {
     setTimeout(() => document.getElementById('inputMemberId').focus(), 200);
 }
 
-// ==================== CAMÉRA ====================
 async function demarrerCamera() {
     document.getElementById('errorMsg').textContent = '';
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        setStatusCamera('❌ Caméra non disponible (HTTP ou navigateur non compatible)', 'error');
+        document.getElementById('errorMsg').textContent = 'La caméra nécessite HTTPS ou localhost. Utilisez la saisie manuelle.';
+        return;
+    }
+    if (typeof jsQR !== 'function') {
+        setStatusCamera('❌ Bibliothèque QR non chargée', 'error');
+        document.getElementById('errorMsg').textContent = 'jsQR n\'a pas pu être chargé (vérifiez la connexion).';
+        return;
+    }
+
     try {
         setStatusCamera('<i class="fas fa-spinner fa-spin"></i> Demande accès caméra...', '');
         stream = await navigator.mediaDevices.getUserMedia({
@@ -1022,10 +902,7 @@ function boucleScan() {
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
         try {
-            const code = jsQR(imageData.data, imageData.width, imageData.height, {
-                inversionAttempts: 'dontInvert'
-            });
-
+            const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'dontInvert' });
             if (code && code.data) {
                 scanning = false;
                 if (stream) {
@@ -1048,9 +925,9 @@ function boucleScan() {
     if (scanning) requestAnimationFrame(boucleScan);
 }
 
-// ==================== VÉRIFICATION ID ====================
 function verifierIdMembre() {
-    const id = document.getElementById('inputMemberId').value.trim();
+    const input = document.getElementById('inputMemberId');
+    const id = input.value.trim();
     const errEl = document.getElementById('errorMsg');
 
     if (!id) {
@@ -1061,7 +938,7 @@ function verifierIdMembre() {
     const membre = MEMBRES_DIRECTION[id];
     if (!membre) {
         errEl.textContent = '❌ ID non reconnu. Vérifiez votre identifiant.';
-        document.getElementById('inputMemberId').value = '';
+        input.value = '';
         return;
     }
 
@@ -1082,16 +959,6 @@ function verifierIdMembre() {
     }, 800);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const inputId = document.getElementById('inputMemberId');
-    if (inputId) {
-        inputId.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') verifierIdMembre();
-        });
-    }
-});
-
-// ==================== AFFICHAGE DES POSTES ====================
 function afficherPostes() {
     document.getElementById('userInfo').innerHTML =
         `<i class="fas fa-user-shield"></i> ${membreActuel.prenom} ${membreActuel.nom} - ${membreActuel.fonction}`;
@@ -1123,7 +990,15 @@ function afficherPostes() {
 }
 
 // ==================== INIT ====================
-createParticles();
+document.addEventListener('DOMContentLoaded', () => {
+    createParticles();
+    const inputId = document.getElementById('inputMemberId');
+    if (inputId) {
+        inputId.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') verifierIdMembre();
+        });
+    }
+});
 </script>
 </body>
 </html>
