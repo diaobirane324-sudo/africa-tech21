@@ -727,8 +727,6 @@
         .reunion-badge.attente {
             background: linear-gradient(135deg, #ff8c00, #ffd700);
             box-shadow: 0 0 20px rgba(255, 140, 0, 0.8);
-        }
-        .reunion-badge.attente {
             animation: badgePulseOrange 1.2s ease-in-out infinite;
         }
         @keyframes badgePulseOrange {
@@ -853,9 +851,7 @@
             <p class="hero-subtitle">Interface de collaboration avancée pour les membres d'AFRICA.TECH21. Accédez aux projets confidentiels, communiquez avec l'équipe et gérez les développements techniques.</p>
         </section>
 
-        <!-- ============================================================ -->
-        <!-- TECH-TREE (DESKTOP)                                          -->
-        <!-- ============================================================ -->
+        <!-- TECH-TREE (DESKTOP) -->
         <div class="tech-tree" id="techTree">
             <svg class="circuit-lines" id="circuitSVG" viewBox="0 0 1800 1400" preserveAspectRatio="none">
                 <defs>
@@ -1004,9 +1000,7 @@
             </div>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- PROJETS TECHNIQUES (DESKTOP)                                 -->
-        <!-- ============================================================ -->
+        <!-- PROJETS TECHNIQUES (DESKTOP) -->
         <section class="projects-section">
             <h2 class="section-title"><i class="fas fa-cubes"></i> PROJETS TECHNIQUES</h2>
             <p class="section-subtitle">Découvrez les projets développés par l'équipe AFRICA.TECH21. Certains nécessitent un code d'accès.</p>
@@ -1055,9 +1049,7 @@
             </div>
         </section>
 
-        <!-- ============================================================ -->
-        <!-- FALLBACK MOBILE                                              -->
-        <!-- ============================================================ -->
+        <!-- FALLBACK MOBILE -->
         <div class="mobile-grid">
             <div class="feature-card" onclick="accederEspaceDirection()" style="border-color: var(--neon-red);">
                 <div class="feature-icon" style="color: var(--neon-red);"><i class="fas fa-shield-alt"></i></div>
@@ -1188,9 +1180,7 @@
         </section>
     </div>
 
-    <!-- ============================================================
-         BOUTON SPHÉRIQUE — ESPACE RÉUNION
-         ============================================================ -->
+    <!-- BOUTON SPHÉRIQUE — ESPACE RÉUNION -->
     <a href="espace-reunion.html" class="reunion-orb" id="reunionOrb" title="Espace Réunion">
         <div class="reunion-orb-inner">
             <i class="fas fa-users orb-icon"></i>
@@ -1208,10 +1198,12 @@
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyV86rnSYPMRVIyZ-sE62lQXoVRDvhfKPOppMW7Z2IACqM8s2pGbpXC0BcKUNydxs/exec';
         const INFO_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwESkPKPu4svg_ZDnCj-LSTZWlCE_GRLNAP00F_GQXqTBKhqxcmsRjHGk7aXBn5GbfF/exec';
 
-        // ============ SUPABASE ============
+        // ============ SUPABASE (safe) ============
         const SUPABASE_URL = 'https://olgrpycxudzuxtzjxoma.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sZ3JweWN4dWR6dXh0emp4b21hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzA4MDUsImV4cCI6MjEwNTkwNjgwNX0.Day-sMRM-l6bBWuqCsho6vBPCKNxZaqUB1TgHbF6-TE';
-        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const supabaseClient = (window.supabase && window.supabase.createClient)
+            ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+            : null;
 
         // ============ AUTH CHECK ============
         if (localStorage.getItem('memberLoggedIn') !== 'true') {
@@ -1223,17 +1215,15 @@
         const memberFonction = localStorage.getItem('memberFonction') || '';
         const memberEmail = localStorage.getItem('memberEmail') || '';
 
-        if (memberPrenom && memberNom) {
-            document.getElementById('userEmail').textContent = memberPrenom + ' ' + memberNom;
-        } else {
-            document.getElementById('userEmail').textContent = 'UTILISATEUR';
-        }
-        document.getElementById('userRole').textContent = '🎯 ' + memberFonction;
+        document.getElementById('userEmail').textContent =
+            (memberPrenom && memberNom) ? (memberPrenom + ' ' + memberNom) : 'UTILISATEUR';
+        document.getElementById('userRole').textContent = '🎯 ' + (memberFonction || 'MEMBRE');
 
-        // ============ BADGE RÉUNION ACTIVE ============
+        // ============ BADGE RÉUNION ============
         let reunionCheckInterval = null;
 
         async function verifierReunionActive() {
+            if (!supabaseClient) return;
             try {
                 const { data, error } = await supabaseClient
                     .from('reunions')
@@ -1242,10 +1232,7 @@
                     .order('created_at', { ascending: false })
                     .limit(1);
 
-                if (error) {
-                    console.warn('Vérification réunion :', error);
-                    return;
-                }
+                if (error) { console.warn('Vérification réunion :', error); return; }
 
                 const badge = document.getElementById('reunionBadge');
                 const orb = document.getElementById('reunionOrb');
@@ -1257,35 +1244,22 @@
 
                 if (data && data.length > 0) {
                     const r = data[0];
-                    const debut = new Date(r.heure_debut);
-                    const fin = new Date(r.heure_fin);
+                    const debut = r.heure_debut ? new Date(r.heure_debut) : null;
+                    const fin = r.heure_fin ? new Date(r.heure_fin) : null;
 
-                    if (r.statut === 'en_cours' && now < fin) {
+                    if (r.statut === 'en_cours' && (!fin || now < fin)) {
                         active = true;
-                    } else if (r.statut === 'attente' && now < debut) {
+                    } else if (r.statut === 'attente' && debut && now < debut) {
                         enAttente = true;
-                    } else if (r.statut === 'en_cours' && now >= fin) {
-                        active = false;
-                    } else if (r.statut === 'attente' && now >= debut && now < fin) {
+                    } else if (r.statut === 'attente' && debut && fin && now >= debut && now < fin) {
                         active = true;
                     }
                 }
 
-                if (active) {
-                    badge.classList.add('show');
-                    badge.classList.remove('attente');
-                    badge.textContent = '!';
-                    orb.classList.add('active-reunion');
-                } else if (enAttente) {
-                    badge.classList.add('show');
-                    badge.classList.add('attente');
-                    badge.textContent = '⏳';
-                    orb.classList.remove('active-reunion');
-                } else {
-                    badge.classList.remove('show');
-                    badge.classList.remove('attente');
-                    orb.classList.remove('active-reunion');
-                }
+                badge.classList.toggle('show', active || enAttente);
+                badge.classList.toggle('attente', !active && enAttente);
+                badge.textContent = active ? '!' : (enAttente ? '⏳' : '!');
+                orb.classList.toggle('active-reunion', active);
             } catch (e) {
                 console.warn('Vérification réunion :', e);
             }
@@ -1305,8 +1279,8 @@
                 { x: centerX + 200, y: centerY - 100 }, { x: centerX - 200, y: centerY + 100 },
                 { x: centerX - 200, y: centerY - 100 }, { x: centerX + 200, y: centerY + 100 }
             ];
-            svg.querySelectorAll('path').forEach(p => p.remove());
-            svg.querySelectorAll('.circuit-node').forEach(n => n.remove());
+            svg.querySelectorAll('path, .circuit-node').forEach(n => n.remove());
+
             satellites.forEach((sat, idx) => {
                 const midX = (centerX + sat.x) / 2;
                 const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -1314,13 +1288,16 @@
                 path.setAttribute('class', 'branch');
                 path.style.animationDelay = (idx * 0.2) + 's';
                 svg.appendChild(path);
+
                 const ns = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                 ns.setAttribute('cx', centerX); ns.setAttribute('cy', centerY); ns.setAttribute('r', '4'); ns.setAttribute('class', 'circuit-node');
                 svg.appendChild(ns);
+
                 const ne = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                 ne.setAttribute('cx', sat.x); ne.setAttribute('cy', sat.y); ne.setAttribute('r', '3'); ne.setAttribute('class', 'circuit-node');
                 ne.style.animationDelay = (idx * 0.2) + 's';
                 svg.appendChild(ne);
+
                 const nm = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                 nm.setAttribute('cx', midX); nm.setAttribute('cy', sat.y); nm.setAttribute('r', '2'); nm.setAttribute('class', 'circuit-node'); nm.setAttribute('fill', '#9d00ff');
                 nm.style.animationDelay = (idx * 0.15) + 's';
@@ -1333,7 +1310,7 @@
             if (!window.speechSynthesis) return;
             if (!memberPrenom && !memberNom) return;
             if (sessionStorage.getItem('bienvenue_dite') === 'true') return;
-            let texte = `Bienvenue ${memberPrenom || ''} ${memberNom || ''}`;
+            let texte = `Bienvenue ${memberPrenom || ''} ${memberNom || ''}`.trim();
             if (memberFonction) texte += `, ${memberFonction.toLowerCase()}`;
             texte += `, sur AFRICA.TECH21.`;
             window.speechSynthesis.cancel();
@@ -1346,6 +1323,7 @@
         // ============ PARTICULES ============
         function createParticles() {
             const c = document.getElementById('particles');
+            if (!c) return;
             const colors = ['#00f0ff', '#00ff88', '#9d00ff', '#ffd700'];
             for (let i = 0; i < 50; i++) {
                 const p = document.createElement('div');
@@ -1371,16 +1349,20 @@
             const email = localStorage.getItem('memberEmail') || 'Membre';
             const div = document.createElement('div');
             div.className = 'message';
-            div.innerHTML = `<div class="message-header"><span class="message-user">${email}</span><span class="message-time">${dateStr}</span></div><p class="message-content">${msg}</p>`;
+            div.innerHTML = `<div class="message-header"><span class="message-user">${escapeHtml(email)}</span><span class="message-time">${escapeHtml(dateStr)}</span></div><p class="message-content">${escapeHtml(msg)}</p>`;
             container.appendChild(div);
             input.value = '';
             container.scrollTop = container.scrollHeight;
             saveMessage(msg, dateStr);
         }
 
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+        }
+
         function saveMessage(msg, date) {
             const messages = JSON.parse(localStorage.getItem('forumMessages') || '[]');
-            messages.push({ email: localStorage.getItem('memberEmail'), message: msg, date: date, timestamp: new Date().toISOString() });
+            messages.push({ email: localStorage.getItem('memberEmail') || 'Membre', message: msg, date: date, timestamp: new Date().toISOString() });
             localStorage.setItem('forumMessages', JSON.stringify(messages));
         }
 
@@ -1392,7 +1374,7 @@
             messages.forEach(msg => {
                 const div = document.createElement('div');
                 div.className = 'message';
-                div.innerHTML = `<div class="message-header"><span class="message-user">${msg.email}</span><span class="message-time">${msg.date}</span></div><p class="message-content">${msg.message}</p>`;
+                div.innerHTML = `<div class="message-header"><span class="message-user">${escapeHtml(msg.email)}</span><span class="message-time">${escapeHtml(msg.date)}</span></div><p class="message-content">${escapeHtml(msg.message)}</p>`;
                 container.appendChild(div);
             });
             container.scrollTop = container.scrollHeight;
@@ -1404,7 +1386,7 @@
                 const response = await fetch(INFO_SCRIPT_URL + '?action=getInfo');
                 const data = await response.json();
                 if (data.success && data.message) {
-                    document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> ' + data.message;
+                    document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> ' + escapeHtml(data.message);
                 } else {
                     document.getElementById('infoMessage').innerHTML = '<i class="fas fa-bullhorn"></i> Projet OXY en développement actif !';
                 }
@@ -1414,7 +1396,6 @@
         }
 
         // ============ ACCÈS PROJETS ============
-        // Accepte : ID membre OU email (prénom.nom@africatech21.com)
         const ACCES_AUTORISES = [
             'Birane186@00',
             'AT21_0036',
@@ -1442,7 +1423,7 @@
         function ouvrirSurveillance() {
             const codeSaisi = prompt("🔒 ACCÈS RÉSERVÉ AU MAJOR\n\nEntrez votre code MAJOR :");
             if (codeSaisi === null) return;
-            if (codeSaisi === MAJOR_CODE) {
+            if (codeSaisi.trim() === MAJOR_CODE) {
                 sessionStorage.setItem('major_unlocked', 'true');
                 window.location.href = 'surveillance.html';
             } else {
@@ -1452,19 +1433,8 @@
 
         // ============ LOGOUT ============
         function logout() {
-            sessionStorage.removeItem('bienvenue_dite');
-            sessionStorage.removeItem('major_unlocked');
-            localStorage.removeItem('memberLoggedIn');
-            localStorage.removeItem('memberId');
-            localStorage.removeItem('memberNom');
-            localStorage.removeItem('memberPrenom');
-            localStorage.removeItem('memberFonction');
-            localStorage.removeItem('memberEmail');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('directionMemberId');
-            localStorage.removeItem('directionMemberNom');
-            localStorage.removeItem('directionMemberPrenom');
-            localStorage.removeItem('directionMemberFonction');
+            ['bienvenue_dite', 'major_unlocked'].forEach(k => sessionStorage.removeItem(k));
+            ['memberLoggedIn','memberId','memberNom','memberPrenom','memberFonction','memberEmail','currentUser','directionMemberId','directionMemberNom','directionMemberPrenom','directionMemberFonction'].forEach(k => localStorage.removeItem(k));
             window.location.href = 'index.html';
         }
 
@@ -1477,19 +1447,14 @@
             generateCircuitLines();
             verifierReunionActive();
 
-            // Vérification périodique (un seul interval)
             if (reunionCheckInterval) clearInterval(reunionCheckInterval);
             reunionCheckInterval = setInterval(verifierReunionActive, 20000);
         });
 
-        // Rafraîchir le badge quand on revient sur l'onglet
         document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'visible') {
-                verifierReunionActive();
-            }
+            if (document.visibilityState === 'visible') verifierReunionActive();
         });
 
-        // Nettoyage des intervals avant quitter
         window.addEventListener('beforeunload', () => {
             if (reunionCheckInterval) {
                 clearInterval(reunionCheckInterval);
